@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoData Chronicles - L'Impact Environnemental de l'IA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ff00aa;
+            --tertiary: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff3366;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --card-bg: rgba(15, 20, 40, 0.85);
+            --text: #e0e8ff;
+            --text-muted: #8090b0;
+            --glow-primary: 0 0 20px rgba(0, 240, 255, 0.5);
+            --glow-secondary: 0 0 20px rgba(255, 0, 170, 0.5);
+            --glow-tertiary: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 0, 170, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 70%),
+                linear-gradient(180deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* Container principal */
+        .game-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header avec stats */
+        .game-header {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--glow-primary), inset 0 0 50px rgba(0, 240, 255, 0.05);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+        }
+
+        .player-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px 20px;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stat-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5em;
+            color: var(--primary);
+            text-shadow: var(--glow-primary);
+        }
+
+        /* XP Bar */
+        .xp-container {
+            margin-top: 15px;
+        }
+
+        .xp-bar {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .xp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--tertiary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .xp-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: var(--text-muted);
+        }
+
+        /* Écrans du jeu */
+        .game-screen {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .game-screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Écran titre */
+        .title-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.8)); }
+            50% { filter: drop-shadow(0 0 40px rgba(255, 0, 170, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .title-description {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        /* Boutons */
+        .btn {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #0088aa);
+            color: var(--dark);
+            box-shadow: var(--glow-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.8);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: var(--glow-primary);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--tertiary), #00aa55);
+            color: var(--dark);
+            box-shadow: var(--glow-tertiary);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #aa0033);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--tertiary));
+        }
+
+        .card-glow {
+            box-shadow: var(--glow-primary), inset 0 0 30px rgba(0, 240, 255, 0.03);
+        }
+
+        /* Dialogue */
+        .dialogue-box {
+            background: var(--card-bg);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .dialogue-speaker {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dialogue-text {
+            margin-top: 10px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .dialogue-text .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .dialogue-text .stat {
+            display: inline-block;
+            background: rgba(0, 240, 255, 0.2);
+            padding: 2px 10px;
+            border-radius: 5px;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--tertiary);
+        }
+
+        /* Character portraits */
+        .character-portrait {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            box-shadow: var(--glow-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(255, 0, 170, 0.2));
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .dialogue-with-portrait {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        /* Choix */
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .choice-btn {
+            background: rgba(0, 240, 255, 0.1);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px 25px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 1.05em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .choice-btn:hover {
+            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--primary);
+            transform: translateX(10px);
+            box-shadow: var(--glow-primary);
+        }
+
+        .choice-btn:hover::before {
+            transform: scaleY(1);
+        }
+
+        .choice-btn.correct {
+            background: rgba(0, 255, 136, 0.3);
+            border-color: var(--tertiary);
+        }
+
+        .choice-btn.incorrect {
+            background: rgba(255, 51, 102, 0.3);
+            border-color: var(--danger);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(0, 255, 136, 0.05));
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+
+        .info-box.warning {
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.1), rgba(255, 51, 102, 0.05));
+            border-left-color: var(--warning);
+        }
+
+        .info-box.success {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 240, 255, 0.05));
+            border-left-color: var(--tertiary);
+        }
+
+        .info-box h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Stats display */
+        .big-stat {
+            text-align: center;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .big-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(0, 240, 255, 0.5);
+        }
+
+        .big-stat-label {
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        /* Comparison cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--glow-primary);
+        }
+
+        .comparison-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .comparison-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5em;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .comparison-label {
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        /* Progress indicator */
+        .chapter-progress {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .chapter-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 240, 255, 0.2);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .chapter-dot.completed {
+            background: var(--tertiary);
+            border-color: var(--tertiary);
+            box-shadow: 0 0 10px var(--tertiary);
+        }
+
+        .chapter-dot.current {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            transform: scale(1.3);
+        }
+
+        /* Quiz styling */
+        .quiz-option {
+            background: rgba(0, 240, 255, 0.05);
+            border: 2px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            padding: 18px 25px;
+            margin: 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quiz-option:hover {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.selected {
+            background: rgba(0, 240, 255, 0.25);
+            border-color: var(--primary);
+            box-shadow: var(--glow-primary);
+        }
+
+        .quiz-option.correct {
+            background: rgba(0, 255, 136, 0.25);
+            border-color: var(--tertiary);
+            box-shadow: var(--glow-tertiary);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(255, 51, 102, 0.25);
+            border-color: var(--danger);
+        }
+
+        .quiz-letter {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(0, 240, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            flex-shrink: 0;
+        }
+
+        /* Terminal effect */
+        .terminal {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca40; }
+
+        .terminal-line {
+            margin: 5px 0;
+        }
+
+        .terminal-prompt {
+            color: var(--tertiary);
+        }
+
+        .terminal-output {
+            color: var(--text-muted);
+        }
+
+        .terminal-highlight {
+            color: var(--primary);
+        }
+
+        /* Mission card */
+        .mission-card {
+            background: linear-gradient(135deg, rgba(255, 0, 170, 0.1), rgba(0, 240, 255, 0.1));
+            border: 2px solid rgba(255, 0, 170, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .mission-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .mission-icon {
+            font-size: 2.5em;
+        }
+
+        .mission-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            color: var(--secondary);
+        }
+
+        .mission-objective {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        /* Rewards popup */
+        .reward-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 2px solid var(--tertiary);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 100px rgba(0, 255, 136, 0.5);
+            animation: popIn 0.5s ease;
+            display: none;
+        }
+
+        .reward-popup.show {
+            display: block;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .reward-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .reward-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            color: var(--tertiary);
+            margin-bottom: 15px;
+        }
+
+        .reward-xp {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2em;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* Badges */
+        .badges-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, rgba(255, 170, 0, 0.2), rgba(255, 0, 170, 0.2));
+            border: 1px solid rgba(255, 170, 0, 0.5);
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge.locked {
+            opacity: 0.4;
+            filter: grayscale(1);
+        }
+
+        /* Final screen */
+        .final-score {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5em;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 30px 0;
+        }
+
+        .certificate {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 170, 0.1));
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .certificate-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2em;
+            }
+
+            .game-title {
+                font-size: 1.3em;
+            }
+
+            .player-stats {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .stat-item {
+                padding: 8px 15px;
+            }
+
+            .big-stat-value {
+                font-size: 2.5em;
+            }
+
+            .dialogue-with-portrait {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .character-portrait {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Typing effect */
+        .typing-text {
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--primary); }
+        }
+
+        /* Glitch effect */
+        .glitch {
+            animation: glitch 1s ease-in-out infinite;
+        }
+
+        @keyframes glitch {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-2px, 2px); }
+            94% { transform: translate(2px, -2px); }
+            96% { transform: translate(-2px, -2px); }
+            98% { transform: translate(2px, 2px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="game-container">
+        <!-- Header avec stats (caché au départ) -->
+        <header class="game-header" id="game-header" style="display: none;">
+            <div class="header-top">
+                <h1 class="game-title">EcoData Chronicles</h1>
+                <div class="player-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">Niveau</div>
+                        <div class="stat-value" id="player-level">1</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">XP</div>
+                        <div class="stat-value" id="player-xp">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Chapitre</div>
+                        <div class="stat-value" id="current-chapter">1/8</div>
+                    </div>
+                </div>
+            </div>
+            <div class="xp-container">
+                <div class="xp-bar">
+                    <div class="xp-fill" id="xp-fill" style="width: 0%"></div>
+                </div>
+                <div class="xp-text">
+                    <span id="xp-current">0 XP</span>
+                    <span id="xp-next">Prochain niveau: 100 XP</span>
+                </div>
+            </div>
+            <div class="chapter-progress" id="chapter-progress"></div>
+        </header>
+
+        <!-- Écran titre -->
+        <div class="game-screen active" id="screen-title">
+            <div class="title-screen">
+                <h1 class="main-title">EcoData Chronicles</h1>
+                <p class="subtitle">L'Impact Environnemental de l'IA</p>
+
+                <div class="title-description">
+                    <p>Bienvenue, agent. Vous venez de rejoindre <span style="color: var(--primary); font-weight: 600;">EcoWatch</span>, une organisation secrète qui surveille l'impact environnemental des technologies numériques.</p>
+                    <br>
+                    <p>Votre mission : enquêter sur les data centers, découvrir la vérité sur l'IA, et devenir un expert en numérique responsable.</p>
+                </div>
+
+                <div style="margin: 40px 0;">
+                    <button class="btn btn-primary" onclick="startGame()">
+                        Commencer l'aventure
+                    </button>
+                </div>
+
+                <div class="info-box" style="max-width: 500px; margin: 0 auto;">
+                    <h4>Ce que vous allez découvrir :</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px; line-height: 2;">
+                        <li>La consommation énergétique des data centers</li>
+                        <li>L'impact réel de l'IA sur l'environnement</li>
+                        <li>Les différences entre modèles d'IA</li>
+                        <li>Comment utiliser l'IA de manière responsable</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 1: Introduction -->
+        <div class="game-screen" id="screen-chapter1">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 1 : Bienvenue chez EcoWatch
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">🎯</span>
+                        <span class="mission-title">Mission d'initiation</span>
+                    </div>
+                    <p>Découvrez l'ampleur de la consommation électrique des centres de données.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Commandant Nova</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">👩‍💼</div>
+                        <div class="dialogue-text">
+                            Bienvenue dans l'équipe, agent. Je suis le <span class="highlight">Commandant Nova</span>, responsable des opérations chez EcoWatch.
+                            <br><br>
+                            Avant de commencer votre première mission, vous devez comprendre l'ampleur du problème. Savez-vous quelle part de l'électricité mondiale est consommée par les centres de données ?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choices-container" id="quiz-chapter1">
+                    <div class="quiz-option" data-answer="a" onclick="checkAnswer(this, 'b', 'chapter1')">
+                        <span class="quiz-letter">A</span>
+                        <span>0,3% - C'est négligeable</span>
+                    </div>
+                    <div class="quiz-option" data-answer="b" onclick="checkAnswer(this, 'b', 'chapter1')">
+                        <span class="quiz-letter">B</span>
+                        <span>1,5% - Soit 415 TWh par an</span>
+                    </div>
+                    <div class="quiz-option" data-answer="c" onclick="checkAnswer(this, 'b', 'chapter1')">
+                        <span class="quiz-letter">C</span>
+                        <span>5% - C'est énorme</span>
+                    </div>
+                    <div class="quiz-option" data-answer="d" onclick="checkAnswer(this, 'b', 'chapter1')">
+                        <span class="quiz-letter">D</span>
+                        <span>10% - Une catastrophe</span>
+                    </div>
+                </div>
+
+                <div id="feedback-chapter1" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-title')">← Retour</button>
+                    <button class="btn btn-primary" id="next-chapter1" style="display: none;" onclick="showScreen('screen-chapter1-reveal')">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 1: Révélation -->
+        <div class="game-screen" id="screen-chapter1-reveal">
+            <div class="card card-glow">
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Commandant Nova</span>
+                    <div class="dialogue-text">
+                        Exactement ! <span class="stat">1,5%</span> de l'électricité mondiale, soit <span class="stat">415 TWh</span> par an. Et ce n'est que le début...
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value">1,5%</div>
+                    <div class="big-stat-label">de la consommation électrique mondiale</div>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Analyse des données en cours...</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">415 TWh/an</span> <span class="terminal-output">= consommation des data centers (2024)</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">945 TWh/an</span> <span class="terminal-output">= prévision 2030 (×2.3)</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Équivalent : consommation annuelle du </span><span class="terminal-highlight">Japon</span></div>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🇯🇵</div>
+                        <div class="comparison-value">945 TWh</div>
+                        <div class="comparison-label">= Consommation du Japon en 2030</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🏠</div>
+                        <div class="comparison-value">36M</div>
+                        <div class="comparison-label">foyers français pendant 1 an</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🇮🇪</div>
+                        <div class="comparison-value">21%</div>
+                        <div class="comparison-label">électricité d'Irlande = data centers</div>
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <h4>⚠️ Point critique</h4>
+                    <p>L'IA représente actuellement ~10% de la consommation des data centers, mais cette part augmente rapidement avec l'explosion des usages.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter1')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(1); showScreen('screen-chapter2')">Chapitre suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 2: L'Inférence -->
+        <div class="game-screen" id="screen-chapter2">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 2 : Le Grand Renversement
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">⚡</span>
+                        <span class="mission-title">Mission : Découverte de l'inférence</span>
+                    </div>
+                    <p>Comprendre pourquoi l'utilisation quotidienne de l'IA dépasse maintenant son entraînement.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Dr. Byte - Analyste Tech</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">🧑‍🔬</div>
+                        <div class="dialogue-text">
+                            Agent, il y a eu un <span class="highlight">renversement majeur</span> dans la consommation d'énergie de l'IA.
+                            <br><br>
+                            Avant, tout le monde s'inquiétait de l'<span class="highlight">entraînement</span> des modèles. Mais aujourd'hui, avec des milliards d'utilisateurs...
+                            <br><br>
+                            Selon vous, qu'est-ce qui consomme le plus d'énergie maintenant ?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choices-container" id="quiz-chapter2">
+                    <div class="quiz-option" data-answer="a" onclick="checkAnswer(this, 'b', 'chapter2')">
+                        <span class="quiz-letter">A</span>
+                        <span>L'entraînement initial des modèles</span>
+                    </div>
+                    <div class="quiz-option" data-answer="b" onclick="checkAnswer(this, 'b', 'chapter2')">
+                        <span class="quiz-letter">B</span>
+                        <span>L'inférence (utilisation quotidienne)</span>
+                    </div>
+                    <div class="quiz-option" data-answer="c" onclick="checkAnswer(this, 'b', 'chapter2')">
+                        <span class="quiz-letter">C</span>
+                        <span>Le stockage des données</span>
+                    </div>
+                </div>
+
+                <div id="feedback-chapter2" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter1-reveal')">← Retour</button>
+                    <button class="btn btn-primary" id="next-chapter2" style="display: none;" onclick="showScreen('screen-chapter2-reveal')">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 2: Révélation -->
+        <div class="game-screen" id="screen-chapter2-reveal">
+            <div class="card card-glow">
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Dr. Byte</span>
+                    <div class="dialogue-text">
+                        Précisément ! L'<span class="highlight">inférence</span> - c'est-à-dire chaque fois que vous posez une question à une IA - est devenue le principal facteur de consommation.
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value">1 Md</div>
+                    <div class="big-stat-label">requêtes ChatGPT par jour</div>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Données d'utilisation 2024-2025 :</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">ChatGPT</span>: 400M utilisateurs hebdo, 1Md requêtes/jour</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">Meta AI</span>: 700M utilisateurs mensuels</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">Google Gemini</span>: croissance ×7 en 6 mois</div>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">💡</div>
+                        <div class="comparison-value">~1,8 TWh</div>
+                        <div class="comparison-label">Consommation annuelle estimée d'OpenAI</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🏠</div>
+                        <div class="comparison-value">157 000</div>
+                        <div class="comparison-label">foyers français équivalents</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">📱</div>
+                        <div class="comparison-value">24M</div>
+                        <div class="comparison-label">smartphones chargés/jour</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>💡 Ce qu'il faut retenir</h4>
+                    <p>Chaque requête compte ! Avec des milliards d'utilisateurs, même de petites actions ont un impact massif cumulé.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter2')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(2); showScreen('screen-chapter3')">Chapitre suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 3: Les Modèles -->
+        <div class="game-screen" id="screen-chapter3">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 3 : Le Poids des Modèles
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">🎯</span>
+                        <span class="mission-title">Mission : Analyse comparative</span>
+                    </div>
+                    <p>Découvrir les différences de consommation entre modèles d'IA.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Agent Pixel - Experte IA</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">👩‍💻</div>
+                        <div class="dialogue-text">
+                            Agent, voici une information cruciale : <span class="highlight">tous les modèles d'IA ne consomment pas la même énergie</span>.
+                            <br><br>
+                            Une étude du MIT Technology Review de 2025 a mesuré les différences. Selon vous, quel est le ratio de consommation entre le modèle le plus léger et le plus lourd ?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choices-container" id="quiz-chapter3">
+                    <div class="quiz-option" data-answer="a" onclick="checkAnswer(this, 'c', 'chapter3')">
+                        <span class="quiz-letter">A</span>
+                        <span>×10 - Dix fois plus</span>
+                    </div>
+                    <div class="quiz-option" data-answer="b" onclick="checkAnswer(this, 'c', 'chapter3')">
+                        <span class="quiz-letter">B</span>
+                        <span>×50 - Cinquante fois plus</span>
+                    </div>
+                    <div class="quiz-option" data-answer="c" onclick="checkAnswer(this, 'c', 'chapter3')">
+                        <span class="quiz-letter">C</span>
+                        <span>×210 - Deux cent dix fois plus !</span>
+                    </div>
+                    <div class="quiz-option" data-answer="d" onclick="checkAnswer(this, 'c', 'chapter3')">
+                        <span class="quiz-letter">D</span>
+                        <span>×1000 - Mille fois plus</span>
+                    </div>
+                </div>
+
+                <div id="feedback-chapter3" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter2-reveal')">← Retour</button>
+                    <button class="btn btn-primary" id="next-chapter3" style="display: none;" onclick="showScreen('screen-chapter3-reveal')">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 3: Révélation -->
+        <div class="game-screen" id="screen-chapter3-reveal">
+            <div class="card card-glow">
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Agent Pixel</span>
+                    <div class="dialogue-text">
+                        <span class="stat">×210</span> ! C'est le ratio réel. Choisir le bon modèle peut diviser votre impact par plus de 200 !
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value">×210</div>
+                    <div class="big-stat-label">ratio entre modèle léger et lourd</div>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Comparaison pour 1000 tokens :</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">Modèle léger</span> (Llama 3.1 8B): ~0,5 Wh</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">Modèle lourd</span> (GPT-4): ~105 Wh</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Ratio : </span><span class="terminal-highlight">×210</span></div>
+                </div>
+
+                <div class="info-box">
+                    <h4>🔢 C'est quoi un "token" ?</h4>
+                    <p>Un token est un morceau de mot traité par l'IA :</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>"intelligence" = 2 tokens</li>
+                        <li>"artificielle" = 3 tokens</li>
+                        <li>Une phrase de 10 mots ≈ 15-20 tokens</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">📱</div>
+                        <div class="comparison-value">0,5 Wh</div>
+                        <div class="comparison-label">Modèle léger = 30 sec Instagram</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🎬</div>
+                        <div class="comparison-value">105 Wh</div>
+                        <div class="comparison-label">Modèle lourd = 30 min Netflix HD</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter3')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(3); showScreen('screen-chapter4')">Chapitre suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 4: L'Eau -->
+        <div class="game-screen" id="screen-chapter4">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 4 : La Soif des Machines
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">💧</span>
+                        <span class="mission-title">Mission : Enquête sur l'eau</span>
+                    </div>
+                    <p>Découvrir l'impact hydrique caché des centres de données.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Dr. Aqua - Hydrologue</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">🧑‍🔬</div>
+                        <div class="dialogue-text">
+                            Agent, l'énergie n'est pas le seul problème. Les data centers ont aussi une <span class="highlight">soif colossale</span>.
+                            <br><br>
+                            En Virginie, la région avec la plus forte concentration de data centers au monde, de combien la consommation d'eau a-t-elle augmenté entre 2019 et 2023 ?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choices-container" id="quiz-chapter4">
+                    <div class="quiz-option" data-answer="a" onclick="checkAnswer(this, 'c', 'chapter4')">
+                        <span class="quiz-letter">A</span>
+                        <span>+20%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="b" onclick="checkAnswer(this, 'c', 'chapter4')">
+                        <span class="quiz-letter">B</span>
+                        <span>+40%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="c" onclick="checkAnswer(this, 'c', 'chapter4')">
+                        <span class="quiz-letter">C</span>
+                        <span>+60%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="d" onclick="checkAnswer(this, 'c', 'chapter4')">
+                        <span class="quiz-letter">D</span>
+                        <span>+80%</span>
+                    </div>
+                </div>
+
+                <div id="feedback-chapter4" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter3-reveal')">← Retour</button>
+                    <button class="btn btn-primary" id="next-chapter4" style="display: none;" onclick="showScreen('screen-chapter4-reveal')">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 4: Révélation -->
+        <div class="game-screen" id="screen-chapter4-reveal">
+            <div class="card card-glow">
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Dr. Aqua</span>
+                    <div class="dialogue-text">
+                        <span class="stat">+60%</span> en seulement 4 ans ! Et ce n'est pas tout : <span class="stat">42%</span> de l'eau utilisée par Microsoft provient de zones en stress hydrique.
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value">+60%</div>
+                    <div class="big-stat-label">consommation d'eau en Virginie (2019-2023)</div>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Données hydriques :</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-highlight">1,8 L</span> d'eau pour refroidir 1 kWh</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> Microsoft : <span class="terminal-highlight">42%</span> d'eau en zone de stress</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> Virginie : <span class="terminal-highlight">"Data Center Alley"</span></div>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🚿</div>
+                        <div class="comparison-value">180 L</div>
+                        <div class="comparison-label">= 100 kWh de data center = 3 douches</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🌍</div>
+                        <div class="comparison-value">42%</div>
+                        <div class="comparison-label">eau Microsoft en zone de stress</div>
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <h4>⚠️ Pourquoi l'eau ?</h4>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Refroidissement direct</strong> : les serveurs chauffent énormément</li>
+                        <li><strong>Production d'électricité</strong> : centrales thermiques et nucléaires</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter4')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(4); showScreen('screen-chapter5')">Chapitre suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 5: Fabrication -->
+        <div class="game-screen" id="screen-chapter5">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 5 : Le Coût Caché
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">⛏️</span>
+                        <span class="mission-title">Mission : Les secrets de la fabrication</span>
+                    </div>
+                    <p>Comprendre l'impact environnemental de la production des équipements.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Prof. Terra - Géologue</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">👨‍🏫</div>
+                        <div class="dialogue-text">
+                            Agent, on parle beaucoup de l'usage, mais le vrai impact se cache souvent ailleurs. En France, quelle part de l'empreinte carbone du numérique provient de la <span class="highlight">fabrication</span> des équipements ?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choices-container" id="quiz-chapter5">
+                    <div class="quiz-option" data-answer="a" onclick="checkAnswer(this, 'c', 'chapter5')">
+                        <span class="quiz-letter">A</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="b" onclick="checkAnswer(this, 'c', 'chapter5')">
+                        <span class="quiz-letter">B</span>
+                        <span>50%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="c" onclick="checkAnswer(this, 'c', 'chapter5')">
+                        <span class="quiz-letter">C</span>
+                        <span>78%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="d" onclick="checkAnswer(this, 'c', 'chapter5')">
+                        <span class="quiz-letter">D</span>
+                        <span>90%</span>
+                    </div>
+                </div>
+
+                <div id="feedback-chapter5" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter4-reveal')">← Retour</button>
+                    <button class="btn btn-primary" id="next-chapter5" style="display: none;" onclick="showScreen('screen-chapter5-reveal')">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 5: Révélation -->
+        <div class="game-screen" id="screen-chapter5-reveal">
+            <div class="card card-glow">
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Prof. Terra</span>
+                    <div class="dialogue-text">
+                        <span class="stat">78%</span> ! L'immense majorité de l'impact se produit <span class="highlight">avant même que vous utilisiez</span> votre appareil.
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value">78%</div>
+                    <div class="big-stat-label">de l'empreinte carbone = fabrication</div>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Matières premières extraites :</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> Smartphone : <span class="terminal-highlight">50-70 kg</span> de matières</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> Ordinateur portable : <span class="terminal-highlight">240 kg</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> Serveur IA (GPU) : <span class="terminal-highlight">plusieurs tonnes</span></div>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">📱</div>
+                        <div class="comparison-value">70+ éléments</div>
+                        <div class="comparison-label">différents dans un smartphone</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">⛏️</div>
+                        <div class="comparison-value">60%</div>
+                        <div class="comparison-label">du cobalt vient de RD Congo</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">♻️</div>
+                        <div class="comparison-value">22%</div>
+                        <div class="comparison-label">e-déchets correctement recyclés</div>
+                    </div>
+                </div>
+
+                <div class="info-box warning">
+                    <h4>⚠️ L'IA génère des e-déchets</h4>
+                    <p>Prévision : <strong>5 millions de tonnes</strong> de déchets électroniques supplémentaires d'ici 2030, soit le poids de 50 000 TGV !</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter5')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(5); showScreen('screen-chapter6')">Chapitre suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 6: CO2 -->
+        <div class="game-screen" id="screen-chapter6">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 6 : L'Empreinte Carbone
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">🌍</span>
+                        <span class="mission-title">Mission : Mesurer les émissions</span>
+                    </div>
+                    <p>Quantifier l'impact carbone des centres de données.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Commandant Nova</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">👩‍💼</div>
+                        <div class="dialogue-text">
+                            Agent, vous avez fait d'excellents progrès. Maintenant, regardons le bilan carbone global. En 2024, les centres de données ont émis <span class="stat">180 millions de tonnes de CO₂</span>.
+                            <br><br>
+                            Mais les prévisions pour 2035 sont alarmantes...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value" style="font-size: 2.5em;">180 → 500 Mt</div>
+                    <div class="big-stat-label">émissions CO₂ : 2024 → 2035</div>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> <span class="terminal-output">Équivalents carbone :</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> 180 Mt = <span class="terminal-highlight">450 millions</span> vols Paris-NY</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> 500 Mt = <span class="terminal-highlight">110 millions</span> voitures/an</div>
+                    <div class="terminal-line"><span class="terminal-prompt">></span> = <span class="terminal-highlight">2×</span> le parc auto français</div>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-icon">✈️</div>
+                        <div class="comparison-value">450M</div>
+                        <div class="comparison-label">vols Paris-NY équivalents</div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comparison-icon">🚗</div>
+                        <div class="comparison-value">×2,8</div>
+                        <div class="comparison-label">croissance prévue 2024-2035</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter5-reveal')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(6); showScreen('screen-chapter7')">Chapitre suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 7: Transparence -->
+        <div class="game-screen" id="screen-chapter7">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 7 : Le Mur du Silence
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">🔍</span>
+                        <span class="mission-title">Mission : Enquête sur la transparence</span>
+                    </div>
+                    <p>Découvrir le manque de données environnementales des entreprises d'IA.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Agent Shadow - Infiltration</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">🕵️</div>
+                        <div class="dialogue-text">
+                            Agent, j'ai enquêté sur les grandes entreprises d'IA. Le constat est troublant : la plupart ne communiquent <span class="highlight">aucune donnée vérifiable</span> sur leur impact environnemental.
+                            <br><br>
+                            Selon vous, quel pourcentage de l'utilisation des modèles de langage se fait via des modèles <span class="highlight">sans transparence environnementale</span> ?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="choices-container" id="quiz-chapter7">
+                    <div class="quiz-option" data-answer="a" onclick="checkAnswer(this, 'c', 'chapter7')">
+                        <span class="quiz-letter">A</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="b" onclick="checkAnswer(this, 'c', 'chapter7')">
+                        <span class="quiz-letter">B</span>
+                        <span>50%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="c" onclick="checkAnswer(this, 'c', 'chapter7')">
+                        <span class="quiz-letter">C</span>
+                        <span>84%</span>
+                    </div>
+                    <div class="quiz-option" data-answer="d" onclick="checkAnswer(this, 'c', 'chapter7')">
+                        <span class="quiz-letter">D</span>
+                        <span>95%</span>
+                    </div>
+                </div>
+
+                <div id="feedback-chapter7" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter6')">← Retour</button>
+                    <button class="btn btn-primary" id="next-chapter7" style="display: none;" onclick="showScreen('screen-chapter7-reveal')">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 7: Révélation -->
+        <div class="game-screen" id="screen-chapter7-reveal">
+            <div class="card card-glow">
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Agent Shadow</span>
+                    <div class="dialogue-text">
+                        <span class="stat">84%</span> de l'utilisation se fait dans l'opacité totale. C'est pourquoi notre travail chez EcoWatch est si important.
+                    </div>
+                </div>
+
+                <div class="big-stat">
+                    <div class="big-stat-value">84%</div>
+                    <div class="big-stat-label">sans transparence environnementale</div>
+                </div>
+
+                <div class="info-box warning">
+                    <h4>⚠️ Le problème de l'opacité</h4>
+                    <p>Sans données transparentes, il est impossible de :</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Comparer objectivement les services</li>
+                        <li>Faire des choix éclairés</li>
+                        <li>Pousser à l'amélioration</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter7')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(7); showScreen('screen-chapter8')">Chapitre final →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapitre 8: Bonnes pratiques -->
+        <div class="game-screen" id="screen-chapter8">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Chapitre 8 : Devenir un Agent Éco-Responsable
+                </h2>
+
+                <div class="mission-card">
+                    <div class="mission-header">
+                        <span class="mission-icon">🎓</span>
+                        <span class="mission-title">Mission finale : Certification</span>
+                    </div>
+                    <p>Maîtriser les bonnes pratiques pour utiliser l'IA de manière responsable.</p>
+                </div>
+
+                <div class="dialogue-box">
+                    <span class="dialogue-speaker">Commandant Nova</span>
+                    <div class="dialogue-with-portrait">
+                        <div class="character-portrait">👩‍💼</div>
+                        <div class="dialogue-text">
+                            Agent, vous avez accompli un travail remarquable. Vous connaissez maintenant l'impact environnemental de l'IA. Il est temps de passer à l'action.
+                            <br><br>
+                            Voici les <span class="highlight">6 règles d'or</span> d'un agent EcoWatch :
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box success">
+                    <h4>✅ Les 6 règles d'or</h4>
+                    <ol style="margin-left: 20px; margin-top: 15px; line-height: 2.2;">
+                        <li><strong>Choisir le bon modèle</strong> : privilégier les modèles légers (×210 de différence !)</li>
+                        <li><strong>Limiter les essais</strong> : éviter de regénérer 10 fois la même réponse</li>
+                        <li><strong>Se demander si l'IA est nécessaire</strong> : une recherche classique suffit souvent</li>
+                        <li><strong>Allonger la durée de vie</strong> des appareils (78% de l'impact = fabrication)</li>
+                        <li><strong>Recycler correctement</strong> les anciens équipements</li>
+                        <li><strong>Exiger la transparence</strong> : privilégier les services qui publient leur impact</li>
+                    </ol>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter7-reveal')">← Retour</button>
+                    <button class="btn btn-primary" onclick="completeChapter(8); showScreen('screen-final-quiz')">Passer l'examen final →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Final -->
+        <div class="game-screen" id="screen-final-quiz">
+            <div class="card card-glow">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px;">
+                    Examen Final de Certification
+                </h2>
+
+                <p style="margin-bottom: 25px; color: var(--text-muted);">Répondez correctement à au moins 7 questions sur 10 pour obtenir votre certification d'Agent EcoWatch.</p>
+
+                <div id="final-quiz-container">
+                    <!-- Questions générées dynamiquement -->
+                </div>
+
+                <div id="final-quiz-result" style="display: none;"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="showScreen('screen-chapter8')">← Retour</button>
+                    <button class="btn btn-success" id="submit-final-quiz" onclick="submitFinalQuiz()">Soumettre mes réponses</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de fin -->
+        <div class="game-screen" id="screen-end">
+            <div class="card card-glow">
+                <div id="end-content">
+                    <!-- Contenu généré dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup de récompense -->
+    <div class="overlay" id="reward-overlay"></div>
+    <div class="reward-popup" id="reward-popup">
+        <div class="reward-icon" id="reward-icon">🏆</div>
+        <div class="reward-title" id="reward-title">Chapitre complété !</div>
+        <div class="reward-xp" id="reward-xp">+100 XP</div>
+        <p id="reward-message">Vous progressez bien, agent.</p>
+        <button class="btn btn-primary" onclick="closeReward()" style="margin-top: 20px;">Continuer</button>
+    </div>
+
+    <script>
+        // État du jeu
+        const gameState = {
+            xp: 0,
+            level: 1,
+            currentChapter: 0,
+            completedChapters: [],
+            quizAnswers: {},
+            finalQuizScore: 0
+        };
+
+        const xpPerLevel = 100;
+        const totalChapters = 8;
+
+        // Questions du quiz final
+        const finalQuizQuestions = [
+            {
+                question: "Quelle part de la consommation électrique mondiale les centres de données représentent-ils ?",
+                options: ["0,5%", "1,5%", "5%", "10%"],
+                correct: 1
+            },
+            {
+                question: "Quel est le ratio de consommation entre le modèle IA le plus léger et le plus lourd ?",
+                options: ["1 à 10", "1 à 50", "1 à 210", "1 à 1000"],
+                correct: 2
+            },
+            {
+                question: "Combien de requêtes ChatGPT traite-t-il par jour ?",
+                options: ["10 millions", "100 millions", "1 milliard", "10 milliards"],
+                correct: 2
+            },
+            {
+                question: "Quelle part de l'électricité d'Irlande est consommée par les data centers ?",
+                options: ["5%", "10%", "21%", "35%"],
+                correct: 2
+            },
+            {
+                question: "De combien a augmenté la consommation d'eau en Virginie entre 2019 et 2023 ?",
+                options: ["+20%", "+40%", "+60%", "+80%"],
+                correct: 2
+            },
+            {
+                question: "Quelle part représente la fabrication dans l'empreinte carbone du numérique en France ?",
+                options: ["25%", "50%", "78%", "90%"],
+                correct: 2
+            },
+            {
+                question: "Combien de kg de matières premières pour fabriquer un smartphone ?",
+                options: ["5-10 kg", "50-70 kg", "100-150 kg", "200-250 kg"],
+                correct: 1
+            },
+            {
+                question: "Quel pourcentage des déchets électroniques est correctement recyclé ?",
+                options: ["10%", "22%", "45%", "60%"],
+                correct: 1
+            },
+            {
+                question: "Qu'est-ce qui consomme le plus d'énergie dans l'IA générative aujourd'hui ?",
+                options: ["L'entraînement initial", "L'inférence (utilisation)", "Le stockage", "Les mises à jour"],
+                correct: 1
+            },
+            {
+                question: "Quel % de l'usage des LLM se fait sans transparence environnementale ?",
+                options: ["25%", "50%", "84%", "95%"],
+                correct: 2
+            }
+        ];
+
+        // Fonctions d'affichage
+        function showScreen(screenId) {
+            document.querySelectorAll('.game-screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function startGame() {
+            document.getElementById('game-header').style.display = 'block';
+            updateChapterProgress();
+            showScreen('screen-chapter1');
+        }
+
+        function updateStats() {
+            document.getElementById('player-xp').textContent = gameState.xp;
+            document.getElementById('player-level').textContent = gameState.level;
+            document.getElementById('current-chapter').textContent = `${gameState.completedChapters.length}/${totalChapters}`;
+
+            const xpInCurrentLevel = gameState.xp % xpPerLevel;
+            const xpPercent = (xpInCurrentLevel / xpPerLevel) * 100;
+            document.getElementById('xp-fill').style.width = `${xpPercent}%`;
+            document.getElementById('xp-current').textContent = `${xpInCurrentLevel} XP`;
+            document.getElementById('xp-next').textContent = `Prochain niveau: ${xpPerLevel} XP`;
+        }
+
+        function updateChapterProgress() {
+            const container = document.getElementById('chapter-progress');
+            container.innerHTML = '';
+            for (let i = 1; i <= totalChapters; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'chapter-dot';
+                if (gameState.completedChapters.includes(i)) {
+                    dot.classList.add('completed');
+                } else if (i === gameState.currentChapter + 1) {
+                    dot.classList.add('current');
+                }
+                container.appendChild(dot);
+            }
+        }
+
+        function addXP(amount) {
+            gameState.xp += amount;
+            const newLevel = Math.floor(gameState.xp / xpPerLevel) + 1;
+            if (newLevel > gameState.level) {
+                gameState.level = newLevel;
+            }
+            updateStats();
+        }
+
+        function checkAnswer(element, correctAnswer, chapter) {
+            const container = document.getElementById(`quiz-${chapter}`);
+            const options = container.querySelectorAll('.quiz-option');
+            const selectedAnswer = element.dataset.answer;
+
+            // Désactiver toutes les options
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt.dataset.answer === correctAnswer) {
+                    opt.classList.add('correct');
+                } else if (opt === element && selectedAnswer !== correctAnswer) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Afficher le feedback
+            const feedback = document.getElementById(`feedback-${chapter}`);
+            if (selectedAnswer === correctAnswer) {
+                feedback.innerHTML = `
+                    <div class="info-box success">
+                        <h4>✅ Excellente réponse !</h4>
+                        <p>Vous avez bien compris ce concept.</p>
+                    </div>
+                `;
+                addXP(25);
+            } else {
+                feedback.innerHTML = `
+                    <div class="info-box warning">
+                        <h4>❌ Pas tout à fait...</h4>
+                        <p>La bonne réponse est indiquée en vert. Ne vous inquiétez pas, vous apprendrez !</p>
+                    </div>
+                `;
+                addXP(10);
+            }
+            feedback.style.display = 'block';
+
+            // Afficher le bouton suivant
+            document.getElementById(`next-${chapter}`).style.display = 'inline-block';
+        }
+
+        function completeChapter(chapterNum) {
+            if (!gameState.completedChapters.includes(chapterNum)) {
+                gameState.completedChapters.push(chapterNum);
+                gameState.currentChapter = chapterNum;
+                addXP(50);
+                showReward(chapterNum);
+                updateChapterProgress();
+            }
+        }
+
+        function showReward(chapterNum) {
+            const titles = [
+                "Bienvenue chez EcoWatch !",
+                "Le Grand Renversement maîtrisé !",
+                "Expert des Modèles !",
+                "Gardien de l'Eau !",
+                "Maître de la Fabrication !",
+                "Sentinelle Carbone !",
+                "Détecteur de Transparence !",
+                "Agent Éco-Responsable !"
+            ];
+
+            document.getElementById('reward-icon').textContent = chapterNum === 8 ? '🎓' : '⭐';
+            document.getElementById('reward-title').textContent = titles[chapterNum - 1];
+            document.getElementById('reward-xp').textContent = '+50 XP';
+            document.getElementById('reward-message').textContent = `Chapitre ${chapterNum}/${totalChapters} complété !`;
+
+            document.getElementById('reward-overlay').classList.add('show');
+            document.getElementById('reward-popup').classList.add('show');
+        }
+
+        function closeReward() {
+            document.getElementById('reward-overlay').classList.remove('show');
+            document.getElementById('reward-popup').classList.remove('show');
+        }
+
+        // Quiz final
+        function generateFinalQuiz() {
+            const container = document.getElementById('final-quiz-container');
+            container.innerHTML = '';
+
+            finalQuizQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question-block';
+                questionDiv.style.marginBottom = '30px';
+                questionDiv.innerHTML = `
+                    <p style="font-weight: 600; margin-bottom: 15px; color: var(--primary);">
+                        Question ${index + 1}/10 : ${q.question}
+                    </p>
+                    <div class="quiz-options-final" data-question="${index}">
+                        ${q.options.map((opt, optIndex) => `
+                            <div class="quiz-option" data-answer="${optIndex}" onclick="selectFinalAnswer(${index}, ${optIndex}, this)">
+                                <span class="quiz-letter">${String.fromCharCode(65 + optIndex)}</span>
+                                <span>${opt}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function selectFinalAnswer(questionIndex, answerIndex, element) {
+            // Désélectionner les autres options de cette question
+            const questionContainer = element.closest('.quiz-options-final');
+            questionContainer.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+
+            // Enregistrer la réponse
+            gameState.quizAnswers[questionIndex] = answerIndex;
+        }
+
+        function submitFinalQuiz() {
+            // Vérifier que toutes les questions ont été répondues
+            if (Object.keys(gameState.quizAnswers).length < 10) {
+                alert('Veuillez répondre à toutes les questions avant de soumettre.');
+                return;
+            }
+
+            // Calculer le score
+            let score = 0;
+            finalQuizQuestions.forEach((q, index) => {
+                const container = document.querySelector(`[data-question="${index}"]`);
+                const options = container.querySelectorAll('.quiz-option');
+
+                options.forEach((opt, optIndex) => {
+                    opt.style.pointerEvents = 'none';
+                    if (optIndex === q.correct) {
+                        opt.classList.add('correct');
+                        if (gameState.quizAnswers[index] === optIndex) {
+                            score++;
+                        }
+                    } else if (gameState.quizAnswers[index] === optIndex) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+            });
+
+            gameState.finalQuizScore = score;
+            document.getElementById('submit-final-quiz').style.display = 'none';
+
+            // Afficher le résultat
+            const resultDiv = document.getElementById('final-quiz-result');
+            resultDiv.style.display = 'block';
+
+            if (score >= 7) {
+                addXP(200);
+                resultDiv.innerHTML = `
+                    <div class="info-box success" style="margin-top: 30px;">
+                        <h4>🎉 Félicitations ! Score : ${score}/10</h4>
+                        <p>Vous avez réussi l'examen avec brio ! Vous êtes maintenant certifié Agent EcoWatch.</p>
+                        <button class="btn btn-primary" onclick="showEndScreen(true)" style="margin-top: 15px;">Voir ma certification →</button>
+                    </div>
+                `;
+            } else {
+                addXP(50);
+                resultDiv.innerHTML = `
+                    <div class="info-box warning" style="margin-top: 30px;">
+                        <h4>📚 Score : ${score}/10</h4>
+                        <p>Vous n'avez pas atteint le score minimum de 7/10. Relisez les chapitres et réessayez !</p>
+                        <button class="btn btn-secondary" onclick="retryQuiz()" style="margin-top: 15px;">Réessayer</button>
+                        <button class="btn btn-primary" onclick="showEndScreen(false)" style="margin-top: 15px;">Voir mes résultats →</button>
+                    </div>
+                `;
+            }
+        }
+
+        function retryQuiz() {
+            gameState.quizAnswers = {};
+            document.getElementById('final-quiz-result').style.display = 'none';
+            document.getElementById('submit-final-quiz').style.display = 'inline-block';
+            generateFinalQuiz();
+        }
+
+        function showEndScreen(certified) {
+            const content = document.getElementById('end-content');
+
+            if (certified) {
+                content.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2 style="font-family: 'Orbitron', sans-serif; color: var(--tertiary); margin-bottom: 30px;">
+                            🎓 Mission Accomplie !
+                        </h2>
+
+                        <div class="final-score">${gameState.finalQuizScore}/10</div>
+
+                        <div class="certificate">
+                            <div class="certificate-title">CERTIFICATION</div>
+                            <p style="font-size: 1.5em; margin: 20px 0;">Agent EcoWatch</p>
+                            <p style="color: var(--text-muted);">Spécialiste de l'Impact Environnemental de l'IA</p>
+                            <div style="margin-top: 30px;">
+                                <span style="font-family: 'Share Tech Mono', monospace; color: var(--primary);">
+                                    Niveau ${gameState.level} • ${gameState.xp} XP • ${gameState.completedChapters.length}/8 chapitres
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="info-box success">
+                            <h4>✅ Ce que vous savez maintenant :</h4>
+                            <ul style="margin-left: 20px; margin-top: 10px; text-align: left; line-height: 2;">
+                                <li>Les data centers consomment 1,5% de l'électricité mondiale</li>
+                                <li>L'inférence dépasse l'entraînement en consommation</li>
+                                <li>Le ratio ×210 entre modèles légers et lourds</li>
+                                <li>78% de l'impact vient de la fabrication</li>
+                                <li>Les 6 règles d'or de l'IA responsable</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <button class="btn btn-primary" onclick="location.reload()">Recommencer l'aventure</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div style="text-align: center;">
+                        <h2 style="font-family: 'Orbitron', sans-serif; color: var(--warning); margin-bottom: 30px;">
+                            📚 Continuez vos efforts !
+                        </h2>
+
+                        <div class="final-score" style="color: var(--warning);">${gameState.finalQuizScore}/10</div>
+
+                        <p style="font-size: 1.2em; margin: 30px 0;">
+                            Vous n'avez pas encore atteint le niveau requis (7/10), mais vous avez fait de bons progrès !
+                        </p>
+
+                        <div style="margin: 30px 0;">
+                            <span style="font-family: 'Share Tech Mono', monospace; color: var(--primary);">
+                                Niveau ${gameState.level} • ${gameState.xp} XP • ${gameState.completedChapters.length}/8 chapitres
+                            </span>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <button class="btn btn-secondary" onclick="showScreen('screen-chapter1')">Revoir les chapitres</button>
+                            <button class="btn btn-primary" onclick="showScreen('screen-final-quiz'); retryQuiz();">Retenter l'examen</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showScreen('screen-end');
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            generateFinalQuiz();
+        });
+    </script>
+</body>
+</html>
