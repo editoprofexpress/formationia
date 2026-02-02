@@ -1212,7 +1212,8 @@
             suspicion: 0,
             timeLeft: gameConfig.timeLimit,
             puzzlesSolved: {},
-            dialogueState: {}
+            dialogueState: {},
+            gameEnded: false       // Flag pour éviter les appels multiples
         };
 
         // Définition des salles
@@ -2195,12 +2196,19 @@
 
         // ==================== FIN DU JEU ====================
         function checkEscape() {
+            // Ne pas vérifier si le jeu est déjà terminé
+            if (gameState.gameEnded) return;
+
             if (gameState.currentRoom === 'corridor' && Object.values(gameState.evidence).every(v => v)) {
                 gameOver(true);
             }
         }
 
         function gameOver(success) {
+            // Éviter les appels multiples
+            if (gameState.gameEnded) return;
+            gameState.gameEnded = true;
+
             stopTimer(); // Arrêter le timer
 
             const evidenceCount = Object.values(gameState.evidence).filter(v => v).length;
