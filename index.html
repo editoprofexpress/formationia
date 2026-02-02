@@ -1226,18 +1226,18 @@
                     {
                         id: 'poster',
                         type: 'examine',
-                        x: 15, y: 30,
-                        html: `<div style="width:80px;height:100px;background:linear-gradient(180deg,#1a3050,#0a2040);border:3px solid #3a5070;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:10px;">
-                            <div style="font-size:2em;">⚡</div>
-                            <div style="font-size:0.6em;text-align:center;margin-top:5px;color:#88aacc;">ÉCONOMIE D'ÉNERGIE</div>
+                        x: 8, y: 25,
+                        html: `<div style="width:60px;height:80px;background:rgba(26,48,80,0.8);border:2px solid #3a5070;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:8px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(0,150,255,0.3);" onmouseover="this.style.boxShadow='0 0 25px rgba(0,200,255,0.6)'" onmouseout="this.style.boxShadow='0 0 15px rgba(0,150,255,0.3)'">
+                            <div style="font-size:1.8em;">⚡</div>
+                            <div style="font-size:0.55em;text-align:center;margin-top:3px;color:#88aacc;">ÉNERGIE</div>
                         </div>`,
                         action: 'showPoster'
                     },
                     {
                         id: 'guard-schedule',
                         type: 'document',
-                        x: 70, y: 60,
-                        html: `<div class="document-object"></div>`,
+                        x: 85, y: 70,
+                        html: `<div class="document-object" style="transform:scale(0.9);"></div>`,
                         action: 'showSchedule'
                     }
                 ]
@@ -1249,39 +1249,31 @@
                 connections: { left: 'corridor', right: 'cooling', down: 'office' },
                 objects: [
                     {
-                        id: 'server-rack-1',
+                        id: 'server-rack-interactive',
                         type: 'examine',
-                        x: 20, y: 25,
-                        html: createServerRack(),
+                        x: 35, y: 35,
+                        html: `<div style="width:100px;height:60px;background:rgba(0,50,100,0.3);border:2px solid rgba(0,200,255,0.5);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;box-shadow:0 0 20px rgba(0,200,255,0.3);" onmouseover="this.style.boxShadow='0 0 35px rgba(0,255,200,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,200,255,0.3)'">
+                            <span style="font-size:1.5em;">🖥️</span>
+                            <span style="font-size:0.7em;margin-left:5px;color:#00d4ff;">Analyser</span>
+                        </div>`,
                         action: 'examineServer'
-                    },
-                    {
-                        id: 'server-rack-2',
-                        type: 'examine',
-                        x: 40, y: 25,
-                        html: createServerRack(),
-                        action: null
-                    },
-                    {
-                        id: 'server-rack-3',
-                        type: 'examine',
-                        x: 60, y: 25,
-                        html: createServerRack(),
-                        action: null
                     },
                     {
                         id: 'terminal-energy',
                         type: 'puzzle',
-                        x: 75, y: 55,
-                        html: `<div class="terminal-object"><div class="terminal-screen"></div><div class="terminal-base"></div></div>`,
+                        x: 70, y: 65,
+                        html: `<div style="width:80px;height:60px;background:rgba(0,30,60,0.8);border:2px solid #00ff88;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.4);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 35px rgba(0,255,136,0.7)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,255,136,0.4)'">
+                            <div style="font-size:1.3em;">💻</div>
+                            <div style="font-size:0.6em;color:#00ff88;">Terminal</div>
+                        </div>`,
                         action: 'puzzleEnergy',
                         evidence: 'energy'
                     },
                     {
                         id: 'energy-doc',
                         type: 'document',
-                        x: 15, y: 70,
-                        html: `<div class="document-object confidential"></div>`,
+                        x: 10, y: 75,
+                        html: `<div class="document-object confidential" style="transform:scale(0.85);"></div>`,
                         action: 'showEnergyReport'
                     }
                 ]
@@ -1293,32 +1285,30 @@
                 connections: { left: 'servers' },
                 objects: [
                     {
-                        id: 'pipe-1',
-                        type: 'examine',
-                        x: 25, y: 20,
-                        html: `<div class="cooling-pipe"></div>`,
-                        action: null
-                    },
-                    {
-                        id: 'pipe-2',
-                        type: 'examine',
-                        x: 45, y: 20,
-                        html: `<div class="cooling-pipe"></div>`,
-                        action: null
-                    },
-                    {
                         id: 'water-meter',
                         type: 'puzzle',
-                        x: 70, y: 40,
-                        html: createEnergyMeter('H2O'),
+                        x: 65, y: 45,
+                        html: `<div style="width:90px;height:70px;background:rgba(0,100,150,0.7);border:2px solid #00d4ff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 25px rgba(0,212,255,0.5);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,212,255,0.8)'" onmouseout="this.style.boxShadow='0 0 25px rgba(0,212,255,0.5)'">
+                            <div style="font-size:1.5em;">💧</div>
+                            <div style="font-size:0.65em;color:#00d4ff;margin-top:3px;">Compteur H2O</div>
+                        </div>`,
                         action: 'puzzleWater',
                         evidence: 'water'
                     },
                     {
+                        id: 'valve-inspect',
+                        type: 'examine',
+                        x: 25, y: 35,
+                        html: `<div style="width:70px;height:50px;background:rgba(50,100,150,0.4);border:2px solid rgba(0,200,255,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(0,150,255,0.3);" onmouseover="this.style.boxShadow='0 0 25px rgba(0,200,255,0.6)'" onmouseout="this.style.boxShadow='0 0 15px rgba(0,150,255,0.3)'">
+                            <span style="font-size:1.3em;">🔧</span>
+                        </div>`,
+                        action: 'inspectValve'
+                    },
+                    {
                         id: 'maintenance-log',
                         type: 'document',
-                        x: 20, y: 70,
-                        html: `<div class="document-object"></div>`,
+                        x: 12, y: 72,
+                        html: `<div class="document-object" style="transform:scale(0.85);"></div>`,
                         action: 'showWaterLog'
                     }
                 ]
@@ -1332,15 +1322,10 @@
                     {
                         id: 'main-console',
                         type: 'puzzle',
-                        x: 40, y: 30,
-                        html: `<div style="width:200px;height:120px;background:linear-gradient(180deg,#1a2030,#0a1020);border:3px solid #3a4a5a;border-radius:10px;padding:10px;">
-                            <div style="display:flex;gap:10px;margin-bottom:10px;">
-                                <div style="width:80px;height:50px;background:#0a0a15;border:2px solid #2a3a4a;border-radius:5px;"></div>
-                                <div style="width:80px;height:50px;background:#0a0a15;border:2px solid #2a3a4a;border-radius:5px;"></div>
-                            </div>
-                            <div style="display:flex;gap:5px;justify-content:center;">
-                                ${Array(8).fill('<div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>').join('')}
-                            </div>
+                        x: 30, y: 50,
+                        html: `<div style="width:120px;height:70px;background:rgba(20,40,60,0.8);border:2px solid #00ff88;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 25px rgba(0,255,136,0.4);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,255,136,0.7)'" onmouseout="this.style.boxShadow='0 0 25px rgba(0,255,136,0.4)'">
+                            <div style="font-size:1.5em;">🎛️</div>
+                            <div style="font-size:0.6em;color:#00ff88;">Console IA</div>
                         </div>`,
                         action: 'puzzleModels',
                         evidence: 'models'
@@ -1348,8 +1333,8 @@
                     {
                         id: 'worker-npc',
                         type: 'npc',
-                        x: 75, y: 30,
-                        html: `<div style="width:120px;height:180px;"><img src="images/npc-technician.png" alt="Technicien" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 15px rgba(0,212,255,0.5));"></div>`,
+                        x: 70, y: 25,
+                        html: `<div style="width:100px;height:150px;cursor:pointer;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><img src="images/npc-technician.png" alt="Technicien" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 20px rgba(0,212,255,0.6));"></div>`,
                         action: 'talkToWorker'
                     }
                 ]
@@ -1363,19 +1348,20 @@
                     {
                         id: 'desk',
                         type: 'examine',
-                        x: 50, y: 35,
-                        html: `<div style="width:180px;height:80px;background:linear-gradient(180deg,#3a3020,#2a2010);border-radius:5px;position:relative;">
-                            <div style="position:absolute;top:-30px;left:10px;width:60px;height:50px;background:#1a1a2e;border:2px solid #3a3a5e;border-radius:5px;"></div>
-                            <div style="position:absolute;top:-20px;right:20px;" class="document-object confidential" style="width:40px;height:50px;"></div>
+                        x: 35, y: 55,
+                        html: `<div style="width:100px;height:50px;background:rgba(60,50,40,0.6);border:2px solid rgba(150,120,80,0.5);border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(200,150,50,0.3);" onmouseover="this.style.boxShadow='0 0 25px rgba(200,150,50,0.6)'" onmouseout="this.style.boxShadow='0 0 15px rgba(200,150,50,0.3)'">
+                            <span style="font-size:1.3em;">🔍</span>
+                            <span style="font-size:0.65em;margin-left:5px;color:#c8a050;">Fouiller</span>
                         </div>`,
                         action: 'searchDesk'
                     },
                     {
                         id: 'safe',
                         type: 'puzzle',
-                        x: 80, y: 30,
-                        html: `<div style="width:80px;height:100px;background:linear-gradient(180deg,#3a3a3a,#2a2a2a);border:4px solid #4a4a4a;border-radius:5px;display:flex;align-items:center;justify-content:center;">
-                            <div style="width:40px;height:40px;border:3px solid #5a5a5a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5em;">🔒</div>
+                        x: 78, y: 40,
+                        html: `<div style="width:70px;height:85px;background:rgba(50,50,50,0.8);border:3px solid #666;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 20px rgba(255,200,0,0.3);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 35px rgba(255,200,0,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(255,200,0,0.3)'">
+                            <div style="font-size:1.8em;">🔒</div>
+                            <div style="font-size:0.55em;color:#aaa;margin-top:3px;">Coffre</div>
                         </div>`,
                         action: 'puzzleSafe',
                         evidence: 'manufacturing'
@@ -1383,8 +1369,8 @@
                     {
                         id: 'co2-report',
                         type: 'document',
-                        x: 20, y: 60,
-                        html: `<div class="document-object confidential"></div>`,
+                        x: 10, y: 70,
+                        html: `<div class="document-object confidential" style="transform:scale(0.85);"></div>`,
                         action: 'puzzleCO2',
                         evidence: 'co2'
                     }
@@ -1461,17 +1447,13 @@
 
         function initializeMiniMap() {
             const map = document.getElementById('mini-map');
-            const layout = [
-                ['', 'servers', 'cooling'],
-                ['control', 'corridor', 'office']
-            ];
-
-            // Réorganiser pour correspondre à la vraie disposition
-            const roomOrder = ['corridor', 'servers', 'cooling', 'control', 'office', ''];
+            // Disposition correcte correspondant aux connexions réelles :
+            // Row 0: [corridor] [servers] [cooling]
+            // Row 1: [control]  [office]  [empty]
             const icons = { corridor: '🚪', servers: '🖥️', cooling: '❄️', control: '🎛️', office: '📊' };
 
             map.innerHTML = '';
-            ['servers', 'cooling', '', 'corridor', 'office', 'control'].forEach(room => {
+            ['corridor', 'servers', 'cooling', 'control', 'office', ''].forEach(room => {
                 if (room) {
                     map.innerHTML += `<div class="mini-map-room" data-room="${room}">${icons[room] || ''}</div>`;
                 } else {
@@ -1889,6 +1871,22 @@
                     <hr style="margin:15px 0;border-color:#ccc;">
                     <p><strong>Note technique :</strong></p>
                     <p>Chaque serveur IA nécessite <span class="document-highlight">3x plus de refroidissement</span> qu'un serveur classique.</p>
+                </div>
+            `);
+        }
+
+        // Inspection des vannes
+        function inspectValve() {
+            showModal(`
+                <div class="modal-title">🔧 Système de Vannes</div>
+                <div class="discovery-panel">
+                    <div class="discovery-title">💡 Information découverte</div>
+                    <p>Ces vannes régulent le flux d'eau de refroidissement vers les serveurs IA.</p>
+                </div>
+                <div style="margin-top:20px;padding:15px;background:rgba(0,100,150,0.2);border-radius:8px;">
+                    <p><strong>🌡️ Température actuelle :</strong> 18°C (optimale pour les GPU)</p>
+                    <p style="margin-top:10px;"><strong>💧 Débit d'eau :</strong> 450 L/min</p>
+                    <p style="margin-top:10px;color:#ff8866;"><em>L'eau utilisée est ensuite évacuée vers la rivière voisine, réchauffant l'écosystème local de 2-3°C...</em></p>
                 </div>
             `);
         }
