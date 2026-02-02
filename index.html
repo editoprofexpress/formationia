@@ -1261,11 +1261,8 @@
                     {
                         id: 'terminal-energy',
                         type: 'puzzle',
-                        x: 70, y: 65,
-                        html: `<div style="width:80px;height:60px;background:rgba(0,30,60,0.8);border:2px solid #00ff88;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.4);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 35px rgba(0,255,136,0.7)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,255,136,0.4)'">
-                            <div style="font-size:1.3em;">💻</div>
-                            <div style="font-size:0.6em;color:#00ff88;">Terminal</div>
-                        </div>`,
+                        x: 75, y: 55,
+                        html: `<div class="terminal-object"><div class="terminal-screen"></div><div class="terminal-base"></div></div>`,
                         action: 'puzzleEnergy',
                         evidence: 'energy'
                     },
@@ -1287,11 +1284,8 @@
                     {
                         id: 'water-meter',
                         type: 'puzzle',
-                        x: 65, y: 45,
-                        html: `<div style="width:90px;height:70px;background:rgba(0,100,150,0.7);border:2px solid #00d4ff;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 25px rgba(0,212,255,0.5);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,212,255,0.8)'" onmouseout="this.style.boxShadow='0 0 25px rgba(0,212,255,0.5)'">
-                            <div style="font-size:1.5em;">💧</div>
-                            <div style="font-size:0.65em;color:#00d4ff;margin-top:3px;">Compteur H2O</div>
-                        </div>`,
+                        x: 65, y: 40,
+                        html: createEnergyMeter('H2O'),
                         action: 'puzzleWater',
                         evidence: 'water'
                     },
@@ -1322,10 +1316,22 @@
                     {
                         id: 'main-console',
                         type: 'puzzle',
-                        x: 30, y: 50,
-                        html: `<div style="width:120px;height:70px;background:rgba(20,40,60,0.8);border:2px solid #00ff88;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;box-shadow:0 0 25px rgba(0,255,136,0.4);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(0,255,136,0.7)'" onmouseout="this.style.boxShadow='0 0 25px rgba(0,255,136,0.4)'">
-                            <div style="font-size:1.5em;">🎛️</div>
-                            <div style="font-size:0.6em;color:#00ff88;">Console IA</div>
+                        x: 55, y: 35,
+                        html: `<div style="width:200px;height:120px;background:linear-gradient(180deg,#1a2030,#0a1020);border:3px solid #3a4a5a;border-radius:10px;padding:10px;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.3);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 35px rgba(0,255,136,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,255,136,0.3)'">
+                            <div style="display:flex;gap:10px;margin-bottom:10px;">
+                                <div style="width:80px;height:50px;background:#0a0a15;border:2px solid #2a3a4a;border-radius:5px;"></div>
+                                <div style="width:80px;height:50px;background:#0a0a15;border:2px solid #2a3a4a;border-radius:5px;"></div>
+                            </div>
+                            <div style="display:flex;gap:5px;justify-content:center;">
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                                <div style="width:15px;height:15px;background:#2a3a4a;border-radius:3px;"></div>
+                            </div>
                         </div>`,
                         action: 'puzzleModels',
                         evidence: 'models'
