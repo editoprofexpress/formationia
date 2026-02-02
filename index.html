@@ -1557,10 +1557,12 @@
         }
 
         // ==================== TIMER ====================
+        let timerInterval = null;
+
         function startTimer() {
             const timerEl = document.getElementById('timer');
 
-            const interval = setInterval(() => {
+            timerInterval = setInterval(() => {
                 gameState.timeLeft--;
 
                 const minutes = Math.floor(gameState.timeLeft / 60);
@@ -1572,10 +1574,17 @@
                 }
 
                 if (gameState.timeLeft <= 0) {
-                    clearInterval(interval);
+                    clearInterval(timerInterval);
                     gameOver(false);
                 }
             }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
         }
 
         // ==================== SUSPICION ====================
@@ -2192,6 +2201,8 @@
         }
 
         function gameOver(success) {
+            stopTimer(); // Arrêter le timer
+
             const evidenceCount = Object.values(gameState.evidence).filter(v => v).length;
             const timeUsed = gameConfig.timeLimit - gameState.timeLeft;
             const minutes = Math.floor(timeUsed / 60);
@@ -2243,9 +2254,14 @@
                             </ol>
                         </div>
 
-                        <button class="start-btn" onclick="location.reload()">
-                            Rejouer
-                        </button>
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            <button class="start-btn" onclick="startCertificationQuiz()" style="background:linear-gradient(135deg,rgba(0,255,136,0.2),rgba(0,212,255,0.2));">
+                                📜 Passer le quiz de certification
+                            </button>
+                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
+                                🔄 Rejouer
+                            </button>
+                        </div>
                     </div>
                 `;
             } else {
@@ -2290,6 +2306,420 @@
 
         // Vérification périodique pour l'évasion
         setInterval(checkEscape, 1000);
+
+        // ==================== QUIZ DE CERTIFICATION ====================
+        const quizQuestions = [
+            {
+                question: "Quelle part de l'électricité mondiale est consommée par les data centers ?",
+                options: ["0,5%", "1,5%", "5%", "10%"],
+                correct: 1
+            },
+            {
+                question: "Quel est le ratio de consommation énergétique entre le modèle IA le plus léger et le plus lourd ?",
+                options: ["×10", "×50", "×210", "×1000"],
+                correct: 2
+            },
+            {
+                question: "Quelle part de l'empreinte carbone d'un équipement numérique est liée à sa fabrication ?",
+                options: ["22%", "50%", "78%", "95%"],
+                correct: 2
+            },
+            {
+                question: "De combien la consommation d'eau a-t-elle augmenté dans les comtés de Virginie abritant des data centers ?",
+                options: ["+20%", "+40%", "+60%", "+80%"],
+                correct: 2
+            },
+            {
+                question: "Quelle quantité de CO₂ le secteur numérique pourrait-il émettre d'ici 2035 ?",
+                options: ["100 Mt", "250 Mt", "500 Mt", "1000 Mt"],
+                correct: 2
+            },
+            {
+                question: "Quelle est la première action pour réduire l'impact environnemental de l'IA ?",
+                options: [
+                    "Utiliser toujours le modèle le plus puissant",
+                    "Choisir le modèle adapté à ses besoins",
+                    "Multiplier les régénérations pour avoir le meilleur résultat",
+                    "Changer d'appareil chaque année"
+                ],
+                correct: 1
+            },
+            {
+                question: "Combien de litres d'eau sont nécessaires pour produire 1 kWh dans un data center ?",
+                options: ["0,5L", "1,8L", "5L", "10L"],
+                correct: 1
+            },
+            {
+                question: "Quelle devrait être la consommation électrique des data centers d'ici 2030 ?",
+                options: ["415 TWh", "600 TWh", "800 TWh", "1000 TWh"],
+                correct: 2
+            }
+        ];
+
+        let quizState = {
+            currentQuestion: 0,
+            score: 0,
+            answers: []
+        };
+
+        function startCertificationQuiz() {
+            quizState = { currentQuestion: 0, score: 0, answers: [] };
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            const q = quizQuestions[quizState.currentQuestion];
+            const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
+
+            const content = `
+                <div class="final-report" style="max-width:700px;">
+                    <div class="final-title" style="font-size:1.5em;">📜 Quiz de Certification</div>
+                    <p style="color:var(--neon-cyan);margin-bottom:20px;">Impact Environnemental de l'IA</p>
+
+                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:25px;">
+                        <div style="background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan));height:8px;border-radius:8px;width:${progress}%;transition:width 0.5s;"></div>
+                    </div>
+
+                    <p style="color:#888;margin-bottom:10px;">Question ${quizState.currentQuestion + 1} / ${quizQuestions.length}</p>
+
+                    <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:25px;margin-bottom:25px;">
+                        <p style="font-size:1.15em;line-height:1.6;">${q.question}</p>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:12px;" id="quiz-options">
+                        ${q.options.map((opt, i) => `
+                            <button class="quiz-option" onclick="selectQuizAnswer(${i})" style="
+                                background:rgba(20,40,60,0.8);
+                                border:2px solid rgba(0,212,255,0.3);
+                                border-radius:10px;
+                                padding:15px 20px;
+                                color:white;
+                                font-size:1em;
+                                cursor:pointer;
+                                transition:all 0.3s;
+                                text-align:left;
+                            " onmouseover="this.style.borderColor='var(--neon-cyan)';this.style.background='rgba(0,100,150,0.4)'"
+                               onmouseout="this.style.borderColor='rgba(0,212,255,0.3)';this.style.background='rgba(20,40,60,0.8)'">
+                                <span style="color:var(--neon-cyan);margin-right:10px;font-weight:bold;">${String.fromCharCode(65 + i)}.</span>
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            showModal(content);
+            document.querySelector('.modal-close').style.display = 'none';
+        }
+
+        function selectQuizAnswer(index) {
+            const q = quizQuestions[quizState.currentQuestion];
+            const isCorrect = index === q.correct;
+
+            if (isCorrect) {
+                quizState.score++;
+            }
+            quizState.answers.push({ question: quizState.currentQuestion, selected: index, correct: isCorrect });
+
+            // Afficher feedback
+            const options = document.querySelectorAll('#quiz-options button');
+            options.forEach((btn, i) => {
+                btn.style.pointerEvents = 'none';
+                if (i === q.correct) {
+                    btn.style.borderColor = 'var(--neon-green)';
+                    btn.style.background = 'rgba(0,255,136,0.2)';
+                } else if (i === index && !isCorrect) {
+                    btn.style.borderColor = 'var(--neon-pink)';
+                    btn.style.background = 'rgba(255,51,102,0.2)';
+                }
+            });
+
+            // Passer à la question suivante
+            setTimeout(() => {
+                quizState.currentQuestion++;
+                if (quizState.currentQuestion < quizQuestions.length) {
+                    showQuizQuestion();
+                } else {
+                    showQuizResults();
+                }
+            }, 1200);
+        }
+
+        function showQuizResults() {
+            const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+            const passed = percentage >= 70;
+
+            const content = `
+                <div class="final-report" style="max-width:600px;">
+                    <div class="final-title" style="font-size:1.5em;">
+                        ${passed ? '🎓 Certification Réussie !' : '📚 Continuez à apprendre'}
+                    </div>
+
+                    <div class="final-stats" style="margin:30px 0;">
+                        <div class="final-stat">
+                            <div class="final-stat-value" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${quizState.score}/${quizQuestions.length}</div>
+                            <div class="final-stat-label">Bonnes réponses</div>
+                        </div>
+                        <div class="final-stat">
+                            <div class="final-stat-value" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${percentage}%</div>
+                            <div class="final-stat-label">Score</div>
+                        </div>
+                    </div>
+
+                    ${passed ? `
+                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px 0;">
+                            <p style="font-size:1.1em;margin-bottom:15px;">🎉 Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
+                            <p style="color:#aaa;">Vous pouvez maintenant télécharger votre attestation de réussite.</p>
+                        </div>
+
+                        <div style="margin-bottom:20px;">
+                            <label style="display:block;margin-bottom:8px;color:var(--neon-cyan);">Votre nom (pour l'attestation) :</label>
+                            <input type="text" id="certificate-name" placeholder="Prénom NOM" style="
+                                width:100%;
+                                padding:12px 15px;
+                                background:rgba(0,50,100,0.4);
+                                border:2px solid rgba(0,212,255,0.4);
+                                border-radius:8px;
+                                color:white;
+                                font-size:1em;
+                                box-sizing:border-box;
+                            ">
+                        </div>
+
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            <button class="start-btn" onclick="downloadCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
+                                📥 Télécharger l'attestation
+                            </button>
+                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
+                                🔄 Rejouer
+                            </button>
+                        </div>
+                    ` : `
+                        <div style="background:rgba(255,51,102,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:25px 0;">
+                            <p style="font-size:1.1em;margin-bottom:15px;">Vous devez obtenir au moins <strong>70%</strong> pour valider le module.</p>
+                            <p style="color:#aaa;">Rejouez pour réviser les concepts et retentez le quiz !</p>
+                        </div>
+
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            <button class="start-btn" onclick="startCertificationQuiz()" style="border-color:var(--neon-cyan);">
+                                🔄 Retenter le quiz
+                            </button>
+                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
+                                🎮 Rejouer la mission
+                            </button>
+                        </div>
+                    `}
+                </div>
+            `;
+
+            showModal(content);
+            document.querySelector('.modal-close').style.display = 'none';
+        }
+
+        // ==================== ATTESTATION ====================
+        function downloadCertificate() {
+            const name = document.getElementById('certificate-name').value.trim() || 'Participant';
+            const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+            const score = Math.round((quizState.score / quizQuestions.length) * 100);
+
+            const certificateHTML = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Attestation - Impact Environnemental de l'IA</title>
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body {
+                            font-family: 'Open Sans', sans-serif;
+                            background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 100%);
+                            min-height: 100vh;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 20px;
+                        }
+                        .certificate {
+                            background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
+                            border: 3px solid #00ff88;
+                            border-radius: 20px;
+                            padding: 50px 60px;
+                            max-width: 800px;
+                            width: 100%;
+                            position: relative;
+                            box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+                        }
+                        .certificate::before {
+                            content: '';
+                            position: absolute;
+                            top: 15px; left: 15px; right: 15px; bottom: 15px;
+                            border: 1px solid rgba(0,212,255,0.3);
+                            border-radius: 15px;
+                            pointer-events: none;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 40px;
+                        }
+                        .logo {
+                            font-size: 3em;
+                            margin-bottom: 10px;
+                        }
+                        .title {
+                            font-family: 'Playfair Display', serif;
+                            font-size: 2.5em;
+                            background: linear-gradient(90deg, #00ff88, #00d4ff);
+                            -webkit-background-clip: text;
+                            background-clip: text;
+                            color: transparent;
+                            margin-bottom: 5px;
+                        }
+                        .subtitle {
+                            color: #00d4ff;
+                            font-size: 1.1em;
+                            letter-spacing: 3px;
+                            text-transform: uppercase;
+                        }
+                        .content {
+                            text-align: center;
+                            color: #e0e0e0;
+                            line-height: 1.8;
+                        }
+                        .certifies {
+                            font-size: 1.1em;
+                            margin: 30px 0 15px;
+                        }
+                        .name {
+                            font-family: 'Playfair Display', serif;
+                            font-size: 2.2em;
+                            color: #ffffff;
+                            margin: 20px 0;
+                            padding: 15px 0;
+                            border-top: 1px solid rgba(0,212,255,0.3);
+                            border-bottom: 1px solid rgba(0,212,255,0.3);
+                        }
+                        .module {
+                            background: rgba(0,255,136,0.1);
+                            border: 1px solid rgba(0,255,136,0.3);
+                            border-radius: 10px;
+                            padding: 20px;
+                            margin: 30px 0;
+                        }
+                        .module-title {
+                            color: #00ff88;
+                            font-size: 1.3em;
+                            font-weight: 600;
+                            margin-bottom: 10px;
+                        }
+                        .score {
+                            display: inline-block;
+                            background: linear-gradient(135deg, #00ff88, #00d4ff);
+                            color: #0a1628;
+                            padding: 8px 25px;
+                            border-radius: 20px;
+                            font-weight: 600;
+                            margin-top: 10px;
+                        }
+                        .footer {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-top: 40px;
+                            padding-top: 30px;
+                            border-top: 1px solid rgba(0,212,255,0.2);
+                        }
+                        .footer-item {
+                            text-align: center;
+                        }
+                        .footer-label {
+                            color: #888;
+                            font-size: 0.85em;
+                            margin-bottom: 5px;
+                        }
+                        .footer-value {
+                            color: #00d4ff;
+                            font-weight: 600;
+                        }
+                        .skills {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            justify-content: center;
+                            margin-top: 15px;
+                        }
+                        .skill {
+                            background: rgba(0,212,255,0.1);
+                            border: 1px solid rgba(0,212,255,0.3);
+                            padding: 5px 15px;
+                            border-radius: 15px;
+                            font-size: 0.85em;
+                            color: #00d4ff;
+                        }
+                        @media print {
+                            body { background: white; }
+                            .certificate { box-shadow: none; border-width: 2px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate">
+                        <div class="header">
+                            <div class="logo">🌿🤖</div>
+                            <div class="title">Attestation de Réussite</div>
+                            <div class="subtitle">Formation IA Responsable</div>
+                        </div>
+
+                        <div class="content">
+                            <p class="certifies">Cette attestation certifie que</p>
+                            <div class="name">${name}</div>
+                            <p>a complété avec succès le micro-module</p>
+
+                            <div class="module">
+                                <div class="module-title">🌍 Impact Environnemental de l'Intelligence Artificielle</div>
+                                <p>via la simulation immersive "Green Infiltration"</p>
+                                <div class="score">Score : ${score}%</div>
+                            </div>
+
+                            <p>Compétences validées :</p>
+                            <div class="skills">
+                                <span class="skill">⚡ Consommation énergétique</span>
+                                <span class="skill">💧 Impact hydrique</span>
+                                <span class="skill">🤖 Choix des modèles IA</span>
+                                <span class="skill">🏭 Cycle de vie</span>
+                                <span class="skill">🌍 Empreinte carbone</span>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="footer-item">
+                                <div class="footer-label">Date d'obtention</div>
+                                <div class="footer-value">${date}</div>
+                            </div>
+                            <div class="footer-item">
+                                <div class="footer-label">Référence</div>
+                                <div class="footer-value">IA-ENV-${Date.now().toString(36).toUpperCase()}</div>
+                            </div>
+                            <div class="footer-item">
+                                <div class="footer-label">Validité</div>
+                                <div class="footer-value">Permanente</div>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            // Télécharger le fichier HTML
+            const blob = new Blob([certificateHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Attestation_IA_Environnement_${name.replace(/\s+/g, '_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
     </script>
 </body>
 </html>
