@@ -1386,6 +1386,158 @@
             background: rgba(0, 255, 136, 0.05);
         }
 
+        /* ==================== TERMINAL INTERACTIF ==================== */
+        .terminal-puzzle {
+            background: #0a0a0a;
+            border: 2px solid var(--neon-green);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Space Mono', monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .terminal-output {
+            color: var(--neon-green);
+            font-size: 0.9em;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin-bottom: 10px;
+        }
+
+        .terminal-output .error {
+            color: var(--neon-pink);
+        }
+
+        .terminal-output .info {
+            color: var(--neon-blue);
+        }
+
+        .terminal-output .success {
+            color: #00ff00;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .terminal-prompt {
+            color: var(--neon-blue);
+            white-space: nowrap;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--neon-green);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            outline: none;
+            caret-color: var(--neon-green);
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--neon-green);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* ==================== SMS NOTIFICATIONS ==================== */
+        .sms-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            max-width: 350px;
+            background: linear-gradient(135deg, rgba(10, 20, 40, 0.98), rgba(20, 30, 60, 0.95));
+            border: 1px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 15px;
+            z-index: 900;
+            animation: slideInSMS 0.5s ease-out, pulseSMS 2s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+
+        @keyframes slideInSMS {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulseSMS {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
+        }
+
+        .sms-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .sms-icon {
+            font-size: 1.5em;
+            animation: vibrate 0.3s ease-in-out;
+        }
+
+        @keyframes vibrate {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .sms-sender {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            color: var(--neon-blue);
+        }
+
+        .sms-time {
+            margin-left: auto;
+            font-size: 0.75em;
+            color: #8899aa;
+        }
+
+        .sms-body {
+            color: var(--text);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .sms-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #8899aa;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .sms-close:hover {
+            color: var(--neon-pink);
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
             .main-title { font-size: 1.8em; }
@@ -2284,6 +2436,98 @@
             </div>`;
         }
 
+        // ==================== SYSTÈME SMS SOURCE ANONYME ====================
+        let smsQueue = [];
+        let currentSMS = null;
+        let smsTimeout = null;
+
+        const anonymousSMS = [
+            {
+                delay: 60000, // 1 minute
+                condition: () => !gameState.evidence.energy,
+                message: "La salle des serveurs cache des données sur leur consommation électrique. Le terminal a un accès... Essayez de trouver un indice dans les fichiers."
+            },
+            {
+                delay: 120000, // 2 minutes
+                condition: () => !gameState.evidence.water,
+                message: "Le système de refroidissement utilise des quantités d'eau insoupçonnées. Calculez l'impact pour débloquer les données confidentielles."
+            },
+            {
+                delay: 180000, // 3 minutes
+                condition: () => !gameState.evidence.models,
+                message: "Tous les modèles IA ne se valent pas. La salle de contrôle contient un graphique révélateur. Analysez les chiffres."
+            },
+            {
+                delay: 240000, // 4 minutes
+                condition: () => !gameState.evidence.manufacturing,
+                message: "Le coffre du directeur cache la vérité sur la fabrication. ROT13 est la clé... Le technicien connaît le pourcentage."
+            },
+            {
+                delay: 300000, // 5 minutes
+                condition: () => Object.values(gameState.evidence).filter(v => v).length >= 3 && !gameState.evidence.co2,
+                message: "Bien joué ! Il vous manque encore les données CO2. La salle de contrôle a un moniteur d'émissions caché."
+            },
+            {
+                delay: 420000, // 7 minutes
+                condition: () => Object.values(gameState.evidence).every(v => v),
+                message: "Vous avez toutes les preuves ! Retournez au couloir principal pour vous échapper. Vite, la sécurité approche !"
+            },
+            {
+                delay: 540000, // 9 minutes
+                condition: () => gameState.suspicion > 50,
+                message: "⚠️ Attention ! La sécurité a été alertée. Soyez plus discret ou vous serez repéré !"
+            }
+        ];
+
+        function scheduleSMSNotifications() {
+            anonymousSMS.forEach(sms => {
+                setTimeout(() => {
+                    if (!gameState.gameEnded && sms.condition()) {
+                        showSMSNotification(sms.message);
+                    }
+                }, sms.delay);
+            });
+        }
+
+        function showSMSNotification(message) {
+            // Supprimer le SMS précédent s'il existe
+            const existingSMS = document.querySelector('.sms-notification');
+            if (existingSMS) {
+                existingSMS.remove();
+            }
+
+            const smsEl = document.createElement('div');
+            smsEl.className = 'sms-notification';
+            smsEl.innerHTML = `
+                <button class="sms-close" onclick="closeSMS(this)">&times;</button>
+                <div class="sms-header">
+                    <span class="sms-icon">📱</span>
+                    <span class="sms-sender">Source Anonyme</span>
+                    <span class="sms-time">maintenant</span>
+                </div>
+                <div class="sms-body">${message}</div>
+            `;
+
+            document.body.appendChild(smsEl);
+
+            // Jouer un son de notification (vibration visuelle)
+            smsEl.querySelector('.sms-icon').style.animation = 'vibrate 0.3s ease-in-out 3';
+
+            // Auto-fermeture après 15 secondes
+            setTimeout(() => {
+                if (smsEl.parentElement) {
+                    smsEl.style.animation = 'slideInSMS 0.3s ease-in reverse';
+                    setTimeout(() => smsEl.remove(), 300);
+                }
+            }, 15000);
+        }
+
+        function closeSMS(btn) {
+            const sms = btn.closest('.sms-notification');
+            sms.style.animation = 'slideInSMS 0.3s ease-in reverse';
+            setTimeout(() => sms.remove(), 300);
+        }
+
         // ==================== INITIALISATION ====================
         function startGame() {
             document.getElementById('title-screen').classList.add('hidden');
@@ -2294,6 +2538,7 @@
             initializeMiniMap();
             loadRoom('corridor');
             startTimer();
+            scheduleSMSNotifications();
 
             // Dialogue d'introduction
             setTimeout(() => {
@@ -2596,70 +2841,201 @@
             });
         }
 
-        // PUZZLE 1: Consommation Électrique
+        // PUZZLE 1: Terminal Interactif - Consommation Électrique
+        let terminalState = {
+            loggedIn: false,
+            currentDir: '/home/guest',
+            history: []
+        };
+
+        const terminalFiles = {
+            '/home/guest': ['readme.txt', 'hint.txt'],
+            '/var/log': ['access.log', 'energy_report.enc'],
+            '/etc': ['passwd', 'shadow']
+        };
+
+        const terminalFileContents = {
+            'readme.txt': 'Bienvenue sur le serveur NovaTech.\nUtilisez "help" pour voir les commandes disponibles.\nLes fichiers sensibles nécessitent une authentification admin.',
+            'hint.txt': 'Note du technicien: Le mot de passe admin est basé sur\nnotre consommation annuelle en TWh... Un indice:\nLes data centers = 1.5% de l\'électricité mondiale.\nCalculez: 1.5% de 27 700 TWh (conso mondiale).',
+            'access.log': '[2024-09-15] admin login successful\n[2024-09-15] energy_report.enc accessed\n[2024-09-16] guest login attempt - denied\n[2024-09-17] maintenance scheduled',
+            'energy_report.enc': '[FICHIER CHIFFRÉ - Accès admin requis]\nUtilisez: unlock <mot_de_passe>',
+            'passwd': 'root:x:0:0:root:/root:/bin/bash\nadmin:x:1000:1000:Admin:/home/admin:/bin/bash\nguest:x:1001:1001:Guest:/home/guest:/bin/bash',
+            'shadow': '[ACCÈS REFUSÉ] Permissions insuffisantes'
+        };
+
         function puzzleEnergy() {
             if (gameState.evidence.energy) {
                 showAlreadyCollected('energy');
                 return;
             }
 
+            terminalState = { loggedIn: false, currentDir: '/home/guest', history: [] };
+
             showModal(`
                 <div class="modal-title">💻 Terminal de Monitoring Énergétique</div>
-                <p style="margin-bottom:20px;">Le terminal affiche des données de consommation. Pour accéder au rapport complet, vous devez répondre à une question de vérification.</p>
+                <p style="margin-bottom:15px;color:#8899aa;font-size:0.9em;">Accédez aux données confidentielles. Tapez <span style="color:var(--neon-green);">help</span> pour les commandes.</p>
 
-                <div class="discovery-panel">
-                    <div class="discovery-title">❓ Question de sécurité</div>
-                    <p style="margin:15px 0;font-size:1.1em;">Quelle part de la consommation électrique mondiale représentent les centres de données en 2024 ?</p>
+                <div class="terminal-puzzle" id="terminal-container">
+                    <div class="terminal-output" id="terminal-output">NovaTech Energy Monitor v3.2.1
+Copyright (c) 2024 NovaTech Industries
+═══════════════════════════════════════
+
+Connexion en tant que: <span class="info">guest</span>
+Tapez <span class="info">help</span> pour la liste des commandes.
+
+</div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt" id="terminal-prompt">guest@novatech:~$</span>
+                        <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false" onkeypress="handleTerminalKey(event)">
+                    </div>
                 </div>
-
-                <div class="connection-puzzle" style="flex-direction:column;gap:10px;" id="energy-quiz">
-                    <div class="connection-item" onclick="checkEnergyAnswer(this, false)">0,3% - Une part négligeable</div>
-                    <div class="connection-item" onclick="checkEnergyAnswer(this, true)">1,5% - Soit 415 TWh par an</div>
-                    <div class="connection-item" onclick="checkEnergyAnswer(this, false)">5% - Une part significative</div>
-                    <div class="connection-item" onclick="checkEnergyAnswer(this, false)">10% - Une part majeure</div>
-                </div>
-
-                <div id="energy-result"></div>
             `);
+
+            setTimeout(() => document.getElementById('terminal-input').focus(), 100);
         }
 
-        function checkEnergyAnswer(el, correct) {
-            document.querySelectorAll('#energy-quiz .connection-item').forEach(item => {
-                item.style.pointerEvents = 'none';
-                item.classList.remove('selected');
-            });
-
-            el.classList.add(correct ? 'correct' : 'incorrect');
-
-            if (correct) {
-                document.getElementById('energy-result').innerHTML = `
-                    <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-green);">
-                        <div class="discovery-title">✅ Accès accordé - Données extraites !</div>
-                        <div class="discovery-stat">1,5% = 415 TWh/an</div>
-                        <p><strong>Révélation :</strong> Les centres de données consomment autant que des pays entiers !</p>
-                        <ul style="margin:15px 0 0 20px;">
-                            <li>2024 : 415 TWh (1,5% mondial)</li>
-                            <li>2030 : 945 TWh prévu (doublement !)</li>
-                            <li>Équivalent : consommation du <strong>Japon</strong></li>
-                            <li>Irlande : <strong>21%</strong> de son électricité pour les data centers</li>
-                        </ul>
-                        <button class="start-btn" style="margin-top:20px;padding:10px 30px;font-size:0.9em;" onclick="collectEvidence('energy'); closeModal();">
-                            Sauvegarder cette preuve ⚡
-                        </button>
-                    </div>
-                `;
-            } else {
-                document.getElementById('energy-result').innerHTML = `
-                    <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-pink);">
-                        <div class="discovery-title" style="color:var(--neon-pink);">❌ Mauvaise réponse</div>
-                        <p>La bonne réponse est <strong>1,5%</strong>. Les data centers consomment 415 TWh par an, soit plus que de nombreux pays.</p>
-                        <button class="start-btn" style="margin-top:15px;padding:10px 30px;font-size:0.9em;border-color:var(--neon-pink);color:var(--neon-pink);" onclick="puzzleEnergy();">
-                            Réessayer
-                        </button>
-                    </div>
-                `;
-                addSuspicion(10);
+        function handleTerminalKey(event) {
+            if (event.key === 'Enter') {
+                const input = document.getElementById('terminal-input');
+                const cmd = input.value.trim();
+                input.value = '';
+                processTerminalCommand(cmd);
             }
+        }
+
+        function processTerminalCommand(cmd) {
+            const output = document.getElementById('terminal-output');
+            const parts = cmd.toLowerCase().split(' ');
+            const command = parts[0];
+            const args = parts.slice(1);
+
+            // Ajouter la commande à l'historique
+            output.innerHTML += `<span class="info">guest@novatech:~$</span> ${cmd}\n`;
+
+            let result = '';
+
+            switch(command) {
+                case '':
+                    break;
+                case 'help':
+                    result = `Commandes disponibles:
+  <span class="info">ls</span>        - Liste les fichiers du répertoire
+  <span class="info">cd</span> [dir]  - Change de répertoire
+  <span class="info">cat</span> [file]- Affiche le contenu d'un fichier
+  <span class="info">pwd</span>       - Affiche le répertoire courant
+  <span class="info">unlock</span> [pw]- Déverrouille les fichiers chiffrés
+  <span class="info">clear</span>     - Efface l'écran
+  <span class="info">exit</span>      - Ferme le terminal`;
+                    break;
+
+                case 'ls':
+                    const files = terminalFiles[terminalState.currentDir];
+                    if (files) {
+                        result = files.map(f => `<span class="info">${f}</span>`).join('  ');
+                    } else {
+                        result = '<span class="error">Répertoire vide</span>';
+                    }
+                    break;
+
+                case 'pwd':
+                    result = terminalState.currentDir;
+                    break;
+
+                case 'cd':
+                    if (!args[0] || args[0] === '~') {
+                        terminalState.currentDir = '/home/guest';
+                        result = '';
+                    } else if (args[0] === '..') {
+                        const parts = terminalState.currentDir.split('/').filter(p => p);
+                        parts.pop();
+                        terminalState.currentDir = '/' + parts.join('/') || '/';
+                    } else if (args[0].startsWith('/')) {
+                        if (terminalFiles[args[0]]) {
+                            terminalState.currentDir = args[0];
+                        } else {
+                            result = `<span class="error">cd: ${args[0]}: Répertoire introuvable</span>`;
+                        }
+                    } else {
+                        result = `<span class="error">cd: ${args[0]}: Chemin invalide</span>`;
+                    }
+                    break;
+
+                case 'cat':
+                    if (!args[0]) {
+                        result = '<span class="error">cat: argument manquant</span>';
+                    } else {
+                        const files = terminalFiles[terminalState.currentDir] || [];
+                        if (files.includes(args[0])) {
+                            result = terminalFileContents[args[0]] || '<span class="error">Fichier vide</span>';
+                        } else {
+                            result = `<span class="error">cat: ${args[0]}: Fichier introuvable</span>`;
+                        }
+                    }
+                    break;
+
+                case 'unlock':
+                    if (!args[0]) {
+                        result = '<span class="error">unlock: mot de passe requis</span>';
+                    } else if (args[0] === '415' || args[0] === '415twh') {
+                        result = `<span class="success">✓ MOT DE PASSE ACCEPTÉ</span>
+
+═══════════════════════════════════════
+   RAPPORT ÉNERGÉTIQUE CONFIDENTIEL
+═══════════════════════════════════════
+
+<span class="info">Consommation mondiale des data centers:</span>
+• 2024: <span class="success">415 TWh</span> (1,5% de l'électricité mondiale)
+• 2030: 945 TWh prévu (doublement!)
+
+<span class="info">Comparaisons:</span>
+• Équivalent à la consommation du <span class="success">JAPON</span>
+• Irlande: 21% de son électricité = data centers
+• NovaTech seul: 12,5 GWh/trimestre
+
+<span class="info">Impact environnemental:</span>
+• 1 requête IA = 10x une recherche Google
+• Entraînement GPT-3 = 552 tonnes CO₂
+
+═══════════════════════════════════════
+<span class="success">PREUVE EXTRAITE AVEC SUCCÈS</span>`;
+                        terminalState.loggedIn = true;
+                        setTimeout(() => {
+                            output.innerHTML += `\n<span class="success">► Cliquez sur le bouton pour sauvegarder cette preuve</span>\n`;
+                            output.innerHTML += `<button class="start-btn" style="margin-top:15px;padding:10px 30px;font-size:0.9em;" onclick="collectEvidence('energy'); closeModal();">
+                                Sauvegarder la preuve ⚡
+                            </button>`;
+                            scrollTerminal();
+                        }, 500);
+                    } else {
+                        result = '<span class="error">✗ MOT DE PASSE INCORRECT</span>';
+                        addSuspicion(5);
+                    }
+                    break;
+
+                case 'clear':
+                    output.innerHTML = '';
+                    return;
+
+                case 'exit':
+                    closeModal();
+                    return;
+
+                default:
+                    result = `<span class="error">${command}: commande non reconnue</span>`;
+            }
+
+            if (result) {
+                output.innerHTML += result + '\n\n';
+            } else {
+                output.innerHTML += '\n';
+            }
+
+            scrollTerminal();
+        }
+
+        function scrollTerminal() {
+            const container = document.getElementById('terminal-container');
+            if (container) container.scrollTop = container.scrollHeight;
         }
 
         // Rapport énergie
@@ -2682,7 +3058,7 @@
             `);
         }
 
-        // PUZZLE 2: Consommation d'Eau
+        // PUZZLE 2: Calculateur d'Impact Eau
         function puzzleWater() {
             if (gameState.evidence.water) {
                 showAlreadyCollected('water');
@@ -2690,49 +3066,97 @@
             }
 
             showModal(`
-                <div class="modal-title">💧 Compteur de Refroidissement</div>
-                <p style="margin-bottom:20px;">Le système de refroidissement utilise d'énormes quantités d'eau. Analysez les données pour extraire les preuves.</p>
+                <div class="modal-title">💧 Calculateur d'Impact Hydrique</div>
+                <p style="margin-bottom:15px;">Le système de refroidissement consomme d'énormes quantités d'eau. Simulez l'impact de votre utilisation de l'IA.</p>
 
-                <div class="gauge-puzzle">
-                    <p><strong>Question :</strong> De combien la consommation d'eau des data centers en Virginie a-t-elle augmenté entre 2019 et 2023 ?</p>
+                <div class="stat-box" style="margin:20px 0;">
+                    <h4 style="color:var(--neon-blue);margin-bottom:15px;">🧮 Simulateur de consommation</h4>
 
-                    <div style="margin:30px 0;">
-                        <div class="gauge-container">
-                            <div class="gauge-target" style="left:55%;width:15%;"></div>
-                            <input type="range" class="gauge-slider" id="water-slider" min="0" max="100" value="30" oninput="updateWaterGauge()">
+                    <div style="margin:15px 0;">
+                        <label style="display:block;margin-bottom:8px;">Nombre de requêtes ChatGPT par jour :</label>
+                        <input type="range" id="calc-requests" min="1" max="100" value="20" style="width:100%;" oninput="updateWaterCalc()">
+                        <div style="display:flex;justify-content:space-between;color:#8899aa;font-size:0.8em;">
+                            <span>1</span>
+                            <span id="requests-value" style="color:var(--neon-green);font-weight:bold;">20 requêtes</span>
+                            <span>100</span>
                         </div>
-                        <div class="gauge-value">+<span id="water-value">30</span>%</div>
                     </div>
 
-                    <p style="color:#88aacc;font-size:0.9em;">💡 Indice : La zone verte indique la plage correcte (entre 55% et 70%)</p>
+                    <div style="margin:15px 0;">
+                        <label style="display:block;margin-bottom:8px;">Nombre d'images générées par semaine :</label>
+                        <input type="range" id="calc-images" min="0" max="50" value="5" style="width:100%;" oninput="updateWaterCalc()">
+                        <div style="display:flex;justify-content:space-between;color:#8899aa;font-size:0.8em;">
+                            <span>0</span>
+                            <span id="images-value" style="color:var(--neon-green);font-weight:bold;">5 images</span>
+                            <span>50</span>
+                        </div>
+                    </div>
+
+                    <div id="calc-result" style="background:rgba(0,0,0,0.3);padding:20px;border-radius:8px;margin-top:20px;text-align:center;">
+                        <div style="font-size:0.9em;color:#8899aa;margin-bottom:10px;">IMPACT HYDRIQUE MENSUEL ESTIMÉ</div>
+                        <div id="water-total" style="font-family:'Space Mono',monospace;font-size:2.5em;color:var(--neon-blue);font-weight:bold;">12.5 L</div>
+                        <div id="water-equiv" style="font-size:0.9em;color:#8899aa;margin-top:10px;">≈ 25 bouteilles d'eau</div>
+                    </div>
                 </div>
 
-                <button class="start-btn" style="padding:12px 40px;font-size:1em;" onclick="checkWaterAnswer()">
-                    Valider ma réponse
-                </button>
+                <div class="info-card" style="margin:15px 0;">
+                    <h4>📊 Pour débloquer les données confidentielles :</h4>
+                    <p style="margin-top:10px;">Combien de litres d'eau sont consommés pour <strong>une conversation de 50 échanges</strong> avec ChatGPT ?</p>
+                    <div style="display:flex;gap:10px;margin-top:15px;">
+                        <input type="number" id="water-answer" placeholder="Entrez le nombre de mL" style="flex:1;padding:10px;background:rgba(0,0,0,0.3);border:1px solid var(--neon-green);border-radius:5px;color:var(--text);font-family:'Space Mono',monospace;">
+                        <button class="start-btn" style="padding:10px 20px;font-size:0.9em;" onclick="checkWaterCalc()">Valider</button>
+                    </div>
+                    <p style="font-size:0.85em;color:#8899aa;margin-top:10px;">💡 Indice : Environ 10mL par échange. Le résultat est en mL.</p>
+                </div>
 
                 <div id="water-result"></div>
             `);
+
+            updateWaterCalc();
         }
 
-        function updateWaterGauge() {
-            document.getElementById('water-value').textContent = document.getElementById('water-slider').value;
+        function updateWaterCalc() {
+            const requests = parseInt(document.getElementById('calc-requests').value);
+            const images = parseInt(document.getElementById('calc-images').value);
+
+            document.getElementById('requests-value').textContent = requests + ' requêtes';
+            document.getElementById('images-value').textContent = images + ' images';
+
+            // Calcul: ~10mL par requête, ~50mL par image
+            const dailyWater = requests * 10; // mL
+            const weeklyImages = images * 50; // mL
+            const monthlyTotal = (dailyWater * 30 + weeklyImages * 4) / 1000; // Litres
+
+            document.getElementById('water-total').textContent = monthlyTotal.toFixed(1) + ' L';
+            document.getElementById('water-equiv').textContent = '≈ ' + Math.round(monthlyTotal * 2) + ' bouteilles d\'eau';
+
+            // Changer la couleur selon l'impact
+            const totalEl = document.getElementById('water-total');
+            if (monthlyTotal > 20) {
+                totalEl.style.color = 'var(--neon-pink)';
+            } else if (monthlyTotal > 10) {
+                totalEl.style.color = '#ffaa00';
+            } else {
+                totalEl.style.color = 'var(--neon-blue)';
+            }
         }
 
-        function checkWaterAnswer() {
-            const value = parseInt(document.getElementById('water-slider').value);
-            const correct = value >= 55 && value <= 65;
+        function checkWaterCalc() {
+            const answer = parseInt(document.getElementById('water-answer').value);
+            // 50 échanges × 10mL = 500mL
+            const correct = answer >= 450 && answer <= 550;
 
             if (correct) {
                 document.getElementById('water-result').innerHTML = `
                     <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-green);">
-                        <div class="discovery-title">✅ Données extraites !</div>
-                        <div class="discovery-stat">+60% d'eau en 4 ans</div>
+                        <div class="discovery-title">✅ Accès aux données confidentielles !</div>
+                        <div class="discovery-stat">500 mL par conversation</div>
                         <p><strong>Révélation :</strong> L'eau est une ressource critique pour les data centers !</p>
                         <ul style="margin:15px 0 0 20px;">
+                            <li>Une conversation = <strong>500 mL d'eau</strong> (une bouteille!)</li>
                             <li><strong>1,8 litre</strong> d'eau pour refroidir 1 kWh</li>
                             <li><strong>42%</strong> de l'eau de Microsoft vient de zones en stress hydrique</li>
-                            <li>La Virginie ("Data Center Alley") : +60% de consommation d'eau</li>
+                            <li>Google: <strong>20 milliards de litres/an</strong> (8000 piscines olympiques)</li>
                         </ul>
                         <button class="start-btn" style="margin-top:20px;padding:10px 30px;font-size:0.9em;" onclick="collectEvidence('water'); closeModal();">
                             Sauvegarder cette preuve 💧
@@ -2742,8 +3166,8 @@
             } else {
                 document.getElementById('water-result').innerHTML = `
                     <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-pink);">
-                        <div class="discovery-title" style="color:var(--neon-pink);">❌ Valeur incorrecte</div>
-                        <p>Regardez bien la zone verte sur la jauge. L'augmentation était d'environ <strong>60%</strong>.</p>
+                        <div class="discovery-title" style="color:var(--neon-pink);">❌ Calcul incorrect</div>
+                        <p>Rappel: environ 10mL par échange. Pour 50 échanges, cela fait... <strong>500 mL</strong> (en mL)!</p>
                     </div>
                 `;
                 addSuspicion(5);
@@ -2783,7 +3207,7 @@
             `);
         }
 
-        // PUZZLE 3: Différence entre modèles
+        // PUZZLE 3: Analyse de Graphique - Différence entre modèles
         function puzzleModels() {
             if (gameState.evidence.models) {
                 showAlreadyCollected('models');
@@ -2791,43 +3215,82 @@
             }
 
             showModal(`
-                <div class="modal-title">🎛️ Console de Gestion des Modèles IA</div>
-                <p style="margin-bottom:20px;">La console affiche les différents modèles IA en fonctionnement. Classez-les par consommation énergétique pour débloquer les données.</p>
+                <div class="modal-title">📊 Analyse de Performance des Modèles IA</div>
+                <p style="margin-bottom:15px;">La console affiche les données de consommation énergétique par modèle. Analysez le graphique pour trouver les informations clés.</p>
 
-                <div class="sorting-puzzle">
-                    <p><strong>Question :</strong> Quel est le ratio de consommation entre le modèle IA le plus léger et le plus lourd ?</p>
+                <div class="stat-box" style="margin:20px 0;padding:25px;">
+                    <h4 style="color:var(--neon-blue);margin-bottom:20px;text-align:center;">Consommation énergétique par 1000 tokens (Wh)</h4>
 
-                    <div class="connection-puzzle" style="flex-direction:column;gap:10px;margin-top:20px;" id="models-quiz">
-                        <div class="connection-item" onclick="checkModelsAnswer(this, '10')">×10 - Dix fois plus</div>
-                        <div class="connection-item" onclick="checkModelsAnswer(this, '50')">×50 - Cinquante fois plus</div>
-                        <div class="connection-item" onclick="checkModelsAnswer(this, '210')">×210 - Deux cent dix fois plus</div>
-                        <div class="connection-item" onclick="checkModelsAnswer(this, '1000')">×1000 - Mille fois plus</div>
+                    <div style="display:flex;align-items:flex-end;justify-content:space-around;height:180px;padding:10px 0;border-bottom:2px solid var(--neon-green);">
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                            <div style="width:50px;background:linear-gradient(180deg, var(--neon-green), #006644);border-radius:5px 5px 0 0;height:10px;transition:height 0.5s;" id="bar1"></div>
+                            <span style="font-size:0.7em;color:#8899aa;">Llama 8B</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                            <div style="width:50px;background:linear-gradient(180deg, var(--neon-blue), #0066aa);border-radius:5px 5px 0 0;height:30px;transition:height 0.5s;" id="bar2"></div>
+                            <span style="font-size:0.7em;color:#8899aa;">Claude 3</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                            <div style="width:50px;background:linear-gradient(180deg, #ffaa00, #cc6600);border-radius:5px 5px 0 0;height:60px;transition:height 0.5s;" id="bar3"></div>
+                            <span style="font-size:0.7em;color:#8899aa;">GPT-3.5</span>
+                        </div>
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+                            <div style="width:50px;background:linear-gradient(180deg, var(--neon-pink), #990044);border-radius:5px 5px 0 0;height:160px;transition:height 0.5s;" id="bar4"></div>
+                            <span style="font-size:0.7em;color:#8899aa;">GPT-4</span>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;justify-content:space-around;margin-top:10px;">
+                        <span style="font-size:0.8em;color:var(--neon-green);">0.5 Wh</span>
+                        <span style="font-size:0.8em;color:var(--neon-blue);">3 Wh</span>
+                        <span style="font-size:0.8em;color:#ffaa00;">15 Wh</span>
+                        <span style="font-size:0.8em;color:var(--neon-pink);">105 Wh</span>
+                    </div>
+                </div>
+
+                <div class="info-card" style="margin:15px 0;">
+                    <h4>🔍 Question d'analyse :</h4>
+                    <p style="margin:10px 0;">En observant le graphique, calculez le <strong>ratio</strong> entre le modèle le plus énergivore (GPT-4) et le plus économe (Llama 8B).</p>
+                    <p style="font-size:0.85em;color:#8899aa;">Indice : 105 ÷ 0.5 = ?</p>
+
+                    <div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 10)">×10</button>
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 50)">×50</button>
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 210)">×210</button>
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 1000)">×1000</button>
                     </div>
                 </div>
 
                 <div id="models-result"></div>
             `);
+
+            // Animation des barres
+            setTimeout(() => {
+                document.getElementById('bar1').style.height = '10px';
+                document.getElementById('bar2').style.height = '30px';
+                document.getElementById('bar3').style.height = '60px';
+                document.getElementById('bar4').style.height = '160px';
+            }, 100);
         }
 
-        function checkModelsAnswer(el, value) {
-            document.querySelectorAll('#models-quiz .connection-item').forEach(item => {
-                item.style.pointerEvents = 'none';
-            });
+        function checkModelsGraph(el, value) {
+            const buttons = el.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
 
-            const correct = value === '210';
+            const correct = value === 210;
             el.classList.add(correct ? 'correct' : 'incorrect');
 
             if (correct) {
                 document.getElementById('models-result').innerHTML = `
                     <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-green);">
-                        <div class="discovery-title">✅ Console déverrouillée !</div>
-                        <div class="discovery-stat">×210</div>
+                        <div class="discovery-title">✅ Analyse correcte - Données extraites !</div>
+                        <div class="discovery-stat">×210 de différence</div>
                         <p><strong>Révélation :</strong> Le choix du modèle a un impact colossal !</p>
                         <ul style="margin:15px 0 0 20px;">
-                            <li>Modèle léger (Llama 8B) : <strong>~0,5 Wh</strong> / 1000 tokens</li>
-                            <li>Modèle lourd (GPT-4) : <strong>~105 Wh</strong> / 1000 tokens</li>
-                            <li>Ratio : <strong>×210</strong> de différence !</li>
-                            <li>Un token ≈ 0,75 mot en français</li>
+                            <li>Llama 8B : <strong>0,5 Wh</strong> / 1000 tokens</li>
+                            <li>GPT-4 : <strong>105 Wh</strong> / 1000 tokens</li>
+                            <li>Ratio : <strong>105 ÷ 0.5 = ×210</strong></li>
+                            <li>Choisir le bon modèle = diviser par 210 son impact !</li>
                         </ul>
                         <button class="start-btn" style="margin-top:20px;padding:10px 30px;font-size:0.9em;" onclick="collectEvidence('models'); closeModal();">
                             Sauvegarder cette preuve 🤖
@@ -2837,14 +3300,14 @@
             } else {
                 document.getElementById('models-result').innerHTML = `
                     <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-pink);">
-                        <div class="discovery-title" style="color:var(--neon-pink);">❌ Accès refusé</div>
-                        <p>Le ratio réel est de <strong>×210</strong> selon l'étude MIT Technology Review 2025.</p>
+                        <div class="discovery-title" style="color:var(--neon-pink);">❌ Calcul incorrect</div>
+                        <p>Regardez bien les valeurs : 105 Wh ÷ 0.5 Wh = <strong>×210</strong></p>
                         <button class="start-btn" style="margin-top:15px;padding:10px 30px;font-size:0.9em;border-color:var(--neon-pink);color:var(--neon-pink);" onclick="puzzleModels();">
                             Réessayer
                         </button>
                     </div>
                 `;
-                addSuspicion(10);
+                addSuspicion(5);
             }
         }
 
@@ -2886,7 +3349,7 @@
             `);
         }
 
-        // PUZZLE 4: Coffre-fort (Fabrication)
+        // PUZZLE 4: Décryptage - Coffre-fort (Fabrication)
         function puzzleSafe() {
             if (gameState.evidence.manufacturing) {
                 showAlreadyCollected('manufacturing');
@@ -2894,24 +3357,79 @@
             }
 
             showModal(`
-                <div class="modal-title">🔐 Coffre-fort du Directeur</div>
-                <p style="margin-bottom:20px;">Le coffre nécessite un code à 2 chiffres. D'après le technicien, c'est lié au pourcentage de l'empreinte carbone qui vient de la fabrication des équipements en France.</p>
+                <div class="modal-title">🔐 Coffre-fort Crypté du Directeur</div>
+                <p style="margin-bottom:15px;">Le coffre utilise un système de cryptage César. Déchiffrez le message pour obtenir le code.</p>
 
-                <div class="code-puzzle">
-                    <p><strong>Indice :</strong> Quelle part de l'empreinte carbone du numérique en France provient de la <em>fabrication</em> des équipements ?</p>
+                <div class="stat-box" style="margin:20px 0;">
+                    <h4 style="color:var(--neon-pink);margin-bottom:15px;">📝 Message intercepté :</h4>
+                    <div style="font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-blue);text-align:center;padding:15px;background:rgba(0,0,0,0.3);border-radius:5px;letter-spacing:3px;">
+                        <span id="encrypted-msg">GBYHAGU-CREPRAG</span>
+                    </div>
+                    <p style="font-size:0.85em;color:#8899aa;margin-top:15px;text-align:center;">
+                        Le message cache le pourcentage d'empreinte carbone lié à la fabrication
+                    </p>
+                </div>
 
-                    <div class="code-input">
-                        <input type="text" class="code-digit" maxlength="1" id="safe-1" oninput="moveToNext(this, 'safe-2')">
-                        <input type="text" class="code-digit" maxlength="1" id="safe-2" oninput="checkSafeCode()">
+                <div class="info-card" style="margin:15px 0;">
+                    <h4>🔧 Outil de décryptage César :</h4>
+                    <p style="margin:10px 0;">Le cryptage César décale chaque lettre de N positions dans l'alphabet.</p>
+
+                    <div style="margin:20px 0;">
+                        <label style="display:block;margin-bottom:8px;">Décalage (1-25) :</label>
+                        <input type="range" id="caesar-shift" min="1" max="25" value="13" style="width:100%;" oninput="updateCaesarDecrypt()">
+                        <div style="display:flex;justify-content:space-between;color:#8899aa;font-size:0.8em;">
+                            <span>1</span>
+                            <span id="shift-value" style="color:var(--neon-green);font-weight:bold;">13</span>
+                            <span>25</span>
+                        </div>
                     </div>
 
-                    <p style="color:#88aacc;font-size:0.9em;">💡 C'est un pourcentage entre 50 et 90</p>
+                    <div style="background:rgba(0,0,0,0.3);padding:15px;border-radius:5px;margin-top:15px;">
+                        <div style="font-size:0.9em;color:#8899aa;margin-bottom:8px;">RÉSULTAT DU DÉCRYPTAGE :</div>
+                        <div id="decrypted-msg" style="font-family:'Space Mono',monospace;font-size:1.2em;color:var(--neon-green);letter-spacing:2px;">SOIXANTE-PERCENT</div>
+                    </div>
+                </div>
+
+                <div style="margin:20px 0;">
+                    <p style="margin-bottom:10px;">Entrez le code numérique correspondant au message décrypté :</p>
+                    <div style="display:flex;gap:10px;justify-content:center;">
+                        <input type="text" class="code-digit" maxlength="1" id="safe-1" oninput="moveToNext(this, 'safe-2')" style="width:50px;height:60px;text-align:center;font-size:2em;font-family:'Space Mono',monospace;background:rgba(0,0,0,0.5);border:2px solid var(--neon-green);color:var(--neon-green);border-radius:5px;">
+                        <input type="text" class="code-digit" maxlength="1" id="safe-2" oninput="checkSafeCode()" style="width:50px;height:60px;text-align:center;font-size:2em;font-family:'Space Mono',monospace;background:rgba(0,0,0,0.5);border:2px solid var(--neon-green);color:var(--neon-green);border-radius:5px;">
+                    </div>
+                    <p style="font-size:0.85em;color:#8899aa;margin-top:10px;text-align:center;">💡 Indice : "SOIXANTE-DIX-HUIT" en chiffres = ?</p>
                 </div>
 
                 <div id="safe-result"></div>
             `);
 
             document.getElementById('safe-1').focus();
+            updateCaesarDecrypt();
+        }
+
+        function caesarDecrypt(text, shift) {
+            return text.split('').map(char => {
+                if (char >= 'A' && char <= 'Z') {
+                    return String.fromCharCode(((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65);
+                }
+                return char;
+            }).join('');
+        }
+
+        function updateCaesarDecrypt() {
+            const shift = parseInt(document.getElementById('caesar-shift').value);
+            document.getElementById('shift-value').textContent = shift;
+
+            const encrypted = 'GBYHAGAR-UHV-CREPRAG';
+            const decrypted = caesarDecrypt(encrypted, shift);
+            document.getElementById('decrypted-msg').textContent = decrypted;
+
+            // Changer la couleur si c'est le bon décalage
+            const msgEl = document.getElementById('decrypted-msg');
+            if (shift === 13) {
+                msgEl.style.color = 'var(--neon-green)';
+            } else {
+                msgEl.style.color = '#8899aa';
+            }
         }
 
         function moveToNext(current, nextId) {
@@ -2927,13 +3445,13 @@
                 if (code === '78') {
                     document.getElementById('safe-result').innerHTML = `
                         <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-green);">
-                            <div class="discovery-title">✅ Coffre ouvert !</div>
+                            <div class="discovery-title">✅ Coffre déverrouillé - Décryptage réussi !</div>
                             <div class="discovery-stat">78% = Fabrication</div>
                             <p><strong>Révélation :</strong> L'impact caché de la fabrication !</p>
                             <ul style="margin:15px 0 0 20px;">
                                 <li><strong>78%</strong> de l'empreinte carbone = fabrication</li>
                                 <li>Smartphone : <strong>50-70 kg</strong> de matières extraites</li>
-                                <li>Ordinateur portable : <strong>240 kg</strong></li>
+                                <li>Ordinateur portable : <strong>240 kg</strong> de ressources</li>
                                 <li>Seulement <strong>22%</strong> des e-déchets recyclés</li>
                                 <li>Durée de vie moyenne : <strong>5 ans</strong></li>
                             </ul>
@@ -2946,10 +3464,10 @@
                     document.getElementById('safe-result').innerHTML = `
                         <div class="discovery-panel" style="margin-top:20px;border-left-color:var(--neon-pink);">
                             <div class="discovery-title" style="color:var(--neon-pink);">❌ Code incorrect</div>
-                            <p>Le coffre émet un bip d'erreur. Indice : c'est plus élevé qu'on ne le pense généralement...</p>
+                            <p>Déchiffrez correctement le message : "SOIXANTE-HUIT-PERCENT" avec décalage 13 donne le vrai pourcentage.</p>
                         </div>
                     `;
-                    addSuspicion(15);
+                    addSuspicion(10);
                     document.getElementById('safe-1').value = '';
                     document.getElementById('safe-2').value = '';
                     document.getElementById('safe-1').focus();
