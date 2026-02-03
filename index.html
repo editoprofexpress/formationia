@@ -1080,6 +1080,312 @@
             background: rgba(0, 212, 255, 0.2);
         }
 
+        /* ==================== SECTION BRIEFING/COURS ==================== */
+        #briefing-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #briefing-screen.active {
+            display: flex;
+        }
+
+        .briefing-header {
+            background: rgba(10, 20, 40, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .briefing-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3em;
+            color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .briefing-title::before {
+            content: '📁';
+            font-size: 1.5em;
+        }
+
+        .briefing-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #8899aa;
+            font-size: 0.9em;
+        }
+
+        .briefing-progress-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .briefing-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            transition: width 0.3s ease;
+        }
+
+        .briefing-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .briefing-nav {
+            width: 280px;
+            background: rgba(10, 20, 40, 0.9);
+            border-right: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .briefing-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+            color: #8899aa;
+        }
+
+        .briefing-nav-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            color: var(--text);
+        }
+
+        .briefing-nav-item.active {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .briefing-nav-item.completed {
+            color: var(--neon-blue);
+        }
+
+        .briefing-nav-item.completed::after {
+            content: '✓';
+            margin-left: auto;
+            color: var(--neon-green);
+        }
+
+        .nav-icon {
+            font-size: 1.2em;
+            width: 30px;
+            text-align: center;
+        }
+
+        .nav-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            background: rgba(0, 255, 136, 0.2);
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        .briefing-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .briefing-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .briefing-content::-webkit-scrollbar-track {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .briefing-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+        }
+
+        .module-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em;
+            color: var(--neon-green);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .module-section {
+            margin-bottom: 30px;
+        }
+
+        .module-section h3 {
+            color: var(--neon-blue);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-section p {
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-box.warning {
+            background: rgba(255, 0, 128, 0.05);
+            border-color: rgba(255, 0, 128, 0.3);
+        }
+
+        .stat-highlight {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .stat-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 2em;
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        .stat-box.warning .stat-number {
+            color: var(--neon-pink);
+        }
+
+        .stat-label {
+            color: #8899aa;
+            font-size: 0.95em;
+        }
+
+        .briefing-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .briefing-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .briefing-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--neon-green);
+        }
+
+        .briefing-footer {
+            background: rgba(10, 20, 40, 0.95);
+            border-top: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .briefing-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 12px 30px;
+            border: 2px solid var(--neon-green);
+            background: transparent;
+            color: var(--neon-green);
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .briefing-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .briefing-btn.primary {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .briefing-btn.primary:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+
+        .briefing-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card h4 {
+            color: var(--neon-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .comparison-table th {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
             .main-title { font-size: 1.8em; }
@@ -1098,6 +1404,22 @@
                 margin: 10px;
                 padding: 20px;
             }
+            /* Briefing responsive */
+            .briefing-nav { display: none; }
+            .briefing-content {
+                padding: 20px;
+            }
+            .module-title { font-size: 1.3em; }
+            .stat-number { font-size: 1.5em; }
+            .briefing-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .briefing-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            #skip-btn { display: none; }
         }
     </style>
 </head>
@@ -1114,9 +1436,83 @@
             et <strong>vous échapper</strong> avant que la sécurité ne vous repère.
         </p>
 
-        <button class="start-btn" onclick="startGame()">
-            Commencer l'infiltration
+        <button class="start-btn" onclick="showBriefing()">
+            Accéder au Dossier d'Infiltration
         </button>
+    </div>
+
+    <!-- SECTION BRIEFING / COURS -->
+    <div id="briefing-screen">
+        <div class="briefing-header">
+            <div class="briefing-title">DOSSIER D'INFILTRATION - NIVEAU CONFIDENTIEL</div>
+            <div class="briefing-progress">
+                <span id="progress-text">Module 1/8</span>
+                <div class="briefing-progress-bar">
+                    <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="briefing-body">
+            <nav class="briefing-nav">
+                <div class="briefing-nav-item active" onclick="showModule(0)">
+                    <span class="nav-icon">🎬</span>
+                    <span class="nav-number">01</span>
+                    Introduction
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(1)">
+                    <span class="nav-icon">🏢</span>
+                    <span class="nav-number">02</span>
+                    Data Centers
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(2)">
+                    <span class="nav-icon">🌡️</span>
+                    <span class="nav-number">03</span>
+                    Empreinte Carbone
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(3)">
+                    <span class="nav-icon">💧</span>
+                    <span class="nav-number">04</span>
+                    Ressources en Eau
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(4)">
+                    <span class="nav-icon">⛏️</span>
+                    <span class="nav-number">05</span>
+                    Ressources Naturelles
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(5)">
+                    <span class="nav-icon">🗑️</span>
+                    <span class="nav-number">06</span>
+                    Déchets Électroniques
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(6)">
+                    <span class="nav-icon">🌱</span>
+                    <span class="nav-number">07</span>
+                    IA Responsable
+                </div>
+                <div class="briefing-nav-item" onclick="showModule(7)">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-number">08</span>
+                    Mission Briefing
+                </div>
+            </nav>
+
+            <div class="briefing-content" id="briefing-content">
+                <!-- Contenu des modules chargé dynamiquement -->
+            </div>
+        </div>
+
+        <div class="briefing-footer">
+            <button class="briefing-btn" id="prev-btn" onclick="prevModule()" disabled>
+                ← Module précédent
+            </button>
+            <button class="briefing-btn" id="skip-btn" onclick="skipToBriefing()">
+                Passer au briefing →
+            </button>
+            <button class="briefing-btn primary" id="next-btn" onclick="nextModule()">
+                Module suivant →
+            </button>
+        </div>
     </div>
 
     <!-- CONTAINER PRINCIPAL -->
@@ -1215,6 +1611,485 @@
             dialogueState: {},
             gameEnded: false       // Flag pour éviter les appels multiples
         };
+
+        // ==================== SYSTÈME DE BRIEFING ====================
+        let currentModule = 0;
+        const completedModules = new Set();
+
+        const briefingModules = [
+            // Module 1: Introduction
+            {
+                title: "🎬 Introduction : La Révolution de l'IA Générative",
+                content: `
+                    <div class="module-section">
+                        <h3>📊 Contexte de la mission</h3>
+                        <p>L'intelligence artificielle générative connaît un essor fulgurant depuis 2022. Des outils comme ChatGPT, DALL-E ou Midjourney sont utilisés par des millions de personnes. Mais derrière cette révolution technologique se cachent des réalités environnementales souvent méconnues.</p>
+
+                        <div class="stat-box">
+                            <div class="stat-highlight">
+                                <span class="stat-number">10x</span>
+                                <span class="stat-label">Une requête sur un chatbot IA consomme 10 fois plus d'énergie qu'une recherche Google classique</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🎯 Objectif de votre mission</h3>
+                        <p>En tant que journaliste d'investigation, votre mission est d'infiltrer le data center NovaTech pour collecter des preuves sur l'impact environnemental réel de l'IA. Ce dossier vous prépare à cette mission en vous donnant toutes les informations nécessaires.</p>
+
+                        <div class="info-card">
+                            <h4>💡 Ce que vous allez découvrir</h4>
+                            <ul class="briefing-list">
+                                <li>Les centres de données : cœur énergétique de l'IA</li>
+                                <li>L'empreinte carbone du numérique</li>
+                                <li>L'impact sur les ressources en eau</li>
+                                <li>L'extraction des ressources naturelles</li>
+                                <li>Les déchets électroniques</li>
+                                <li>Les pistes pour une IA plus responsable</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            // Module 2: Data Centers
+            {
+                title: "🏢 Les Centres de Données : Cœur Énergétique de l'IA",
+                content: `
+                    <div class="module-section">
+                        <h3>⚡ Fonctionnement d'un data center</h3>
+                        <p>Les centres de données sont des infrastructures qui hébergent des milliers de serveurs fonctionnant 24h/24. Ces serveurs nécessitent une alimentation électrique constante et d'importants systèmes de refroidissement.</p>
+
+                        <div class="stat-box">
+                            <div class="stat-highlight">
+                                <span class="stat-number">2%</span>
+                                <span class="stat-label">Part de la consommation électrique mondiale due aux data centers</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>📈 Croissance exponentielle</h3>
+                        <p>Avec l'essor de l'IA générative, la demande en capacité de calcul explose. Les entreprises technologiques investissent massivement dans de nouveaux centres de données.</p>
+
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Entreprise</th>
+                                <th>Investissement prévu</th>
+                            </tr>
+                            <tr>
+                                <td>Microsoft</td>
+                                <td>50 milliards $ / an</td>
+                            </tr>
+                            <tr>
+                                <td>Google</td>
+                                <td>50 milliards $ / an</td>
+                            </tr>
+                            <tr>
+                                <td>Amazon</td>
+                                <td>75 milliards $ / an</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🔌 Consommation par requête</h3>
+                        <p>Chaque interaction avec une IA demande une puissance de calcul significative :</p>
+
+                        <div class="stat-box warning">
+                            <div class="stat-highlight">
+                                <span class="stat-number">0.3 Wh</span>
+                                <span class="stat-label">Énergie d'une requête simple sur ChatGPT</span>
+                            </div>
+                            <div class="stat-highlight">
+                                <span class="stat-number">vs 0.0003 Wh</span>
+                                <span class="stat-label">Énergie d'une recherche Google standard</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            // Module 3: Empreinte Carbone
+            {
+                title: "🌡️ L'Empreinte Carbone du Numérique",
+                content: `
+                    <div class="module-section">
+                        <h3>✈️ Comparaison avec le transport aérien</h3>
+                        <p>Le secteur numérique génère aujourd'hui plus d'émissions de gaz à effet de serre que l'aviation civile mondiale.</p>
+
+                        <div class="stat-box warning">
+                            <div class="stat-highlight">
+                                <span class="stat-number">3.5 - 4%</span>
+                                <span class="stat-label">Part des émissions mondiales de CO₂ due au numérique</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🤖 L'entraînement des modèles IA</h3>
+                        <p>L'entraînement d'un grand modèle de langage (LLM) nécessite des ressources colossales :</p>
+
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Modèle</th>
+                                <th>Émissions CO₂ (entraînement)</th>
+                            </tr>
+                            <tr>
+                                <td>GPT-3</td>
+                                <td>552 tonnes CO₂</td>
+                            </tr>
+                            <tr>
+                                <td>GPT-4</td>
+                                <td>Estimation : plusieurs milliers de tonnes</td>
+                            </tr>
+                            <tr>
+                                <td>Voiture (durée de vie)</td>
+                                <td>~50 tonnes CO₂</td>
+                            </tr>
+                        </table>
+
+                        <p><em>Entraîner GPT-3 équivaut aux émissions de 11 voitures pendant toute leur durée de vie.</em></p>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>📱 L'usage quotidien</h3>
+                        <p>Au-delà de l'entraînement, chaque utilisation génère des émissions. Avec des millions d'utilisateurs quotidiens, l'impact cumulé est considérable.</p>
+
+                        <div class="info-card">
+                            <h4>💡 Le saviez-vous ?</h4>
+                            <p>100 millions de requêtes ChatGPT par jour = l'équivalent CO₂ de 10 000 vols Paris-New York par an.</p>
+                        </div>
+                    </div>
+                `
+            },
+            // Module 4: Ressources en Eau
+            {
+                title: "💧 L'Impact sur les Ressources en Eau",
+                content: `
+                    <div class="module-section">
+                        <h3>❄️ Le défi du refroidissement</h3>
+                        <p>Les serveurs génèrent une chaleur intense. Pour éviter la surchauffe, les data centers utilisent d'énormes quantités d'eau pour le refroidissement.</p>
+
+                        <div class="stat-box">
+                            <div class="stat-highlight">
+                                <span class="stat-number">500 mL</span>
+                                <span class="stat-label">Eau consommée par conversation de 10-50 échanges avec ChatGPT</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🏭 Consommation des géants du numérique</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Entreprise</th>
+                                <th>Consommation annuelle</th>
+                                <th>Équivalent</th>
+                            </tr>
+                            <tr>
+                                <td>Google</td>
+                                <td>20 milliards de litres</td>
+                                <td>8 000 piscines olympiques</td>
+                            </tr>
+                            <tr>
+                                <td>Microsoft</td>
+                                <td>6.4 milliards de litres</td>
+                                <td>2 500 piscines olympiques</td>
+                            </tr>
+                            <tr>
+                                <td>Meta</td>
+                                <td>5 milliards de litres</td>
+                                <td>2 000 piscines olympiques</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🌍 Conflits d'usage</h3>
+                        <p>Dans des régions déjà en stress hydrique, les data centers entrent en compétition avec les besoins agricoles et les populations locales.</p>
+
+                        <div class="stat-box warning">
+                            <h4>⚠️ Cas concret</h4>
+                            <p>En Uruguay, le data center de Google a été accusé de contribuer à des pénuries d'eau en période de sécheresse, forçant les autorités à rationner l'eau potable pour les habitants.</p>
+                        </div>
+                    </div>
+                `
+            },
+            // Module 5: Ressources Naturelles
+            {
+                title: "⛏️ L'Extraction des Ressources Naturelles",
+                content: `
+                    <div class="module-section">
+                        <h3>💎 Les composants des serveurs</h3>
+                        <p>Chaque serveur contient des dizaines de matériaux rares dont l'extraction a un impact environnemental et social majeur.</p>
+
+                        <ul class="briefing-list">
+                            <li><strong>Lithium</strong> : batteries (Chili, Australie)</li>
+                            <li><strong>Cobalt</strong> : batteries (60% RDC - conditions de travail difficiles)</li>
+                            <li><strong>Terres rares</strong> : aimants, écrans (Chine 60%)</li>
+                            <li><strong>Cuivre</strong> : câbles, circuits</li>
+                            <li><strong>Or, argent</strong> : conducteurs</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🏔️ Impact de l'extraction minière</h3>
+                        <div class="stat-box warning">
+                            <div class="stat-highlight">
+                                <span class="stat-number">70%</span>
+                                <span class="stat-label">Du cobalt mondial provient de mines où le travail des enfants est documenté</span>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <h4>🌿 Dégâts environnementaux</h4>
+                            <ul class="briefing-list">
+                                <li>Déforestation et destruction d'écosystèmes</li>
+                                <li>Pollution des sols et des nappes phréatiques</li>
+                                <li>Émissions de poussières toxiques</li>
+                                <li>Consommation massive d'eau et d'énergie</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>📊 Besoins croissants</h3>
+                        <p>La demande en puces pour l'IA augmente de 30% par an. Cela signifie une pression accrue sur les ressources naturelles et les chaînes d'approvisionnement.</p>
+                    </div>
+                `
+            },
+            // Module 6: Déchets Électroniques
+            {
+                title: "🗑️ Les Déchets Électroniques",
+                content: `
+                    <div class="module-section">
+                        <h3>📉 Obsolescence rapide</h3>
+                        <p>Les équipements informatiques ont une durée de vie de plus en plus courte. Les serveurs sont remplacés tous les 3-5 ans pour suivre les besoins de l'IA.</p>
+
+                        <div class="stat-box warning">
+                            <div class="stat-highlight">
+                                <span class="stat-number">50 M tonnes</span>
+                                <span class="stat-label">Déchets électroniques produits chaque année dans le monde</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>♻️ Faible taux de recyclage</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Indicateur</th>
+                                <th>Valeur</th>
+                            </tr>
+                            <tr>
+                                <td>Taux de recyclage mondial</td>
+                                <td>< 20%</td>
+                            </tr>
+                            <tr>
+                                <td>E-déchets exportés illégalement</td>
+                                <td>~50%</td>
+                            </tr>
+                            <tr>
+                                <td>Valeur des matériaux perdus/an</td>
+                                <td>57 milliards €</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🌍 Exportation vers les pays du Sud</h3>
+                        <p>Une grande partie des e-déchets finissent dans des décharges en Afrique (Ghana, Nigeria) ou en Asie, où ils sont traités dans des conditions dangereuses.</p>
+
+                        <div class="info-card">
+                            <h4>☠️ Impacts sanitaires</h4>
+                            <p>Le brûlage des déchets électroniques libère des substances toxiques (plomb, mercure, cadmium) qui contaminent l'air, l'eau et les sols, causant cancers et maladies respiratoires.</p>
+                        </div>
+                    </div>
+                `
+            },
+            // Module 7: IA Responsable
+            {
+                title: "🌱 Pistes pour une IA Plus Responsable",
+                content: `
+                    <div class="module-section">
+                        <h3>🎯 Actions individuelles</h3>
+                        <ul class="briefing-list">
+                            <li><strong>Questionner le besoin</strong> : Ai-je vraiment besoin de l'IA pour cette tâche ?</li>
+                            <li><strong>Optimiser les prompts</strong> : Des requêtes précises = moins de calculs</li>
+                            <li><strong>Éviter les usages futiles</strong> : Génération massive d'images pour le fun</li>
+                            <li><strong>Préférer les modèles légers</strong> : Quand c'est possible</li>
+                        </ul>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🏢 Actions des entreprises</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Action</th>
+                                <th>Impact</th>
+                            </tr>
+                            <tr>
+                                <td>Énergies renouvelables</td>
+                                <td>Réduction jusqu'à 80% des émissions</td>
+                            </tr>
+                            <tr>
+                                <td>Refroidissement innovant</td>
+                                <td>-40% consommation d'eau</td>
+                            </tr>
+                            <tr>
+                                <td>Éco-conception des modèles</td>
+                                <td>-50 à -90% d'énergie</td>
+                            </tr>
+                            <tr>
+                                <td>Allongement durée de vie serveurs</td>
+                                <td>-25% de déchets</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>📜 Régulation et transparence</h3>
+                        <div class="info-card">
+                            <h4>📋 Mesures nécessaires</h4>
+                            <ul class="briefing-list">
+                                <li>Obligation d'afficher l'empreinte carbone des services IA</li>
+                                <li>Standards d'efficacité énergétique pour les data centers</li>
+                                <li>Traçabilité des matériaux utilisés</li>
+                                <li>Réglementation sur l'exportation des e-déchets</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            // Module 8: Mission Briefing
+            {
+                title: "🎯 Briefing de Mission : Infiltration NovaTech",
+                content: `
+                    <div class="module-section">
+                        <h3>📋 Récapitulatif de votre mission</h3>
+                        <p>Vous êtes maintenant prêt(e) pour votre infiltration du data center NovaTech. Voici les éléments clés de votre mission :</p>
+
+                        <div class="stat-box">
+                            <h4>🎯 Objectif principal</h4>
+                            <p>Collecter <strong>5 preuves documentées</strong> de l'impact environnemental de l'IA avant que la sécurité ne vous repère.</p>
+                        </div>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>🔍 Preuves à collecter</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Preuve</th>
+                                <th>Localisation probable</th>
+                            </tr>
+                            <tr>
+                                <td>⚡ Consommation électrique</td>
+                                <td>Salle des serveurs</td>
+                            </tr>
+                            <tr>
+                                <td>💧 Consommation d'eau</td>
+                                <td>Salle de refroidissement</td>
+                            </tr>
+                            <tr>
+                                <td>🤖 Impact des modèles IA</td>
+                                <td>Salle de contrôle</td>
+                            </tr>
+                            <tr>
+                                <td>🏭 Coût de fabrication</td>
+                                <td>Bureau de direction</td>
+                            </tr>
+                            <tr>
+                                <td>🌍 Émissions CO₂</td>
+                                <td>Salle de contrôle</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="module-section">
+                        <h3>⚠️ Règles d'engagement</h3>
+                        <ul class="briefing-list">
+                            <li><strong>Temps limité</strong> : Vous avez 15 minutes avant le changement de garde</li>
+                            <li><strong>Discrétion</strong> : Évitez d'éveiller les soupçons (jauge de suspicion)</li>
+                            <li><strong>Sortie</strong> : Retournez au couloir principal pour vous échapper</li>
+                        </ul>
+
+                        <div class="info-card">
+                            <h4>📱 Communication</h4>
+                            <p>Votre source anonyme vous contactera par messages durant la mission pour vous guider.</p>
+                        </div>
+                    </div>
+
+                    <div class="module-section" style="text-align: center; padding-top: 20px;">
+                        <p style="font-size: 1.2em; color: var(--neon-green); margin-bottom: 20px;">
+                            🔐 Briefing terminé. Vous êtes prêt(e) pour l'infiltration.
+                        </p>
+                    </div>
+                `
+            }
+        ];
+
+        function showBriefing() {
+            document.getElementById('title-screen').classList.add('hidden');
+            document.getElementById('briefing-screen').classList.add('active');
+            showModule(0);
+        }
+
+        function showModule(index) {
+            currentModule = index;
+            const module = briefingModules[index];
+
+            // Mettre à jour le contenu
+            document.getElementById('briefing-content').innerHTML = `
+                <h2 class="module-title">${module.title}</h2>
+                ${module.content}
+            `;
+
+            // Mettre à jour la navigation
+            const navItems = document.querySelectorAll('.briefing-nav-item');
+            navItems.forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === index) item.classList.add('active');
+                if (completedModules.has(i)) item.classList.add('completed');
+            });
+
+            // Marquer le module comme lu
+            completedModules.add(index);
+
+            // Mettre à jour la barre de progression
+            const progress = ((completedModules.size) / briefingModules.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Module ${index + 1}/${briefingModules.length}`;
+
+            // Gérer les boutons
+            document.getElementById('prev-btn').disabled = index === 0;
+
+            const nextBtn = document.getElementById('next-btn');
+            if (index === briefingModules.length - 1) {
+                nextBtn.textContent = '🎮 Commencer la mission';
+                nextBtn.onclick = startGame;
+            } else {
+                nextBtn.innerHTML = 'Module suivant →';
+                nextBtn.onclick = nextModule;
+            }
+
+            // Scroll en haut
+            document.getElementById('briefing-content').scrollTop = 0;
+        }
+
+        function nextModule() {
+            if (currentModule < briefingModules.length - 1) {
+                showModule(currentModule + 1);
+            }
+        }
+
+        function prevModule() {
+            if (currentModule > 0) {
+                showModule(currentModule - 1);
+            }
+        }
+
+        function skipToBriefing() {
+            showModule(briefingModules.length - 1);
+        }
 
         // Définition des salles
         const rooms = {
@@ -1412,6 +2287,7 @@
         // ==================== INITIALISATION ====================
         function startGame() {
             document.getElementById('title-screen').classList.add('hidden');
+            document.getElementById('briefing-screen').classList.remove('active');
             document.getElementById('game-container').classList.add('active');
 
             initializeEvidenceTracker();
@@ -2264,7 +3140,7 @@
 
                         <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
                             <button class="start-btn" onclick="startCertificationQuiz()" style="background:linear-gradient(135deg,rgba(0,255,136,0.2),rgba(0,212,255,0.2));">
-                                📜 Passer le quiz de certification
+                                📜 Passer le quiz d'attestation
                             </button>
                             <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
                                 🔄 Rejouer
@@ -2381,7 +3257,7 @@
 
             const content = `
                 <div class="final-report" style="max-width:700px;">
-                    <div class="final-title" style="font-size:1.5em;">📜 Quiz de Certification</div>
+                    <div class="final-title" style="font-size:1.5em;">📜 Quiz d'Attestation</div>
                     <p style="color:var(--neon-cyan);margin-bottom:20px;">Impact Environnemental de l'IA</p>
 
                     <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:25px;">
@@ -2460,7 +3336,7 @@
             const content = `
                 <div class="final-report" style="max-width:600px;">
                     <div class="final-title" style="font-size:1.5em;">
-                        ${passed ? '🎓 Certification Réussie !' : '📚 Continuez à apprendre'}
+                        ${passed ? '🎓 Attestation Obtenue !' : '📚 Continuez à apprendre'}
                     </div>
 
                     <div class="final-stats" style="margin:30px 0;">
