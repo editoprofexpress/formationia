@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modules - Certification IA Citoyenne</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --neon-cyan: #00d4ff;
+            --neon-pink: #ff3366;
+            --neon-purple: #9945ff;
+            --neon-orange: #ff9500;
+            --neon-yellow: #ffe66d;
+            --dark-bg: #0a0f1a;
+            --darker-bg: #050a12;
+            --card-bg: rgba(15, 25, 45, 0.9);
+            --text: #e0e8ff;
+            --text-muted: #8899aa;
+
+            /* Domain colors */
+            --color-fondations: #ff6b6b;
+            --color-interaction: #4ecdc4;
+            --color-critique: #ffe66d;
+            --color-citoyens: #95e1d3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(153, 69, 255, 0.1) 0%, transparent 50%),
+                var(--darker-bg);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            background: rgba(10, 15, 26, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2em;
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--neon-cyan);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-cyan);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 50px 40px 30px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 span {
+            color: var(--neon-cyan);
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1em;
+        }
+
+        /* Progress bar */
+        .global-progress {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 40px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .progress-label {
+            color: var(--text-muted);
+        }
+
+        .progress-value {
+            color: var(--neon-green);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 10px 20px;
+            background: rgba(0, 50, 100, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 25px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .filter-tab:hover {
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .filter-tab.active {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        /* Domains sections */
+        .domain-section {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .domain-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--domain-color);
+        }
+
+        .domain-icon {
+            font-size: 2em;
+        }
+
+        .domain-info h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            color: var(--domain-color);
+        }
+
+        .domain-info p {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Module cards */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--domain-color);
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--domain-color);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .module-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            color: var(--domain-color);
+            margin-bottom: 10px;
+        }
+
+        .module-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .module-description {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .module-type {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .module-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .module-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-available .status-dot {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .status-available .status-text {
+            color: var(--neon-green);
+        }
+
+        .status-coming .status-dot {
+            background: var(--neon-orange);
+        }
+
+        .status-coming .status-text {
+            color: var(--neon-orange);
+        }
+
+        .status-completed .status-dot {
+            background: var(--neon-cyan);
+        }
+
+        .status-completed .status-text {
+            color: var(--neon-cyan);
+        }
+
+        .module-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-play {
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            color: var(--dark-bg);
+            font-weight: 700;
+        }
+
+        .btn-play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-coming {
+            background: rgba(100, 100, 100, 0.3);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-replay {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+
+        .btn-replay:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        /* Domain color classes */
+        .domain-fondations { --domain-color: var(--color-fondations); }
+        .domain-interaction { --domain-color: var(--color-interaction); }
+        .domain-critique { --domain-color: var(--color-critique); }
+        .domain-citoyens { --domain-color: var(--color-citoyens); }
+
+        /* Footer */
+        footer {
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(--text-muted);
+            font-size: 0.85em;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .page-header {
+                padding: 30px 20px 20px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8em;
+            }
+
+            .domain-section {
+                padding: 30px 20px;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="grid-overlay"></div>
+
+    <header>
+        <a href="accueil.html" class="logo">
+            <span class="logo-icon">🤖</span>
+            <span class="logo-text">IA CITOYENNE</span>
+        </a>
+        <nav>
+            <a href="accueil.html">Accueil</a>
+            <a href="modules.html" class="active">Modules</a>
+            <a href="certification.html">Certification</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Catalogue des <span>Modules</span></h1>
+            <p>15 micro-modules interactifs organisés en 4 domaines. Commencez par celui qui vous inspire !</p>
+        </div>
+
+        <div class="global-progress">
+            <div class="progress-info">
+                <span class="progress-label">Progression globale</span>
+                <span class="progress-value" id="progress-count">1/15 modules</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 6.67%"></div>
+            </div>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Tous</button>
+            <button class="filter-tab" data-filter="fondations">🧠 Fondations IA</button>
+            <button class="filter-tab" data-filter="interaction">💬 Interaction</button>
+            <button class="filter-tab" data-filter="critique">🔍 Esprit critique</button>
+            <button class="filter-tab" data-filter="citoyens">🌍 Enjeux citoyens</button>
+        </div>
+
+        <!-- DOMAINE 1: Fondations IA -->
+        <section class="domain-section domain-fondations" data-domain="fondations">
+            <div class="domain-header">
+                <span class="domain-icon">🧠</span>
+                <div class="domain-info">
+                    <h2>Fondations IA</h2>
+                    <p>Comprendre ce qu'est vraiment l'intelligence artificielle</p>
+                </div>
+            </div>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <span class="module-number">MODULE 01</span>
+                    <h3 class="module-title">Démystifier l'IA</h3>
+                    <p class="module-description">Mission : démontez les idées reçues sur l'intelligence artificielle et découvrez ce qu'elle est vraiment.</p>
+                    <span class="module-type">🎮 Mission d'enquête</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 02</span>
+                    <h3 class="module-title">Données sous influence</h3>
+                    <p class="module-description">Jeu interactif pour comprendre ce qu'un modèle "apprend" vraiment à partir des données.</p>
+                    <span class="module-type">🎲 Jeu de simulation</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 03</span>
+                    <h3 class="module-title">Dans la tête d'un modèle</h3>
+                    <p class="module-description">Explorez comment l'IA utilise la similarité et la prédiction pour générer ses réponses.</p>
+                    <span class="module-type">🔬 Exploration interactive</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 04</span>
+                    <h3 class="module-title">Générer sans comprendre</h3>
+                    <p class="module-description">Simulation d'un modèle génératif pour comprendre pourquoi l'IA peut produire du contenu sans le "comprendre".</p>
+                    <span class="module-type">🎮 Simulation</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOMAINE 2: Interaction raisonnée -->
+        <section class="domain-section domain-interaction" data-domain="interaction">
+            <div class="domain-header">
+                <span class="domain-icon">💬</span>
+                <div class="domain-info">
+                    <h2>Interaction raisonnée</h2>
+                    <p>Maîtriser l'art d'interagir efficacement avec l'IA</p>
+                </div>
+            </div>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <span class="module-number">MODULE 05</span>
+                    <h3 class="module-title">L'art de la consigne</h3>
+                    <p class="module-description">Escape room de prompts mal formulés : apprenez à rédiger des consignes efficaces pour obtenir de meilleurs résultats.</p>
+                    <span class="module-type">🔐 Escape Room</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 06</span>
+                    <h3 class="module-title">Itération et amélioration</h3>
+                    <p class="module-description">Débloquez un résultat progressivement en apprenant à itérer et affiner vos demandes.</p>
+                    <span class="module-type">🎯 Défi progressif</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 07</span>
+                    <h3 class="module-title">Qui décide ?</h3>
+                    <p class="module-description">Comprenez la différence entre assistance, automatisation et délégation. Quand garder le contrôle ?</p>
+                    <span class="module-type">🎭 Jeu de rôle</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 08</span>
+                    <h3 class="module-title">Choisir le bon usage</h3>
+                    <p class="module-description">Apprenez à adapter l'utilisation de l'IA à un objectif réel : quand l'utiliser, quand s'en passer ?</p>
+                    <span class="module-type">📋 Cas pratiques</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOMAINE 3: Limites et esprit critique -->
+        <section class="domain-section domain-critique" data-domain="critique">
+            <div class="domain-header">
+                <span class="domain-icon">🔍</span>
+                <div class="domain-info">
+                    <h2>Limites et esprit critique</h2>
+                    <p>Développer une posture de vigilance face à l'IA</p>
+                </div>
+            </div>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <span class="module-number">MODULE 09</span>
+                    <h3 class="module-title">L'erreur qui sonne juste</h3>
+                    <p class="module-description">Partez à la chasse aux hallucinations : détectez les erreurs convaincantes que l'IA peut produire.</p>
+                    <span class="module-type">🔎 Enquête</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 10</span>
+                    <h3 class="module-title">Biais invisibles</h3>
+                    <p class="module-description">Identifiez les réponses problématiques et les biais cachés dans les résultats de l'IA.</p>
+                    <span class="module-type">🧩 Analyse interactive</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 11</span>
+                    <h3 class="module-title">Peut-on faire confiance ?</h3>
+                    <p class="module-description">Apprenez à vérifier, croiser et douter des informations fournies par l'IA.</p>
+                    <span class="module-type">⚖️ Exercices de vérification</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOMAINE 4: Enjeux citoyens -->
+        <section class="domain-section domain-citoyens" data-domain="citoyens">
+            <div class="domain-header">
+                <span class="domain-icon">🌍</span>
+                <div class="domain-info">
+                    <h2>Enjeux citoyens</h2>
+                    <p>Comprendre les impacts sociétaux de l'intelligence artificielle</p>
+                </div>
+            </div>
+            <div class="modules-grid">
+                <div class="module-card">
+                    <span class="module-number">MODULE 12</span>
+                    <h3 class="module-title">Impact environnemental de l'IA</h3>
+                    <p class="module-description">Infiltrez un data center pour découvrir les coûts cachés de l'IA : énergie, eau, matériaux, émissions CO₂.</p>
+                    <span class="module-type">🔐 Escape Game</span>
+                    <div class="module-footer">
+                        <div class="module-status status-available">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Disponible</span>
+                        </div>
+                        <a href="index.html" class="module-btn btn-play">Jouer</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 13</span>
+                    <h3 class="module-title">Données personnelles en danger</h3>
+                    <p class="module-description">Jeu de rôle RGPD / vie privée : protégez vos données face aux risques liés à l'IA.</p>
+                    <span class="module-type">🎭 Jeu de rôle</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 14</span>
+                    <h3 class="module-title">Info ou intox ?</h3>
+                    <p class="module-description">Enquêtez sur la désinformation générée par l'IA : deepfakes, faux textes, manipulation.</p>
+                    <span class="module-type">🕵️ Investigation</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <span class="module-number">MODULE 15</span>
+                    <h3 class="module-title">Responsabilité humaine</h3>
+                    <p class="module-description">Qui répond des décisions prises avec l'IA ? Explorez les questions éthiques et juridiques.</p>
+                    <span class="module-type">⚖️ Tribunal simulé</span>
+                    <div class="module-footer">
+                        <div class="module-status status-coming">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Bientôt</span>
+                        </div>
+                        <button class="module-btn btn-coming">Bientôt</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Certification IA Citoyenne - Formation libre et gratuite</p>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const domainSections = document.querySelectorAll('.domain-section');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const filter = tab.dataset.filter;
+
+                // Update active tab
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Show/hide sections
+                domainSections.forEach(section => {
+                    if (filter === 'all' || section.dataset.domain === filter) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

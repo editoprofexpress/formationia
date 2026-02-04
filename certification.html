@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obtenir la Certification - IA Citoyenne</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --neon-cyan: #00d4ff;
+            --neon-pink: #ff3366;
+            --neon-purple: #9945ff;
+            --neon-orange: #ff9500;
+            --neon-gold: #ffd700;
+            --dark-bg: #0a0f1a;
+            --darker-bg: #050a12;
+            --card-bg: rgba(15, 25, 45, 0.9);
+            --text: #e0e8ff;
+            --text-muted: #8899aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 30% 30%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(153, 69, 255, 0.1) 0%, transparent 50%),
+                var(--darker-bg);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255, 215, 0, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            background: rgba(10, 15, 26, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2em;
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--neon-gold);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon-gold);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 60px 40px 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .certification-badge {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.1));
+            border: 3px solid var(--neon-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5em;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 span {
+            background: linear-gradient(90deg, var(--neon-gold), var(--neon-orange));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        /* Main content */
+        .content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+        }
+
+        /* Steps section */
+        .steps-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--neon-gold);
+        }
+
+        .steps {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: var(--neon-gold);
+            color: var(--dark-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        .step-icon {
+            font-size: 2.5em;
+            margin: 15px 0;
+        }
+
+        .step-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: var(--neon-gold);
+        }
+
+        .step-text {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* Requirements section */
+        .requirements {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+
+        .requirements h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            color: var(--neon-gold);
+            text-align: center;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .req-icon {
+            font-size: 1.5em;
+        }
+
+        .req-text {
+            font-size: 0.95em;
+        }
+
+        .req-text strong {
+            color: var(--neon-cyan);
+        }
+
+        /* Form section */
+        .form-section {
+            background: var(--card-bg);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-section > p {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--neon-cyan);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 50, 100, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* File upload area */
+        .upload-area {
+            border: 2px dashed rgba(255, 215, 0, 0.4);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 25px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--neon-gold);
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .upload-text strong {
+            color: var(--neon-gold);
+        }
+
+        .upload-hint {
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .uploaded-files {
+            margin-top: 20px;
+        }
+
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .uploaded-file .file-icon {
+            color: var(--neon-green);
+        }
+
+        .uploaded-file .file-name {
+            flex-grow: 1;
+        }
+
+        .uploaded-file .remove-btn {
+            background: none;
+            border: none;
+            color: var(--neon-pink);
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--neon-gold), var(--neon-orange));
+            border: none;
+            border-radius: 10px;
+            color: var(--dark-bg);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: rgba(100, 100, 100, 0.3);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Info note */
+        .info-note {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid var(--neon-cyan);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .info-note p {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .info-note strong {
+            color: var(--neon-cyan);
+        }
+
+        /* Footer */
+        footer {
+            padding: 30px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            color: var(--text-muted);
+            font-size: 0.85em;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .page-header {
+                padding: 40px 20px 30px;
+            }
+
+            .page-header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 0 20px 40px;
+            }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step {
+                max-width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .requirements, .form-section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="grid-overlay"></div>
+
+    <header>
+        <a href="accueil.html" class="logo">
+            <span class="logo-icon">🤖</span>
+            <span class="logo-text">IA CITOYENNE</span>
+        </a>
+        <nav>
+            <a href="accueil.html">Accueil</a>
+            <a href="modules.html">Modules</a>
+            <a href="certification.html" class="active">Certification</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <div class="certification-badge">🏆</div>
+            <h1>Obtenez votre <span>Certification</span></h1>
+            <p>
+                Vous avez complété les 15 micro-modules ? Félicitations !
+                Soumettez vos attestations pour recevoir votre certification officielle "IA Citoyenne".
+            </p>
+        </div>
+
+        <div class="content">
+            <section class="steps-section">
+                <h2 class="section-title">Comment ça marche ?</h2>
+                <div class="steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <div class="step-icon">🎮</div>
+                        <h3 class="step-title">Complétez les modules</h3>
+                        <p class="step-text">Terminez les 15 micro-modules et obtenez une attestation pour chacun.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <div class="step-icon">📤</div>
+                        <h3 class="step-title">Envoyez vos attestations</h3>
+                        <p class="step-text">Téléchargez vos 15 attestations via le formulaire ci-dessous.</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <div class="step-icon">✅</div>
+                        <h3 class="step-title">Vérification</h3>
+                        <p class="step-text">Nous vérifions vos attestations (sous 48-72h).</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <div class="step-icon">🏆</div>
+                        <h3 class="step-title">Certification</h3>
+                        <p class="step-text">Recevez votre certification officielle par email !</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="requirements">
+                <h2>Prérequis pour la certification</h2>
+                <div class="requirements-grid">
+                    <div class="requirement-item">
+                        <span class="req-icon">🧠</span>
+                        <span class="req-text"><strong>4</strong> attestations Fondations IA</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon">💬</span>
+                        <span class="req-text"><strong>4</strong> attestations Interaction</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon">🔍</span>
+                        <span class="req-text"><strong>3</strong> attestations Esprit critique</span>
+                    </div>
+                    <div class="requirement-item">
+                        <span class="req-icon">🌍</span>
+                        <span class="req-text"><strong>4</strong> attestations Enjeux citoyens</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>Demande de certification</h2>
+                <p>Remplissez ce formulaire et joignez vos 15 attestations</p>
+
+                <form id="certification-form" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstname">Prénom *</label>
+                            <input type="text" id="firstname" name="firstname" required placeholder="Votre prénom">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">Nom *</label>
+                            <input type="text" id="lastname" name="lastname" required placeholder="Votre nom">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required placeholder="votre.email@exemple.com">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Tranche d'âge</label>
+                            <select id="age" name="age" style="width:100%;padding:15px;background:rgba(0,50,100,0.3);border:2px solid rgba(0,212,255,0.3);border-radius:10px;color:var(--text);font-size:1em;">
+                                <option value="">Sélectionnez...</option>
+                                <option value="12-15">12-15 ans (collège)</option>
+                                <option value="16-18">16-18 ans (lycée)</option>
+                                <option value="19-25">19-25 ans (études supérieures)</option>
+                                <option value="26+">26 ans et plus</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Statut</label>
+                            <select id="status" name="status" style="width:100%;padding:15px;background:rgba(0,50,100,0.3);border:2px solid rgba(0,212,255,0.3);border-radius:10px;color:var(--text);font-size:1em;">
+                                <option value="">Sélectionnez...</option>
+                                <option value="student">Élève / Étudiant</option>
+                                <option value="teacher">Enseignant</option>
+                                <option value="professional">Professionnel</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Attestations (15 fichiers requis) *</label>
+                        <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                            <div class="upload-icon">📁</div>
+                            <p class="upload-text">
+                                <strong>Cliquez ici</strong> ou glissez-déposez vos attestations
+                            </p>
+                            <p class="upload-hint">Formats acceptés : PDF, HTML, PNG, JPG (max 5 Mo par fichier)</p>
+                        </div>
+                        <input type="file" id="file-input" class="file-input" multiple accept=".pdf,.html,.png,.jpg,.jpeg" onchange="handleFiles(this.files)">
+                        <div class="uploaded-files" id="uploaded-files"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message (optionnel)</label>
+                        <textarea id="message" name="message" placeholder="Commentaires, retours sur la formation..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submit-btn" disabled>
+                        Soumettre ma demande de certification
+                    </button>
+
+                    <div class="info-note">
+                        <p>
+                            <strong>Note :</strong> Vos attestations seront vérifiées par notre équipe.
+                            Vous recevrez votre certification officielle par email dans un délai de 48 à 72 heures.
+                            En cas de problème, nous vous contacterons à l'adresse email fournie.
+                        </p>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>Certification IA Citoyenne - Formation libre et gratuite</p>
+    </footer>
+
+    <script>
+        let uploadedFiles = [];
+
+        function handleFiles(files) {
+            for (let file of files) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(`Le fichier "${file.name}" dépasse 5 Mo et ne sera pas ajouté.`);
+                    continue;
+                }
+                if (!uploadedFiles.find(f => f.name === file.name)) {
+                    uploadedFiles.push(file);
+                }
+            }
+            updateFileList();
+            updateSubmitButton();
+        }
+
+        function updateFileList() {
+            const container = document.getElementById('uploaded-files');
+            container.innerHTML = uploadedFiles.map((file, index) => `
+                <div class="uploaded-file">
+                    <span class="file-icon">📄</span>
+                    <span class="file-name">${file.name}</span>
+                    <button type="button" class="remove-btn" onclick="removeFile(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateFileList();
+            updateSubmitButton();
+        }
+
+        function updateSubmitButton() {
+            const btn = document.getElementById('submit-btn');
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const email = document.getElementById('email').value;
+
+            // Pour la démo, on peut activer avec moins de 15 fichiers
+            // En production, exiger exactement 15
+            const isValid = firstname && lastname && email && uploadedFiles.length >= 1;
+            btn.disabled = !isValid;
+
+            if (uploadedFiles.length > 0) {
+                btn.textContent = `Soumettre (${uploadedFiles.length}/15 attestations)`;
+            } else {
+                btn.textContent = 'Soumettre ma demande de certification';
+            }
+        }
+
+        // Update button when form fields change
+        document.querySelectorAll('#certification-form input').forEach(input => {
+            input.addEventListener('input', updateSubmitButton);
+        });
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            if (uploadedFiles.length < 15) {
+                if (!confirm(`Vous n'avez fourni que ${uploadedFiles.length} attestation(s) sur 15. Voulez-vous quand même soumettre votre demande partielle ?`)) {
+                    return;
+                }
+            }
+
+            // Simulation d'envoi
+            alert('Merci ! Votre demande a été envoyée.\n\nVous recevrez un email de confirmation et votre certification sous 48-72h.');
+
+            // Reset form
+            document.getElementById('certification-form').reset();
+            uploadedFiles = [];
+            updateFileList();
+            updateSubmitButton();
+        }
+
+        // Drag and drop
+        const uploadArea = document.querySelector('.upload-area');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'var(--neon-gold)';
+            uploadArea.style.background = 'rgba(255, 215, 0, 0.1)';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = 'rgba(255, 215, 0, 0.4)';
+            uploadArea.style.background = 'transparent';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'rgba(255, 215, 0, 0.4)';
+            uploadArea.style.background = 'transparent';
+            handleFiles(e.dataTransfer.files);
+        });
+    </script>
+</body>
+</html>
