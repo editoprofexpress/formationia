@@ -1645,7 +1645,7 @@
         <div class="briefing-header">
             <div class="briefing-title">DOSSIER D'INFILTRATION - NIVEAU CONFIDENTIEL</div>
             <div class="briefing-progress">
-                <span id="progress-text">Fichier 1/8</span>
+                <span id="progress-text">Fichier 1/7</span>
                 <div class="briefing-progress-bar">
                     <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
                 </div>
@@ -1691,8 +1691,8 @@
                 </div>
                 <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
                     <div class="briefing-nav-item" onclick="showModule(7)">
-                        <span class="nav-icon">🎯</span>
-                        <span class="nav-number">08</span>
+                        <span class="nav-icon">🎮</span>
+                        <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
                         Mission
                     </div>
                 </div>
@@ -1713,9 +1713,6 @@
         <div class="briefing-footer">
             <button class="briefing-btn" id="prev-btn" onclick="prevModule()" disabled>
                 ← Fichier précédent
-            </button>
-            <button class="briefing-btn" id="skip-btn" onclick="skipToBriefing()">
-                Démarrer la mission →
             </button>
             <button class="briefing-btn primary" id="next-btn" onclick="nextModule()">
                 Fichier suivant →
@@ -2373,16 +2370,28 @@
             // Mettre à jour la barre de progression
             const progress = ((completedModules.size) / briefingModules.length) * 100;
             document.getElementById('progress-fill').style.width = progress + '%';
-            document.getElementById('progress-text').textContent = `Fichier ${index + 1}/${briefingModules.length}`;
+
+            // Afficher "Fichier X/7" pour les fichiers, "Mission" pour la mission
+            if (index < 7) {
+                document.getElementById('progress-text').textContent = `Fichier ${index + 1}/7`;
+            } else {
+                document.getElementById('progress-text').textContent = `Mission`;
+            }
 
             // Gérer les boutons
             document.getElementById('prev-btn').disabled = index === 0;
 
             const nextBtn = document.getElementById('next-btn');
             if (index === briefingModules.length - 1) {
+                // Sur la page Mission : bouton pour lancer le jeu
+                nextBtn.style.visibility = 'visible';
                 nextBtn.textContent = '🎮 Commencer la mission';
                 nextBtn.onclick = startGame;
+            } else if (index === 6) {
+                // Dernier fichier : masquer le bouton suivant (accès mission via menu)
+                nextBtn.style.visibility = 'hidden';
             } else {
+                nextBtn.style.visibility = 'visible';
                 nextBtn.innerHTML = 'Fichier suivant →';
                 nextBtn.onclick = nextModule;
             }
