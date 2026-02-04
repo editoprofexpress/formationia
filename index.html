@@ -1635,16 +1635,9 @@
             et <strong>vous échapper</strong> avant que la sécurité ne vous repère.
         </p>
 
-        <div style="display:flex;flex-direction:column;gap:15px;align-items:center;margin-top:30px;">
-            <button class="start-btn" onclick="showMissionBriefing()" style="width:100%;max-width:350px;">
-                🎮 Commencer la mission
-            </button>
-
-            <button class="start-btn" id="certificate-btn" onclick="showCertificateAccess()" style="width:100%;max-width:350px;background:rgba(100,100,100,0.3);border-color:#666;opacity:0.7;">
-                🔒 Attestation de réussite
-                <span style="display:block;font-size:0.7em;margin-top:5px;color:#888;">Terminez la mission pour débloquer</span>
-            </button>
-        </div>
+        <button class="start-btn" onclick="showBriefing()">
+            Accéder au Dossier d'Infiltration
+        </button>
     </div>
 
     <!-- SECTION BRIEFING / COURS -->
@@ -1700,6 +1693,13 @@
                     <span class="nav-icon">🎯</span>
                     <span class="nav-number">08</span>
                     Mission Briefing
+                </div>
+                <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+                    <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2);">
+                        <span class="nav-icon">🔒</span>
+                        <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
+                        Attestation de réussite
+                    </div>
                 </div>
             </nav>
 
@@ -2245,98 +2245,107 @@
             showModule(0);
         }
 
-        // Afficher le briefing de mission directement (sans les modules de cours)
-        function showMissionBriefing() {
-            const briefingContent = briefingModules[briefingModules.length - 1]; // Module 8
+        // Variable pour suivre si le quiz est réussi (session courante uniquement)
+        let certificateUnlocked = false;
+        let finalScore = 0;
 
-            showModal(`
-                <div style="max-width:700px;">
-                    <h2 class="module-title" style="color:var(--neon-green);margin-bottom:20px;">${briefingContent.title}</h2>
-                    ${briefingContent.content}
+        // Afficher l'attestation dans le dossier
+        function showCertificateInFolder() {
+            if (!certificateUnlocked) {
+                // Attestation verrouillée
+                document.getElementById('briefing-content').innerHTML = `
+                    <h2 class="module-title" style="color:var(--neon-pink);">🔒 Attestation de réussite</h2>
+                    <div class="module-section" style="text-align:center;padding:40px 20px;">
+                        <div style="font-size:4em;margin-bottom:20px;">🔒</div>
+                        <h3 style="color:var(--neon-pink);margin-bottom:20px;">Attestation verrouillée</h3>
+                        <p style="margin-bottom:20px;">Pour obtenir votre attestation de réussite au micro-module, vous devez :</p>
 
-                    <div style="display:flex;gap:15px;justify-content:center;margin-top:30px;flex-wrap:wrap;">
-                        <button class="start-btn" onclick="closeModal(); startGame();" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
-                            🎮 Lancer l'infiltration
-                        </button>
-                    </div>
-                </div>
-            `);
-        }
-
-        // Vérifier et afficher l'accès à l'attestation
-        function showCertificateAccess() {
-            const hasCompleted = localStorage.getItem('greenInfiltration_completed') === 'true';
-
-            if (hasCompleted) {
-                showModal(`
-                    <div style="max-width:500px;text-align:center;">
-                        <div style="font-size:3em;margin-bottom:20px;">🎓</div>
-                        <h2 style="color:var(--neon-green);margin-bottom:20px;">Attestation de réussite</h2>
-                        <p style="margin-bottom:25px;">Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
-
-                        <div style="margin-bottom:20px;">
-                            <label style="display:block;margin-bottom:8px;color:var(--neon-cyan);">Votre nom (pour l'attestation) :</label>
-                            <input type="text" id="certificate-name-home" placeholder="Prénom NOM" style="
-                                width:100%;
-                                padding:12px 15px;
-                                background:rgba(0,50,100,0.4);
-                                border:2px solid rgba(0,212,255,0.4);
-                                border-radius:8px;
-                                color:white;
-                                font-size:1em;
-                                box-sizing:border-box;
-                            ">
+                        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:400px;text-align:left;">
+                            <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:1.2em;">1️⃣</span> Compléter la mission d'infiltration
+                            </p>
+                            <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:1.2em;">2️⃣</span> Collecter les 5 preuves environnementales
+                            </p>
+                            <p style="display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:1.2em;">3️⃣</span> Réussir le quiz final (70% minimum)
+                            </p>
                         </div>
 
-                        <button class="start-btn" onclick="downloadCertificateFromHome()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
-                            📥 Télécharger l'attestation
-                        </button>
+                        <p style="color:#888;font-size:0.9em;margin-top:30px;">
+                            Une fois le quiz réussi, revenez ici pour télécharger votre attestation.
+                        </p>
                     </div>
-                `);
+                `;
             } else {
-                showModal(`
-                    <div style="max-width:450px;text-align:center;">
-                        <div style="font-size:3em;margin-bottom:20px;">🔒</div>
-                        <h2 style="color:var(--neon-pink);margin-bottom:20px;">Attestation verrouillée</h2>
-                        <p style="margin-bottom:15px;">Pour obtenir votre attestation de réussite, vous devez :</p>
+                // Attestation débloquée
+                document.getElementById('briefing-content').innerHTML = `
+                    <h2 class="module-title" style="color:var(--neon-green);">🎓 Attestation de réussite</h2>
+                    <div class="module-section" style="text-align:center;padding:40px 20px;">
+                        <div style="font-size:4em;margin-bottom:20px;">🎓</div>
+                        <h3 style="color:var(--neon-green);margin-bottom:20px;">Félicitations !</h3>
+                        <p style="margin-bottom:10px;">Vous avez validé le micro-module</p>
+                        <p style="font-size:1.2em;color:var(--neon-cyan);margin-bottom:25px;"><strong>"Impact Environnemental de l'IA"</strong></p>
 
-                        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:20px;margin:20px 0;text-align:left;">
-                            <p style="margin-bottom:10px;">✅ Compléter la mission d'infiltration</p>
-                            <p style="margin-bottom:10px;">✅ Collecter les 5 preuves</p>
-                            <p>✅ Réussir le quiz final (70% minimum)</p>
+                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px auto;max-width:450px;">
+                            <p style="margin-bottom:15px;">Score obtenu : <strong style="color:var(--neon-green);font-size:1.3em;">${finalScore}%</strong></p>
+
+                            <div style="margin:20px 0;">
+                                <label style="display:block;margin-bottom:8px;color:var(--neon-cyan);text-align:left;">Votre nom (pour l'attestation) :</label>
+                                <input type="text" id="certificate-name-folder" placeholder="Prénom NOM" style="
+                                    width:100%;
+                                    padding:12px 15px;
+                                    background:rgba(0,50,100,0.4);
+                                    border:2px solid rgba(0,212,255,0.4);
+                                    border-radius:8px;
+                                    color:white;
+                                    font-size:1em;
+                                    box-sizing:border-box;
+                                ">
+                            </div>
+
+                            <button class="start-btn" onclick="downloadCertificateFromFolder()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));margin-top:10px;">
+                                📥 Télécharger l'attestation
+                            </button>
                         </div>
-
-                        <button class="start-btn" onclick="closeModal(); showMissionBriefing();" style="margin-top:10px;">
-                            🎮 Commencer la mission
-                        </button>
                     </div>
-                `);
+                `;
             }
         }
 
-        // Télécharger l'attestation depuis l'écran d'accueil
-        function downloadCertificateFromHome() {
-            const name = document.getElementById('certificate-name-home').value.trim() || 'Participant';
+        // Débloquer l'attestation dans le dossier
+        function unlockCertificate(score) {
+            certificateUnlocked = true;
+            finalScore = score;
+
+            // Mettre à jour l'apparence du bouton dans la nav
+            const navItem = document.getElementById('certificate-nav-item');
+            if (navItem) {
+                navItem.style.opacity = '1';
+                navItem.style.cursor = 'pointer';
+                navItem.style.background = 'rgba(0,255,136,0.15)';
+                navItem.innerHTML = `
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-number" style="background:rgba(0,255,136,0.3);color:var(--neon-green);">✓</span>
+                    Attestation de réussite
+                `;
+            }
+        }
+
+        // Télécharger l'attestation depuis le dossier
+        function downloadCertificateFromFolder() {
+            const name = document.getElementById('certificate-name-folder').value.trim() || 'Participant';
             const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-            const score = localStorage.getItem('greenInfiltration_score') || '100';
-
-            generateCertificateHTML(name, date, parseInt(score));
+            generateCertificateHTML(name, date, finalScore);
         }
 
-        // Mettre à jour l'état du bouton attestation au chargement
-        function updateCertificateButton() {
-            const hasCompleted = localStorage.getItem('greenInfiltration_completed') === 'true';
-            const btn = document.getElementById('certificate-btn');
-            if (btn && hasCompleted) {
-                btn.innerHTML = '🎓 Attestation de réussite<span style="display:block;font-size:0.7em;margin-top:5px;color:var(--neon-green);">✓ Débloquée</span>';
-                btn.style.background = 'rgba(0,255,136,0.2)';
-                btn.style.borderColor = 'var(--neon-green)';
-                btn.style.opacity = '1';
-            }
+        // Aller au dossier pour récupérer l'attestation
+        function goToFolderCertificate() {
+            closeModal();
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('briefing-screen').classList.add('active');
+            showCertificateInFolder();
         }
-
-        // Appeler au chargement
-        document.addEventListener('DOMContentLoaded', updateCertificateButton);
 
         function showModule(index) {
             currentModule = index;
@@ -3996,10 +4005,9 @@ Tapez <span class="info">help</span> pour la liste des commandes.
             const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
             const passed = percentage >= 70;
 
-            // Sauvegarder dans localStorage si réussi
+            // Débloquer l'attestation si réussi
             if (passed) {
-                localStorage.setItem('greenInfiltration_completed', 'true');
-                localStorage.setItem('greenInfiltration_score', percentage.toString());
+                unlockCertificate(percentage);
             }
 
             const content = `
@@ -4022,26 +4030,12 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                     ${passed ? `
                         <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px 0;">
                             <p style="font-size:1.1em;margin-bottom:15px;">🎉 Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
-                            <p style="color:#aaa;">Vous pouvez maintenant télécharger votre attestation de réussite.</p>
-                        </div>
-
-                        <div style="margin-bottom:20px;">
-                            <label style="display:block;margin-bottom:8px;color:var(--neon-cyan);">Votre nom (pour l'attestation) :</label>
-                            <input type="text" id="certificate-name" placeholder="Prénom NOM" style="
-                                width:100%;
-                                padding:12px 15px;
-                                background:rgba(0,50,100,0.4);
-                                border:2px solid rgba(0,212,255,0.4);
-                                border-radius:8px;
-                                color:white;
-                                font-size:1em;
-                                box-sizing:border-box;
-                            ">
+                            <p style="color:#aaa;">Votre attestation de réussite est maintenant disponible dans le dossier d'infiltration.</p>
                         </div>
 
                         <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="start-btn" onclick="downloadCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
-                                📥 Télécharger l'attestation
+                            <button class="start-btn" onclick="goToFolderCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
+                                📂 Récupérer l'attestation
                             </button>
                             <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
                                 🔄 Rejouer
