@@ -1635,9 +1635,16 @@
             et <strong>vous échapper</strong> avant que la sécurité ne vous repère.
         </p>
 
-        <button class="start-btn" onclick="showBriefing()">
-            Accéder au Dossier d'Infiltration
-        </button>
+        <div style="display:flex;flex-direction:column;gap:15px;align-items:center;margin-top:30px;">
+            <button class="start-btn" onclick="showMissionBriefing()" style="width:100%;max-width:350px;">
+                🎮 Commencer la mission
+            </button>
+
+            <button class="start-btn" id="certificate-btn" onclick="showCertificateAccess()" style="width:100%;max-width:350px;background:rgba(100,100,100,0.3);border-color:#666;opacity:0.7;">
+                🔒 Attestation de réussite
+                <span style="display:block;font-size:0.7em;margin-top:5px;color:#888;">Terminez la mission pour débloquer</span>
+            </button>
+        </div>
     </div>
 
     <!-- SECTION BRIEFING / COURS -->
@@ -2238,6 +2245,99 @@
             showModule(0);
         }
 
+        // Afficher le briefing de mission directement (sans les modules de cours)
+        function showMissionBriefing() {
+            const briefingContent = briefingModules[briefingModules.length - 1]; // Module 8
+
+            showModal(`
+                <div style="max-width:700px;">
+                    <h2 class="module-title" style="color:var(--neon-green);margin-bottom:20px;">${briefingContent.title}</h2>
+                    ${briefingContent.content}
+
+                    <div style="display:flex;gap:15px;justify-content:center;margin-top:30px;flex-wrap:wrap;">
+                        <button class="start-btn" onclick="closeModal(); startGame();" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
+                            🎮 Lancer l'infiltration
+                        </button>
+                    </div>
+                </div>
+            `);
+        }
+
+        // Vérifier et afficher l'accès à l'attestation
+        function showCertificateAccess() {
+            const hasCompleted = localStorage.getItem('greenInfiltration_completed') === 'true';
+
+            if (hasCompleted) {
+                showModal(`
+                    <div style="max-width:500px;text-align:center;">
+                        <div style="font-size:3em;margin-bottom:20px;">🎓</div>
+                        <h2 style="color:var(--neon-green);margin-bottom:20px;">Attestation de réussite</h2>
+                        <p style="margin-bottom:25px;">Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
+
+                        <div style="margin-bottom:20px;">
+                            <label style="display:block;margin-bottom:8px;color:var(--neon-cyan);">Votre nom (pour l'attestation) :</label>
+                            <input type="text" id="certificate-name-home" placeholder="Prénom NOM" style="
+                                width:100%;
+                                padding:12px 15px;
+                                background:rgba(0,50,100,0.4);
+                                border:2px solid rgba(0,212,255,0.4);
+                                border-radius:8px;
+                                color:white;
+                                font-size:1em;
+                                box-sizing:border-box;
+                            ">
+                        </div>
+
+                        <button class="start-btn" onclick="downloadCertificateFromHome()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
+                            📥 Télécharger l'attestation
+                        </button>
+                    </div>
+                `);
+            } else {
+                showModal(`
+                    <div style="max-width:450px;text-align:center;">
+                        <div style="font-size:3em;margin-bottom:20px;">🔒</div>
+                        <h2 style="color:var(--neon-pink);margin-bottom:20px;">Attestation verrouillée</h2>
+                        <p style="margin-bottom:15px;">Pour obtenir votre attestation de réussite, vous devez :</p>
+
+                        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:20px;margin:20px 0;text-align:left;">
+                            <p style="margin-bottom:10px;">✅ Compléter la mission d'infiltration</p>
+                            <p style="margin-bottom:10px;">✅ Collecter les 5 preuves</p>
+                            <p>✅ Réussir le quiz final (70% minimum)</p>
+                        </div>
+
+                        <button class="start-btn" onclick="closeModal(); showMissionBriefing();" style="margin-top:10px;">
+                            🎮 Commencer la mission
+                        </button>
+                    </div>
+                `);
+            }
+        }
+
+        // Télécharger l'attestation depuis l'écran d'accueil
+        function downloadCertificateFromHome() {
+            const name = document.getElementById('certificate-name-home').value.trim() || 'Participant';
+            const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+            const score = localStorage.getItem('greenInfiltration_score') || '100';
+
+            generateCertificateHTML(name, date, parseInt(score));
+        }
+
+        // Mettre à jour l'état du bouton attestation au chargement
+        function updateCertificateButton() {
+            const hasCompleted = localStorage.getItem('greenInfiltration_completed') === 'true';
+            const btn = document.getElementById('certificate-btn');
+            if (btn && hasCompleted) {
+                btn.innerHTML = '🎓 Attestation de réussite<span style="display:block;font-size:0.7em;margin-top:5px;color:var(--neon-green);">✓ Débloquée</span>';
+                btn.style.background = 'rgba(0,255,136,0.2)';
+                btn.style.borderColor = 'var(--neon-green)';
+                btn.style.opacity = '1';
+            }
+        }
+
+        // Appeler au chargement
+        document.addEventListener('DOMContentLoaded', updateCertificateButton);
+
         function showModule(index) {
             currentModule = index;
             const module = briefingModules[index];
@@ -2760,6 +2860,11 @@
                 const minutes = Math.floor(gameState.timeLeft / 60);
                 const seconds = gameState.timeLeft % 60;
                 timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                // Augmentation passive de la suspicion (+1% toutes les 20 secondes)
+                if (gameState.timeLeft % 20 === 0 && gameState.timeLeft > 0) {
+                    addSuspicion(1);
+                }
 
                 if (gameState.timeLeft <= 60) {
                     timerEl.style.color = '#ff3366';
@@ -3891,6 +3996,12 @@ Tapez <span class="info">help</span> pour la liste des commandes.
             const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
             const passed = percentage >= 70;
 
+            // Sauvegarder dans localStorage si réussi
+            if (passed) {
+                localStorage.setItem('greenInfiltration_completed', 'true');
+                localStorage.setItem('greenInfiltration_score', percentage.toString());
+            }
+
             const content = `
                 <div class="final-report" style="max-width:600px;">
                     <div class="final-title" style="font-size:1.5em;">
@@ -3963,6 +4074,10 @@ Tapez <span class="info">help</span> pour la liste des commandes.
             const name = document.getElementById('certificate-name').value.trim() || 'Participant';
             const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
             const score = Math.round((quizState.score / quizQuestions.length) * 100);
+            generateCertificateHTML(name, date, score);
+        }
+
+        function generateCertificateHTML(name, date, score) {
 
             const certificateHTML = `
                 <!DOCTYPE html>
