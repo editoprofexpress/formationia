@@ -1645,7 +1645,7 @@
         <div class="briefing-header">
             <div class="briefing-title">DOSSIER D'INFILTRATION - NIVEAU CONFIDENTIEL</div>
             <div class="briefing-progress">
-                <span id="progress-text">Module 1/8</span>
+                <span id="progress-text">Fichier 1/8</span>
                 <div class="briefing-progress-bar">
                     <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
                 </div>
@@ -1689,10 +1689,12 @@
                     <span class="nav-number">07</span>
                     IA Responsable
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(7)">
-                    <span class="nav-icon">🎯</span>
-                    <span class="nav-number">08</span>
-                    Mission Briefing
+                <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+                    <div class="briefing-nav-item" onclick="showModule(7)">
+                        <span class="nav-icon">🎯</span>
+                        <span class="nav-number">08</span>
+                        Mission
+                    </div>
                 </div>
                 <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
                     <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2);">
@@ -1710,13 +1712,13 @@
 
         <div class="briefing-footer">
             <button class="briefing-btn" id="prev-btn" onclick="prevModule()" disabled>
-                ← Module précédent
+                ← Fichier précédent
             </button>
             <button class="briefing-btn" id="skip-btn" onclick="skipToBriefing()">
-                Passer au briefing →
+                Démarrer la mission →
             </button>
             <button class="briefing-btn primary" id="next-btn" onclick="nextModule()">
-                Module suivant →
+                Fichier suivant →
             </button>
         </div>
     </div>
@@ -2371,7 +2373,7 @@
             // Mettre à jour la barre de progression
             const progress = ((completedModules.size) / briefingModules.length) * 100;
             document.getElementById('progress-fill').style.width = progress + '%';
-            document.getElementById('progress-text').textContent = `Module ${index + 1}/${briefingModules.length}`;
+            document.getElementById('progress-text').textContent = `Fichier ${index + 1}/${briefingModules.length}`;
 
             // Gérer les boutons
             document.getElementById('prev-btn').disabled = index === 0;
@@ -2381,7 +2383,7 @@
                 nextBtn.textContent = '🎮 Commencer la mission';
                 nextBtn.onclick = startGame;
             } else {
-                nextBtn.innerHTML = 'Module suivant →';
+                nextBtn.innerHTML = 'Fichier suivant →';
                 nextBtn.onclick = nextModule;
             }
 
