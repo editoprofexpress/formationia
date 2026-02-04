@@ -2417,13 +2417,6 @@
                         action: 'puzzleModels',
                         evidence: 'models'
                     },
-                    {
-                        id: 'worker-npc',
-                        type: 'npc',
-                        x: 12, y: 22,
-                        html: `<div style="width:240px;height:420px;cursor:pointer;transition:all 0.3s;display:flex;align-items:flex-end;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'"><img src="images/npc-technician.png" alt="Technicien" style="width:100%;height:auto;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 25px rgba(0,212,255,0.7));"></div>`,
-                        action: 'talkToWorker'
-                    }
                 ]
             },
             office: {
@@ -2901,8 +2894,8 @@
                     <p style="margin-top:15px;"><strong>Note :</strong> Durée de vie des équipements = <span class="document-highlight">5 ans max</span>. Prévoir renouvellement Q3.</p>
                 </div>
                 <div class="discovery-panel">
-                    <div class="discovery-title">🔍 Indice trouvé</div>
-                    <p>Les équipements sont renouvelés tous les 5 ans... Un cycle très court qui génère beaucoup de déchets électroniques.</p>
+                    <div class="discovery-title">📖 Le saviez-vous ?</div>
+                    <p>Les équipements sont renouvelés tous les 5 ans en moyenne. Ce cycle court génère énormément de déchets électroniques (e-waste).</p>
                 </div>
             `);
         }
@@ -2933,7 +2926,7 @@
 
         const terminalFileContents = {
             'readme.txt': 'Bienvenue sur le serveur NovaTech.\nUtilisez "help" pour voir les commandes disponibles.\nLes fichiers sensibles nécessitent une authentification admin.',
-            'hint.txt': 'Note du technicien: Le mot de passe admin est basé sur\nnotre consommation annuelle en TWh... Un indice:\nLes data centers = 1.5% de l\'électricité mondiale.\nCalculez: 1.5% de 27 700 TWh (conso mondiale).',
+            'hint.txt': 'Note interne: Le mot de passe admin est basé sur\nla consommation annuelle des data centers en TWh.\nRappel: Les data centers = 1.5% de l\'électricité mondiale.\nCalculez: 1.5% de 27 700 TWh (conso mondiale 2023).',
             'access.log': '[2024-09-15] admin login successful\n[2024-09-15] energy_report.enc accessed\n[2024-09-16] guest login attempt - denied\n[2024-09-17] maintenance scheduled',
             'energy_report.enc': '[FICHIER CHIFFRÉ - Accès admin requis]\nUtilisez: unlock <mot_de_passe>',
             'passwd': 'root:x:0:0:root:/root:/bin/bash\nadmin:x:1000:1000:Admin:/home/admin:/bin/bash\nguest:x:1001:1001:Guest:/home/guest:/bin/bash',
@@ -3163,13 +3156,11 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                         <div style="display:flex;justify-content:space-around;text-align:center;">
                             <div>
                                 <div style="font-size:0.8em;color:#8899aa;margin-bottom:5px;">PAR CONVERSATION</div>
-                                <div id="water-conv" style="font-family:'Space Mono',monospace;font-size:2em;color:var(--neon-blue);font-weight:bold;">500 mL</div>
-                                <div style="font-size:0.8em;color:#8899aa;">≈ 1 bouteille</div>
+                                <div id="water-conv" style="font-family:'Space Mono',monospace;font-size:2em;color:var(--neon-blue);font-weight:bold;">10 mL</div>
                             </div>
                             <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:30px;">
                                 <div style="font-size:0.8em;color:#8899aa;margin-bottom:5px;">SI 10 CONV./JOUR × 1 MOIS</div>
-                                <div id="water-month" style="font-family:'Space Mono',monospace;font-size:2em;color:var(--neon-pink);font-weight:bold;">150 L</div>
-                                <div style="font-size:0.8em;color:#8899aa;">≈ 300 bouteilles</div>
+                                <div id="water-month" style="font-family:'Space Mono',monospace;font-size:2em;color:var(--neon-pink);font-weight:bold;">3 L</div>
                             </div>
                         </div>
                     </div>
@@ -3386,29 +3377,6 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                 `;
                 addSuspicion(5);
             }
-        }
-
-        // Parler au technicien
-        function talkToWorker() {
-            showDialogue({
-                speaker: "👨‍💻 Technicien (chuchotant)",
-                text: "Vous êtes journaliste, c'est ça ? Je vous ai vu fouiller... Écoutez, je vais vous aider. Saviez-vous que <strong>84% de l'utilisation des modèles IA</strong> se fait sans aucune transparence environnementale ? Les entreprises ne publient presque rien.",
-                choices: [
-                    {
-                        text: "Pourquoi me dire ça ?",
-                        action: () => {
-                            showDialogue({
-                                speaker: "👨‍💻 Technicien",
-                                text: "Parce que ça ne peut plus durer. On nous demande d'optimiser les coûts, mais jamais l'impact environnemental. Le coffre du directeur contient des rapports sur la fabrication des équipements. Le code est crypté avec un <strong>vieux système romain</strong>... vous savez, comme César utilisait pour ses messages secrets.",
-                                choices: [
-                                    { text: "Merci pour l'info. Je serai discret.", action: () => closeDialogue() }
-                                ]
-                            });
-                        }
-                    },
-                    { text: "Je ne suis pas journaliste...", action: () => { closeDialogue(); addSuspicion(15); } }
-                ]
-            });
         }
 
         // Fouiller le bureau
