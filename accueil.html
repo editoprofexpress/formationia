@@ -128,6 +128,24 @@
             text-align: center;
             max-width: 1000px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-banner {
+            width: 100%;
+            max-width: 800px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .hero-badge {
@@ -458,7 +476,7 @@
 
     <header>
         <div class="logo">
-            <span class="logo-icon">🤖</span>
+            <img src="images/logo-ia-citoyenne.png" alt="Logo" class="logo-icon" style="width:45px;height:45px;object-fit:contain;">
             <span class="logo-text">IA CITOYENNE</span>
         </div>
         <nav>
@@ -470,6 +488,9 @@
 
     <main>
         <section class="hero">
+            <div class="hero-banner">
+                <img src="images/hero-banner.png" alt="Intelligence Artificielle">
+            </div>
             <div class="hero-badge">Formation Interactive Gratuite</div>
             <h1>Maîtrisez l'IA de manière <span class="highlight">responsable</span></h1>
             <p class="hero-subtitle">
@@ -505,7 +526,7 @@
             <h2 class="section-title">Les <span>4 domaines</span> de compétences</h2>
             <div class="domains-grid">
                 <div class="domain-card domain-fondations">
-                    <div class="domain-icon">🧠</div>
+                    <div class="domain-icon"><img src="images/domain-brain.png" alt="Fondations IA" style="width:60px;height:60px;object-fit:contain;"></div>
                     <h3 class="domain-title">Fondations IA</h3>
                     <p class="domain-description">
                         Comprenez ce qu'est vraiment l'IA, comment elle "apprend" et génère du contenu.
@@ -515,7 +536,7 @@
                 </div>
 
                 <div class="domain-card domain-interaction">
-                    <div class="domain-icon">💬</div>
+                    <div class="domain-icon"><img src="images/domain-chat.png" alt="Interaction" style="width:60px;height:60px;object-fit:contain;"></div>
                     <h3 class="domain-title">Interaction raisonnée</h3>
                     <p class="domain-description">
                         Maîtrisez l'art du prompt, itérez efficacement, et choisissez le bon niveau
@@ -525,7 +546,7 @@
                 </div>
 
                 <div class="domain-card domain-critique">
-                    <div class="domain-icon">🔍</div>
+                    <div class="domain-icon"><img src="images/domain-search.png" alt="Esprit critique" style="width:60px;height:60px;object-fit:contain;"></div>
                     <h3 class="domain-title">Limites et esprit critique</h3>
                     <p class="domain-description">
                         Détectez les hallucinations, identifiez les biais, et développez une posture
@@ -535,7 +556,7 @@
                 </div>
 
                 <div class="domain-card domain-citoyens">
-                    <div class="domain-icon">🌍</div>
+                    <div class="domain-icon"><img src="images/domain-earth.png" alt="Enjeux citoyens" style="width:60px;height:60px;object-fit:contain;"></div>
                     <h3 class="domain-title">Enjeux citoyens</h3>
                     <p class="domain-description">
                         Explorez l'impact environnemental, les enjeux de vie privée, la désinformation
