@@ -133,43 +133,89 @@
             color: #aabbcc;
         }
 
-        /* ==================== BOUTON RETOUR MODULES ==================== */
-        .back-to-modules {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 9999;
+        /* ==================== LIENS RETOUR MODULES ==================== */
+        /* Lien dans la sidebar du briefing */
+        .back-link-sidebar {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 20px;
-            background: rgba(10, 20, 40, 0.9);
-            border: 1px solid rgba(0, 212, 255, 0.5);
+            gap: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
             border-radius: 8px;
             color: var(--neon-blue);
             text-decoration: none;
             font-family: 'Space Mono', monospace;
-            font-size: 0.85em;
+            font-size: 0.8em;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
         }
 
-        .back-to-modules:hover {
+        .back-link-sidebar:hover {
             background: rgba(0, 212, 255, 0.15);
             border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
             transform: translateX(-3px);
         }
 
-        .back-to-modules .back-icon {
-            font-size: 1.2em;
+        .back-link-sidebar .back-arrow {
             transition: transform 0.3s ease;
         }
 
-        .back-to-modules:hover .back-icon {
+        .back-link-sidebar:hover .back-arrow {
             transform: translateX(-3px);
+        }
+
+        /* Bouton dans la top-bar du jeu */
+        .back-btn-game {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            margin-right: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 6px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn-game:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+
+        /* Lien discret sur l'écran titre */
+        .back-link-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #8899aa;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link-title:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #aabbcc;
         }
 
         /* ==================== GAME CONTAINER ==================== */
@@ -1662,14 +1708,13 @@
     </style>
 </head>
 <body>
-    <!-- BOUTON RETOUR AUX MODULES -->
-    <a href="modules.html" class="back-to-modules" title="Retour à la liste des modules">
-        <span class="back-icon">←</span>
-        <span>Modules</span>
-    </a>
-
     <!-- ÉCRAN TITRE -->
     <div id="title-screen">
+        <!-- Lien retour discret -->
+        <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+            <span>←</span>
+            <span>Modules</span>
+        </a>
         <div class="title-logo">🔐</div>
         <h1 class="main-title">Green Infiltration</h1>
         <p class="subtitle">Escape Game - L'Impact Environnemental de l'IA</p>
@@ -1706,6 +1751,12 @@
 
         <div class="briefing-body">
             <nav class="briefing-nav">
+                <!-- Lien retour vers modules -->
+                <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+                    <span class="back-arrow">←</span>
+                    <span>Tous les modules</span>
+                </a>
+
                 <div class="briefing-nav-item active" onclick="showModule(0)">
                     <span class="nav-icon">🎬</span>
                     <span class="nav-number">01</span>
@@ -1784,9 +1835,16 @@
         <div id="ui-overlay">
             <!-- Barre supérieure -->
             <div class="top-bar">
-                <div class="location-name">
-                    <span class="location-icon" id="location-icon">📍</span>
-                    <span id="location-name">Couloir Principal</span>
+                <div style="display: flex; align-items: center;">
+                    <!-- Bouton retour modules -->
+                    <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                        <span>←</span>
+                        <span>Modules</span>
+                    </a>
+                    <div class="location-name">
+                        <span class="location-icon" id="location-icon">📍</span>
+                        <span id="location-name">Couloir Principal</span>
+                    </div>
                 </div>
                 <div class="alert-level">
                     <div class="timer" id="timer">15:00</div>
