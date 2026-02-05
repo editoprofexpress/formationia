@@ -133,6 +133,45 @@
             color: #aabbcc;
         }
 
+        /* ==================== BOUTON RETOUR MODULES ==================== */
+        .back-to-modules {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(10, 20, 40, 0.9);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            border-radius: 8px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-to-modules:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .back-to-modules .back-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .back-to-modules:hover .back-icon {
+            transform: translateX(-3px);
+        }
+
         /* ==================== GAME CONTAINER ==================== */
         #game-container {
             display: none;
@@ -1623,6 +1662,12 @@
     </style>
 </head>
 <body>
+    <!-- BOUTON RETOUR AUX MODULES -->
+    <a href="modules.html" class="back-to-modules" title="Retour à la liste des modules">
+        <span class="back-icon">←</span>
+        <span>Modules</span>
+    </a>
+
     <!-- ÉCRAN TITRE -->
     <div id="title-screen">
         <div class="title-logo">🔐</div>
