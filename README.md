@@ -1,4 +1,4 @@
-# IA Citoyenne - Formation Interactive
+# Formation IA - Formation Interactive
 
 **Plateforme éducative gratuite sur l'IA responsable** - 15 micro-modules interactifs ludifiés pour comprendre l'intelligence artificielle de manière citoyenne.
 
@@ -262,7 +262,7 @@ Chaque module génère une attestation HTML téléchargeable avec :
 
 ## Licence et Crédits
 
-**Projet** : IA Citoyenne - Formation Interactive
+**Projet** : Formation IA - Formation Interactive
 **Éditeur** : [Prof Express](https://www.profexpress.com)
 **Usage** : Éducatif, gratuit, sans tracking
 
