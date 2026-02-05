@@ -151,43 +151,6 @@
             font-size: 1.1em;
         }
 
-        /* Progress bar */
-        .global-progress {
-            max-width: 600px;
-            margin: 30px auto;
-            padding: 0 40px;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-
-        .progress-label {
-            color: var(--text-muted);
-        }
-
-        .progress-value {
-            color: var(--neon-green);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .progress-bar {
-            height: 8px;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
-            border-radius: 4px;
-            transition: width 0.5s;
-        }
-
         /* Filter tabs */
         .filter-tabs {
             display: flex;
@@ -467,16 +430,6 @@
         <div class="page-header">
             <h1>Catalogue des <span>Modules</span></h1>
             <p>15 micro-modules interactifs organisés en 4 domaines. Commencez par celui qui vous inspire !</p>
-        </div>
-
-        <div class="global-progress">
-            <div class="progress-info">
-                <span class="progress-label">Progression globale</span>
-                <span class="progress-value" id="progress-count">1/15 modules</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width: 6.67%"></div>
-            </div>
         </div>
 
         <div class="filter-tabs">
