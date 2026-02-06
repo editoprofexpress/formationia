@@ -1757,43 +1757,43 @@
                     <span>Tous les modules</span>
                 </a>
 
-                <div class="briefing-nav-item active" onclick="showModule(0)">
+                <div class="briefing-nav-item active" onclick="showLesson(0)">
                     <span class="nav-icon">🎬</span>
                     <span class="nav-number">01</span>
                     Introduction
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(1)">
+                <div class="briefing-nav-item" onclick="showLesson(1)">
                     <span class="nav-icon">🏢</span>
                     <span class="nav-number">02</span>
                     Data Centers
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(2)">
+                <div class="briefing-nav-item" onclick="showLesson(2)">
                     <span class="nav-icon">🌡️</span>
                     <span class="nav-number">03</span>
                     Empreinte Carbone
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(3)">
+                <div class="briefing-nav-item" onclick="showLesson(3)">
                     <span class="nav-icon">💧</span>
                     <span class="nav-number">04</span>
                     Ressources en Eau
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(4)">
+                <div class="briefing-nav-item" onclick="showLesson(4)">
                     <span class="nav-icon">⛏️</span>
                     <span class="nav-number">05</span>
                     Ressources Naturelles
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(5)">
+                <div class="briefing-nav-item" onclick="showLesson(5)">
                     <span class="nav-icon">🗑️</span>
                     <span class="nav-number">06</span>
                     Déchets Électroniques
                 </div>
-                <div class="briefing-nav-item" onclick="showModule(6)">
+                <div class="briefing-nav-item" onclick="showLesson(6)">
                     <span class="nav-icon">🌱</span>
                     <span class="nav-number">07</span>
                     IA Responsable
                 </div>
                 <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
-                    <div class="briefing-nav-item" onclick="showModule(7)">
+                    <div class="briefing-nav-item" onclick="showLesson(7)">
                         <span class="nav-icon">🎮</span>
                         <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
                         Mission
@@ -1814,10 +1814,10 @@
         </div>
 
         <div class="briefing-footer">
-            <button class="briefing-btn" id="prev-btn" onclick="prevModule()" disabled>
+            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
                 ← Fichier précédent
             </button>
-            <button class="briefing-btn primary" id="next-btn" onclick="nextModule()">
+            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
                 Fichier suivant →
             </button>
         </div>
@@ -1934,11 +1934,11 @@
         };
 
         // ==================== SYSTÈME DE BRIEFING ====================
-        let currentModule = 0;
-        const completedModules = new Set();
+        let currentLesson = 0;
+        const completedLessons = new Set();
 
-        const briefingModules = [
-            // Module 1: Introduction
+        const briefingLessons = [
+            // Cours 1: Introduction
             {
                 title: "🎬 Introduction : La Révolution de l'IA Générative",
                 content: `
@@ -1972,7 +1972,7 @@
                     </div>
                 `
             },
-            // Module 2: Data Centers
+            // Cours 2: Data Centers
             {
                 title: "🏢 Les Centres de Données : Cœur Énergétique de l'IA",
                 content: `
@@ -2029,7 +2029,7 @@
                     </div>
                 `
             },
-            // Module 3: Empreinte Carbone
+            // Cours 3: Empreinte Carbone
             {
                 title: "🌡️ L'Empreinte Carbone du Numérique",
                 content: `
@@ -2082,7 +2082,7 @@
                     </div>
                 `
             },
-            // Module 4: Ressources en Eau
+            // Cours 4: Ressources en Eau
             {
                 title: "💧 L'Impact sur les Ressources en Eau",
                 content: `
@@ -2135,7 +2135,7 @@
                     </div>
                 `
             },
-            // Module 5: Ressources Naturelles
+            // Cours 5: Ressources Naturelles
             {
                 title: "⛏️ L'Extraction des Ressources Naturelles",
                 content: `
@@ -2178,7 +2178,7 @@
                     </div>
                 `
             },
-            // Module 6: Déchets Électroniques
+            // Cours 6: Déchets Électroniques
             {
                 title: "🗑️ Les Déchets Électroniques",
                 content: `
@@ -2227,7 +2227,7 @@
                     </div>
                 `
             },
-            // Module 7: IA Responsable
+            // Cours 7: IA Responsable
             {
                 title: "🌱 Pistes pour une IA Plus Responsable",
                 content: `
@@ -2281,7 +2281,7 @@
                     </div>
                 `
             },
-            // Module 8: Mission Briefing
+            // Cours 8: Mission Briefing
             {
                 title: "🎯 Briefing de Mission : Infiltration NovaTech",
                 content: `
@@ -2351,7 +2351,7 @@
         function showBriefing() {
             document.getElementById('title-screen').classList.add('hidden');
             document.getElementById('briefing-screen').classList.add('active');
-            showModule(0);
+            showLesson(0);
         }
 
         // Variable pour suivre si le quiz est réussi (session courante uniquement)
@@ -2456,14 +2456,14 @@
             showCertificateInFolder();
         }
 
-        function showModule(index) {
-            currentModule = index;
-            const module = briefingModules[index];
+        function showLesson(index) {
+            currentLesson = index;
+            const lesson = briefingLessons[index];
 
             // Mettre à jour le contenu
             document.getElementById('briefing-content').innerHTML = `
-                <h2 class="module-title">${module.title}</h2>
-                ${module.content}
+                <h2 class="module-title">${lesson.title}</h2>
+                ${lesson.content}
             `;
 
             // Mettre à jour la navigation
@@ -2471,14 +2471,14 @@
             navItems.forEach((item, i) => {
                 item.classList.remove('active');
                 if (i === index) item.classList.add('active');
-                if (completedModules.has(i)) item.classList.add('completed');
+                if (completedLessons.has(i)) item.classList.add('completed');
             });
 
-            // Marquer le module comme lu
-            completedModules.add(index);
+            // Marquer le cours comme lu
+            completedLessons.add(index);
 
             // Mettre à jour la barre de progression
-            const progress = ((completedModules.size) / briefingModules.length) * 100;
+            const progress = ((completedLessons.size) / briefingLessons.length) * 100;
             document.getElementById('progress-fill').style.width = progress + '%';
 
             // Afficher "Fichier X/7" pour les fichiers, "Mission" pour la mission
@@ -2492,7 +2492,7 @@
             document.getElementById('prev-btn').disabled = index === 0;
 
             const nextBtn = document.getElementById('next-btn');
-            if (index === briefingModules.length - 1) {
+            if (index === briefingLessons.length - 1) {
                 // Sur la page Mission : bouton pour lancer le jeu
                 nextBtn.style.visibility = 'visible';
                 nextBtn.textContent = '🎮 Commencer la mission';
@@ -2503,27 +2503,27 @@
             } else {
                 nextBtn.style.visibility = 'visible';
                 nextBtn.innerHTML = 'Fichier suivant →';
-                nextBtn.onclick = nextModule;
+                nextBtn.onclick = nextLesson;
             }
 
             // Scroll en haut
             document.getElementById('briefing-content').scrollTop = 0;
         }
 
-        function nextModule() {
-            if (currentModule < briefingModules.length - 1) {
-                showModule(currentModule + 1);
+        function nextLesson() {
+            if (currentLesson < briefingLessons.length - 1) {
+                showLesson(currentLesson + 1);
             }
         }
 
-        function prevModule() {
-            if (currentModule > 0) {
-                showModule(currentModule - 1);
+        function prevLesson() {
+            if (currentLesson > 0) {
+                showLesson(currentLesson - 1);
             }
         }
 
         function skipToBriefing() {
-            showModule(briefingModules.length - 1);
+            showLesson(briefingLessons.length - 1);
         }
 
         // Définition des salles
