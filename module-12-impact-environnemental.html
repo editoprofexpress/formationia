@@ -2724,7 +2724,7 @@
             },
             servers: {
                 condition: () => !gameState.evidence.energy,
-                message: "Ces serveurs tournent 24h/24. Le terminal permet d'accéder aux rapports. Cherchez dans les fichiers, il y a un indice sur le mot de passe."
+                message: "Ces serveurs tournent 24h/24. Le terminal cache des rapports chiffrés. Cherchez l'indice dans les fichiers, puis tapez: unlock + le mot de passe trouvé."
             },
             cooling: {
                 condition: () => !gameState.evidence.water,
@@ -2735,8 +2735,8 @@
                 message: "La salle de contrôle contient des données sur les modèles IA et les émissions. Analysez bien les graphiques."
             },
             office: {
-                condition: () => !gameState.evidence.manufacturing,
-                message: "Le bureau du directeur... Son coffre utilise un chiffrement César. Testez différents décalages jusqu'à trouver un mot français."
+                condition: () => !gameState.evidence.manufacturing || !gameState.evidence.co2,
+                message: "Le bureau du directeur contient DEUX sources d'info : un rapport CO₂ sur le bureau et un coffre secret. Le coffre utilise un chiffrement César - testez différents décalages."
             }
         };
 
@@ -3228,7 +3228,7 @@ Tapez <span class="info">help</span> pour la liste des commandes.
   <span class="info">cd</span> [dir]  - Change de répertoire
   <span class="info">cat</span> [file]- Affiche le contenu d'un fichier
   <span class="info">pwd</span>       - Affiche le répertoire courant
-  <span class="info">unlock</span> [pw]- Déverrouille les fichiers chiffrés
+  <span class="info">unlock</span> [code] - Déverrouille avec: unlock + mot de passe
   <span class="info">clear</span>     - Efface l'écran
   <span class="info">exit</span>      - Ferme le terminal`;
                     break;
@@ -3281,7 +3281,7 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                 case 'unlock':
                     if (!args[0]) {
                         result = '<span class="error">unlock: mot de passe requis</span>';
-                    } else if (args[0] === '415' || args[0] === '415twh') {
+                    } else if (['415', '415twh', '415.5', '415,5', '416', '416twh'].includes(args[0].toLowerCase())) {
                         result = `<span class="success">✓ MOT DE PASSE ACCEPTÉ</span>
 
 ═══════════════════════════════════════
