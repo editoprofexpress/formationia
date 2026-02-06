@@ -243,13 +243,14 @@ Chaque module génère une attestation HTML téléchargeable avec :
 ## Versioning
 
 ### V1.0.0 (actuelle)
-- Tag Git : `v1.0.0`
+- Branche Git : `v1-stable`
 - Contenu :
   - Page d'accueil (`index.html`)
   - Catalogue des modules (`modules.html`)
   - Module 12 complet (escape game environnement)
   - Charte graphique établie
   - Infrastructure de base
+  - UX améliorée (boutons retour, SMS d'aide, validations)
 
 ### Roadmap
 - V1.1 : Modules 1-4 (Fondations IA)
