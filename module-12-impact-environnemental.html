@@ -3554,13 +3554,12 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                 <div class="info-card" style="margin:15px 0;">
                     <h4>🔍 Question d'analyse :</h4>
                     <p style="margin:10px 0;">En observant le graphique, calculez le <strong>ratio</strong> entre le modèle le plus énergivore (GPT-4) et le plus économe (Llama 8B).</p>
-                    <p style="font-size:0.85em;color:#8899aa;">Indice : Divisez la plus grande valeur par la plus petite.</p>
 
                     <div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">
-                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 10)">×10</button>
-                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 50)">×50</button>
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 12)">×12</button>
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 55)">×55</button>
                         <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 210)">×210</button>
-                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 1000)">×1000</button>
+                        <button class="connection-item" style="flex:1;min-width:100px;padding:12px;" onclick="checkModelsGraph(this, 1050)">×1050</button>
                     </div>
                 </div>
 
@@ -3993,7 +3992,7 @@ Tapez <span class="info">help</span> pour la liste des commandes.
             },
             {
                 question: "Quel est le ratio de consommation énergétique entre le modèle IA le plus léger et le plus lourd ?",
-                options: ["×10", "×50", "×210", "×1000"],
+                options: ["×12", "×55", "×210", "×1050"],
                 correct: 2
             },
             {
