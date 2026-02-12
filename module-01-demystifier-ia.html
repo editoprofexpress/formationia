@@ -1022,6 +1022,49 @@
     }
     .explain.show{display:block}
 
+    /* ==================== EVIDENCE CARDS ==================== */
+    .evidence-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin:12px 0}
+    .evidence-card{
+      background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.2);
+      border-radius:14px;padding:16px;cursor:pointer;
+      transition:all .3s ease;text-align:center;position:relative;
+    }
+    .evidence-card:hover{border-color:rgba(0,212,255,.6);background:rgba(0,212,255,.08);transform:translateY(-2px)}
+    .evidence-card .ev-icon{font-size:2em;margin-bottom:8px;display:block}
+    .evidence-card .ev-num{font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:.85em;margin-bottom:4px}
+    .evidence-card .ev-title{color:var(--text);font-size:.9em;font-weight:600;margin-bottom:6px}
+    .evidence-card .ev-summary{color:var(--muted);font-size:.8em;line-height:1.4}
+    .evidence-card.examined{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.06)}
+    .evidence-card.examined::after{
+      content:'✓';position:absolute;top:8px;right:10px;
+      color:var(--neon-green);font-weight:bold;font-size:1.1em;
+    }
+    .evidence-progress{
+      display:flex;align-items:center;gap:12px;margin:12px 0;
+      padding:10px 16px;border-radius:12px;
+      background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.15);
+    }
+    .evidence-progress .ep-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+    .evidence-progress .ep-fill{height:100%;background:linear-gradient(90deg,var(--neon-blue),var(--neon-green));border-radius:3px;transition:width .4s ease}
+    .evidence-progress .ep-label{font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:.85em;white-space:nowrap}
+
+    /* Evidence modal rich content */
+    .evidence-type{
+      font-family:'Space Mono',monospace;font-size:.85em;
+      color:var(--neon-purple);margin-bottom:12px;
+      padding:6px 12px;border-radius:8px;display:inline-block;
+      background:rgba(168,85,247,.08);border:1px solid rgba(168,85,247,.25);
+    }
+    .evidence-quote{
+      font-style:italic;color:#b8d8f0;line-height:1.65;
+      padding:14px 18px;margin:12px 0;border-radius:12px;
+      background:rgba(0,212,255,.04);border-left:3px solid var(--neon-blue);
+    }
+    .evidence-detail{margin-top:14px;color:var(--text);line-height:1.6}
+    .evidence-detail ul{margin:8px 0 0 18px;padding:0}
+    .evidence-detail li{margin-bottom:6px;color:#b8d8f0}
+    .evidence-detail mark{background:rgba(0,255,136,.15);color:var(--neon-green);padding:1px 5px;border-radius:4px}
+
     /* ==================== MODAL (preuves) ==================== */
     .modal {
       position: fixed;
@@ -1341,12 +1384,12 @@
   </div>
 
   <!-- ==================== MODAL (preuves) ==================== -->
-  <div class="modal" id="modal">
+  <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
     <div class="modal-card">
       <h3 id="modal-title">Titre</h3>
-      <p id="modal-body">Contenu</p>
+      <div id="modal-body"></div>
       <div class="modal-actions">
-        <button class="btn" onclick="closeModal()">Fermer</button>
+        <button class="btn green" onclick="closeModal()">Compris — Fermer le dossier</button>
       </div>
     </div>
   </div>
@@ -2600,126 +2643,212 @@ function verifyHierarchy(){
 }
 
 /* =========================================================
-   TERMINAL 4 — ENQUÊTE GENIUS AI
+   TERMINAL 4 — ENQUÊTE GENIUS AI (modal d'inspection)
 ========================================================= */
 const evidence = [
   {
-    id:1,
-    title:"Indice #1 — Documentation technique",
-    text:"Le manuel révèle une gigantesque base de règles créée par 500 experts. Chaque symptôme est associé à des diagnostics via des instructions « SI… ALORS… »."
+    id:1, icon:"📄", type:"Document technique classifié",
+    title:"Documentation technique",
+    summary:"Manuel de 2 000 pages — architecture interne",
+    html:`<div class="evidence-type">📄 Document technique classifié</div>
+      <div class="evidence-quote">"Le système repose sur une base de <strong>15 000 règles</strong>, chacune rédigée par une équipe de 500 experts médicaux. Chaque symptôme est associé à des diagnostics via des instructions conditionnelles <strong>SI… ALORS…</strong>"</div>
+      <div class="evidence-detail"><strong>Éléments clés :</strong>
+        <ul>
+          <li>Architecture basée sur des <mark>règles explicites</mark></li>
+          <li>15 000 règles programmées manuellement</li>
+          <li>500 experts ont contribué à la base de connaissances</li>
+          <li>Logique conditionnelle SI… ALORS…</li>
+        </ul>
+      </div>`
   },
   {
-    id:2,
-    title:"Indice #2 — Performance aux échecs",
-    text:"Genius AI évalue 300 millions de positions par seconde sur supercalculateur. Algorithmes programmés par des grands maîtres."
+    id:2, icon:"🏆", type:"Rapport de benchmark",
+    title:"Performance aux échecs",
+    summary:"Tests sur le module stratégique intégré",
+    html:`<div class="evidence-type">🏆 Rapport de benchmark confidentiel</div>
+      <div class="evidence-quote">"Le module de stratégie évalue <strong>300 millions de positions par seconde</strong> grâce à des algorithmes programmés par des grands maîtres d'échecs internationaux."</div>
+      <div class="evidence-detail"><strong>Éléments clés :</strong>
+        <ul>
+          <li>300 millions de positions/seconde</li>
+          <li>Algorithmes <mark>programmés par des experts</mark></li>
+          <li>Aucune mention d'apprentissage automatique</li>
+          <li>Puissance de calcul brute + règles prédéfinies</li>
+        </ul>
+      </div>`
   },
   {
-    id:3,
-    title:"Indice #3 — Limites observées",
-    text:"Face à une maladie inconnue absente de la base de règles, le système échoue, contrairement à un humain qui raisonne par analogie."
+    id:3, icon:"⚠️", type:"Rapport d'incident n°47",
+    title:"Limites observées",
+    summary:"Échecs face à des cas imprévus",
+    html:`<div class="evidence-type">⚠️ Rapport d'incident n°47</div>
+      <div class="evidence-quote">"Face à une maladie rare absente de la base de règles, le système a produit un diagnostic erroné. Contrairement à un médecin humain qui raisonne par analogie, Genius AI <strong>ne peut rien déduire au-delà de ses règles programmées</strong>."</div>
+      <div class="evidence-detail"><strong>Éléments clés :</strong>
+        <ul>
+          <li>Échec face à l'<mark>imprévu</mark></li>
+          <li>Incapable de raisonner par analogie</li>
+          <li>Limité aux cas couverts par les règles</li>
+          <li>Système <mark>rigide</mark> — pas d'adaptation</li>
+        </ul>
+      </div>`
   },
   {
-    id:4,
-    title:"Indice #4 — Transparence",
-    text:"Pour chaque décision, Genius AI explique exactement quelle règle elle applique et pourquoi. Transparence totale."
+    id:4, icon:"✅", type:"Audit indépendant",
+    title:"Transparence",
+    summary:"Résultats de l'audit externe",
+    html:`<div class="evidence-type">✅ Rapport d'audit indépendant</div>
+      <div class="evidence-quote">"Pour chaque diagnostic, Genius AI fournit la chaîne complète de raisonnement : quelle règle a été appliquée, sur quel symptôme, et pourquoi. <strong>Transparence totale et traçabilité parfaite.</strong>"</div>
+      <div class="evidence-detail"><strong>Éléments clés :</strong>
+        <ul>
+          <li>Raisonnement <mark>100% explicable</mark></li>
+          <li>Chaîne de décision traçable</li>
+          <li>Audit possible à chaque étape</li>
+          <li>Contraste avec les systèmes « boîte noire »</li>
+        </ul>
+      </div>`
   },
   {
-    id:5,
-    title:"Indice #5 — Témoignage d’ingénieur",
-    text:"« Aucun réseau de neurones, aucun apprentissage automatique. Tout est basé sur des règles logiques programmées manuellement. »"
+    id:5, icon:"🎤", type:"Témoignage confidentiel",
+    title:"Témoignage de l'ingénieur en chef",
+    summary:"Déclaration sous serment",
+    html:`<div class="evidence-type">🎤 Témoignage confidentiel — Ing. en chef</div>
+      <div class="evidence-quote">"<strong>Aucun réseau de neurones, aucun apprentissage automatique.</strong> Tout est basé sur des règles logiques programmées manuellement. C'est un système expert classique, pas une IA nouvelle génération."</div>
+      <div class="evidence-detail"><strong>Éléments clés :</strong>
+        <ul>
+          <li><mark>Aucun réseau de neurones</mark></li>
+          <li>Aucun apprentissage automatique</li>
+          <li>Règles logiques programmées manuellement</li>
+          <li>Qualifié de « système expert classique »</li>
+        </ul>
+      </div>`
   }
 ];
 
 function renderTerminal4(){
   $('terminal-container').innerHTML = `
-    <div class="terminal-title">Terminal 4 — Enquête “Genius AI”</div>
-    <div class="terminal-sub">Collectez les preuves, puis faites 3 déductions. <span style="color:var(--muted)">(Mauvaise déduction : -10 crédibilité)</span></div>
+    <div class="terminal-title">Terminal 4 — Enquête "Genius AI"</div>
+    <div class="terminal-sub">Inspectez les 5 pièces du dossier, puis formulez vos déductions. <span style="color:#9fb6c8">(Mauvaise déduction : -10 crédibilité)</span></div>
     <div class="divider"></div>
 
     <div class="callout">
-      <strong>Article — “Le Quotidien Tech”</strong><br/>
-      TechCorp annonce “Genius AI”, présentée comme une super-IA. Votre mission : vérifier la réalité technique derrière le marketing.
+      <strong>🗞️ Article — "Le Quotidien Tech"</strong><br/>
+      <em>"TechCorp dévoile <strong>Genius AI</strong>, annoncée comme la plus grande avancée en intelligence artificielle depuis 20 ans. Capable de diagnostiquer des maladies, de battre des champions d'échecs et de prédire des tendances financières, cette super-IA promet de révolutionner l'industrie."</em>
+      <br/><br/>
+      <span style="color:var(--neon-blue)">🕵️ Mission :</span> Derrière le marketing, quelle est la réalité technique ? Inspectez les preuves pour le découvrir.
     </div>
 
-    <div class="grid-3" id="t4-evidence"></div>
+    <h4 style="font-family:'Space Mono',monospace;color:var(--neon-blue);margin:16px 0 8px">🔍 Dossier d'enquête</h4>
+    <div class="evidence-progress">
+      <span class="ep-label" id="ep-count">0 / 5 preuves</span>
+      <div class="ep-bar"><div class="ep-fill" id="ep-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="evidence-grid" id="t4-evidence"></div>
 
     <div class="divider"></div>
 
-    <div class="callout warn">
-      <strong>Déductions :</strong> répondez correctement aux 3 questions pour clôturer le dossier.
-      <br/><span style="color:var(--muted)">Bonus : +10 crédibilité si enquête parfaite.</span>
+    <div class="callout warn" id="t4-deduction-lock">
+      <strong>🔒 Déductions verrouillées</strong><br/>
+      Inspectez au moins <strong>3 preuves</strong> pour débloquer les déductions.
+      <br/><span style="color:var(--muted)">Bonus : +10 crédibilité si les 5 preuves sont consultées.</span>
     </div>
 
-    <div class="q-card">
-      <div class="q-head"><span class="mono">Q1</span><span class="muted">Type d’IA ?</span></div>
-      <div class="opts">
-        <div class="opt" onclick="pickDeduction(1,'symbolique', this)">🎭 IA Symbolique</div>
-        <div class="opt" onclick="pickDeduction(1,'connexionniste', this)">🧠 IA Connexionniste</div>
+    <div id="t4-deductions" style="display:none">
+      <div class="callout warn">
+        <strong>🧩 Déductions :</strong> répondez correctement aux 3 questions pour clôturer le dossier.
+        <br/><span style="color:var(--muted)">Bonus : +10 crédibilité si enquête parfaite (5/5 preuves).</span>
       </div>
-      <div class="explain" id="ded-ex-1"></div>
-    </div>
 
-    <div class="q-card">
-      <div class="q-head"><span class="mono">Q2</span><span class="muted">Faiblesse principale ?</span></div>
-      <div class="opts">
-        <div class="opt" onclick="pickDeduction(2,'opacite', this)">🌫️ Manque de transparence</div>
-        <div class="opt" onclick="pickDeduction(2,'rigidite', this)">🔒 Rigidité</div>
+      <div class="q-card">
+        <div class="q-head"><span class="mono">Q1</span><span class="muted">Quel type d'IA est Genius AI ?</span></div>
+        <div class="opts">
+          <div class="opt" onclick="pickDeduction(1,'symbolique', this)">🎭 IA Symbolique — système à base de règles</div>
+          <div class="opt" onclick="pickDeduction(1,'connexionniste', this)">🧠 IA Connexionniste — réseau de neurones</div>
+        </div>
+        <div class="explain" id="ded-ex-1"></div>
       </div>
-      <div class="explain" id="ded-ex-2"></div>
-    </div>
 
-    <div class="q-card">
-      <div class="q-head"><span class="mono">Q3</span><span class="muted">Projet futur (radiographies) ?</span></div>
-      <div class="opts">
-        <div class="opt" onclick="pickDeduction(3,'symbolique', this)">🎭 Programmer les règles</div>
-        <div class="opt" onclick="pickDeduction(3,'connexionniste', this)">🧠 Apprendre sur les images</div>
+      <div class="q-card">
+        <div class="q-head"><span class="mono">Q2</span><span class="muted">Quelle est sa faiblesse principale ?</span></div>
+        <div class="opts">
+          <div class="opt" onclick="pickDeduction(2,'opacite', this)">🌫️ Opacité — impossible d'expliquer ses décisions</div>
+          <div class="opt" onclick="pickDeduction(2,'rigidite', this)">🔒 Rigidité — échoue face à l'imprévu</div>
+        </div>
+        <div class="explain" id="ded-ex-2"></div>
       </div>
-      <div class="explain" id="ded-ex-3"></div>
-    </div>
 
-    <div class="btn-row">
-      <button class="btn green" id="t4-submit" onclick="submitInvestigation()" disabled>Soumettre le rapport</button>
-      <button class="btn pink" onclick="resetInvestigation()">Réinitialiser</button>
+      <div class="q-card">
+        <div class="q-head"><span class="mono">Q3</span><span class="muted">Pour analyser des radiographies, quelle approche choisir ?</span></div>
+        <div class="opts">
+          <div class="opt" onclick="pickDeduction(3,'symbolique', this)">🎭 Programmer des règles pour chaque anomalie</div>
+          <div class="opt" onclick="pickDeduction(3,'connexionniste', this)">🧠 Entraîner un réseau sur des millions d'images</div>
+        </div>
+        <div class="explain" id="ded-ex-3"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn green" id="t4-submit" onclick="submitInvestigation()" disabled>📋 Soumettre le rapport d'enquête</button>
+        <button class="btn pink" onclick="resetInvestigation()">Réinitialiser</button>
+      </div>
     </div>
 
     <div class="callout" id="t4-feedback" style="display:none"></div>
   `;
 
-  // evidence cards
+  // Render evidence cards
   const wrap = $('t4-evidence');
-  wrap.innerHTML = "";
   evidence.forEach(ev=>{
-    const b = document.createElement('button');
-    b.className = 'btn';
-    b.style.textTransform='none';
-    b.style.letterSpacing='0px';
-    b.style.padding='14px';
-    b.style.borderRadius='14px';
-    b.style.borderColor='rgba(0,212,255,.35)';
-    b.style.background='rgba(0,212,255,.03)';
-    b.style.color='var(--text)';
-    b.innerHTML = `<span style="font-family:'Space Mono',monospace;color:var(--neon-blue)">PREUVE #${ev.id}</span><br><span style="color:var(--muted)">${ev.title}</span>`;
-    b.onclick = ()=>{
+    const card = document.createElement('div');
+    card.className = 'evidence-card' + (state.evidenceSeen.has(ev.id) ? ' examined' : '');
+    card.innerHTML = `
+      <span class="ev-icon">${ev.icon}</span>
+      <div class="ev-num">PREUVE #${ev.id}</div>
+      <div class="ev-title">${ev.title}</div>
+      <div class="ev-summary">${ev.summary}</div>
+    `;
+    card.onclick = ()=>{
       if(!interactionAllowed()) return;
       openEvidence(ev);
     };
-    wrap.appendChild(b);
+    wrap.appendChild(card);
   });
 
-  setNexus("Article chargé. Collectez les preuves avant les déductions.");
+  updateEvidenceProgress();
+  setNexus("Article chargé. Inspectez les pièces du dossier avant de formuler vos déductions.");
+}
+
+function updateEvidenceProgress(){
+  const count = state.evidenceSeen.size;
+  const pct = Math.round((count / evidence.length) * 100);
+  const countEl = $('ep-count');
+  const fillEl = $('ep-fill');
+  if(countEl) countEl.textContent = `${count} / ${evidence.length} preuves`;
+  if(fillEl) fillEl.style.width = pct + '%';
+
+  // Update card examined states
+  document.querySelectorAll('.evidence-card').forEach((card, i) => {
+    if(state.evidenceSeen.has(evidence[i].id)) card.classList.add('examined');
+  });
+
+  // Unlock deductions when 3+ evidence seen
+  const lockEl = $('t4-deduction-lock');
+  const dedEl = $('t4-deductions');
+  if(count >= 3 && lockEl && dedEl){
+    lockEl.style.display = 'none';
+    dedEl.style.display = 'block';
+  }
 }
 
 function openEvidence(ev){
+  const isNew = !state.evidenceSeen.has(ev.id);
   state.evidenceSeen.add(ev.id);
-  // points for each new evidence
-  if(state.evidenceSeen.size <= evidence.length){
-    setScore(15);
-  }
-  $('modal-title').textContent = ev.title;
-  $('modal-body').textContent = ev.text;
+  if(isNew) setScore(15);
+
+  $('modal-title').innerHTML = `🔍 Preuve #${ev.id} — ${ev.title}`;
+  $('modal-body').innerHTML = ev.html;
   $('modal').classList.add('show');
 
-  setNexus(`Preuve analysée (${state.evidenceSeen.size}/${evidence.length}).`);
+  updateEvidenceProgress();
+  setNexus(`Preuve #${ev.id} analysée (${state.evidenceSeen.size}/${evidence.length}).`);
 }
 
 function closeModal(){
@@ -2737,17 +2866,7 @@ function resetInvestigation(){
 function pickDeduction(q, ans, el){
   if(!interactionAllowed()) return;
 
-  // require evidence for credibility: if evidenceSeen < 3, allow but warn
-  if(state.evidenceSeen.size < 3){
-    toast("Conseil : inspectez plus de preuves avant de déduire.", 2400);
-    if(state.credibility < 40){
-      // role interesting: with low credibility, deductions are blocked until 3 proofs
-      toast("Crédibilité faible : déduction bloquée tant que 3 preuves ne sont pas consultées.", 2600);
-      return;
-    }
-  }
-
-  // reset visuals for this question
+  // Reset visuals for this question
   const card = el.closest('.q-card');
   card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected','correct','wrong'));
   el.classList.add('selected');
@@ -2761,32 +2880,31 @@ function pickDeduction(q, ans, el){
     setScore(50);
     explain.classList.add('show');
     if(q===1){
-      explain.innerHTML = `<strong>✅ IA Symbolique.</strong> Indices SI…ALORS, base de règles, transparence → système expert.`;
+      explain.innerHTML = `<strong>✅ IA Symbolique.</strong> Tous les indices convergent : règles SI…ALORS, base de 15 000 règles, transparence totale, aucun réseau de neurones → c'est un système expert classique.`;
     } else if(q===2){
-      explain.innerHTML = `<strong>✅ Rigidité.</strong> Hors des cas prévus, le système échoue (maladie inconnue).`;
+      explain.innerHTML = `<strong>✅ Rigidité.</strong> Le rapport d'incident le prouve : face à une maladie absente de la base de règles, le système échoue complètement. C'est la limite fondamentale de l'IA symbolique.`;
     } else {
-      explain.innerHTML = `<strong>✅ Connexionniste.</strong> Imagerie = apprentissage sur millions d’images (deep learning).`;
+      explain.innerHTML = `<strong>✅ Connexionniste (deep learning).</strong> L'analyse d'images médicales nécessite un apprentissage sur des millions de radiographies — exactement le domaine de prédilection des réseaux de neurones.`;
     }
-    setNexus(`Déduction Q${q} validée.`);
+    setNexus(`Déduction Q${q} validée !`);
   } else {
     el.classList.add('wrong');
     setCred(-10);
     explain.classList.add('show');
-    explain.innerHTML = `<strong style="color:var(--danger)">❌ Incorrect.</strong> Réessayez (pénalité crédibilité appliquée).`;
+    explain.innerHTML = `<strong style="color:var(--danger)">❌ Incorrect.</strong> Relisez les preuves attentivement et réessayez. (Pénalité : -10 crédibilité)`;
 
-    // disable briefly
     el.style.pointerEvents='none';
     setTimeout(()=>{
       el.style.pointerEvents='auto';
       el.classList.remove('selected','wrong');
       explain.classList.remove('show');
       explain.innerHTML = '';
-    }, 1200);
+    }, 1500);
     state.deductions[q]=null;
-    setNexus(`Déduction Q${q} rejetée. Corrigez.`);
+    setNexus(`Déduction Q${q} rejetée — corrigez votre analyse.`);
   }
 
-  // submit enabled if all answered correctly
+  // Submit enabled if all answered correctly
   const allOK = Object.values(state.deductions).every(v=>v);
   $('t4-submit').disabled = !allOK;
 }
@@ -2799,14 +2917,14 @@ function submitInvestigation(){
   const fb = $('t4-feedback');
   fb.style.display='block';
   fb.className='callout ok';
-  fb.innerHTML = `<strong>✅ Dossier clôturé.</strong> Rapport validé. +150 points.`;
+  fb.innerHTML = `<strong>✅ Dossier "Genius AI" clôturé.</strong><br/>Votre rapport est validé : Genius AI est un <strong>système expert symbolique</strong>, puissant mais rigide, dont le marketing exagérait les capacités. +150 points.`;
 
   setScore(150);
 
-  // perfect bonus credibility: all evidence seen
+  // Perfect bonus: all evidence seen
   if(state.evidenceSeen.size === evidence.length){
     setCred(+10);
-    toast("Bonus : enquête parfaite (+10 crédibilité).");
+    toast("Bonus enquête parfaite : toutes les preuves analysées (+10 crédibilité) !");
   }
 
   completeTerminal(4);
