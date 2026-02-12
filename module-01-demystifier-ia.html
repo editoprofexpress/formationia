@@ -2278,30 +2278,31 @@ function verifyTimeline(){
 }
 
 /* =========================================================
-   TERMINAL 2 — FAMILLES + CLASSIFICATION
+   TERMINAL 2 — FAMILLES + CLASSIFICATION (click-to-place)
 ========================================================= */
-let draggedSystemId = null;
+let selectedSystemId = null;
 
 function renderTerminal2(){
   $('terminal-container').innerHTML = `
     <div class="terminal-title">Terminal 2 — Laboratoire de Classification</div>
-    <div class="terminal-sub">Explorez les deux familles puis classez 6 systèmes. <span style="color:var(--muted)">(Erreurs : -3 crédibilité)</span></div>
+    <div class="terminal-sub">Explorez les deux familles, puis classez chaque système. Cliquez sur un système, puis sur la bonne catégorie. <span style="color:#9fb6c8">(Erreurs : -3 crédibilité)</span></div>
     <div class="divider"></div>
 
+    <h4 style="font-family:'Space Mono',monospace;color:var(--neon-blue);margin-bottom:10px">📖 Fiches de référence <span style="color:#9fb6c8;font-weight:normal;font-size:.85em">(cliquez pour explorer)</span></h4>
     <div class="family-cards">
       <div class="family" id="fam-symbolique">
         <span class="tag">🎭 IA Symbolique</span>
         <h3 style="color:var(--neon-blue)">Le cerveau logique</h3>
-        <p><strong>Principe :</strong> règles explicites, symboles, logique (SI… ALORS…).</p>
+        <p><strong>Principe :</strong> règles explicites SI… ALORS, symboles, logique formelle.</p>
         <div class="btn-row">
-          <button class="btn" onclick="toggleFamily('symbolique')">Voir détails</button>
+          <button class="btn" onclick="toggleFamily('symbolique')">Explorer la fiche</button>
         </div>
         <div class="more" id="more-symbolique">
           <div class="callout">
-            <strong>Analogie :</strong> livre de recettes.<br/>
-            <strong>Exemple :</strong> Deep Blue (1997).<br/>
-            <strong>Forces :</strong> explicable.<br/>
-            <strong>Faiblesses :</strong> rigide.
+            <strong>📖 Analogie :</strong> un livre de recettes détaillé.<br/>
+            <strong>🏆 Exemple :</strong> Deep Blue (1997) — évalue 200M positions/s par des règles programmées.<br/>
+            <strong>✅ Forces :</strong> explicable, prévisible, auditable.<br/>
+            <strong>❌ Faiblesses :</strong> rigide — échoue face à l'imprévu.
           </div>
         </div>
       </div>
@@ -2309,16 +2310,16 @@ function renderTerminal2(){
       <div class="family" id="fam-connexionniste">
         <span class="tag pink">🧠 IA Connexionniste</span>
         <h3 style="color:var(--neon-pink)">Le cerveau qui apprend</h3>
-        <p><strong>Principe :</strong> apprend par l’exemple (réseaux de neurones).</p>
+        <p><strong>Principe :</strong> apprend à partir de données (réseaux de neurones).</p>
         <div class="btn-row">
-          <button class="btn" onclick="toggleFamily('connexionniste')">Voir détails</button>
+          <button class="btn" onclick="toggleFamily('connexionniste')">Explorer la fiche</button>
         </div>
         <div class="more" id="more-connexionniste">
           <div class="callout">
-            <strong>Analogie :</strong> un enfant qui apprend.<br/>
-            <strong>Exemples :</strong> reconnaissance vocale, images.<br/>
-            <strong>Forces :</strong> adaptable.<br/>
-            <strong>Faiblesses :</strong> boîte noire.
+            <strong>👶 Analogie :</strong> un enfant qui apprend par l'exemple.<br/>
+            <strong>🏆 Exemples :</strong> reconnaissance vocale, reconnaissance d'images, ChatGPT.<br/>
+            <strong>✅ Forces :</strong> adaptable, traite données complexes, généralise.<br/>
+            <strong>❌ Faiblesses :</strong> « boîte noire », dépendance aux données.
           </div>
         </div>
       </div>
@@ -2326,21 +2327,17 @@ function renderTerminal2(){
 
     <div class="divider"></div>
 
-    <div class="grid-2">
-      <div class="pool">
-        <h4>Systèmes à classer</h4>
-        <div id="t2-pool"></div>
-      </div>
+    <h4 style="font-family:'Space Mono',monospace;color:var(--neon-blue);margin-bottom:10px">🔬 Systèmes à classer</h4>
+    <div class="event-pool" id="t2-pool"></div>
 
-      <div class="grid-2">
-        <div class="pool">
-          <h4>🎭 Symbolique</h4>
-          <div class="dropzone" id="t2-zone-symbolique" data-type="symbolique"></div>
-        </div>
-        <div class="pool">
-          <h4>🧠 Connexionniste</h4>
-          <div class="dropzone" id="t2-zone-connexionniste" data-type="connexionniste"></div>
-        </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="pool" id="t2-zone-symbolique" style="cursor:pointer;transition:all .2s">
+        <h4>🎭 Symbolique <span style="font-weight:normal;color:#9fb6c8;font-size:.85em">(cliquez ici pour placer)</span></h4>
+        <div id="t2-items-symbolique"></div>
+      </div>
+      <div class="pool" id="t2-zone-connexionniste" style="cursor:pointer;transition:all .2s">
+        <h4>🧠 Connexionniste <span style="font-weight:normal;color:#9fb6c8;font-size:.85em">(cliquez ici pour placer)</span></h4>
+        <div id="t2-items-connexionniste"></div>
       </div>
     </div>
 
@@ -2352,66 +2349,62 @@ function renderTerminal2(){
     <div class="callout" id="t2-feedback" style="display:none"></div>
   `;
 
-  // pool systems
+  // system cards (pool) - click to select
   const pool = $('t2-pool');
   const shuffled = [...systemsData].sort(()=>Math.random()-0.5);
   shuffled.forEach(sys=>{
     const div = document.createElement('div');
-    div.className='card';
-    div.draggable=true;
-    div.dataset.systemId=sys.id;
-    div.dataset.type=sys.type;
-    div.innerHTML = `<span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">SYS-${String(sys.id).padStart(2,'0')}</span><br><strong>${sys.name}</strong>`;
-    div.addEventListener('dragstart', (e)=>{
-      if(!interactionAllowed()){ e.preventDefault(); return; }
-      if(div.classList.contains('placed')){ e.preventDefault(); return; }
-      draggedSystemId = sys.id;
-      div.classList.add('dragging');
-    });
-    div.addEventListener('dragend', ()=>div.classList.remove('dragging'));
+    div.className = 'event-card';
+    div.dataset.systemId = sys.id;
+    div.innerHTML = `<span style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:.82em">SYS-${String(sys.id).padStart(2,'0')}</span> <strong>${sys.name}</strong>`;
+    div.onclick = ()=>{
+      if(!interactionAllowed()) return;
+      if(div.classList.contains('placed')) return;
+
+      if(selectedSystemId === sys.id){
+        selectedSystemId = null;
+        div.classList.remove('selected');
+      } else {
+        document.querySelectorAll('#t2-pool .event-card.selected').forEach(c=>c.classList.remove('selected'));
+        selectedSystemId = sys.id;
+        div.classList.add('selected');
+      }
+    };
     pool.appendChild(div);
   });
 
-  // zones
+  // classification zones - click to place
   ['symbolique','connexionniste'].forEach(type=>{
-    const zone = $('t2-zone-'+type);
-    zone.innerHTML = '';
-    zone.addEventListener('dragover', (e)=>{
-      e.preventDefault();
+    $('t2-zone-'+type).onclick = (e)=>{
+      if(e.target.closest('.mini-remove')) return; // don't interfere with remove buttons
       if(!interactionAllowed()) return;
-      zone.classList.add('dragover');
-    });
-    zone.addEventListener('dragleave', ()=>zone.classList.remove('dragover'));
-    zone.addEventListener('drop', (e)=>{
-      e.preventDefault();
-      zone.classList.remove('dragover');
-      if(!interactionAllowed()) return;
-      if(!draggedSystemId) return;
+      if(!selectedSystemId){
+        toast("Sélectionnez d'abord un système ci-dessus.");
+        return;
+      }
 
-      const card = document.querySelector(`.card[data-system-id="${draggedSystemId}"]`);
-      if(!card || card.classList.contains('placed')) return;
-
-      const sys = systemsData.find(s=>s.id===draggedSystemId);
+      const sys = systemsData.find(s=>s.id===selectedSystemId);
       if(!sys) return;
 
       // record
       state.classPlaced[type].push(sys.id);
 
-      // mark card
-      card.classList.add('placed');
+      // mark card as placed
+      const card = document.querySelector(`#t2-pool .event-card[data-system-id="${selectedSystemId}"]`);
+      if(card) { card.classList.add('placed'); card.classList.remove('selected'); }
 
-      // add placed item
+      // add to zone
       const item = document.createElement('div');
-      item.className='placed-item';
-      item.dataset.systemId=sys.id;
+      item.className = 'placed-item';
+      item.dataset.systemId = sys.id;
       item.innerHTML = `${sys.name} <button class="mini-remove" style="float:right" onclick="removeSystem(${sys.id}, '${type}')">✕</button>`;
-      zone.appendChild(item);
+      $('t2-items-'+type).appendChild(item);
 
-      draggedSystemId = null;
-    });
+      selectedSystemId = null;
+    };
   });
 
-  setNexus("Accès au laboratoire de tri autorisé. Identifiez les familles puis classez.");
+  setNexus("Accès au laboratoire de tri autorisé. Explorez les fiches puis classez les systèmes.");
 }
 
 function toggleFamily(type){
@@ -2424,14 +2417,10 @@ function toggleFamily(type){
 
 function removeSystem(id, type){
   if(!interactionAllowed()) return;
-  // remove from list
   state.classPlaced[type] = state.classPlaced[type].filter(x=>x!==id);
-  // unplace card
-  const card = document.querySelector(`.card[data-system-id="${id}"]`);
+  const card = document.querySelector(`#t2-pool .event-card[data-system-id="${id}"]`);
   if(card) card.classList.remove('placed');
-  // remove placed item
-  const zone = $('t2-zone-'+type);
-  const item = zone.querySelector(`.placed-item[data-system-id="${id}"]`);
+  const item = $('t2-items-'+type).querySelector(`.placed-item[data-system-id="${id}"]`);
   if(item) item.remove();
 }
 
@@ -2487,29 +2476,25 @@ function verifyClassification(){
 }
 
 /* =========================================================
-   TERMINAL 3 — HIÉRARCHIE (drag & drop ordre)
+   TERMINAL 3 — HIÉRARCHIE (click-to-place, poupées russes)
 ========================================================= */
-let draggedLevelId = null;
-
 function renderTerminal3(){
   const shuffled = [...hierarchyLevels].sort(()=>Math.random()-0.5);
 
   $('terminal-container').innerHTML = `
     <div class="terminal-title">Terminal 3 — Décodeur Hiérarchique</div>
-    <div class="terminal-sub">Reconstituez l’ordre : IA → ML → DL → Transformers. <span style="color:var(--muted)">(Bonus si 1er coup)</span></div>
+    <div class="terminal-sub">Reconstituez l'emboîtement des concepts, du plus large au plus spécifique. Cliquez les blocs dans l'ordre. <span style="color:#9fb6c8">(Bonus si 1er coup)</span></div>
     <div class="divider"></div>
 
-    <div class="grid-2">
-      <div class="pool">
-        <h4>Blocs disponibles</h4>
-        <div id="t3-pool"></div>
-      </div>
-      <div class="pool">
-        <h4>Ordre final (haut → bas)</h4>
-        <div id="t3-order"></div>
-        <div class="dropzone" id="t3-zone"></div>
-      </div>
+    <div class="callout purple" style="margin-bottom:18px">
+      <strong>🪆 Principe :</strong> ces 4 concepts s'emboîtent comme des poupées russes. Le plus large contient tous les autres. Placez-les du plus englobant (niveau 1) au plus spécifique (niveau 4).
     </div>
+
+    <h4 style="font-family:'Space Mono',monospace;color:var(--neon-blue);margin-bottom:10px">Blocs disponibles</h4>
+    <div class="event-pool" id="t3-pool"></div>
+
+    <h4 style="font-family:'Space Mono',monospace;color:var(--neon-purple);margin:16px 0 10px">🪆 Emboîtement (cliquez pour ajouter le prochain niveau)</h4>
+    <div id="t3-nesting" style="min-height:60px;padding:12px;border:1px dashed rgba(168,85,247,.4);border-radius:14px;background:rgba(168,85,247,.04);cursor:pointer;transition:all .2s"></div>
 
     <div class="btn-row">
       <button class="btn green" onclick="verifyHierarchy()">Vérifier</button>
@@ -2523,63 +2508,59 @@ function renderTerminal3(){
   const pool = $('t3-pool');
   shuffled.forEach(level=>{
     const div = document.createElement('div');
-    div.className='card';
-    div.draggable=true;
-    div.dataset.levelId=level.id;
-    div.innerHTML = `<span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">LVL</span><br><strong>${level.label}</strong>`;
-    div.addEventListener('dragstart',(e)=>{
-      if(!interactionAllowed()){ e.preventDefault(); return; }
-      if(div.classList.contains('placed')){ e.preventDefault(); return; }
-      draggedLevelId = level.id;
-      div.classList.add('dragging');
-    });
-    div.addEventListener('dragend',()=>div.classList.remove('dragging'));
+    div.className = 'event-card';
+    div.dataset.levelId = level.id;
+    div.innerHTML = `<strong>${level.label}</strong>`;
+    div.onclick = ()=>{
+      if(!interactionAllowed()) return;
+      if(div.classList.contains('placed')) return;
+      if(state.hierarchyPlaced.includes(level.id)) return;
+
+      state.hierarchyPlaced.push(level.id);
+      div.classList.add('placed');
+      renderNesting();
+    };
     pool.appendChild(div);
   });
 
-  const zone = $('t3-zone');
-  zone.addEventListener('dragover',(e)=>{
-    e.preventDefault();
-    if(!interactionAllowed()) return;
-    zone.classList.add('dragover');
-  });
-  zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
-  zone.addEventListener('drop',(e)=>{
-    e.preventDefault();
-    zone.classList.remove('dragover');
-    if(!interactionAllowed()) return;
-    if(!draggedLevelId) return;
-    if(state.hierarchyPlaced.includes(draggedLevelId)) return;
-
-    state.hierarchyPlaced.push(draggedLevelId);
-
-    const level = hierarchyLevels.find(l=>l.id===draggedLevelId);
-    // mark card placed
-    const card = document.querySelector(`.card[data-level-id="${draggedLevelId}"]`);
-    if(card) card.classList.add('placed');
-
-    const order = $('t3-order');
-    const item = document.createElement('div');
-    item.className='placed-item';
-    item.dataset.levelId=draggedLevelId;
-    item.innerHTML = `${level.label} <button class="mini-remove" style="float:right" onclick="removeHierarchy('${draggedLevelId}')">✕</button>`;
-    order.appendChild(item);
-
-    draggedLevelId = null;
-  });
-
-  setNexus("Accès au décodeur autorisé. Reconstruisez la pile de concepts.");
+  renderNesting();
+  setNexus("Accès au décodeur autorisé. Emboîtez les concepts du plus large au plus spécifique.");
 }
 
-function removeHierarchy(id){
+function renderNesting(){
+  const nest = $('t3-nesting');
+  if(state.hierarchyPlaced.length === 0){
+    nest.innerHTML = '<span style="color:#9fb6c8;font-size:.9em">Cliquez sur un bloc ci-dessus pour commencer…</span>';
+    return;
+  }
+
+  const colors = ['rgba(0,255,136,.15)','rgba(0,212,255,.15)','rgba(168,85,247,.15)','rgba(255,0,128,.15)'];
+  const borders = ['rgba(0,255,136,.5)','rgba(0,212,255,.5)','rgba(168,85,247,.5)','rgba(255,0,128,.5)'];
+
+  let html = '';
+  state.hierarchyPlaced.forEach((id, i)=>{
+    const level = hierarchyLevels.find(l=>l.id===id);
+    const pad = 12 + i*8;
+    html += `<div style="background:${colors[i]};border:2px solid ${borders[i]};border-radius:${14-i*2}px;padding:${pad}px;margin-top:${i>0?8:0}px;position:relative">
+      <span style="font-family:'Space Mono',monospace;font-size:.85em;color:${borders[i].replace(/[\d.]+\)$/,'1)')}">Niveau ${i+1}</span>
+      <strong style="display:block;margin-top:4px">${level.label}</strong>
+      <button class="mini-remove" style="position:absolute;top:8px;right:8px" onclick="removeHierarchyFrom(${i})">✕</button>`;
+  });
+  // close all divs
+  for(let i=0;i<state.hierarchyPlaced.length;i++) html += '</div>';
+
+  nest.innerHTML = html;
+}
+
+function removeHierarchyFrom(fromIndex){
   if(!interactionAllowed()) return;
-  state.hierarchyPlaced = state.hierarchyPlaced.filter(x=>x!==id);
-
-  const card = document.querySelector(`.card[data-level-id="${id}"]`);
-  if(card) card.classList.remove('placed');
-
-  const item = document.querySelector(`.placed-item[data-level-id="${id}"]`);
-  if(item) item.remove();
+  // Remove from this index to end
+  const removed = state.hierarchyPlaced.splice(fromIndex);
+  removed.forEach(id=>{
+    const card = document.querySelector(`#t3-pool .event-card[data-level-id="${id}"]`);
+    if(card) card.classList.remove('placed');
+  });
+  renderNesting();
 }
 
 function resetHierarchy(){
