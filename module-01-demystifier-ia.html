@@ -1,0 +1,2331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dossier Zéro — Module 1 (Démystifier l'IA)</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root{
+      --neon-green:#00ff88;
+      --neon-blue:#00d4ff;
+      --neon-pink:#ff0080;
+      --neon-purple:#a855f7;
+      --dark-bg:#0a0e17;
+      --panel-bg:rgba(10,20,40,0.95);
+      --text:#e0f0ff;
+
+      --muted:#8899aa;
+      --danger:#ff4d4d;
+      --warn:#ffcc00;
+      --ok:#00ff88;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+    body{
+      font-family:'Exo 2',sans-serif;
+      background:var(--dark-bg);
+      color:var(--text);
+      overflow:hidden;
+      height:100vh;
+    }
+
+    /* ==================== TITRE (M12/M15) ==================== */
+    #title-screen{
+      position:fixed;inset:0;
+      background:url('images/module1-title-bg.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:1000;
+      transition:opacity .5s, visibility .5s;
+    }
+    #title-screen::before{content:'';position:absolute;inset:0;background:rgba(10,14,23,0.7);z-index:-1}
+    #title-screen.hidden{opacity:0;visibility:hidden}
+    .title-logo{font-size:4em;margin-bottom:20px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    .main-title{
+      font-family:'Space Mono',monospace;
+      font-size:3em;font-weight:700;text-transform:uppercase;letter-spacing:5px;
+      background:linear-gradient(90deg,var(--neon-green),var(--neon-blue),var(--neon-pink));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+      text-shadow:0 0 50px rgba(0,255,136,.5);
+      margin-bottom:10px;
+      text-align:center;
+    }
+    .subtitle{font-size:1.3em;color:var(--muted);margin-bottom:35px;font-weight:300;text-align:center}
+    .intro-text{max-width:820px;text-align:center;line-height:1.8;margin:0 20px 35px;color:#aabbcc}
+    .start-btn{
+      font-family:'Space Mono',monospace;
+      font-size:1.1em;
+      padding:18px 55px;
+      background:transparent;
+      border:2px solid var(--neon-green);
+      color:var(--neon-green);
+      cursor:pointer;
+      text-transform:uppercase;
+      letter-spacing:3px;
+      transition:all .3s;
+      position:relative;
+      overflow:hidden;
+    }
+    .start-btn::before{
+      content:'';
+      position:absolute;top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(0,255,136,.3),transparent);
+      transition:left .5s;
+    }
+    .start-btn:hover::before{left:100%}
+    .start-btn:hover{
+      background:rgba(0,255,136,.08);
+      box-shadow:0 0 30px rgba(0,255,136,.5), inset 0 0 30px rgba(0,255,136,.08);
+      transform:scale(1.03);
+    }
+
+    /* ==================== SCREEN WRAPPER ==================== */
+    .screen{
+      position:fixed;inset:0;
+      display:none;
+      overflow:hidden;
+    }
+    .screen.active{display:block}
+
+    /* ==================== BRIEFING (folder) ==================== */
+    #briefing-screen{
+      display:flex;
+      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.08), transparent 50%),
+                 radial-gradient(circle at 80% 30%, rgba(255,0,128,.08), transparent 50%),
+                 linear-gradient(135deg,#0a0e17 0%,#0f1a33 50%,#0a0e17 100%);
+    }
+
+    .briefing-sidebar{
+      width:320px;
+      background:rgba(5,10,20,.92);
+      border-right:1px solid rgba(0,212,255,.3);
+      padding:20px;
+      overflow:auto;
+    }
+    .back-link-sidebar{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 15px;margin-bottom:18px;
+      background:rgba(0,212,255,.05);
+      border:1px solid rgba(0,212,255,.3);
+      border-radius:8px;
+      color:var(--neon-blue);
+      text-decoration:none;
+      font-family:'Space Mono',monospace;
+      font-size:.8em;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      transition:all .3s ease;
+    }
+    .back-link-sidebar:hover{
+      background:rgba(0,212,255,.15);
+      border-color:var(--neon-blue);
+      transform:translateX(-3px);
+    }
+
+    .briefing-title{
+      font-family:'Space Mono',monospace;
+      font-size:1.1em;
+      letter-spacing:2px;
+      color:var(--neon-green);
+      margin-bottom:10px;
+      text-transform:uppercase;
+    }
+    .briefing-sub{
+      color:var(--muted);
+      font-size:.95em;
+      margin-bottom:18px;
+      line-height:1.4;
+    }
+
+    .briefing-nav-item{
+      padding:12px 12px;
+      border:1px solid rgba(0,212,255,.25);
+      border-radius:10px;
+      margin-bottom:10px;
+      background:rgba(0,212,255,.03);
+      cursor:pointer;
+      transition:.25s;
+      position:relative;
+    }
+    .briefing-nav-item:hover{
+      background:rgba(0,212,255,.08);
+      border-color:rgba(0,212,255,.55);
+      transform:translateX(2px);
+    }
+    .briefing-nav-item.active{
+      border-color:var(--neon-green);
+      box-shadow:0 0 18px rgba(0,255,136,.25);
+      background:rgba(0,255,136,.05);
+    }
+    .briefing-nav-item.completed{
+      border-color:rgba(0,255,136,.5);
+      background:rgba(0,255,136,.03);
+    }
+    .briefing-nav-item.completed::after{
+      content:'✓';
+      position:absolute;right:12px;top:10px;
+      color:var(--neon-green);
+      font-weight:800;
+    }
+
+    .briefing-nav-item .mono{
+      font-family:'Space Mono',monospace;
+      font-size:.85em;
+      color:var(--neon-blue);
+      display:block;
+      margin-bottom:3px;
+    }
+    .briefing-nav-item .label{
+      font-size:.95em;color:var(--text);
+    }
+
+    .briefing-nav-item.locked{
+      opacity:.5;
+      cursor:not-allowed;
+      background:rgba(100,100,100,.18);
+      border-color:rgba(255,255,255,.12);
+      transform:none !important;
+    }
+
+    .briefing-content{
+      flex:1;
+      padding:25px;
+      overflow:auto;
+      position:relative;
+    }
+
+    .content-panel{
+      max-width:980px;
+      margin:0 auto;
+      background:var(--panel-bg);
+      border:1px solid rgba(0,212,255,.35);
+      border-radius:14px;
+      padding:24px;
+      box-shadow:0 0 24px rgba(0,212,255,.08);
+    }
+
+    .module-title{
+      font-family:'Space Mono',monospace;
+      font-size:1.7em;
+      margin-bottom:8px;
+      letter-spacing:1px;
+    }
+    .module-kicker{color:var(--muted);margin-bottom:18px;line-height:1.5}
+    .divider{
+      height:1px;
+      background:linear-gradient(90deg,transparent,rgba(0,212,255,.5),transparent);
+      margin:18px 0;
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 10px;
+      border:1px solid rgba(0,255,136,.5);
+      border-radius:999px;
+      font-family:'Space Mono',monospace;
+      font-size:.78em;
+      color:var(--neon-green);
+      background:rgba(0,255,136,.05);
+      margin-right:8px;
+      margin-bottom:8px;
+    }
+    .callout{
+      border-left:4px solid var(--neon-blue);
+      padding:14px 14px;
+      background:rgba(0,212,255,.06);
+      border-radius:10px;
+      margin:14px 0;
+      line-height:1.6;
+      color:#cfe9ff;
+    }
+    .callout.warn{border-left-color:var(--warn);background:rgba(255,204,0,.06)}
+    .callout.ok{border-left-color:var(--neon-green);background:rgba(0,255,136,.06)}
+    .callout.pink{border-left-color:var(--neon-pink);background:rgba(255,0,128,.06)}
+
+    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{
+      font-family:'Space Mono',monospace;
+      padding:12px 16px;
+      border:1px solid rgba(0,212,255,.5);
+      background:rgba(0,212,255,.05);
+      color:var(--neon-blue);
+      border-radius:10px;
+      cursor:pointer;
+      transition:.25s;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:.85em;
+    }
+    .btn:hover{
+      background:rgba(0,212,255,.14);
+      border-color:var(--neon-blue);
+      box-shadow:0 0 16px rgba(0,212,255,.18);
+      transform:translateY(-1px);
+    }
+    .btn.green{border-color:rgba(0,255,136,.6);color:var(--neon-green);background:rgba(0,255,136,.06)}
+    .btn.green:hover{background:rgba(0,255,136,.12);border-color:var(--neon-green);box-shadow:0 0 16px rgba(0,255,136,.18)}
+    .btn.pink{border-color:rgba(255,0,128,.6);color:var(--neon-pink);background:rgba(255,0,128,.06)}
+    .btn.pink:hover{background:rgba(255,0,128,.12);border-color:var(--neon-pink);box-shadow:0 0 16px rgba(255,0,128,.18)}
+    .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* ==================== GAME SCREEN ==================== */
+    #game-screen{
+      background:radial-gradient(circle at 15% 25%, rgba(0,255,136,.09), transparent 55%),
+                 radial-gradient(circle at 85% 30%, rgba(0,212,255,.09), transparent 55%),
+                 radial-gradient(circle at 70% 85%, rgba(255,0,128,.08), transparent 60%),
+                 linear-gradient(135deg,#0a0e17 0%,#111a33 50%,#0a0e17 100%);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .game-topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 18px;
+      border-bottom:1px solid rgba(0,212,255,.25);
+      background:rgba(5,10,20,.75);
+      backdrop-filter: blur(6px);
+    }
+    .hud{
+      display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+      font-family:'Space Mono',monospace;
+      letter-spacing:.5px;
+      font-size:.9em;
+    }
+    .hud-item{
+      padding:8px 10px;
+      border:1px solid rgba(0,212,255,.25);
+      border-radius:10px;
+      background:rgba(0,212,255,.03);
+    }
+    .hud-item strong{color:var(--neon-blue)}
+    .hud-item .pink{color:var(--neon-pink)}
+    .hud-item .green{color:var(--neon-green)}
+    .hud-item .muted{color:var(--muted)}
+
+    .bar{
+      width:160px;height:10px;border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(0,255,136,.45);
+      overflow:hidden;
+      display:inline-block;
+      vertical-align:middle;
+      margin-left:8px;
+    }
+    .bar > div{
+      height:100%;
+      width:100%;
+      background:linear-gradient(90deg,var(--neon-green), var(--neon-blue));
+      transition:width .25s;
+    }
+
+    .game-body{
+      display:flex;
+      flex:1;
+      overflow:hidden;
+    }
+    .game-left{
+      width:340px;
+      border-right:1px solid rgba(0,212,255,.25);
+      background:rgba(5,10,20,.65);
+      padding:18px;
+      overflow:auto;
+    }
+    .game-right{
+      flex:1;
+      padding:18px;
+      overflow:auto;
+    }
+
+    .terminal-btn{
+      width:100%;
+      text-align:left;
+      padding:12px;
+      border:1px solid rgba(0,212,255,.25);
+      border-radius:12px;
+      background:rgba(0,212,255,.03);
+      color:var(--text);
+      cursor:pointer;
+      transition:.25s;
+      margin-bottom:10px;
+      position:relative;
+    }
+    .terminal-btn:hover{border-color:rgba(0,212,255,.65);background:rgba(0,212,255,.08)}
+    .terminal-btn.active{border-color:var(--neon-green);box-shadow:0 0 16px rgba(0,255,136,.2);background:rgba(0,255,136,.05)}
+    .terminal-btn.completed{border-color:rgba(0,255,136,.5)}
+    .terminal-btn.completed::after{
+      content:'✓';position:absolute;right:12px;top:10px;color:var(--neon-green);font-weight:800
+    }
+    .terminal-btn.locked{opacity:.45;cursor:not-allowed;background:rgba(120,120,120,.12);border-color:rgba(255,255,255,.12)}
+    .terminal-btn .mono{font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:.82em;display:block;margin-bottom:2px}
+    .terminal-btn .desc{color:var(--muted);font-size:.9em;line-height:1.3}
+
+    .terminal-panel{
+      max-width:1100px;margin:0 auto;
+      background:var(--panel-bg);
+      border:1px solid rgba(0,212,255,.35);
+      border-radius:14px;
+      padding:22px;
+      box-shadow:0 0 24px rgba(0,212,255,.08);
+    }
+
+    .terminal-title{
+      font-family:'Space Mono',monospace;
+      font-size:1.4em;
+      margin-bottom:8px;
+    }
+    .terminal-sub{color:var(--muted);line-height:1.45;margin-bottom:14px}
+
+    /* ==================== DRAG & DROP GAMES ==================== */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .pool{
+      padding:12px;border-radius:12px;
+      border:1px solid rgba(0,212,255,.25);
+      background:rgba(0,212,255,.03);
+      min-height:90px;
+    }
+    .pool h4{
+      font-family:'Space Mono',monospace;font-size:.95em;margin-bottom:8px;color:var(--neon-blue)
+    }
+    .card{
+      border:1px solid rgba(0,212,255,.35);
+      background:rgba(0,212,255,.04);
+      border-radius:12px;
+      padding:10px 10px;
+      margin:8px 0;
+      cursor:grab;
+      transition:.2s;
+      line-height:1.35;
+    }
+    .card:hover{border-color:rgba(0,212,255,.75);transform:translateY(-1px);box-shadow:0 0 16px rgba(0,212,255,.12)}
+    .card.dragging{opacity:.45}
+    .card.placed{opacity:.35;cursor:not-allowed}
+
+    .dropzone{
+      border:1px dashed rgba(168,85,247,.65);
+      background:rgba(168,85,247,.06);
+      border-radius:12px;
+      padding:10px;
+      min-height:78px;
+      transition:.2s;
+      position:relative;
+    }
+    .dropzone.dragover{border-color:var(--neon-green);background:rgba(0,255,136,.07)}
+    .dropzone.filled{border-style:solid;border-color:rgba(0,255,136,.45);background:rgba(0,255,136,.05)}
+    .dropzone.correct{border-color:var(--neon-green)}
+    .dropzone.wrong{border-color:var(--danger);background:rgba(255,77,77,.06)}
+    .dropzone .label{
+      font-family:'Space Mono',monospace;
+      color:#d9f2ff;
+      margin-bottom:6px;
+      display:flex;justify-content:space-between;align-items:center;
+      gap:8px;
+    }
+    .mini-remove{
+      border:1px solid rgba(255,77,77,.55);
+      color:var(--danger);
+      background:rgba(255,77,77,.06);
+      border-radius:10px;
+      padding:4px 8px;
+      cursor:pointer;
+      font-family:'Space Mono',monospace;
+      font-size:.78em;
+    }
+    .mini-remove:hover{background:rgba(255,77,77,.12);border-color:var(--danger)}
+    .placed-item{
+      border-left:3px solid rgba(0,212,255,.75);
+      padding:8px 8px;
+      background:rgba(0,212,255,.04);
+      border-radius:10px;
+      margin-top:6px;
+      line-height:1.35;
+      font-size:.95em;
+    }
+
+    /* ==================== FLIP CARDS (familles) ==================== */
+    .family-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .family{
+      border:1px solid rgba(0,212,255,.35);
+      background:rgba(0,212,255,.03);
+      border-radius:14px;
+      padding:14px;
+    }
+    .family h3{
+      font-family:'Space Mono',monospace;
+      margin-bottom:8px;
+    }
+    .family .tag{
+      display:inline-block;
+      font-family:'Space Mono',monospace;
+      font-size:.75em;
+      padding:5px 9px;
+      border-radius:999px;
+      margin-bottom:10px;
+      border:1px solid rgba(0,255,136,.5);
+      color:var(--neon-green);
+      background:rgba(0,255,136,.05);
+    }
+    .family .tag.pink{border-color:rgba(255,0,128,.55);color:var(--neon-pink);background:rgba(255,0,128,.05)}
+    .family p{color:#cfe9ff;line-height:1.55}
+    .family .more{margin-top:10px;display:none}
+    .family .more.show{display:block;animation:fadeIn .25s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ==================== QUIZ ==================== */
+    .quiz-wrap{max-width:980px;margin:0 auto}
+    .q-card{
+      border:1px solid rgba(0,212,255,.35);
+      background:rgba(0,212,255,.03);
+      border-radius:14px;
+      padding:16px;
+      margin-top:12px;
+    }
+    .q-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .q-head .mono{font-family:'Space Mono',monospace;color:var(--neon-blue)}
+    .q-text{line-height:1.5;color:#d9f2ff}
+    .opts{display:grid;gap:8px;margin-top:12px}
+    .opt{
+      border:1px solid rgba(0,212,255,.25);
+      background:rgba(0,212,255,.02);
+      border-radius:12px;
+      padding:12px;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .opt:hover{border-color:rgba(0,212,255,.65);background:rgba(0,212,255,.08)}
+    .opt.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.08)}
+    .opt.correct{border-color:var(--neon-green);background:rgba(0,255,136,.08)}
+    .opt.wrong{border-color:var(--danger);background:rgba(255,77,77,.08)}
+    .explain{
+      display:none;margin-top:10px;
+      border-left:4px solid var(--neon-blue);
+      background:rgba(0,212,255,.06);
+      padding:12px;border-radius:10px;
+      line-height:1.55;
+      color:#cfe9ff;
+    }
+    .explain.show{display:block}
+
+    /* ==================== MODAL (preuves) ==================== */
+    .modal{
+      position:fixed;inset:0;display:none;
+      background:rgba(0,0,0,.65);
+      z-index:2000;
+      align-items:center;justify-content:center;
+      padding:18px;
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      max-width:820px;width:100%;
+      background:rgba(10,20,40,.98);
+      border:1px solid rgba(0,212,255,.45);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 0 28px rgba(0,212,255,.12);
+    }
+    .modal-card h3{font-family:'Space Mono',monospace;margin-bottom:10px}
+    .modal-card p{line-height:1.65;color:#cfe9ff}
+    .modal-actions{margin-top:12px;display:flex;justify-content:flex-end}
+
+    /* ==================== TOAST ==================== */
+    #toast{
+      position:fixed;
+      bottom:18px;right:18px;
+      min-width:260px;
+      max-width:420px;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid rgba(0,212,255,.4);
+      background:rgba(10,20,40,.95);
+      box-shadow:0 0 18px rgba(0,212,255,.12);
+      color:#d9f2ff;
+      display:none;
+      z-index:2500;
+      line-height:1.4;
+    }
+    #toast.show{display:block;animation:toastIn .25s ease}
+    @keyframes toastIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width:980px){
+      .briefing-sidebar{width:290px}
+      .game-left{width:320px}
+      .family-cards{grid-template-columns:1fr}
+      .grid-2{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr}
+    }
+    @media (max-width:760px){
+      body{overflow:auto}
+      .screen{position:relative;height:auto}
+      #briefing-screen, #game-screen{position:relative}
+      #briefing-screen{display:block}
+      .briefing-sidebar{width:auto;border-right:none;border-bottom:1px solid rgba(0,212,255,.25)}
+      .game-body{display:block}
+      .game-left{width:auto;border-right:none;border-bottom:1px solid rgba(0,212,255,.25)}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== TITLE SCREEN ==================== -->
+  <section id="title-screen">
+    <div class="title-logo">🕵️‍♂️</div>
+    <div class="main-title">DOSSIER ZÉRO</div>
+    <div class="subtitle">Démystifier l’Intelligence Artificielle</div>
+    <div class="intro-text">
+      <strong>Agence VERIT-IA.</strong> Des rumeurs circulent : robots conscients, IA omnisciente, magie…
+      <br/>Votre mission : infiltrer les archives classifiées, analyser les preuves, séparer le vrai du faux,
+      et résoudre votre première enquête.
+    </div>
+    <button class="start-btn" onclick="startModule()">ACCÉDER AU DOSSIER CLASSIFIÉ</button>
+  </section>
+
+  <!-- ==================== BRIEFING SCREEN ==================== -->
+  <section id="briefing-screen" class="screen">
+    <div class="briefing-sidebar">
+      <a class="back-link-sidebar" href="modules.html">← Retour modules</a>
+
+      <div class="briefing-title">VERIT-IA // DOSSIER ZÉRO</div>
+      <div class="briefing-sub">
+        Guide : <strong style="color:var(--neon-green)">Agent NEXUS</strong><br/>
+        Progression : <span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)"><span id="briefing-progress">0</span>/8</span>
+      </div>
+
+      <div class="briefing-nav-item active" onclick="showLesson(0)">
+        <span class="mono">01</span><span class="label">L’IA : mythes & réalité</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(1)">
+        <span class="mono">02</span><span class="label">Origines : Turing → Dartmouth</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(2)">
+        <span class="mono">03</span><span class="label">IA symbolique : règles</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(3)">
+        <span class="mono">04</span><span class="label">IA connexionniste : apprentissage</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(4)">
+        <span class="mono">05</span><span class="label">Hiérarchie des concepts</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(5)">
+        <span class="mono">06</span><span class="label">Grandes dates (1950–2024)</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(6)">
+        <span class="mono">07</span><span class="label">Ce que l’IA fait… / ne fait pas</span>
+      </div>
+      <div class="briefing-nav-item" onclick="showLesson(7)">
+        <span class="mono">08</span><span class="label">Briefing de mission</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="briefing-nav-item locked" id="quiz-nav-item" onclick="showQuizFromBriefing()">
+        <span class="mono">QUIZ</span><span class="label">Certification</span>
+      </div>
+
+      <div class="briefing-nav-item locked" id="certificate-nav-item" onclick="showCertificateInFolder()">
+        <span class="mono">🎓</span><span class="label">Attestation de réussite</span>
+      </div>
+    </div>
+
+    <div class="briefing-content">
+      <div id="lesson-container" class="content-panel"></div>
+
+      <div class="btn-row" style="max-width:980px;margin:14px auto 0;">
+        <button class="btn green" onclick="enterGame()">▶ Accéder à la phase de jeu</button>
+        <button class="btn" onclick="toast('Astuce : la progression du dossier se coche au fur et à mesure.');">ℹ️ Astuce</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <section id="game-screen" class="screen">
+    <div class="game-topbar">
+      <div class="hud">
+        <div class="hud-item">⏱ <span class="pink" id="timer">15:00</span></div>
+        <div class="hud-item">
+          🧪 Crédibilité
+          <span class="muted">(0–100)</span>
+          <span class="bar"><div id="cred-bar"></div></span>
+          <strong id="cred-val">100</strong>
+        </div>
+        <div class="hud-item">🏁 Dossiers : <strong id="cases-count">0</strong>/4</div>
+        <div class="hud-item">🏆 Score : <strong id="score">0</strong></div>
+      </div>
+      <div class="btn-row" style="margin:0">
+        <button class="btn" onclick="goBriefing()">📁 Dossier</button>
+        <a class="btn" href="modules.html" style="text-decoration:none;display:inline-flex;align-items:center">↩ Modules</a>
+      </div>
+    </div>
+
+    <div class="game-body">
+      <div class="game-left">
+        <div class="briefing-title" style="margin-bottom:10px">Terminaux</div>
+
+        <button class="terminal-btn active" id="term-btn-1" onclick="openTerminal(1)">
+          <span class="mono">Terminal 1</span>
+          <div>Archives Chronologiques</div>
+          <div class="desc">Placer 10 événements sur la frise.</div>
+        </button>
+
+        <button class="terminal-btn" id="term-btn-2" onclick="openTerminal(2)">
+          <span class="mono">Terminal 2</span>
+          <div>Laboratoire de Classification</div>
+          <div class="desc">Explorer 2 familles + classer 6 systèmes.</div>
+        </button>
+
+        <button class="terminal-btn" id="term-btn-3" onclick="openTerminal(3)">
+          <span class="mono">Terminal 3</span>
+          <div>Décodeur Hiérarchique</div>
+          <div class="desc">Reconstituer IA → Transformers.</div>
+        </button>
+
+        <button class="terminal-btn" id="term-btn-4" onclick="openTerminal(4)">
+          <span class="mono">Terminal 4</span>
+          <div>Enquête “Genius AI”</div>
+          <div class="desc">Collecter preuves + 3 déductions.</div>
+        </button>
+
+        <div class="divider"></div>
+
+        <button class="terminal-btn locked" id="term-btn-quiz" onclick="openTerminal('quiz')">
+          <span class="mono">QUIZ</span>
+          <div>Certification</div>
+          <div class="desc">Score ≥ 70% → attestation.</div>
+        </button>
+
+        <button class="terminal-btn locked" id="term-btn-cert" onclick="openTerminal('cert')">
+          <span class="mono">🎓</span>
+          <div>Attestation</div>
+          <div class="desc">Téléchargement HTML.</div>
+        </button>
+
+        <div class="divider"></div>
+
+        <div class="callout" style="margin:0">
+          <strong style="color:var(--neon-green)">Agent NEXUS</strong><br/>
+          <span id="nexus-log">Accès aux terminaux autorisé. Analyse en attente.</span>
+        </div>
+      </div>
+
+      <div class="game-right">
+        <div id="terminal-container" class="terminal-panel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL (preuves) ==================== -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3 id="modal-title">Titre</h3>
+      <p id="modal-body">Contenu</p>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast"></div>
+
+<script>
+/* =========================================================
+   UTILITAIRES (style M12/M15)
+========================================================= */
+const $ = (id)=>document.getElementById(id);
+
+function toast(msg, ms=2200){
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(window.__toastT);
+  window.__toastT = setTimeout(()=>el.classList.remove('show'), ms);
+}
+
+function typewriter(el, text, speed=18){
+  el.textContent = "";
+  let i=0;
+  const t = setInterval(()=>{
+    el.textContent += text[i] ?? "";
+    i++;
+    if(i>text.length){clearInterval(t);}
+  }, speed);
+}
+
+function setNexus(text){
+  typewriter($('nexus-log'), text, 16);
+}
+
+/* =========================================================
+   ÉTAT GLOBAL
+========================================================= */
+const state = {
+  // briefing
+  lessonSeen: new Set(),
+  // game
+  score: 0,
+  credibility: 100,
+  timeLeft: 15*60,
+  timer: null,
+  lockedFor: 0,
+
+  terminalsDone: {1:false,2:false,3:false,4:false},
+  casesDoneCount: 0,
+
+  // terminal 1
+  timelinePlaced: {}, // year -> eventId
+  // terminal 2
+  familiesExplored: new Set(),
+  classPlaced: {symbolique:[], connexionniste:[]},
+  // terminal 3
+  hierarchyPlaced: [],
+  // terminal 4
+  evidenceSeen: new Set(),
+  deductions: {1:null,2:null,3:null},
+
+  // quiz
+  quizUnlocked: false,
+  quizAnswers: {}, // q -> option index
+  quizCompleted: false,
+  finalScorePct: 0,
+
+  certificateUnlocked: false,
+};
+
+const timelineEvents = [
+  { id: 1, year: '1950', desc: 'Alan Turing propose un test pour savoir si une machine peut se faire passer pour un humain' },
+  { id: 2, year: '1956', desc: 'Naissance du terme "intelligence artificielle" à la conférence de Dartmouth' },
+  { id: 3, year: '1980', desc: 'Les systèmes experts (IA symbolique) aident les médecins à poser des diagnostics' },
+  { id: 4, year: '1997', desc: 'Deep Blue bat le champion du monde d’échecs (victoire de l’IA symbolique)' },
+  { id: 5, year: '2010', desc: 'Le Deep Learning décolle : l’IA connexionniste reconnaît images et voix' },
+  { id: 6, year: '2015', desc: 'AlphaGo bat un champion de go grâce au Deep Learning' },
+  { id: 7, year: '2017', desc: 'Les Transformers sont introduits pour améliorer la traduction (attention)' },
+  { id: 8, year: '2020', desc: 'GPT-3 (175B) impressionne : génération de textes très réalistes' },
+  { id: 9, year: '2022', desc: 'ChatGPT devient viral : IA générative accessible à tous' },
+  { id: 10, year: '2024', desc: 'En France, Mistral AI symbolise l’intensification de la compétition' }
+];
+
+const timelineYears = timelineEvents.map(e=>e.year);
+
+const systemsData = [
+  { id: 1, name: '🏁 Deep Blue (échecs)', type: 'symbolique' },
+  { id: 2, name: '🗣️ Reconnaissance vocale', type: 'connexionniste' },
+  { id: 3, name: '🏥 Système expert médical', type: 'symbolique' },
+  { id: 4, name: '📸 Reconnaissance d’images', type: 'connexionniste' },
+  { id: 5, name: '💬 ChatGPT', type: 'connexionniste' },
+  { id: 6, name: '🎮 AlphaGo', type: 'connexionniste' }
+];
+
+const hierarchyLevels = [
+  {id:'ia', label:'Intelligence Artificielle'},
+  {id:'ml', label:'Machine Learning'},
+  {id:'dl', label:'Deep Learning'},
+  {id:'tr', label:'Transformers (GPT, BERT...)'}
+];
+
+const quizQuestions = [
+  {
+    q:"Quelle année marque la naissance officielle du terme « intelligence artificielle » ?",
+    options:["1950 — Test de Turing","1956 — Conférence de Dartmouth","2022 — ChatGPT"],
+    correct:1,
+    explain:"Le terme « intelligence artificielle » est popularisé par John McCarthy lors de la conférence de Dartmouth (1956)."
+  },
+  {
+    q:"Quelle approche utilise des règles logiques explicites programmées par des humains ?",
+    options:["IA Symbolique","IA Connexionniste","Deep Learning"],
+    correct:0,
+    explain:"L’IA symbolique repose sur des règles explicites (SI… ALORS…) et des systèmes experts."
+  },
+  {
+    q:"Deep Blue (1997) utilisait quelle approche ?",
+    options:["IA Symbolique (calcul massif)","IA Connexionniste","Transformers"],
+    correct:0,
+    explain:"Deep Blue est un système d’IA symbolique : règles, heuristiques, et calcul massif."
+  },
+  {
+    q:"Quelle analogie correspond à l’IA connexionniste ?",
+    options:["Un livre de recettes","Un enfant qui apprend par l’exemple","Une calculatrice"],
+    correct:1,
+    explain:"L’IA connexionniste apprend à partir d’exemples (données), comme un enfant qui généralise."
+  },
+  {
+    q:"Le Deep Learning est une sous-catégorie de quoi ?",
+    options:["IA Symbolique","Machine Learning","Transformers"],
+    correct:1,
+    explain:"Hiérarchie : IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers."
+  },
+  {
+    q:"Que signifie le « T » dans GPT ?",
+    options:["Technology","Transformer","Training"],
+    correct:1,
+    explain:"GPT signifie Generative Pre-trained Transformer."
+  },
+  {
+    q:"Quel repère marque les années 2010 dans l’histoire récente ?",
+    options:["Création du premier ordinateur","Avènement du Deep Learning","Lancement de ChatGPT"],
+    correct:1,
+    explain:"Les années 2010 marquent l’essor du deep learning (données + GPU + architectures)."
+  },
+  {
+    q:"Quel est le principal avantage de l’IA symbolique ?",
+    options:["Plus performante partout","Transparente et explicable","Moins de calcul"],
+    correct:1,
+    explain:"En IA symbolique, on peut souvent expliquer exactement quelle règle a conduit à la décision."
+  }
+];
+
+/* =========================================================
+   NAVIGATION (Title → Briefing → Game)
+========================================================= */
+function startModule(){
+  $('title-screen').classList.add('hidden');
+  $('briefing-screen').classList.add('active');
+  showLesson(0);
+  toast("Accès autorisé. Dossier chargé.");
+}
+
+function enterGame(){
+  $('briefing-screen').classList.remove('active');
+  $('game-screen').classList.add('active');
+  openTerminal(1);
+  if(!state.timer){
+    startTimer();
+    setNexus("Chronomètre initialisé. 15 minutes. Crédibilité à 100.");
+  }
+}
+
+function goBriefing(){
+  $('game-screen').classList.remove('active');
+  $('briefing-screen').classList.add('active');
+}
+
+function showQuizFromBriefing(){
+  if(!state.quizUnlocked) return;
+  enterGame();
+  openTerminal('quiz');
+}
+
+/* =========================================================
+   BRIEFING CONTENT
+========================================================= */
+const lessons = [
+  {
+    title:"01 — L’IA : entre mythes et réalité",
+    kicker:"Pourquoi autant d’idées reçues ? Le fossé entre SF et réalité.",
+    html:`
+      <div class="pill">VERIT-IA</div><div class="pill">Dossier Zéro</div><div class="pill">Démystification</div>
+      <div class="divider"></div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        En 2026, l’IA est partout : assistants, recommandations, traduction, génération de texte et d’images…
+        Mais l’imaginaire collectif confond souvent <strong>capacité technique</strong> et <strong>intelligence humaine</strong>.
+      </p>
+      <div class="callout warn">
+        <strong>Mythe courant :</strong> « L’IA comprend comme un humain. »<br/>
+        <strong>Réalité :</strong> elle calcule, apprend des régularités, et prédit des sorties plausibles selon des données.
+      </div>
+      <div class="callout">
+        <strong>Mission :</strong> apprendre à distinguer <em>ce qui est possible</em> de <em>ce qui est exagéré</em>, puis conclure une enquête.
+      </div>
+    `
+  },
+  {
+    title:"02 — Les origines : de Turing à Dartmouth",
+    kicker:"1950 : Test de Turing. 1956 : Dartmouth (John McCarthy).",
+    html:`
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>1950</strong> : Alan Turing propose un test d’imitation (conversation) pour évaluer si une machine peut « paraître humaine ».<br/>
+        <strong>1956</strong> : à Dartmouth, le terme « intelligence artificielle » est popularisé (John McCarthy).
+      </p>
+      <div class="callout ok">
+        <strong>À retenir :</strong> l’IA ne naît pas avec ChatGPT. C’est une histoire de plusieurs décennies.
+      </div>
+    `
+  },
+  {
+    title:"03 — IA symbolique : le cerveau logique",
+    kicker:"Règles SI… ALORS, systèmes experts, Deep Blue. Transparent mais rigide.",
+    html:`
+      <div class="callout">
+        <strong>Principe :</strong> représenter un problème via des symboles + appliquer des règles explicites (logique, heuristiques, arbres de décision).
+      </div>
+      <div class="callout ok">
+        <strong>Analogie :</strong> un livre de recettes très détaillé : si vous suivez la recette, vous obtenez le plat attendu.
+      </div>
+      <div class="callout pink">
+        <strong>Exemple :</strong> Deep Blue (1997) — calcule massivement, ne « comprend » pas les échecs.
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Forces :</strong> explicable, prévisible, auditabilité.<br/>
+        <strong>Faiblesses :</strong> rigidité — hors des règles prévues, le système peut échouer.
+      </p>
+    `
+  },
+  {
+    title:"04 — IA connexionniste : le cerveau qui apprend",
+    kicker:"Réseaux de neurones, apprentissage par l’exemple. Adaptable, parfois boîte noire.",
+    html:`
+      <div class="callout">
+        <strong>Principe :</strong> apprendre à partir de données : le modèle ajuste ses paramètres pour réduire l’erreur sur des exemples.
+      </div>
+      <div class="callout ok">
+        <strong>Analogie :</strong> un enfant qui apprend à reconnaître un chat en en voyant beaucoup (sans règles explicites).
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Forces :</strong> traite des données complexes (images, voix, texte), peut généraliser.<br/>
+        <strong>Faiblesses :</strong> manque de transparence (explicabilité plus difficile), dépendance aux données.
+      </p>
+    `
+  },
+  {
+    title:"05 — La hiérarchie des concepts",
+    kicker:"IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers",
+    html:`
+      <div class="callout">
+        <strong>IA :</strong> ensemble de méthodes visant des tâches « intelligentes » (raisonnement, perception, langage…).<br/>
+        <strong>Machine Learning :</strong> apprend des patterns à partir de données.<br/>
+        <strong>Deep Learning :</strong> réseaux de neurones profonds (beaucoup de couches).<br/>
+        <strong>Transformers :</strong> architecture moderne pour le langage (GPT, BERT…) basée sur l’attention.
+      </div>
+      <div class="callout ok">
+        <strong>À retenir :</strong> « IA » est un grand parapluie. ChatGPT est une IA… mais toutes les IA ne sont pas des ChatGPT.
+      </div>
+    `
+  },
+  {
+    title:"06 — Les grandes dates qui ont tout changé",
+    kicker:"10 repères clés : 1950 → 2024",
+    html:`
+      <p style="line-height:1.7;color:#cfe9ff">
+        Vous rencontrerez ces repères dans le Terminal 1 (archives).<br/>
+        Objectif : relier chaque événement à la bonne date (Turing, Dartmouth, systèmes experts, Deep Blue, deep learning, AlphaGo, Transformers, GPT-3, ChatGPT, compétition récente…).
+      </p>
+      <div class="callout warn">
+        <strong>Consigne :</strong> en cas d’erreur dans le jeu, votre <strong>crédibilité</strong> baisse. Elle a un vrai impact.
+      </div>
+    `
+  },
+  {
+    title:"07 — Ce que l’IA fait… et ne fait PAS",
+    kicker:"L’IA calcule et détecte des patterns, mais ne « comprend » pas comme un humain.",
+    html:`
+      <div class="callout ok">
+        <strong>Ce que l’IA sait faire :</strong> prédire, classer, générer, optimiser… à partir de données et d’objectifs.
+      </div>
+      <div class="callout pink">
+        <strong>Ce que l’IA ne fait pas (dans l’usage courant) :</strong> conscience, volonté propre, compréhension humaine du monde.
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les modèles modernes peuvent produire des réponses très convaincantes, mais cela ne signifie pas qu’ils « pensent » au sens humain.
+      </p>
+    `
+  },
+  {
+    title:"08 — Briefing de mission",
+    kicker:"TechCorp prétend avoir créé « Genius AI ». Vous devez analyser les preuves.",
+    html:`
+      <div class="callout">
+        <strong>Cas :</strong> TechCorp annonce une « Super IA » révolutionnaire. Des experts doutent.<br/>
+        <strong>Votre mission :</strong> collecter des preuves et déterminer : (1) type d’IA, (2) faiblesse, (3) meilleure approche pour l’imagerie médicale.
+      </div>
+      <div class="btn-row">
+        <button class="btn green" onclick="enterGame()">▶ Lancer l’opération (phase de jeu)</button>
+      </div>
+    `
+  }
+];
+
+function showLesson(idx){
+  const navItems = document.querySelectorAll('.briefing-nav-item');
+  navItems.forEach((it,i)=>{
+    if(i<8){
+      it.classList.toggle('active', i===idx);
+    }
+  });
+
+  const L = lessons[idx];
+  $('lesson-container').innerHTML = `
+    <div class="module-title">${L.title}</div>
+    <div class="module-kicker">${L.kicker}</div>
+    <div class="divider"></div>
+    ${L.html}
+  `;
+
+  // progression
+  state.lessonSeen.add(idx);
+  $('briefing-progress').textContent = state.lessonSeen.size;
+
+  if(state.lessonSeen.size >= 8){
+    // mark completed all 8
+    navItems.forEach((it,i)=>{
+      if(i<8) it.classList.add('completed');
+    });
+    toast("Dossier étudié. Passez à la phase de jeu.");
+  } else {
+    navItems[idx].classList.add('completed');
+  }
+}
+
+/* =========================================================
+   TIMER + CRÉDIBILITÉ (rôle intéressant)
+   - erreurs -> crédibilité baisse
+   - <70 : NEXUS sceptique (messages)
+   - <40 : indices / aides limitées
+   - 0 : verrouillage temporaire 10s (pas game over)
+========================================================= */
+function startTimer(){
+  state.timer = setInterval(()=>{
+    if(state.lockedFor>0){
+      state.lockedFor--;
+      // on affiche toujours le timer, pas besoin de bloquer
+    }
+
+    state.timeLeft = Math.max(0, state.timeLeft-1);
+    updateTimerUI();
+    if(state.timeLeft === 0){
+      setNexus("Temps écoulé. Rapport possible, mais crédibilité en jeu. Faites au mieux.");
+      toast("⏱ Temps écoulé : continuez, mais soyez rigoureux.", 3200);
+      // pas de game over, juste ambiance
+      clearInterval(state.timer);
+      state.timer = null;
+    }
+  },1000);
+  updateTimerUI();
+}
+
+function updateTimerUI(){
+  const m = String(Math.floor(state.timeLeft/60)).padStart(2,'0');
+  const s = String(state.timeLeft%60).padStart(2,'0');
+  $('timer').textContent = `${m}:${s}`;
+}
+
+function setScore(delta){
+  state.score += delta;
+  $('score').textContent = state.score;
+}
+
+function setCred(delta){
+  state.credibility = Math.max(0, Math.min(100, state.credibility + delta));
+  $('cred-val').textContent = state.credibility;
+  $('cred-bar').style.width = `${state.credibility}%`;
+
+  if(state.credibility < 40){
+    setNexus("Crédibilité critique. Les indices seront moins tolérants.");
+  } else if(state.credibility < 70){
+    setNexus("Votre rapport manque de solidité. Restez factuel.");
+  }
+  if(state.credibility === 0){
+    temporaryLock();
+  }
+}
+
+function temporaryLock(){
+  state.lockedFor = 10;
+  toast("🧯 Crédibilité à zéro : verrouillage 10 secondes (réinitialisation des accès).", 3500);
+  setNexus("Verrouillage temporaire. Respirez. Reprenez avec méthode.");
+}
+
+function interactionAllowed(){
+  if(state.lockedFor>0){
+    toast(`🔒 Accès verrouillé (${state.lockedFor}s)`, 1100);
+    return false;
+  }
+  return true;
+}
+
+/* =========================================================
+   TERMINALS NAV
+========================================================= */
+function openTerminal(id){
+  if(id==='quiz' && !state.quizUnlocked){ return; }
+  if(id==='cert' && !state.certificateUnlocked){ return; }
+
+  // update active buttons
+  const ids = [1,2,3,4,'quiz','cert'];
+  ids.forEach(x=>{
+    const btn = $('term-btn-'+x);
+    if(btn) btn.classList.toggle('active', x===id);
+  });
+
+  // render
+  if(id===1) renderTerminal1();
+  else if(id===2) renderTerminal2();
+  else if(id===3) renderTerminal3();
+  else if(id===4) renderTerminal4();
+  else if(id==='quiz') renderQuiz();
+  else if(id==='cert') renderCertificatePanel();
+}
+
+/* =========================================================
+   TERMINAL COMPLETION / UNLOCKS
+========================================================= */
+function completeTerminal(n){
+  if(state.terminalsDone[n]) return;
+  state.terminalsDone[n]=true;
+  state.casesDoneCount++;
+  $('cases-count').textContent = state.casesDoneCount;
+
+  const btn = $('term-btn-'+n);
+  if(btn) btn.classList.add('completed');
+
+  setNexus(`Terminal ${n} validé. Dossier scellé (${state.casesDoneCount}/4).`);
+
+  if(state.casesDoneCount>=4 && !state.quizUnlocked){
+    state.quizUnlocked = true;
+    unlockQuiz();
+    toast("✅ Les 4 terminaux sont validés : Quiz débloqué !");
+    setNexus("Certification débloquée. Ouvrez le terminal Quiz.");
+  }
+}
+
+function unlockQuiz(){
+  $('term-btn-quiz').classList.remove('locked');
+  $('quiz-nav-item').classList.remove('locked');
+  $('quiz-nav-item').style.opacity = 1;
+  $('quiz-nav-item').style.cursor = 'pointer';
+}
+
+function unlockCertificate(scorePct){
+  state.certificateUnlocked = true;
+  state.finalScorePct = scorePct;
+
+  // briefing nav item
+  const navItem = $('certificate-nav-item');
+  navItem.classList.remove('locked');
+  navItem.style.opacity = 1;
+  navItem.style.cursor = 'pointer';
+  navItem.style.background = 'rgba(0,255,136,0.05)';
+  navItem.style.borderColor = 'rgba(0,255,136,0.55)';
+
+  // game terminal
+  $('term-btn-cert').classList.remove('locked');
+
+  toast("🎓 Attestation débloquée !");
+  setNexus("Attestation disponible. Retournez au dossier ou ouvrez l’onglet Attestation.");
+}
+
+function showCertificateInFolder(){
+  if(!state.certificateUnlocked){
+    $('lesson-container').innerHTML = `
+      <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
+      <div class="module-kicker">Attestation verrouillée — validez le quiz avec au moins <strong>70%</strong>.</div>
+      <div class="divider"></div>
+      <div class="callout warn">
+        <strong>Condition :</strong> Score quiz ≥ 70%<br/>
+        <strong>Astuce :</strong> Terminez d’abord les 4 terminaux, puis passez la certification.
+      </div>
+    `;
+    return;
+  }
+
+  $('lesson-container').innerHTML = `
+    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
+    <div class="module-kicker">Module 1 — Démystifier l’IA (DOSSIER ZÉRO)</div>
+    <div class="divider"></div>
+
+    <div class="callout ok">
+      <strong>Score certification :</strong> <span style="color:var(--neon-green)">${state.finalScorePct}%</span><br/>
+      <span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">Référence :</span> IA-DEMYST-${String(Math.floor(Math.random()*90000)+10000)}
+    </div>
+
+    <div class="callout">
+      <strong>Compétences validées :</strong><br/>
+      • Connaître les origines (1950–2024)<br/>
+      • Distinguer IA symbolique et connexionniste<br/>
+      • Comprendre IA ⊃ ML ⊃ DL ⊃ Transformers<br/>
+      • Identifier le type d’un système<br/>
+      • Évaluer forces & faiblesses des approches
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="callout">
+      <div style="font-family:'Space Mono',monospace;margin-bottom:8px;color:var(--neon-blue)">Nom sur l’attestation :</div>
+      <input id="certificate-name-folder" type="text" placeholder="Prénom NOM"
+        style="width:100%;max-width:520px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,.35);
+        background:rgba(0,0,0,.2);color:var(--text);font-family:'Exo 2',sans-serif;outline:none;"/>
+      <div class="btn-row" style="margin-top:12px">
+        <button class="btn green" onclick="downloadCertificateFromFolder()">Télécharger (HTML)</button>
+        <button class="btn" onclick="toast('Astuce : ouvrez ensuite le fichier HTML et imprimez en PDF si besoin.')">ℹ️</button>
+      </div>
+    </div>
+  `;
+}
+
+function downloadCertificateFromFolder(){
+  const name = ($('certificate-name-folder')?.value || "").trim() || "Participant";
+  const date = new Date().toLocaleDateString('fr-FR', { year:'numeric', month:'long', day:'numeric' });
+  generateCertificateHTML(name, date, state.finalScorePct);
+}
+
+function renderCertificatePanel(){
+  // game screen attestation
+  $('terminal-container').innerHTML = `
+    <div class="terminal-title" style="color:var(--neon-green)">🎓 Attestation</div>
+    <div class="terminal-sub">Téléchargez votre attestation (format identique aux autres modules).</div>
+    <div class="divider"></div>
+    <div class="callout ok">
+      <strong>Score certification :</strong> <span style="color:var(--neon-green)">${state.finalScorePct}%</span>
+    </div>
+    <div class="callout">
+      <div style="font-family:'Space Mono',monospace;margin-bottom:8px;color:var(--neon-blue)">Nom sur l’attestation :</div>
+      <input id="certificate-name-game" type="text" placeholder="Prénom NOM"
+        style="width:100%;max-width:520px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,.35);
+        background:rgba(0,0,0,.2);color:var(--text);font-family:'Exo 2',sans-serif;outline:none;"/>
+      <div class="btn-row" style="margin-top:12px">
+        <button class="btn green" onclick="downloadCertificateFromGame()">Télécharger (HTML)</button>
+      </div>
+    </div>
+  `;
+}
+
+function downloadCertificateFromGame(){
+  const name = ($('certificate-name-game')?.value || "").trim() || "Participant";
+  const date = new Date().toLocaleDateString('fr-FR', { year:'numeric', month:'long', day:'numeric' });
+  generateCertificateHTML(name, date, state.finalScorePct);
+}
+
+/* =========================================================
+   TERMINAL 1 — TIMELINE (drag & drop)
+========================================================= */
+let draggedEventId = null;
+
+function renderTerminal1(){
+  const shuffled = [...timelineEvents].sort(()=>Math.random()-0.5);
+
+  $('terminal-container').innerHTML = `
+    <div class="terminal-title">Terminal 1 — Archives Chronologiques</div>
+    <div class="terminal-sub">Glissez chaque événement sur la bonne date. Vérifiez ensuite. <span style="color:var(--muted)">(Erreurs : -5 crédibilité)</span></div>
+    <div class="divider"></div>
+
+    <div class="grid-2">
+      <div class="pool">
+        <h4>Événements (à placer)</h4>
+        <div id="t1-pool"></div>
+      </div>
+
+      <div class="pool">
+        <h4>Frise (dates)</h4>
+        <div id="t1-zones"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn green" id="t1-verify" onclick="verifyTimeline()">Vérifier</button>
+      <button class="btn pink" onclick="resetTimeline()">Réinitialiser</button>
+    </div>
+
+    <div class="callout" id="t1-feedback" style="display:none"></div>
+  `;
+
+  // pool cards
+  const pool = $('t1-pool');
+  shuffled.forEach(ev=>{
+    const div = document.createElement('div');
+    div.className='card';
+    div.draggable=true;
+    div.dataset.eventId=ev.id;
+    div.innerHTML = `<span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">EV-${String(ev.id).padStart(2,'0')}</span><br>${ev.desc}`;
+    div.addEventListener('dragstart', (e)=>{
+      if(!interactionAllowed()) { e.preventDefault(); return; }
+      if(div.classList.contains('placed')){ e.preventDefault(); return; }
+      draggedEventId = ev.id;
+      div.classList.add('dragging');
+    });
+    div.addEventListener('dragend', ()=>div.classList.remove('dragging'));
+    pool.appendChild(div);
+  });
+
+  // zones
+  const zones = $('t1-zones');
+  timelineYears.forEach(year=>{
+    const z = document.createElement('div');
+    z.className='dropzone';
+    z.dataset.year=year;
+    z.innerHTML = `
+      <div class="label">
+        <span>📅 <strong style="color:var(--neon-purple)">${year}</strong></span>
+        <span></span>
+      </div>
+      <div class="placed-slot" id="t1-slot-${year}"></div>
+    `;
+    z.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      if(!interactionAllowed()) return;
+      z.classList.add('dragover');
+    });
+    z.addEventListener('dragleave', ()=>z.classList.remove('dragover'));
+    z.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      z.classList.remove('dragover');
+      if(!interactionAllowed()) return;
+      if(!draggedEventId) return;
+      if(state.timelinePlaced[year]){ toast("Zone déjà remplie. Retirez d’abord."); return; }
+
+      const ev = timelineEvents.find(x=>x.id===draggedEventId);
+      state.timelinePlaced[year] = draggedEventId;
+
+      // mark card placed
+      const card = document.querySelector(`.card[data-event-id="${draggedEventId}"]`);
+      if(card) card.classList.add('placed');
+
+      const slot = $('t1-slot-'+year) || $('t1-slot-'+CSS.escape(year));
+      const slotEl = $('t1-slot-'+year);
+      // better: direct query
+      const targetSlot = document.querySelector(`#t1-slot-${CSS.escape(year)}`);
+      if(targetSlot){
+        targetSlot.innerHTML = `
+          <div class="placed-item">
+            ${ev.desc}
+            <button class="mini-remove" style="float:right" onclick="removeTimeline('${year}')">✕</button>
+          </div>
+        `;
+      }
+      z.classList.add('filled');
+
+      draggedEventId = null;
+    });
+    zones.appendChild(z);
+  });
+
+  setNexus("Accès aux archives temporelles autorisé. Placez les événements.");
+}
+
+function removeTimeline(year){
+  if(!interactionAllowed()) return;
+  const evId = state.timelinePlaced[year];
+  if(!evId) return;
+  delete state.timelinePlaced[year];
+
+  const z = document.querySelector(`.dropzone[data-year="${year}"]`);
+  if(z){
+    z.classList.remove('filled','correct','wrong');
+    const slot = document.querySelector(`#t1-slot-${CSS.escape(year)}`);
+    if(slot) slot.innerHTML = "";
+  }
+
+  const card = document.querySelector(`.card[data-event-id="${evId}"]`);
+  if(card) card.classList.remove('placed');
+}
+
+function resetTimeline(){
+  if(!interactionAllowed()) return;
+  state.timelinePlaced = {};
+  renderTerminal1();
+  toast("Terminal 1 réinitialisé.");
+}
+
+function verifyTimeline(){
+  if(!interactionAllowed()) return;
+
+  const placedCount = Object.keys(state.timelinePlaced).length;
+  if(placedCount !== timelineEvents.length){
+    toast(`Placez d'abord tous les événements (${placedCount}/${timelineEvents.length}).`);
+    return;
+  }
+
+  let correct=0;
+  timelineYears.forEach(year=>{
+    const zone = document.querySelector(`.dropzone[data-year="${year}"]`);
+    const placedId = state.timelinePlaced[year];
+    const expected = timelineEvents.find(e=>e.year===year)?.id;
+    if(zone){
+      zone.classList.remove('correct','wrong');
+      if(placedId === expected){
+        zone.classList.add('correct');
+        correct++;
+      } else {
+        zone.classList.add('wrong');
+      }
+    }
+  });
+
+  const feedback = $('t1-feedback');
+  feedback.style.display = 'block';
+
+  if(correct===timelineEvents.length){
+    feedback.className = 'callout ok';
+    feedback.innerHTML = `<strong>✅ Archives validées.</strong> ${correct}/10 correct. +200 points.`;
+    setScore(200);
+    completeTerminal(1);
+  } else {
+    feedback.className = 'callout warn';
+    feedback.innerHTML = `<strong>❌ Anomalies détectées.</strong> ${correct}/10 correct. Corrigez les zones en rouge.`;
+    setCred(-5);
+  }
+}
+
+/* =========================================================
+   TERMINAL 2 — FAMILLES + CLASSIFICATION
+========================================================= */
+let draggedSystemId = null;
+
+function renderTerminal2(){
+  $('terminal-container').innerHTML = `
+    <div class="terminal-title">Terminal 2 — Laboratoire de Classification</div>
+    <div class="terminal-sub">Explorez les deux familles puis classez 6 systèmes. <span style="color:var(--muted)">(Erreurs : -3 crédibilité)</span></div>
+    <div class="divider"></div>
+
+    <div class="family-cards">
+      <div class="family" id="fam-symbolique">
+        <span class="tag">🎭 IA Symbolique</span>
+        <h3 style="color:var(--neon-blue)">Le cerveau logique</h3>
+        <p><strong>Principe :</strong> règles explicites, symboles, logique (SI… ALORS…).</p>
+        <div class="btn-row">
+          <button class="btn" onclick="toggleFamily('symbolique')">Voir détails</button>
+        </div>
+        <div class="more" id="more-symbolique">
+          <div class="callout">
+            <strong>Analogie :</strong> livre de recettes.<br/>
+            <strong>Exemple :</strong> Deep Blue (1997).<br/>
+            <strong>Forces :</strong> explicable.<br/>
+            <strong>Faiblesses :</strong> rigide.
+          </div>
+        </div>
+      </div>
+
+      <div class="family" id="fam-connexionniste">
+        <span class="tag pink">🧠 IA Connexionniste</span>
+        <h3 style="color:var(--neon-pink)">Le cerveau qui apprend</h3>
+        <p><strong>Principe :</strong> apprend par l’exemple (réseaux de neurones).</p>
+        <div class="btn-row">
+          <button class="btn" onclick="toggleFamily('connexionniste')">Voir détails</button>
+        </div>
+        <div class="more" id="more-connexionniste">
+          <div class="callout">
+            <strong>Analogie :</strong> un enfant qui apprend.<br/>
+            <strong>Exemples :</strong> reconnaissance vocale, images.<br/>
+            <strong>Forces :</strong> adaptable.<br/>
+            <strong>Faiblesses :</strong> boîte noire.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="grid-2">
+      <div class="pool">
+        <h4>Systèmes à classer</h4>
+        <div id="t2-pool"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="pool">
+          <h4>🎭 Symbolique</h4>
+          <div class="dropzone" id="t2-zone-symbolique" data-type="symbolique"></div>
+        </div>
+        <div class="pool">
+          <h4>🧠 Connexionniste</h4>
+          <div class="dropzone" id="t2-zone-connexionniste" data-type="connexionniste"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn green" onclick="verifyClassification()">Vérifier</button>
+      <button class="btn pink" onclick="resetClassification()">Réinitialiser</button>
+    </div>
+
+    <div class="callout" id="t2-feedback" style="display:none"></div>
+  `;
+
+  // pool systems
+  const pool = $('t2-pool');
+  const shuffled = [...systemsData].sort(()=>Math.random()-0.5);
+  shuffled.forEach(sys=>{
+    const div = document.createElement('div');
+    div.className='card';
+    div.draggable=true;
+    div.dataset.systemId=sys.id;
+    div.dataset.type=sys.type;
+    div.innerHTML = `<span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">SYS-${String(sys.id).padStart(2,'0')}</span><br><strong>${sys.name}</strong>`;
+    div.addEventListener('dragstart', (e)=>{
+      if(!interactionAllowed()){ e.preventDefault(); return; }
+      if(div.classList.contains('placed')){ e.preventDefault(); return; }
+      draggedSystemId = sys.id;
+      div.classList.add('dragging');
+    });
+    div.addEventListener('dragend', ()=>div.classList.remove('dragging'));
+    pool.appendChild(div);
+  });
+
+  // zones
+  ['symbolique','connexionniste'].forEach(type=>{
+    const zone = $('t2-zone-'+type);
+    zone.innerHTML = '';
+    zone.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      if(!interactionAllowed()) return;
+      zone.classList.add('dragover');
+    });
+    zone.addEventListener('dragleave', ()=>zone.classList.remove('dragover'));
+    zone.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      zone.classList.remove('dragover');
+      if(!interactionAllowed()) return;
+      if(!draggedSystemId) return;
+
+      const card = document.querySelector(`.card[data-system-id="${draggedSystemId}"]`);
+      if(!card || card.classList.contains('placed')) return;
+
+      const sys = systemsData.find(s=>s.id===draggedSystemId);
+      if(!sys) return;
+
+      // record
+      state.classPlaced[type].push(sys.id);
+
+      // mark card
+      card.classList.add('placed');
+
+      // add placed item
+      const item = document.createElement('div');
+      item.className='placed-item';
+      item.dataset.systemId=sys.id;
+      item.innerHTML = `${sys.name} <button class="mini-remove" style="float:right" onclick="removeSystem(${sys.id}, '${type}')">✕</button>`;
+      zone.appendChild(item);
+
+      draggedSystemId = null;
+    });
+  });
+
+  setNexus("Accès au laboratoire de tri autorisé. Identifiez les familles puis classez.");
+}
+
+function toggleFamily(type){
+  if(!interactionAllowed()) return;
+  const more = $('more-'+type);
+  more.classList.toggle('show');
+  state.familiesExplored.add(type);
+  toast(`Fiche consultée : ${type}`);
+}
+
+function removeSystem(id, type){
+  if(!interactionAllowed()) return;
+  // remove from list
+  state.classPlaced[type] = state.classPlaced[type].filter(x=>x!==id);
+  // unplace card
+  const card = document.querySelector(`.card[data-system-id="${id}"]`);
+  if(card) card.classList.remove('placed');
+  // remove placed item
+  const zone = $('t2-zone-'+type);
+  const item = zone.querySelector(`.placed-item[data-system-id="${id}"]`);
+  if(item) item.remove();
+}
+
+function resetClassification(){
+  if(!interactionAllowed()) return;
+  state.familiesExplored = new Set();
+  state.classPlaced = {symbolique:[], connexionniste:[]};
+  renderTerminal2();
+  toast("Terminal 2 réinitialisé.");
+}
+
+function verifyClassification(){
+  if(!interactionAllowed()) return;
+
+  const exploredOK = state.familiesExplored.size>=2;
+  const placedCount = state.classPlaced.symbolique.length + state.classPlaced.connexionniste.length;
+
+  if(!exploredOK){
+    toast("Explorez d’abord les 2 fiches (Symbolique + Connexionniste).");
+    setCred(-3);
+    return;
+  }
+  if(placedCount !== systemsData.length){
+    toast(`Classez tous les systèmes (${placedCount}/${systemsData.length}).`);
+    return;
+  }
+
+  let correct=0;
+  // check symbolique
+  state.classPlaced.symbolique.forEach(id=>{
+    const sys = systemsData.find(s=>s.id===id);
+    if(sys?.type==='symbolique') correct++;
+  });
+  // check connexionniste
+  state.classPlaced.connexionniste.forEach(id=>{
+    const sys = systemsData.find(s=>s.id===id);
+    if(sys?.type==='connexionniste') correct++;
+  });
+
+  const fb = $('t2-feedback');
+  fb.style.display='block';
+
+  if(correct===systemsData.length){
+    fb.className='callout ok';
+    fb.innerHTML = `<strong>✅ Classification validée.</strong> ${correct}/6 correct. +150 points.`;
+    setScore(150);
+    completeTerminal(2);
+  } else {
+    fb.className='callout warn';
+    fb.innerHTML = `<strong>❌ Tri incorrect.</strong> ${correct}/6 correct. Corrigez puis recommencez.`;
+    setCred(-3);
+  }
+}
+
+/* =========================================================
+   TERMINAL 3 — HIÉRARCHIE (drag & drop ordre)
+========================================================= */
+let draggedLevelId = null;
+
+function renderTerminal3(){
+  const shuffled = [...hierarchyLevels].sort(()=>Math.random()-0.5);
+
+  $('terminal-container').innerHTML = `
+    <div class="terminal-title">Terminal 3 — Décodeur Hiérarchique</div>
+    <div class="terminal-sub">Reconstituez l’ordre : IA → ML → DL → Transformers. <span style="color:var(--muted)">(Bonus si 1er coup)</span></div>
+    <div class="divider"></div>
+
+    <div class="grid-2">
+      <div class="pool">
+        <h4>Blocs disponibles</h4>
+        <div id="t3-pool"></div>
+      </div>
+      <div class="pool">
+        <h4>Ordre final (haut → bas)</h4>
+        <div id="t3-order"></div>
+        <div class="dropzone" id="t3-zone"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn green" onclick="verifyHierarchy()">Vérifier</button>
+      <button class="btn pink" onclick="resetHierarchy()">Réinitialiser</button>
+    </div>
+
+    <div class="callout" id="t3-feedback" style="display:none"></div>
+  `;
+
+  state.hierarchyPlaced = [];
+  const pool = $('t3-pool');
+  shuffled.forEach(level=>{
+    const div = document.createElement('div');
+    div.className='card';
+    div.draggable=true;
+    div.dataset.levelId=level.id;
+    div.innerHTML = `<span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">LVL</span><br><strong>${level.label}</strong>`;
+    div.addEventListener('dragstart',(e)=>{
+      if(!interactionAllowed()){ e.preventDefault(); return; }
+      if(div.classList.contains('placed')){ e.preventDefault(); return; }
+      draggedLevelId = level.id;
+      div.classList.add('dragging');
+    });
+    div.addEventListener('dragend',()=>div.classList.remove('dragging'));
+    pool.appendChild(div);
+  });
+
+  const zone = $('t3-zone');
+  zone.addEventListener('dragover',(e)=>{
+    e.preventDefault();
+    if(!interactionAllowed()) return;
+    zone.classList.add('dragover');
+  });
+  zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+  zone.addEventListener('drop',(e)=>{
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    if(!interactionAllowed()) return;
+    if(!draggedLevelId) return;
+    if(state.hierarchyPlaced.includes(draggedLevelId)) return;
+
+    state.hierarchyPlaced.push(draggedLevelId);
+
+    const level = hierarchyLevels.find(l=>l.id===draggedLevelId);
+    // mark card placed
+    const card = document.querySelector(`.card[data-level-id="${draggedLevelId}"]`);
+    if(card) card.classList.add('placed');
+
+    const order = $('t3-order');
+    const item = document.createElement('div');
+    item.className='placed-item';
+    item.dataset.levelId=draggedLevelId;
+    item.innerHTML = `${level.label} <button class="mini-remove" style="float:right" onclick="removeHierarchy('${draggedLevelId}')">✕</button>`;
+    order.appendChild(item);
+
+    draggedLevelId = null;
+  });
+
+  setNexus("Accès au décodeur autorisé. Reconstruisez la pile de concepts.");
+}
+
+function removeHierarchy(id){
+  if(!interactionAllowed()) return;
+  state.hierarchyPlaced = state.hierarchyPlaced.filter(x=>x!==id);
+
+  const card = document.querySelector(`.card[data-level-id="${id}"]`);
+  if(card) card.classList.remove('placed');
+
+  const item = document.querySelector(`.placed-item[data-level-id="${id}"]`);
+  if(item) item.remove();
+}
+
+function resetHierarchy(){
+  if(!interactionAllowed()) return;
+  renderTerminal3();
+  toast("Terminal 3 réinitialisé.");
+}
+
+function verifyHierarchy(){
+  if(!interactionAllowed()) return;
+
+  if(state.hierarchyPlaced.length !== hierarchyLevels.length){
+    toast(`Placez les 4 niveaux (${state.hierarchyPlaced.length}/4).`);
+    return;
+  }
+
+  const correctOrder = ['ia','ml','dl','tr'];
+  let correct = true;
+  for(let i=0;i<4;i++){
+    if(state.hierarchyPlaced[i] !== correctOrder[i]){ correct=false; break; }
+  }
+
+  const fb = $('t3-feedback');
+  fb.style.display='block';
+
+  if(correct){
+    fb.className='callout ok';
+    const firstTryBonus = 50; // simple
+    fb.innerHTML = `<strong>✅ Hiérarchie validée.</strong> Ordre correct. +150 points (100 + bonus).`;
+    setScore(100 + firstTryBonus);
+    completeTerminal(3);
+  } else {
+    fb.className='callout warn';
+    fb.innerHTML = `<strong>❌ Ordre incorrect.</strong> Ajustez les niveaux et réessayez.`;
+    setCred(-5);
+  }
+}
+
+/* =========================================================
+   TERMINAL 4 — ENQUÊTE GENIUS AI
+========================================================= */
+const evidence = [
+  {
+    id:1,
+    title:"Indice #1 — Documentation technique",
+    text:"Le manuel révèle une gigantesque base de règles créée par 500 experts. Chaque symptôme est associé à des diagnostics via des instructions « SI… ALORS… »."
+  },
+  {
+    id:2,
+    title:"Indice #2 — Performance aux échecs",
+    text:"Genius AI évalue 300 millions de positions par seconde sur supercalculateur. Algorithmes programmés par des grands maîtres."
+  },
+  {
+    id:3,
+    title:"Indice #3 — Limites observées",
+    text:"Face à une maladie inconnue absente de la base de règles, le système échoue, contrairement à un humain qui raisonne par analogie."
+  },
+  {
+    id:4,
+    title:"Indice #4 — Transparence",
+    text:"Pour chaque décision, Genius AI explique exactement quelle règle elle applique et pourquoi. Transparence totale."
+  },
+  {
+    id:5,
+    title:"Indice #5 — Témoignage d’ingénieur",
+    text:"« Aucun réseau de neurones, aucun apprentissage automatique. Tout est basé sur des règles logiques programmées manuellement. »"
+  }
+];
+
+function renderTerminal4(){
+  $('terminal-container').innerHTML = `
+    <div class="terminal-title">Terminal 4 — Enquête “Genius AI”</div>
+    <div class="terminal-sub">Collectez les preuves, puis faites 3 déductions. <span style="color:var(--muted)">(Mauvaise déduction : -10 crédibilité)</span></div>
+    <div class="divider"></div>
+
+    <div class="callout">
+      <strong>Article — “Le Quotidien Tech”</strong><br/>
+      TechCorp annonce “Genius AI”, présentée comme une super-IA. Votre mission : vérifier la réalité technique derrière le marketing.
+    </div>
+
+    <div class="grid-3" id="t4-evidence"></div>
+
+    <div class="divider"></div>
+
+    <div class="callout warn">
+      <strong>Déductions :</strong> répondez correctement aux 3 questions pour clôturer le dossier.
+      <br/><span style="color:var(--muted)">Bonus : +10 crédibilité si enquête parfaite.</span>
+    </div>
+
+    <div class="q-card">
+      <div class="q-head"><span class="mono">Q1</span><span class="muted">Type d’IA ?</span></div>
+      <div class="opts">
+        <div class="opt" onclick="pickDeduction(1,'symbolique', this)">🎭 IA Symbolique</div>
+        <div class="opt" onclick="pickDeduction(1,'connexionniste', this)">🧠 IA Connexionniste</div>
+      </div>
+      <div class="explain" id="ded-ex-1"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-head"><span class="mono">Q2</span><span class="muted">Faiblesse principale ?</span></div>
+      <div class="opts">
+        <div class="opt" onclick="pickDeduction(2,'opacite', this)">🌫️ Manque de transparence</div>
+        <div class="opt" onclick="pickDeduction(2,'rigidite', this)">🔒 Rigidité</div>
+      </div>
+      <div class="explain" id="ded-ex-2"></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-head"><span class="mono">Q3</span><span class="muted">Projet futur (radiographies) ?</span></div>
+      <div class="opts">
+        <div class="opt" onclick="pickDeduction(3,'symbolique', this)">🎭 Programmer les règles</div>
+        <div class="opt" onclick="pickDeduction(3,'connexionniste', this)">🧠 Apprendre sur les images</div>
+      </div>
+      <div class="explain" id="ded-ex-3"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn green" id="t4-submit" onclick="submitInvestigation()" disabled>Soumettre le rapport</button>
+      <button class="btn pink" onclick="resetInvestigation()">Réinitialiser</button>
+    </div>
+
+    <div class="callout" id="t4-feedback" style="display:none"></div>
+  `;
+
+  // evidence cards
+  const wrap = $('t4-evidence');
+  wrap.innerHTML = "";
+  evidence.forEach(ev=>{
+    const b = document.createElement('button');
+    b.className = 'btn';
+    b.style.textTransform='none';
+    b.style.letterSpacing='0px';
+    b.style.padding='14px';
+    b.style.borderRadius='14px';
+    b.style.borderColor='rgba(0,212,255,.35)';
+    b.style.background='rgba(0,212,255,.03)';
+    b.style.color='var(--text)';
+    b.innerHTML = `<span style="font-family:'Space Mono',monospace;color:var(--neon-blue)">PREUVE #${ev.id}</span><br><span style="color:var(--muted)">${ev.title}</span>`;
+    b.onclick = ()=>{
+      if(!interactionAllowed()) return;
+      openEvidence(ev);
+    };
+    wrap.appendChild(b);
+  });
+
+  setNexus("Article chargé. Collectez les preuves avant les déductions.");
+}
+
+function openEvidence(ev){
+  state.evidenceSeen.add(ev.id);
+  // points for each new evidence
+  if(state.evidenceSeen.size <= evidence.length){
+    setScore(15);
+  }
+  $('modal-title').textContent = ev.title;
+  $('modal-body').textContent = ev.text;
+  $('modal').classList.add('show');
+
+  setNexus(`Preuve analysée (${state.evidenceSeen.size}/${evidence.length}).`);
+}
+
+function closeModal(){
+  $('modal').classList.remove('show');
+}
+
+function resetInvestigation(){
+  if(!interactionAllowed()) return;
+  state.evidenceSeen = new Set();
+  state.deductions = {1:null,2:null,3:null};
+  renderTerminal4();
+  toast("Enquête réinitialisée.");
+}
+
+function pickDeduction(q, ans, el){
+  if(!interactionAllowed()) return;
+
+  // require evidence for credibility: if evidenceSeen < 3, allow but warn
+  if(state.evidenceSeen.size < 3){
+    toast("Conseil : inspectez plus de preuves avant de déduire.", 2400);
+    if(state.credibility < 40){
+      // role interesting: with low credibility, deductions are blocked until 3 proofs
+      toast("Crédibilité faible : déduction bloquée tant que 3 preuves ne sont pas consultées.", 2600);
+      return;
+    }
+  }
+
+  // reset visuals for this question
+  const card = el.closest('.q-card');
+  card.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected','correct','wrong'));
+  el.classList.add('selected');
+
+  const correct = {1:'symbolique',2:'rigidite',3:'connexionniste'};
+  const explain = $('ded-ex-'+q);
+
+  if(ans === correct[q]){
+    el.classList.add('correct');
+    state.deductions[q]=ans;
+    setScore(50);
+    explain.classList.add('show');
+    if(q===1){
+      explain.innerHTML = `<strong>✅ IA Symbolique.</strong> Indices SI…ALORS, base de règles, transparence → système expert.`;
+    } else if(q===2){
+      explain.innerHTML = `<strong>✅ Rigidité.</strong> Hors des cas prévus, le système échoue (maladie inconnue).`;
+    } else {
+      explain.innerHTML = `<strong>✅ Connexionniste.</strong> Imagerie = apprentissage sur millions d’images (deep learning).`;
+    }
+    setNexus(`Déduction Q${q} validée.`);
+  } else {
+    el.classList.add('wrong');
+    setCred(-10);
+    explain.classList.add('show');
+    explain.innerHTML = `<strong style="color:var(--danger)">❌ Incorrect.</strong> Réessayez (pénalité crédibilité appliquée).`;
+
+    // disable briefly
+    el.style.pointerEvents='none';
+    setTimeout(()=>{
+      el.style.pointerEvents='auto';
+      el.classList.remove('selected','wrong');
+      explain.classList.remove('show');
+      explain.innerHTML = '';
+    }, 1200);
+    state.deductions[q]=null;
+    setNexus(`Déduction Q${q} rejetée. Corrigez.`);
+  }
+
+  // submit enabled if all answered correctly
+  const allOK = Object.values(state.deductions).every(v=>v);
+  $('t4-submit').disabled = !allOK;
+}
+
+function submitInvestigation(){
+  if(!interactionAllowed()) return;
+  const allOK = Object.values(state.deductions).every(v=>v);
+  if(!allOK){ toast("Répondez correctement aux 3 déductions."); return; }
+
+  const fb = $('t4-feedback');
+  fb.style.display='block';
+  fb.className='callout ok';
+  fb.innerHTML = `<strong>✅ Dossier clôturé.</strong> Rapport validé. +150 points.`;
+
+  setScore(150);
+
+  // perfect bonus credibility: all evidence seen
+  if(state.evidenceSeen.size === evidence.length){
+    setCred(+10);
+    toast("Bonus : enquête parfaite (+10 crédibilité).");
+  }
+
+  completeTerminal(4);
+}
+
+/* =========================================================
+   QUIZ (débloqué après 4 terminaux)
+========================================================= */
+function renderQuiz(){
+  const pct = state.quizCompleted ? state.finalScorePct : null;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'quiz-wrap';
+
+  let header = `
+    <div class="terminal-title">Certification — Quiz</div>
+    <div class="terminal-sub">Répondez aux ${quizQuestions.length} questions. Score ≥ 70% pour débloquer l’attestation.</div>
+    <div class="divider"></div>
+  `;
+
+  if(state.quizCompleted){
+    header += `
+      <div class="callout ok">
+        <strong>Quiz terminé.</strong> Score : <span style="color:var(--neon-green)">${state.finalScorePct}%</span>
+        <br/><span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)">Attestation : ${state.certificateUnlocked ? 'débloquée' : 'verrouillée'}</span>
+      </div>
+    `;
+  }
+
+  wrap.innerHTML = header;
+
+  quizQuestions.forEach((q, idx)=>{
+    const qIndex = idx+1;
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.dataset.q = qIndex;
+    card.innerHTML = `
+      <div class="q-head">
+        <span class="mono">Q${qIndex}</span>
+        <span class="muted">${state.quizCompleted ? '' : 'Choisissez une réponse'}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts"></div>
+      <div class="explain" id="quiz-ex-${qIndex}">${q.explain}</div>
+    `;
+    const opts = card.querySelector('.opts');
+    q.options.forEach((opt, oidx)=>{
+      const div = document.createElement('div');
+      div.className = 'opt';
+      div.textContent = opt;
+
+      const chosen = state.quizAnswers[qIndex] === oidx;
+      if(chosen) div.classList.add('selected');
+
+      div.onclick = ()=>{
+        if(!interactionAllowed()) return;
+        if(state.quizCompleted) return;
+
+        // clear selection
+        opts.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
+        div.classList.add('selected');
+        state.quizAnswers[qIndex]=oidx;
+      };
+      opts.appendChild(div);
+    });
+
+    if(state.quizCompleted){
+      const chosen = state.quizAnswers[qIndex];
+      const allOpt = opts.querySelectorAll('.opt');
+      allOpt.forEach((o, oi)=>{
+        o.classList.remove('selected');
+        if(oi===chosen) o.classList.add('selected');
+        if(oi===q.correct) o.classList.add('correct');
+        if(oi===chosen && chosen!==q.correct) o.classList.add('wrong');
+        o.style.pointerEvents = 'none';
+      });
+      card.querySelector('.explain').classList.add('show');
+    }
+
+    wrap.appendChild(card);
+  });
+
+  const actions = document.createElement('div');
+  actions.className = 'btn-row';
+  actions.innerHTML = `
+    <button class="btn green" id="quiz-submit" ${state.quizCompleted?'disabled':''}>Valider le quiz</button>
+    <button class="btn pink" id="quiz-reset" ${state.quizCompleted?'':'disabled'}>Repasser (reset)</button>
+  `;
+  wrap.appendChild(actions);
+
+  $('terminal-container').innerHTML = '';
+  $('terminal-container').appendChild(wrap);
+
+  $('quiz-submit').onclick = submitQuiz;
+  $('quiz-reset').onclick = resetQuiz;
+
+  setNexus("Certification active. Restez factuel.");
+}
+
+function submitQuiz(){
+  if(!interactionAllowed()) return;
+  if(state.quizCompleted) return;
+
+  // require all answered
+  for(let i=1;i<=quizQuestions.length;i++){
+    if(state.quizAnswers[i]===undefined){
+      toast("Répondez à toutes les questions.");
+      setCred(-5);
+      return;
+    }
+  }
+
+  let correctCount=0;
+  quizQuestions.forEach((q, idx)=>{
+    const qIndex=idx+1;
+    if(state.quizAnswers[qIndex] === q.correct) correctCount++;
+  });
+
+  const pct = Math.round((correctCount/quizQuestions.length)*100);
+
+  // role interesting: credibility influences final pct slightly (soft)
+  const credBonus = state.credibility >= 80 ? 5 : (state.credibility >= 60 ? 2 : 0);
+  const finalPct = Math.min(100, pct + credBonus);
+
+  state.quizCompleted = true;
+  state.finalScorePct = finalPct;
+
+  // score reward
+  setScore(correctCount * 25);
+  toast(`Quiz validé : ${finalPct}% (bonus crédibilité +${credBonus}).`, 3200);
+
+  // unlock certificate if >=70
+  if(finalPct >= 70){
+    unlockCertificate(finalPct);
+  } else {
+    setNexus("Score insuffisant. Révisez et repassez le quiz.");
+    toast("Attestation non débloquée (minimum 70%).", 3000);
+  }
+
+  // rerender quiz results
+  renderQuiz();
+}
+
+function resetQuiz(){
+  if(!interactionAllowed()) return;
+  state.quizAnswers = {};
+  state.quizCompleted = false;
+  state.finalScorePct = 0;
+  // keep certificate lock if it wasn't unlocked; if unlocked, don't relock (cohérent avec M15)
+  renderQuiz();
+  toast("Quiz réinitialisé.");
+}
+
+/* =========================================================
+   CERTIFICATE GENERATOR (format identique esprit M15)
+   - HTML autonome téléchargeable
+========================================================= */
+function generateCertificateHTML(name, date, score){
+  const certificateHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Attestation - Démystifier l'IA</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+  :root{
+    --neon-green:#00ff88;--neon-blue:#00d4ff;--neon-pink:#ff0080;--neon-purple:#a855f7;
+    --dark-bg:#0a0e17;--panel-bg:rgba(10,20,40,0.95);--text:#e0f0ff;
+  }
+  body{
+    margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#0a0e17 0%,#111a33 50%,#0a0e17 100%);
+    font-family:'Exo 2',sans-serif;color:var(--text);
+    padding:30px;
+  }
+  .certificate{
+    width:min(920px, 100%);
+    background:var(--panel-bg);
+    border:2px solid rgba(0,212,255,.55);
+    border-radius:16px;
+    box-shadow:0 0 40px rgba(0,212,255,.12);
+    padding:34px;
+    position:relative;
+    overflow:hidden;
+  }
+  .certificate::before{
+    content:'';
+    position:absolute;inset:-2px;
+    background:radial-gradient(circle at 20% 20%, rgba(0,255,136,.12), transparent 55%),
+               radial-gradient(circle at 80% 35%, rgba(0,212,255,.12), transparent 55%),
+               radial-gradient(circle at 70% 85%, rgba(255,0,128,.10), transparent 60%);
+    pointer-events:none;
+  }
+  .top{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+    position:relative;
+  }
+  .brand{
+    font-family:'Space Mono',monospace;
+    letter-spacing:2px;
+    color:var(--neon-blue);
+    font-size:.95em;
+    text-transform:uppercase;
+  }
+  .ref{
+    font-family:'Space Mono',monospace;
+    color:rgba(224,240,255,.8);
+    font-size:.9em;
+    text-align:right;
+  }
+  .title{
+    font-family:'Space Mono',monospace;
+    font-size:2.2em;
+    margin:16px 0 6px;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    background:linear-gradient(90deg,var(--neon-green),var(--neon-blue),var(--neon-pink));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    text-shadow:0 0 40px rgba(0,255,136,.25);
+    position:relative;
+  }
+  .subtitle{color:rgba(224,240,255,.85);margin-bottom:18px;position:relative}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.6),transparent);margin:18px 0;position:relative}
+  .name{
+    font-size:1.6em;
+    font-weight:700;
+    color:var(--neon-green);
+    margin:6px 0 12px;
+    position:relative;
+  }
+  .details{line-height:1.7;color:rgba(224,240,255,.92);position:relative}
+  .badge{
+    display:inline-block;
+    margin-top:14px;
+    padding:10px 14px;
+    border-radius:12px;
+    border:1px solid rgba(0,255,136,.55);
+    background:rgba(0,255,136,.06);
+    font-family:'Space Mono',monospace;
+    position:relative;
+  }
+  .footer{
+    margin-top:18px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    color:rgba(224,240,255,.82);
+    position:relative;
+  }
+  .mono{font-family:'Space Mono',monospace}
+  @media print{
+    body{background:#fff;color:#000}
+    .certificate{box-shadow:none;border-color:#333}
+  }
+</style>
+</head>
+<body>
+  <div class="certificate">
+    <div class="top">
+      <div class="brand">VERIT-IA // DOSSIER ZÉRO</div>
+      <div class="ref">
+        <div class="mono">Module 1</div>
+        <div class="mono">Score : ${score}%</div>
+      </div>
+    </div>
+
+    <div class="title">Attestation de Réussite</div>
+    <div class="subtitle">Démystifier l’Intelligence Artificielle — Mission : “Dossier Zéro”</div>
+
+    <div class="divider"></div>
+
+    <div class="details">
+      Cette attestation certifie que :
+      <div class="name">${escapeHtml(name)}</div>
+      a validé le Module 1 avec un score de <strong style="color:var(--neon-green)">${score}%</strong> et a démontré les compétences suivantes :
+      <ul>
+        <li>Connaître les origines et repères historiques (1950–2024)</li>
+        <li>Distinguer IA symbolique et connexionniste</li>
+        <li>Comprendre la hiérarchie IA ⊃ ML ⊃ DL ⊃ Transformers</li>
+        <li>Analyser un système et identifier son type</li>
+        <li>Évaluer forces et faiblesses de chaque approche</li>
+      </ul>
+      <div class="badge">Référence : <span class="mono">IA-DEMYST-${Math.floor(Math.random()*90000+10000)}</span></div>
+    </div>
+
+    <div class="footer">
+      <div>Émis le : <span class="mono">${escapeHtml(date)}</span></div>
+      <div class="mono">Signature : Agent NEXUS (archive)</div>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const blob = new Blob([certificateHTML], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `Attestation_IA_Demystifier_${name.replace(/\s+/g,'_')}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* simple escape for certificate */
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[s]));
+}
+
+/* =========================================================
+   INIT UI
+========================================================= */
+function init(){
+  $('cred-bar').style.width = '100%';
+  $('cred-val').textContent = '100';
+  $('cases-count').textContent = '0';
+  $('score').textContent = '0';
+  $('timer').textContent = '15:00';
+}
+init();
+
+</script>
+</body>
+</html>
