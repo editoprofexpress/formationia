@@ -855,21 +855,35 @@
     }
 
     /* ==================== RESPONSIVE ==================== */
-    @media (max-width:980px){
-      .briefing-sidebar{width:290px}
-      .game-left{width:320px}
-      .family-cards{grid-template-columns:1fr}
-      .grid-2{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:1fr}
+    @media (max-width: 980px) {
+      .game-stage { grid-template-columns: 1fr; }
+      .family-cards { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .hud-items { font-size: 0.8em; }
     }
-    @media (max-width:760px){
-      body{overflow:auto}
-      .screen{position:relative;height:auto}
-      #briefing-screen, #game-screen{position:relative}
-      #briefing-screen{display:block}
-      .briefing-sidebar{width:auto;border-right:none;border-bottom:1px solid rgba(0,212,255,.25)}
-      .game-body{display:block}
-      .game-left{width:auto;border-right:none;border-bottom:1px solid rgba(0,212,255,.25)}
+
+    @media (max-width: 768px) {
+      .main-title { font-size: 1.8em; }
+      .briefing-nav { display: none; }
+      .briefing-content { padding: 20px; }
+      .module-title { font-size: 1.3em; }
+      .briefing-footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .briefing-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .game-stage {
+        grid-template-columns: 1fr;
+      }
+      .stage-side {
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+      }
     }
   </style>
 </head>
@@ -1594,9 +1608,15 @@ function completeTerminal(n){
 
 function unlockQuiz(){
   $('term-btn-quiz').classList.remove('locked');
-  $('quiz-nav-item').classList.remove('locked');
-  $('quiz-nav-item').style.opacity = 1;
-  $('quiz-nav-item').style.cursor = 'pointer';
+  const navItem = $('quiz-nav-item');
+  navItem.classList.remove('locked');
+  navItem.style.opacity = 1;
+  navItem.style.cursor = 'pointer';
+  // Update icon
+  const icon = navItem.querySelector('.nav-icon');
+  if(icon) icon.textContent = '📝';
+  const num = navItem.querySelector('.nav-number');
+  if(num) { num.style.background = 'rgba(0,255,136,0.2)'; num.style.color = 'var(--neon-green)'; num.textContent = '▶'; }
 }
 
 function unlockCertificate(scorePct){
@@ -1608,14 +1628,17 @@ function unlockCertificate(scorePct){
   navItem.classList.remove('locked');
   navItem.style.opacity = 1;
   navItem.style.cursor = 'pointer';
-  navItem.style.background = 'rgba(0,255,136,0.05)';
-  navItem.style.borderColor = 'rgba(0,255,136,0.55)';
+  // Update icon
+  const icon = navItem.querySelector('.nav-icon');
+  if(icon) icon.textContent = '🎓';
+  const num = navItem.querySelector('.nav-number');
+  if(num) { num.style.background = 'rgba(0,255,136,0.2)'; num.style.color = 'var(--neon-green)'; num.textContent = '✓'; }
 
   // game terminal
   $('term-btn-cert').classList.remove('locked');
 
   toast("🎓 Attestation débloquée !");
-  setNexus("Attestation disponible. Retournez au dossier ou ouvrez l’onglet Attestation.");
+  setNexus("Attestation disponible. Retournez au dossier ou ouvrez l'onglet Attestation.");
 }
 
 function showCertificateInFolder(){
