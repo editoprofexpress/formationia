@@ -366,7 +366,105 @@
       border-bottom: 1px solid rgba(0, 255, 136, 0.3);
     }
 
-    .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+    .module-kicker { color: #8899aa; margin-bottom: 18px; line-height: 1.5; }
+
+    /* ==================== CONTENU BRIEFING (module-section, stat-box, etc.) ==================== */
+    .module-section {
+      margin-bottom: 30px;
+    }
+
+    .module-section h3 {
+      color: var(--neon-blue);
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .module-section p {
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+
+    .stat-box {
+      background: rgba(0, 255, 136, 0.05);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .stat-box.warning {
+      background: rgba(255, 0, 128, 0.05);
+      border-color: rgba(255, 0, 128, 0.3);
+    }
+
+    .stat-box.purple {
+      background: rgba(168, 85, 247, 0.05);
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    .info-card {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 255, 136, 0.05));
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .info-card h4 {
+      color: var(--neon-blue);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .briefing-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .briefing-list li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .briefing-list li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--neon-green);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .comparison-grid > div {
+      background: rgba(0, 50, 100, 0.15);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    .comparison-grid h4 {
+      color: var(--neon-blue);
+      font-family: 'Space Mono', monospace;
+      margin-bottom: 8px;
+    }
+
+    .comparison-grid p {
+      color: #8899aa;
+      line-height: 1.5;
+    }
 
     .divider {
       height: 1px;
@@ -1288,7 +1386,20 @@ function goBriefing(){
 }
 
 function openBriefingFromGame(){
-  goBriefing();
+  $('game-screen').classList.remove('active');
+  $('briefing-screen').classList.add('active');
+  showLesson(currentLesson);
+
+  // Change next button to "Retour à l'opération"
+  const nextBtn = $('next-btn');
+  nextBtn.style.visibility = 'visible';
+  nextBtn.textContent = '🕵️ Retour à l\u2019opération';
+  nextBtn.onclick = returnToGame;
+}
+
+function returnToGame(){
+  $('briefing-screen').classList.remove('active');
+  $('game-screen').classList.add('active');
 }
 
 function exitToHome(){
@@ -1334,129 +1445,251 @@ function updateBriefingProgress(){
 }
 
 /* =========================================================
-   BRIEFING CONTENT
+   BRIEFING CONTENT (format M15 : title + content avec module-section)
 ========================================================= */
-const lessons = [
+const briefingLessons = [
   {
-    title:"01 — L’IA : entre mythes et réalité",
-    kicker:"Pourquoi autant d’idées reçues ? Le fossé entre SF et réalité.",
-    html:`
-      <div class="pill">VERIT-IA</div><div class="pill">Dossier Zéro</div><div class="pill">Démystification</div>
-      <div class="divider"></div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        En 2026, l’IA est partout : assistants, recommandations, traduction, génération de texte et d’images…
-        Mais l’imaginaire collectif confond souvent <strong>capacité technique</strong> et <strong>intelligence humaine</strong>.
-      </p>
-      <div class="callout warn">
-        <strong>Mythe courant :</strong> « L’IA comprend comme un humain. »<br/>
-        <strong>Réalité :</strong> elle calcule, apprend des régularités, et prédit des sorties plausibles selon des données.
+    title:"🧠 L'IA : entre mythes et réalité",
+    content:`
+      <div class="module-section">
+        <h3>📡 De quoi parle-t-on ?</h3>
+        <p>En 2026, l'IA est partout : assistants vocaux, recommandations, traduction automatique, génération de textes et d'images.
+           Mais l'imaginaire collectif confond souvent <strong>capacité technique</strong> et <strong>intelligence humaine</strong>.</p>
+
+        <div class="stat-box warning">
+          <h4>🚫 Mythe courant</h4>
+          <p>« L'IA comprend comme un humain. »</p>
+          <p><strong>Réalité :</strong> l'IA calcule, détecte des régularités statistiques, et prédit des sorties plausibles à partir de données. Elle ne « comprend » rien au sens humain.</p>
+        </div>
       </div>
-      <div class="callout">
-        <strong>Mission :</strong> apprendre à distinguer <em>ce qui est possible</em> de <em>ce qui est exagéré</em>, puis conclure une enquête.
+
+      <div class="module-section">
+        <h3>🎯 Votre mission</h3>
+        <p>Apprendre à distinguer <em>ce qui est techniquement possible</em> de <em>ce qui est exagéré ou fantasmé</em>, puis résoudre une enquête concrète.</p>
+
+        <div class="info-card">
+          <h4>📋 Ce que vous allez apprendre</h4>
+          <ul class="briefing-list">
+            <li>Connaître les origines et les grandes dates de l'IA (1950 → 2024)</li>
+            <li>Distinguer IA symbolique (règles) et IA connexionniste (apprentissage)</li>
+            <li>Comprendre la hiérarchie : IA ⊃ ML ⊃ Deep Learning ⊃ Transformers</li>
+            <li>Identifier le type d'un système IA réel</li>
+            <li>Évaluer les forces et faiblesses de chaque approche</li>
+          </ul>
+        </div>
       </div>
     `
   },
   {
-    title:"02 — Les origines : de Turing à Dartmouth",
-    kicker:"1950 : Test de Turing. 1956 : Dartmouth (John McCarthy).",
-    html:`
-      <p style="line-height:1.7;color:#cfe9ff">
-        <strong>1950</strong> : Alan Turing propose un test d’imitation (conversation) pour évaluer si une machine peut « paraître humaine ».<br/>
-        <strong>1956</strong> : à Dartmouth, le terme « intelligence artificielle » est popularisé (John McCarthy).
-      </p>
-      <div class="callout ok">
-        <strong>À retenir :</strong> l’IA ne naît pas avec ChatGPT. C’est une histoire de plusieurs décennies.
+    title:"📜 Les origines : de Turing à Dartmouth",
+    content:`
+      <div class="module-section">
+        <h3>🕰️ Deux dates fondatrices</h3>
+        <div class="comparison-grid">
+          <div>
+            <h4>1950 — Test de Turing</h4>
+            <p>Alan Turing propose un test d'imitation : une machine peut-elle se faire passer pour un humain dans une conversation écrite ? C'est la première tentative formelle de définir l'« intelligence » d'une machine.</p>
+          </div>
+          <div>
+            <h4>1956 — Conférence de Dartmouth</h4>
+            <p>John McCarthy organise un atelier où le terme « intelligence artificielle » est officiellement proposé. C'est l'acte de naissance du domaine en tant que discipline scientifique.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <h3>💡 Ce qu'il faut retenir</h3>
+        <div class="stat-box">
+          <p>L'IA ne naît pas avec ChatGPT : c'est une histoire de <strong>plus de 70 ans</strong>, avec des avancées, des « hivers » (périodes de doute), et des résurgences spectaculaires.</p>
+        </div>
       </div>
     `
   },
   {
-    title:"03 — IA symbolique : le cerveau logique",
-    kicker:"Règles SI… ALORS, systèmes experts, Deep Blue. Transparent mais rigide.",
-    html:`
-      <div class="callout">
-        <strong>Principe :</strong> représenter un problème via des symboles + appliquer des règles explicites (logique, heuristiques, arbres de décision).
+    title:"🎭 IA symbolique : le cerveau logique",
+    content:`
+      <div class="module-section">
+        <h3>🔧 Le principe</h3>
+        <p>L'IA symbolique représente un problème via des <strong>symboles</strong> et applique des <strong>règles explicites</strong> : logique formelle, heuristiques, arbres de décision.</p>
+
+        <div class="stat-box">
+          <h4>📖 Analogie</h4>
+          <p>Un <strong>livre de recettes très détaillé</strong> : si vous suivez la recette étape par étape, vous obtenez le plat attendu. Mais sortez du livre, et le système est perdu.</p>
+        </div>
       </div>
-      <div class="callout ok">
-        <strong>Analogie :</strong> un livre de recettes très détaillé : si vous suivez la recette, vous obtenez le plat attendu.
-      </div>
-      <div class="callout pink">
-        <strong>Exemple :</strong> Deep Blue (1997) — calcule massivement, ne « comprend » pas les échecs.
-      </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Forces :</strong> explicable, prévisible, auditabilité.<br/>
-        <strong>Faiblesses :</strong> rigidité — hors des règles prévues, le système peut échouer.
-      </p>
-    `
-  },
-  {
-    title:"04 — IA connexionniste : le cerveau qui apprend",
-    kicker:"Réseaux de neurones, apprentissage par l’exemple. Adaptable, parfois boîte noire.",
-    html:`
-      <div class="callout">
-        <strong>Principe :</strong> apprendre à partir de données : le modèle ajuste ses paramètres pour réduire l’erreur sur des exemples.
-      </div>
-      <div class="callout ok">
-        <strong>Analogie :</strong> un enfant qui apprend à reconnaître un chat en en voyant beaucoup (sans règles explicites).
-      </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Forces :</strong> traite des données complexes (images, voix, texte), peut généraliser.<br/>
-        <strong>Faiblesses :</strong> manque de transparence (explicabilité plus difficile), dépendance aux données.
-      </p>
-    `
-  },
-  {
-    title:"05 — La hiérarchie des concepts",
-    kicker:"IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers",
-    html:`
-      <div class="callout">
-        <strong>IA :</strong> ensemble de méthodes visant des tâches « intelligentes » (raisonnement, perception, langage…).<br/>
-        <strong>Machine Learning :</strong> apprend des patterns à partir de données.<br/>
-        <strong>Deep Learning :</strong> réseaux de neurones profonds (beaucoup de couches).<br/>
-        <strong>Transformers :</strong> architecture moderne pour le langage (GPT, BERT…) basée sur l’attention.
-      </div>
-      <div class="callout ok">
-        <strong>À retenir :</strong> « IA » est un grand parapluie. ChatGPT est une IA… mais toutes les IA ne sont pas des ChatGPT.
+
+      <div class="module-section">
+        <h3>🏆 L'exemple star : Deep Blue (1997)</h3>
+        <p>Deep Blue bat le champion du monde d'échecs Garry Kasparov. Mais il ne « comprend » pas les échecs : il évalue 200 millions de positions par seconde grâce à des règles programmées par des grands maîtres.</p>
+
+        <div class="comparison-grid">
+          <div>
+            <h4>✅ Forces</h4>
+            <p>Explicable, prévisible, auditable. On sait exactement quelle règle a produit la décision.</p>
+          </div>
+          <div>
+            <h4>❌ Faiblesses</h4>
+            <p>Rigide : hors des cas prévus par les règles, le système échoue. Difficile à maintenir quand le domaine évolue.</p>
+          </div>
+        </div>
       </div>
     `
   },
   {
-    title:"06 — Les grandes dates qui ont tout changé",
-    kicker:"10 repères clés : 1950 → 2024",
-    html:`
-      <p style="line-height:1.7;color:#cfe9ff">
-        Vous rencontrerez ces repères dans le Terminal 1 (archives).<br/>
-        Objectif : relier chaque événement à la bonne date (Turing, Dartmouth, systèmes experts, Deep Blue, deep learning, AlphaGo, Transformers, GPT-3, ChatGPT, compétition récente…).
-      </p>
-      <div class="callout warn">
-        <strong>Consigne :</strong> en cas d’erreur dans le jeu, votre <strong>crédibilité</strong> baisse. Elle a un vrai impact.
+    title:"🔗 IA connexionniste : le cerveau qui apprend",
+    content:`
+      <div class="module-section">
+        <h3>🧬 Le principe</h3>
+        <p>L'IA connexionniste apprend à partir de <strong>données</strong> : le modèle (réseau de neurones) ajuste ses millions de paramètres pour réduire l'erreur sur des exemples.</p>
+
+        <div class="stat-box">
+          <h4>👶 Analogie</h4>
+          <p>Un <strong>enfant qui apprend à reconnaître un chat</strong> en en voyant des milliers, sans qu'on lui donne de règle explicite. Il finit par « savoir » — mais ne peut pas toujours expliquer comment.</p>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <h3>⚖️ Forces et faiblesses</h3>
+        <div class="comparison-grid">
+          <div>
+            <h4>✅ Forces</h4>
+            <p>Traite des données complexes (images, voix, texte). Peut généraliser à des cas jamais vus. Très performant sur de grands volumes.</p>
+          </div>
+          <div>
+            <h4>❌ Faiblesses</h4>
+            <p>Manque de transparence (« boîte noire »). Dépendance aux données d'entraînement. Peut reproduire des biais présents dans les données.</p>
+          </div>
+        </div>
       </div>
     `
   },
   {
-    title:"07 — Ce que l’IA fait… et ne fait PAS",
-    kicker:"L’IA calcule et détecte des patterns, mais ne « comprend » pas comme un humain.",
-    html:`
-      <div class="callout ok">
-        <strong>Ce que l’IA sait faire :</strong> prédire, classer, générer, optimiser… à partir de données et d’objectifs.
+    title:"📊 La hiérarchie des concepts",
+    content:`
+      <div class="module-section">
+        <h3>🪆 Les poupées russes de l'IA</h3>
+        <p>Ces termes sont souvent confondus, mais ils s'emboîtent comme des poupées russes :</p>
+
+        <div class="stat-box">
+          <p><strong>Intelligence Artificielle</strong> — le grand parapluie : toute méthode visant à reproduire des tâches « intelligentes » (raisonnement, perception, langage).</p>
+          <p style="margin-top:10px"><strong>Machine Learning</strong> — sous-ensemble de l'IA : apprend des patterns à partir de données, sans être explicitement programmé pour chaque cas.</p>
+          <p style="margin-top:10px"><strong>Deep Learning</strong> — sous-ensemble du ML : utilise des réseaux de neurones profonds (beaucoup de couches) pour traiter des données complexes.</p>
+          <p style="margin-top:10px"><strong>Transformers</strong> — architecture de Deep Learning (2017) : mécanisme d'attention, à la base de GPT, BERT, et des modèles de langage modernes.</p>
+        </div>
       </div>
-      <div class="callout pink">
-        <strong>Ce que l’IA ne fait pas (dans l’usage courant) :</strong> conscience, volonté propre, compréhension humaine du monde.
+
+      <div class="module-section">
+        <h3>💡 Le point clé</h3>
+        <div class="info-card">
+          <h4>🎯 À retenir</h4>
+          <p>« IA » est un grand parapluie. <strong>ChatGPT est une IA</strong>… mais toutes les IA ne sont pas des ChatGPT. Un système expert médical des années 80 est aussi de l'IA.</p>
+        </div>
       </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les modèles modernes peuvent produire des réponses très convaincantes, mais cela ne signifie pas qu’ils « pensent » au sens humain.
-      </p>
     `
   },
   {
-    title:"08 — Briefing de mission",
-    kicker:"TechCorp prétend avoir créé « Genius AI ». Vous devez analyser les preuves.",
-    html:`
-      <div class="callout">
-        <strong>Cas :</strong> TechCorp annonce une « Super IA » révolutionnaire. Des experts doutent.<br/>
-        <strong>Votre mission :</strong> collecter des preuves et déterminer : (1) type d’IA, (2) faiblesse, (3) meilleure approche pour l’imagerie médicale.
+    title:"📅 Les grandes dates (1950 → 2024)",
+    content:`
+      <div class="module-section">
+        <h3>🗓️ 10 repères clés</h3>
+        <p>Vous rencontrerez ces repères dans le Terminal 1 (archives chronologiques). Voici un aperçu pour vous préparer :</p>
+
+        <div class="stat-box">
+          <p><strong>1950</strong> — Test de Turing : peut-on distinguer une machine d'un humain ?</p>
+          <p><strong>1956</strong> — Dartmouth : naissance officielle du terme « IA »</p>
+          <p><strong>1980</strong> — Les systèmes experts aident les médecins (IA symbolique)</p>
+          <p><strong>1997</strong> — Deep Blue bat Kasparov aux échecs</p>
+          <p><strong>2010</strong> — Le Deep Learning décolle (reconnaissance d'images et voix)</p>
+          <p><strong>2015</strong> — AlphaGo bat un champion de Go</p>
+          <p><strong>2017</strong> — Les Transformers sont introduits (article « Attention Is All You Need »)</p>
+          <p><strong>2020</strong> — GPT-3 : 175 milliards de paramètres, génération de textes réalistes</p>
+          <p><strong>2022</strong> — ChatGPT devient viral : l'IA générative accessible à tous</p>
+          <p><strong>2024</strong> — Mistral AI : la France dans la course à l'IA</p>
+        </div>
       </div>
-      <div class="btn-row">
-        <button class="btn green" onclick="enterGame()">▶ Lancer l’opération (phase de jeu)</button>
+
+      <div class="module-section">
+        <h3>⚠️ Règle du jeu</h3>
+        <div class="stat-box warning">
+          <p>Dans la phase de jeu, vos <strong>erreurs font baisser votre crédibilité</strong>. Si elle tombe trop bas, les indices se raréfient et vos terminaux se verrouillent temporairement. Soyez rigoureux !</p>
+        </div>
+      </div>
+    `
+  },
+  {
+    title:"🔍 Ce que l'IA fait… et ne fait PAS",
+    content:`
+      <div class="module-section">
+        <h3>✅ Ce que l'IA sait faire</h3>
+        <div class="comparison-grid">
+          <div>
+            <h4>🎯 Prédire</h4>
+            <p>Anticiper un résultat probable à partir de données historiques (météo, ventes, diagnostic).</p>
+          </div>
+          <div>
+            <h4>🏷️ Classer</h4>
+            <p>Trier des éléments en catégories (spam vs. non-spam, tumeur vs. sain).</p>
+          </div>
+          <div>
+            <h4>🎨 Générer</h4>
+            <p>Produire du texte, des images, du code, de la musique à partir de modèles entraînés.</p>
+          </div>
+          <div>
+            <h4>⚙️ Optimiser</h4>
+            <p>Trouver la meilleure solution parmi des millions de possibilités (itinéraire, planning).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <h3>🚫 Ce que l'IA ne fait PAS</h3>
+        <div class="stat-box warning">
+          <p><strong>Conscience :</strong> l'IA n'est pas « consciente » de ce qu'elle fait.</p>
+          <p style="margin-top:8px"><strong>Volonté propre :</strong> elle n'a pas d'objectifs personnels ni de désirs.</p>
+          <p style="margin-top:8px"><strong>Compréhension humaine :</strong> elle produit des réponses convaincantes, mais ne « pense » pas au sens humain du terme.</p>
+        </div>
+
+        <div class="info-card">
+          <h4>💡 Un conseil</h4>
+          <p>La prochaine fois que quelqu'un dit « l'IA comprend » ou « l'IA pense », demandez-vous : <em>est-ce du calcul statistique ou de la vraie compréhension ?</em></p>
+        </div>
+      </div>
+    `
+  },
+  {
+    title:"🎯 Briefing de mission : Dossier Zéro",
+    content:`
+      <div class="module-section">
+        <h3>📋 Vous êtes prêt(e) !</h3>
+        <p>Vous avez toutes les clés en main pour mener votre première enquête pour l'agence VERIT-IA.</p>
+
+        <div class="stat-box">
+          <h4>🕵️ Le cas « Genius AI »</h4>
+          <p>TechCorp annonce une « Super IA révolutionnaire » nommée Genius AI. Des experts doutent de ses prétentions. Votre mission :</p>
+          <p style="margin-top:10px"><strong>1.</strong> Naviguer dans 4 terminaux d'investigation (frise, classification, hiérarchie, enquête).</p>
+          <p style="margin-top:6px"><strong>2.</strong> Collecter les preuves et résoudre chaque défi.</p>
+          <p style="margin-top:6px"><strong>3.</strong> Déterminer : quel type d'IA ? Quelle faiblesse ? Quelle approche pour l'avenir ?</p>
+        </div>
+      </div>
+
+      <div class="module-section">
+        <h3>⚠️ Les règles du jeu</h3>
+        <div class="stat-box warning">
+          <p>Vous disposez de <strong>15 minutes</strong>. Votre <strong>crédibilité</strong> (0–100) baisse à chaque erreur.</p>
+          <p style="margin-top:8px">Si elle tombe à zéro, vos terminaux se verrouillent temporairement (10 secondes).</p>
+          <p style="margin-top:8px">Après les 4 terminaux, un <strong>quiz de certification</strong> se débloque. Score ≥ 70% = attestation de réussite.</p>
+        </div>
+
+        <div class="info-card">
+          <h4>💡 Conseil avant de commencer</h4>
+          <p>Pour chaque terminal, posez-vous : <em>Qu'est-ce que je sais déjà grâce au dossier ?</em> Relisez les fichiers précédents si nécessaire — le bouton « Briefing » dans le jeu vous y ramène.</p>
+        </div>
+      </div>
+
+      <div class="module-section" style="text-align: center; padding-top: 20px;">
+        <p style="font-size: 1.2em; color: var(--neon-green); margin-bottom: 20px;">
+          🕵️ Briefing terminé. L'opération est sur le point de commencer.
+        </p>
       </div>
     `
   }
@@ -1472,12 +1705,10 @@ function showLesson(idx){
     }
   });
 
-  const L = lessons[idx];
+  const L = briefingLessons[idx];
   $('briefing-content').innerHTML = `
-    <div class="module-title">${L.title}</div>
-    <div class="module-kicker">${L.kicker}</div>
-    <div class="divider"></div>
-    ${L.html}
+    <h2 class="module-title">${L.title}</h2>
+    ${L.content}
   `;
 
   // progression
