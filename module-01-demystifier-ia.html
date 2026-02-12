@@ -143,134 +143,243 @@
     }
     .screen.active{display:block}
 
-    /* ==================== BRIEFING (folder) ==================== */
-    #briefing-screen{
-      display:flex;
-      background:radial-gradient(circle at 20% 20%, rgba(0,212,255,.08), transparent 50%),
-                 radial-gradient(circle at 80% 30%, rgba(255,0,128,.08), transparent 50%),
-                 linear-gradient(135deg,#0a0e17 0%,#0f1a33 50%,#0a0e17 100%);
+    /* ==================== SECTION BRIEFING/COURS ==================== */
+    #briefing-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    .briefing-sidebar{
-      width:320px;
-      background:rgba(5,10,20,.92);
-      border-right:1px solid rgba(0,212,255,.3);
-      padding:20px;
-      overflow:auto;
-    }
-    .back-link-sidebar{
-      display:flex;align-items:center;gap:10px;
-      padding:12px 15px;margin-bottom:18px;
-      background:rgba(0,212,255,.05);
-      border:1px solid rgba(0,212,255,.3);
-      border-radius:8px;
-      color:var(--neon-blue);
-      text-decoration:none;
-      font-family:'Space Mono',monospace;
-      font-size:.8em;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      transition:all .3s ease;
-    }
-    .back-link-sidebar:hover{
-      background:rgba(0,212,255,.15);
-      border-color:var(--neon-blue);
-      transform:translateX(-3px);
+    #briefing-screen.active {
+      display: flex;
     }
 
-    .briefing-title{
-      font-family:'Space Mono',monospace;
-      font-size:1.1em;
-      letter-spacing:2px;
-      color:var(--neon-green);
-      margin-bottom:10px;
-      text-transform:uppercase;
-    }
-    .briefing-sub{
-      color:var(--muted);
-      font-size:.95em;
-      margin-bottom:18px;
-      line-height:1.4;
+    .briefing-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .briefing-nav-item{
-      padding:12px 12px;
-      border:1px solid rgba(0,212,255,.25);
-      border-radius:10px;
-      margin-bottom:10px;
-      background:rgba(0,212,255,.03);
-      cursor:pointer;
-      transition:.25s;
-      position:relative;
-    }
-    .briefing-nav-item:hover{
-      background:rgba(0,212,255,.08);
-      border-color:rgba(0,212,255,.55);
-      transform:translateX(2px);
-    }
-    .briefing-nav-item.active{
-      border-color:var(--neon-green);
-      box-shadow:0 0 18px rgba(0,255,136,.25);
-      background:rgba(0,255,136,.05);
-    }
-    .briefing-nav-item.completed{
-      border-color:rgba(0,255,136,.5);
-      background:rgba(0,255,136,.03);
-    }
-    .briefing-nav-item.completed::after{
-      content:'✓';
-      position:absolute;right:12px;top:10px;
-      color:var(--neon-green);
-      font-weight:800;
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3em;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .briefing-nav-item .mono{
-      font-family:'Space Mono',monospace;
-      font-size:.85em;
-      color:var(--neon-blue);
-      display:block;
-      margin-bottom:3px;
-    }
-    .briefing-nav-item .label{
-      font-size:.95em;color:var(--text);
+    .briefing-title::before {
+      content: '🕵️';
+      font-size: 1.5em;
     }
 
-    .briefing-nav-item.locked{
-      opacity:.5;
-      cursor:not-allowed;
-      background:rgba(100,100,100,.18);
-      border-color:rgba(255,255,255,.12);
-      transform:none !important;
+    .briefing-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #8899aa;
+      font-size: 0.9em;
     }
 
-    .briefing-content{
-      flex:1;
-      padding:25px;
-      overflow:auto;
-      position:relative;
+    .briefing-progress-bar {
+      width: 200px;
+      height: 6px;
+      background: rgba(0, 255, 136, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
     }
 
-    .content-panel{
-      max-width:980px;
-      margin:0 auto;
-      background:var(--panel-bg);
-      border:1px solid rgba(0,212,255,.35);
-      border-radius:14px;
-      padding:24px;
-      box-shadow:0 0 24px rgba(0,212,255,.08);
+    .briefing-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+      transition: width 0.3s ease;
     }
 
-    .module-title{
-      font-family:'Space Mono',monospace;
-      font-size:1.7em;
-      margin-bottom:8px;
-      letter-spacing:1px;
+    .briefing-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
     }
-    .module-kicker{color:var(--muted);margin-bottom:18px;line-height:1.5}
-    .divider{
-      height:1px;
-      background:linear-gradient(90deg,transparent,rgba(0,212,255,.5),transparent);
-      margin:18px 0;
+
+    .briefing-nav {
+      width: 280px;
+      background: rgba(10, 20, 40, 0.9);
+      border-right: 1px solid rgba(0, 255, 136, 0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+
+    .back-link-sidebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      margin: 0 15px 20px;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 8px;
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link-sidebar:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--neon-blue);
+      transform: translateX(-3px);
+    }
+
+    .back-link-sidebar .back-arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .back-link-sidebar:hover .back-arrow {
+      transform: translateX(-3px);
+    }
+
+    .briefing-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+      color: #8899aa;
+    }
+
+    .briefing-nav-item:hover {
+      background: rgba(0, 255, 136, 0.05);
+      color: var(--text);
+    }
+
+    .briefing-nav-item.active {
+      border-left-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--neon-green);
+    }
+
+    .briefing-nav-item.completed {
+      color: var(--neon-blue);
+    }
+
+    .briefing-nav-item.completed::after {
+      content: '✓';
+      margin-left: auto;
+      color: var(--neon-green);
+    }
+
+    .briefing-nav-item.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: rgba(100, 100, 100, 0.2);
+    }
+
+    .nav-icon {
+      font-size: 1.2em;
+      width: 30px;
+      text-align: center;
+    }
+
+    .nav-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      background: rgba(0, 255, 136, 0.2);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .briefing-content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .briefing-content::-webkit-scrollbar-track {
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .briefing-content::-webkit-scrollbar-thumb {
+      background: rgba(0, 255, 136, 0.3);
+      border-radius: 4px;
+    }
+
+    .briefing-footer {
+      background: rgba(10, 20, 40, 0.95);
+      border-top: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .briefing-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-green);
+      background: transparent;
+      color: var(--neon-green);
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .briefing-btn:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .briefing-btn.primary {
+      background: var(--neon-green);
+      color: var(--dark-bg);
+    }
+
+    .briefing-btn.primary:hover {
+      background: var(--neon-blue);
+      border-color: var(--neon-blue);
+    }
+
+    .briefing-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .module-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      color: var(--neon-green);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+      margin: 18px 0;
     }
     .pill{
       display:inline-block;
@@ -646,61 +755,100 @@
   </section>
 
   <!-- ==================== BRIEFING SCREEN ==================== -->
-  <section id="briefing-screen" class="screen">
-    <div class="briefing-sidebar">
-      <a class="back-link-sidebar" href="modules.html">← Retour modules</a>
-
+  <div id="briefing-screen">
+    <!-- HEADER WITH PROGRESS BAR -->
+    <div class="briefing-header">
       <div class="briefing-title">VERIT-IA // DOSSIER ZÉRO</div>
-      <div class="briefing-sub">
-        Guide : <strong style="color:var(--neon-green)">Agent NEXUS</strong><br/>
-        Progression : <span class="mono" style="font-family:'Space Mono',monospace;color:var(--neon-blue)"><span id="briefing-progress">0</span>/8</span>
-      </div>
-
-      <div class="briefing-nav-item active" onclick="showLesson(0)">
-        <span class="mono">01</span><span class="label">L’IA : mythes & réalité</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(1)">
-        <span class="mono">02</span><span class="label">Origines : Turing → Dartmouth</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(2)">
-        <span class="mono">03</span><span class="label">IA symbolique : règles</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(3)">
-        <span class="mono">04</span><span class="label">IA connexionniste : apprentissage</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(4)">
-        <span class="mono">05</span><span class="label">Hiérarchie des concepts</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(5)">
-        <span class="mono">06</span><span class="label">Grandes dates (1950–2024)</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(6)">
-        <span class="mono">07</span><span class="label">Ce que l’IA fait… / ne fait pas</span>
-      </div>
-      <div class="briefing-nav-item" onclick="showLesson(7)">
-        <span class="mono">08</span><span class="label">Briefing de mission</span>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="briefing-nav-item locked" id="quiz-nav-item" onclick="showQuizFromBriefing()">
-        <span class="mono">QUIZ</span><span class="label">Certification</span>
-      </div>
-
-      <div class="briefing-nav-item locked" id="certificate-nav-item" onclick="showCertificateInFolder()">
-        <span class="mono">🎓</span><span class="label">Attestation de réussite</span>
+      <div class="briefing-progress">
+        <span id="progress-text">Fichier 1/8</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
+        </div>
       </div>
     </div>
 
-    <div class="briefing-content">
-      <div id="lesson-container" class="content-panel"></div>
+    <!-- NAV SIDEBAR + CONTENT AREA -->
+    <div class="briefing-body">
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span>
+          <span>Tous les modules</span>
+        </a>
 
-      <div class="btn-row" style="max-width:980px;margin:14px auto 0;">
-        <button class="btn green" onclick="enterGame()">▶ Accéder à la phase de jeu</button>
-        <button class="btn" onclick="toast('Astuce : la progression du dossier se coche au fur et à mesure.');">ℹ️ Astuce</button>
-      </div>
+        <div class="briefing-nav-item active" onclick="showLesson(0)">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-number">01</span>
+          L'IA : mythes & réalité
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(1)">
+          <span class="nav-icon">📜</span>
+          <span class="nav-number">02</span>
+          Origines : Turing → Dartmouth
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(2)">
+          <span class="nav-icon">🎭</span>
+          <span class="nav-number">03</span>
+          IA symbolique : règles
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(3)">
+          <span class="nav-icon">🔗</span>
+          <span class="nav-number">04</span>
+          IA connexionniste
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(4)">
+          <span class="nav-icon">📊</span>
+          <span class="nav-number">05</span>
+          Hiérarchie des concepts
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(5)">
+          <span class="nav-icon">📅</span>
+          <span class="nav-number">06</span>
+          Grandes dates (1950–2024)
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(6)">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-number">07</span>
+          Ce que l'IA fait… / ne fait pas
+        </div>
+
+        <!-- Mission -->
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+          <div class="briefing-nav-item" onclick="showLesson(7)">
+            <span class="nav-icon">🎮</span>
+            <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
+            Briefing de mission
+          </div>
+        </div>
+
+        <!-- Quiz + Attestation (locked) -->
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+          <div class="briefing-nav-item locked" id="quiz-nav-item" onclick="showQuizFromBriefing()">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
+            Certification (Quiz)
+          </div>
+          <div class="briefing-nav-item locked" id="certificate-nav-item" onclick="showCertificateInFolder()">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
+            Attestation de réussite
+          </div>
+        </div>
+      </nav>
+
+      <!-- Content area -->
+      <div class="briefing-content" id="briefing-content"></div>
     </div>
-  </section>
+
+    <!-- FOOTER WITH NAVIGATION -->
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
+        ← Fichier précédent
+      </button>
+      <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
+        Fichier suivant →
+      </button>
+    </div>
+  </div>
 
   <!-- ==================== GAME SCREEN ==================== -->
   <section id="game-screen" class="screen">
@@ -941,6 +1089,9 @@ const quizQuestions = [
 /* =========================================================
    NAVIGATION (Title → Briefing → Game)
 ========================================================= */
+let currentLesson = 0;
+const totalLessons = 8;
+
 function startModule(){
   $('title-screen').classList.add('hidden');
   $('briefing-screen').classList.add('active');
@@ -963,10 +1114,50 @@ function goBriefing(){
   $('briefing-screen').classList.add('active');
 }
 
+function openBriefingFromGame(){
+  goBriefing();
+}
+
+function exitToHome(){
+  window.location.href = 'modules.html';
+}
+
 function showQuizFromBriefing(){
   if(!state.quizUnlocked) return;
   enterGame();
   openTerminal('quiz');
+}
+
+function prevLesson(){
+  if(currentLesson > 0){
+    showLesson(currentLesson - 1);
+  }
+}
+
+function nextLesson(){
+  if(currentLesson < totalLessons - 1){
+    showLesson(currentLesson + 1);
+  }
+}
+
+function updateBriefingProgress(){
+  const pct = Math.round(((currentLesson + 1) / totalLessons) * 100);
+  $('progress-text').textContent = `Fichier ${currentLesson + 1}/${totalLessons}`;
+  $('progress-fill').style.width = pct + '%';
+
+  // prev/next buttons
+  const prevBtn = $('prev-btn');
+  const nextBtn = $('next-btn');
+  if(prevBtn) prevBtn.disabled = (currentLesson === 0);
+  if(nextBtn){
+    if(currentLesson === totalLessons - 1){
+      nextBtn.textContent = '▶ Lancer la mission';
+      nextBtn.onclick = enterGame;
+    } else {
+      nextBtn.innerHTML = 'Fichier suivant →';
+      nextBtn.onclick = nextLesson;
+    }
+  }
 }
 
 /* =========================================================
@@ -1099,7 +1290,9 @@ const lessons = [
 ];
 
 function showLesson(idx){
-  const navItems = document.querySelectorAll('.briefing-nav-item');
+  currentLesson = idx;
+
+  const navItems = document.querySelectorAll('.briefing-nav .briefing-nav-item');
   navItems.forEach((it,i)=>{
     if(i<8){
       it.classList.toggle('active', i===idx);
@@ -1107,7 +1300,7 @@ function showLesson(idx){
   });
 
   const L = lessons[idx];
-  $('lesson-container').innerHTML = `
+  $('briefing-content').innerHTML = `
     <div class="module-title">${L.title}</div>
     <div class="module-kicker">${L.kicker}</div>
     <div class="divider"></div>
@@ -1116,10 +1309,9 @@ function showLesson(idx){
 
   // progression
   state.lessonSeen.add(idx);
-  $('briefing-progress').textContent = state.lessonSeen.size;
+  updateBriefingProgress();
 
   if(state.lessonSeen.size >= 8){
-    // mark completed all 8
     navItems.forEach((it,i)=>{
       if(i<8) it.classList.add('completed');
     });
@@ -1269,21 +1461,21 @@ function unlockCertificate(scorePct){
 
 function showCertificateInFolder(){
   if(!state.certificateUnlocked){
-    $('lesson-container').innerHTML = `
+    $('briefing-content').innerHTML = `
       <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
       <div class="module-kicker">Attestation verrouillée — validez le quiz avec au moins <strong>70%</strong>.</div>
       <div class="divider"></div>
       <div class="callout warn">
         <strong>Condition :</strong> Score quiz ≥ 70%<br/>
-        <strong>Astuce :</strong> Terminez d’abord les 4 terminaux, puis passez la certification.
+        <strong>Astuce :</strong> Terminez d'abord les 4 terminaux, puis passez la certification.
       </div>
     `;
     return;
   }
 
-  $('lesson-container').innerHTML = `
+  $('briefing-content').innerHTML = `
     <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
-    <div class="module-kicker">Module 1 — Démystifier l’IA (DOSSIER ZÉRO)</div>
+    <div class="module-kicker">Module 1 — Démystifier l'IA (DOSSIER ZÉRO)</div>
     <div class="divider"></div>
 
     <div class="callout ok">
@@ -1296,14 +1488,14 @@ function showCertificateInFolder(){
       • Connaître les origines (1950–2024)<br/>
       • Distinguer IA symbolique et connexionniste<br/>
       • Comprendre IA ⊃ ML ⊃ DL ⊃ Transformers<br/>
-      • Identifier le type d’un système<br/>
+      • Identifier le type d'un système<br/>
       • Évaluer forces & faiblesses des approches
     </div>
 
     <div class="divider"></div>
 
     <div class="callout">
-      <div style="font-family:'Space Mono',monospace;margin-bottom:8px;color:var(--neon-blue)">Nom sur l’attestation :</div>
+      <div style="font-family:'Space Mono',monospace;margin-bottom:8px;color:var(--neon-blue)">Nom sur l'attestation :</div>
       <input id="certificate-name-folder" type="text" placeholder="Prénom NOM"
         style="width:100%;max-width:520px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,.35);
         background:rgba(0,0,0,.2);color:var(--text);font-family:'Exo 2',sans-serif;outline:none;"/>
