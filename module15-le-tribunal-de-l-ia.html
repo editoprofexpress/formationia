@@ -1622,37 +1622,6 @@
 
         .shake { animation: screenShake 0.4s ease-in-out; }
 
-        /* Sound Toggle */
-        .sound-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 6000;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            background: rgba(10, 20, 40, 0.9);
-            color: var(--neon-blue);
-            font-size: 1.2em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .sound-toggle:hover {
-            background: rgba(0, 212, 255, 0.15);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-        }
-
-        .sound-toggle.muted {
-            color: #555;
-            border-color: rgba(100, 100, 100, 0.3);
-        }
-
         /* Enhanced evidence cards with hologram */
         .evidence {
             position: relative;
@@ -2028,9 +1997,6 @@
         <div class="gavel-icon">🔨</div>
         <div class="gavel-text">Verdict enregistré</div>
     </div>
-
-    <!-- SOUND TOGGLE -->
-    <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Son on/off">🔊</button>
 
     <script>
         // ==================== STATE ====================
@@ -2445,100 +2411,6 @@
             t._timer = setTimeout(() => t.classList.remove('show'), 2200);
         }
 
-        // ==================== SOUND SYSTEM ====================
-        const SFX = {
-            ctx: null,
-            enabled: true,
-            init() {
-                if (this.ctx) return;
-                try {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                } catch (e) { this.enabled = false; }
-            },
-            play(type) {
-                if (!this.enabled || !this.ctx) return;
-                if (this.ctx.state === 'suspended') this.ctx.resume();
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                switch (type) {
-                    case 'click':
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(800, now);
-                        osc.frequency.exponentialRampToValueAtTime(400, now + 0.08);
-                        gain.gain.setValueAtTime(0.08, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-                        osc.start(now);
-                        osc.stop(now + 0.1);
-                        break;
-                    case 'collect':
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(500, now);
-                        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-                        gain.gain.setValueAtTime(0.1, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-                        osc.start(now);
-                        osc.stop(now + 0.2);
-                        break;
-                    case 'success':
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(600, now);
-                        osc.frequency.setValueAtTime(800, now + 0.1);
-                        osc.frequency.setValueAtTime(1000, now + 0.2);
-                        gain.gain.setValueAtTime(0.1, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-                        osc.start(now);
-                        osc.stop(now + 0.4);
-                        break;
-                    case 'error':
-                        osc.type = 'sawtooth';
-                        osc.frequency.setValueAtTime(300, now);
-                        osc.frequency.exponentialRampToValueAtTime(100, now + 0.2);
-                        gain.gain.setValueAtTime(0.06, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-                        osc.start(now);
-                        osc.stop(now + 0.25);
-                        break;
-                    case 'gavel':
-                        osc.type = 'square';
-                        osc.frequency.setValueAtTime(150, now);
-                        osc.frequency.exponentialRampToValueAtTime(50, now + 0.3);
-                        gain.gain.setValueAtTime(0.15, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-                        osc.start(now);
-                        osc.stop(now + 0.4);
-                        break;
-                    case 'transition':
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(200, now);
-                        osc.frequency.exponentialRampToValueAtTime(600, now + 0.5);
-                        gain.gain.setValueAtTime(0.06, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-                        osc.start(now);
-                        osc.stop(now + 0.6);
-                        break;
-                    case 'ambient':
-                        osc.type = 'sine';
-                        osc.frequency.setValueAtTime(80, now);
-                        gain.gain.setValueAtTime(0.015, now);
-                        gain.gain.exponentialRampToValueAtTime(0.001, now + 3);
-                        osc.start(now);
-                        osc.stop(now + 3);
-                        break;
-                }
-            }
-        };
-
-        function toggleSound() {
-            SFX.enabled = !SFX.enabled;
-            const btn = $('soundToggle');
-            btn.textContent = SFX.enabled ? '🔊' : '🔇';
-            btn.classList.toggle('muted', !SFX.enabled);
-        }
-
         // ==================== PARTICLE SYSTEM ====================
         function initParticles() {
             const container = $('particles-bg');
@@ -2579,9 +2451,6 @@
 
         // ==================== EVIDENCE MODAL ====================
         function showEvidenceModal(evidence, isNew) {
-            SFX.init();
-            SFX.play(isNew ? 'collect' : 'click');
-
             $('evidenceModalTitle').innerHTML = `📄 ${evidence.k}`;
             $('evidenceModalBody').innerHTML = `
                 <div class="evidence-modal-image">
@@ -2614,8 +2483,6 @@
         // ==================== PHASE TRANSITION ====================
         function showPhaseTransition(icon, title, subtitle) {
             return new Promise(resolve => {
-                SFX.init();
-                SFX.play('transition');
                 $('phaseIcon').textContent = icon;
                 $('phaseTitle').textContent = title;
                 $('phaseSubtitle').textContent = subtitle;
@@ -2630,8 +2497,6 @@
         // ==================== CASE INTRO CINEMATIC ====================
         function showCaseIntro(code) {
             return new Promise(resolve => {
-                SFX.init();
-                SFX.play('transition');
                 const c = cases[code];
                 const intro = caseIntroData[code];
                 const overlay = $('caseIntroOverlay');
@@ -2667,7 +2532,6 @@
                 overlay.classList.add('active');
 
                 $('caseIntroEnterBtn').addEventListener('click', () => {
-                    SFX.play('click');
                     overlay.classList.remove('active');
                     setTimeout(resolve, 400);
                 }, { once: true });
@@ -2677,8 +2541,6 @@
         // ==================== GAVEL ANIMATION ====================
         function showGavelAnimation() {
             return new Promise(resolve => {
-                SFX.init();
-                SFX.play('gavel');
                 const overlay = $('gavelOverlay');
                 overlay.classList.add('active');
 
@@ -2867,7 +2729,6 @@
 
         // ==================== GAME FLOW ====================
         async function startGame() {
-            SFX.init();
             $('briefing-screen').classList.remove('active');
             $('game-container').classList.add('active');
             state.game.active = true;
@@ -2879,7 +2740,6 @@
 
             // Dramatic entry
             await showPhaseTransition('⚖️', 'Le Tribunal', 'La séance est ouverte');
-            SFX.play('ambient');
 
             updateHUD();
             renderCaseSelection();
@@ -3101,8 +2961,6 @@
         // ==================== EVIDENCE PHASE ====================
         async function selectCase(code) {
             if (state.game.casesDone.has(code)) return;
-            SFX.init();
-            SFX.play('click');
 
             // Show cinematic case intro
             await showCaseIntro(code);
@@ -3275,12 +3133,10 @@
                 drop.classList.add(ok ? 'good' : 'bad');
 
                 if (ok) {
-                    SFX.play('success');
                     toast(`✓ Cohérent : ${actor} ↔ ${key} (+6 pts)`);
                     state.game.casePoints += 6;
                     floatScore(6);
                 } else {
-                    SFX.play('error');
                     toast(`✗ Incohérent : ${actor} ↔ ${key} (-crédibilité)`);
                     setCredibility(-6);
                     floatScore(-6);
@@ -3452,10 +3308,7 @@
             await showGavelAnimation();
 
             if (pts > 0) {
-                SFX.play('success');
                 floatScore(pts);
-            } else {
-                SFX.play('error');
             }
 
             // Build detailed breakdown
@@ -3984,14 +3837,6 @@
         // ==================== INIT ====================
         showLesson(0);
         initParticles();
-
-        // Initialize sound on first user interaction
-        document.addEventListener('click', () => SFX.init(), { once: true });
-
-        // Ambient sound pulse every 30 seconds when game is active
-        setInterval(() => {
-            if (state.game.active && SFX.enabled) SFX.play('ambient');
-        }, 30000);
     </script>
 </body>
 </html>
