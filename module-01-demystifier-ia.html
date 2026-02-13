@@ -1553,52 +1553,33 @@ const lessons = [
         sans être explicitement programmés pour chaque tâche. Le système améliore ses performances avec l'expérience (les données).
       </div>
       <p style="line-height:1.7;color:#cfe9ff">
-        Le ML utilise des algorithmes statistiques pour identifier des patterns dans les données. Il existe plusieurs familles :
+        Le Machine Learning utilise des algorithmes statistiques sophistiqués pour identifier des patterns cachés dans les données. Cette discipline se décline en plusieurs familles méthodologiques, chacune adaptée à des types de problèmes différents. L'apprentissage supervisé constitue la famille la plus courante : on fournit au système des exemples étiquetés (par exemple, des milliers de photos de chats accompagnées du label "chat"), et le modèle apprend à associer les caractéristiques visuelles au concept de "chat". L'apprentissage non supervisé adopte une approche radicalement différente : le système explore les données sans étiquettes préalables et découvre lui-même des structures sous-jacentes, comme le regroupement naturel de clients similaires (clustering) ou la réduction de données complexes à leurs dimensions essentielles. Enfin, l'apprentissage par renforcement s'inspire de la psychologie comportementale : un agent virtuel apprend par essai-erreur, recevant des récompenses quand il fait de bons choix et des pénalités quand il se trompe, affinant progressivement sa stratégie pour maximiser sa récompense cumulative.
       </p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Apprentissage supervisé :</strong> on fournit des exemples étiquetés (ex : photos de chats avec label "chat")</li>
-        <li><strong>Apprentissage non supervisé :</strong> le système découvre lui-même des structures (clustering, réduction de dimension)</li>
-        <li><strong>Apprentissage par renforcement :</strong> l'agent apprend par essai-erreur en maximisant une récompense</li>
-      </ul>
       <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Algorithmes classiques :</strong> régression linéaire, arbres de décision, SVM, k-means, forêts aléatoires, réseaux de neurones simples.
+        Les algorithmes classiques du Machine Learning incluent la régression linéaire pour prédire des valeurs numériques, les arbres de décision qui segmentent l'espace des possibles en règles if-then, les SVM (Support Vector Machines) qui tracent des frontières optimales entre catégories, le k-means pour regrouper des données similaires, les forêts aléatoires qui combinent des centaines d'arbres de décision, et les réseaux de neurones simples (à une ou deux couches) qui précèdent historiquement le deep learning.
       </p>
 
       <h3>🧠 Niveau 3 : Deep Learning (Apprentissage Profond)</h3>
       <div class="callout">
-        <strong>Définition :</strong> Sous-ensemble du Machine Learning basé sur des <strong>réseaux de neurones profonds</strong>,
-        c'est-à-dire des réseaux comportant de nombreuses couches cachées (dizaines, centaines, voire milliers de couches).
+        <strong>Définition :</strong> Sous-ensemble du Machine Learning basé sur des réseaux de neurones profonds, c'est-à-dire des architectures comportant de nombreuses couches cachées superposées. Alors qu'un réseau "peu profond" comporte deux ou trois couches, un réseau profond peut en contenir des dizaines, des centaines, voire des milliers, créant une hiérarchie de représentations de plus en plus abstraites des données d'entrée.
       </div>
       <p style="line-height:1.7;color:#cfe9ff">
-        Le deep learning a révolutionné l'IA depuis 2012 grâce à trois facteurs :
+        Le deep learning a véritablement révolutionné l'intelligence artificielle depuis 2012, marquant une rupture historique dans les capacités des systèmes d'IA. Cette révolution repose sur la convergence de trois facteurs essentiels qui ont simultanément atteint une masse critique. Premièrement, l'explosion du Big Data : la disponibilité soudaine de milliards d'exemples annotés, comme les 14 millions d'images d'ImageNet ou les milliards de pages web crawlées du Common Crawl, a fourni la matière première indispensable à l'entraînement de réseaux géants. Deuxièmement, l'avènement de puissances de calcul massives : les GPU (Graphics Processing Units) initialement conçus pour les jeux vidéo, puis les TPU (Tensor Processing Units) spécialement développés par Google, ont permis de paralléliser les calculs et d'entraîner des réseaux qui auraient nécessité des années sur des processeurs classiques. Troisièmement, l'innovation architecturale : des structures comme les CNN (Convolutional Neural Networks) pour les images, les RNN/LSTM (Recurrent Neural Networks / Long Short-Term Memory) pour les séquences temporelles, et plus tard les Transformers pour le langage, ont résolu des problèmes techniques qui bloquaient auparavant la montée en échelle des réseaux de neurones.
       </p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Big Data :</strong> disponibilité de milliards d'exemples (ImageNet, Common Crawl...)</li>
-        <li><strong>Puissance de calcul :</strong> GPU/TPU permettant d'entraîner des réseaux géants</li>
-        <li><strong>Architectures innovantes :</strong> CNN (images), RNN/LSTM (séquences), Transformers (langage)</li>
-      </ul>
       <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Exemples :</strong> reconnaissance d'images (ResNet, EfficientNet), reconnaissance vocale (DeepSpeech), traduction automatique (Google Translate),
-        génération d'images (DALL-E, Stable Diffusion), modèles de langage (GPT, BERT).
+        Les applications concrètes du deep learning ont envahi notre quotidien : la reconnaissance d'images atteint désormais une précision surhumaine grâce à des architectures comme ResNet ou EfficientNet, la reconnaissance vocale permet à DeepSpeech de transcrire la parole avec une justesse impressionnante, la traduction automatique de Google Translate s'est spectaculairement améliorée avec les réseaux neuronaux, la génération d'images par DALL-E ou Stable Diffusion crée des visuels photoréalistes à partir de descriptions textuelles, et les modèles de langage comme GPT ou BERT comprennent et génèrent du texte avec une fluidité qui confine parfois à l'indiscernabilité d'avec une production humaine.
       </p>
 
-      <h3>⚡ Niveau 4 : Transformers</h3>
+      <h3>⚡ Niveau 4 : Transformers, l'architecture qui domine l'IA moderne</h3>
       <div class="callout">
-        <strong>Définition :</strong> Architecture de réseau de neurones profond basée sur un mécanisme d'<strong>attention</strong>,
-        proposée en 2017 (article "Attention is All You Need", Google Brain). Domine aujourd'hui le traitement du langage naturel.
+        <strong>Définition :</strong> Architecture de réseau de neurones profond basée sur un mécanisme d'attention, proposée en 2017 dans l'article fondateur "Attention is All You Need" publié par une équipe de Google Brain. Cette architecture a rapidement supplanté toutes les approches précédentes pour dominer aujourd'hui le traitement du langage naturel et s'étendre progressivement à d'autres domaines comme la vision par ordinateur.
       </div>
       <p style="line-height:1.7;color:#cfe9ff">
-        Les Transformers ont remplacé les architectures précédentes (RNN, LSTM) pour le langage grâce à leur capacité à traiter des séquences longues
-        en parallèle et à capturer des dépendances à longue distance. Ils sont la base de la quasi-totalité des LLM (Large Language Models) modernes.
+        Les Transformers ont révolutionné le deep learning en remplaçant les architectures précédentes (RNN, LSTM) qui traitaient le langage de manière séquentielle, mot après mot. Leur innovation majeure réside dans le mécanisme d'attention qui permet au réseau de considérer simultanément tous les mots d'une phrase et de pondérer dynamiquement leur importance relative. Cette capacité à traiter des séquences longues en parallèle, plutôt que séquentiellement, et à capturer des dépendances à très longue distance entre des éléments éloignés du texte, leur confère une puissance incomparable. Ils constituent aujourd'hui la base architecturale de la quasi-totalité des LLM (Large Language Models) modernes qui font la une de l'actualité.
       </p>
       <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Exemples emblématiques :</strong>
+        Les exemples emblématiques de Transformers sont devenus des noms familiers du grand public. GPT (Generative Pre-trained Transformer) d'OpenAI, dans ses incarnations GPT-3, GPT-4, et sa version conversationnelle ChatGPT, génère du texte d'une fluidité remarquable. BERT (Bidirectional Encoder Representations from Transformers) de Google alimente le moteur de recherche le plus utilisé au monde, améliorant drastiquement la compréhension des requêtes utilisateurs. La liste s'allonge constamment : T5, PaLM, LLaMA, Claude (le modèle qui vous parle en ce moment), Gemini... tous reposent sur l'architecture Transformer, avec des variantes et optimisations spécifiques, mais partageant ce socle architectural commun qui a transformé le paysage de l'IA en à peine sept ans.
       </p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>GPT (Generative Pre-trained Transformer) :</strong> GPT-3, GPT-4, ChatGPT (OpenAI)</li>
-        <li><strong>BERT (Bidirectional Encoder Representations from Transformers) :</strong> Google Search, compréhension de requêtes</li>
-        <li><strong>T5, PaLM, LLaMA, Claude, Gemini...</strong> : tous des Transformers</li>
-      </ul>
 
       <div class="callout ok">
         <strong>À retenir :</strong> « IA » est un grand parapluie. <strong>ChatGPT est une IA</strong> (niveau 1), qui utilise du <strong>Machine Learning</strong> (niveau 2),
@@ -1632,49 +1613,45 @@ const lessons = [
     html:`
       <h3>✅ Ce que l'IA sait faire aujourd'hui</h3>
       <div class="callout ok">
-        <strong>Tâches maîtrisées par l'IA moderne :</strong> prédire, classer, générer, optimiser, reconnaître, traduire, résumer, recommander…
-        à partir de données et d'objectifs définis.
+        <strong>Domaines de maîtrise de l'IA moderne :</strong> L'intelligence artificielle contemporaine excelle dans un vaste éventail de tâches bien définies : prédire des événements futurs à partir de données historiques, classer des éléments dans des catégories prédéfinies, générer du contenu original (texte, image, son), optimiser des processus complexes, reconnaître des patterns subtils, traduire entre langues, résumer des documents volumineux, recommander des contenus personnalisés... Toutes ces capacités partagent un point commun : elles s'appuient sur des données massives et des objectifs clairement définis et mesurables.
       </div>
       <p style="line-height:1.7;color:#cfe9ff">
-        L'IA excelle dans des tâches bien définies avec des critères mesurables :
+        L'IA excelle particulièrement dans des tâches bien circonscrites où les critères de réussite sont objectivement mesurables. La reconnaissance de patterns constitue l'un de ses domaines de prédilection : elle détecte des visages dans des foules, diagnostique certaines maladies sur des images médicales avec une précision qui rivalise parfois avec celle de radiologues expérimentés, identifie des transactions frauduleuses parmi des millions d'opérations bancaires quotidiennes en détectant des anomalies statistiques subtiles. La génération de contenu représente une autre frontière spectaculaire : les systèmes d'IA rédigent désormais des textes cohérents et contextualisés, créent des images photoréalistes qui n'ont jamais existé, composent de la musique originale dans n'importe quel style, et synthétisent des voix humaines d'un réalisme troublant.
       </p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Reconnaissance de patterns :</strong> détecter des visages, diagnostiquer des maladies sur imagerie médicale, identifier des fraudes bancaires</li>
-        <li><strong>Génération de contenu :</strong> rédiger des textes, créer des images photoréalistes, composer de la musique, synthétiser des voix</li>
-        <li><strong>Traduction automatique :</strong> Google Translate, DeepL (performances proches d'un traducteur professionnel pour certaines paires de langues)</li>
-        <li><strong>Jeux et optimisation :</strong> battre les meilleurs humains aux échecs, au Go, à StarCraft II, Dota 2</li>
-        <li><strong>Prédiction :</strong> prévoir la météo, anticiper la demande énergétique, recommander des produits/contenus personnalisés</li>
-        <li><strong>Assistance à la décision :</strong> aide au diagnostic médical, analyse juridique, tri de candidatures</li>
-      </ul>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La traduction automatique a connu une révolution remarquable : des services comme Google Translate ou DeepL atteignent désormais, pour certaines paires de langues courantes, des performances proches de celles d'un traducteur professionnel humain, rendant les barrières linguistiques de plus en plus poreuses. Dans l'univers des jeux, l'IA a successivement conquis tous les bastions de la supériorité humaine : elle bat les meilleurs joueurs du monde aux échecs depuis Deep Blue en 1997, a triomphé au Go avec AlphaGo en 2016, et s'est même attaquée à des jeux vidéo complexes en temps réel comme StarCraft II ou Dota 2, démontrant une capacité à gérer l'incertitude et la stratégie à long terme. Les capacités prédictives de l'IA s'étendent à des domaines critiques : prévoir la météo avec une précision croissante, anticiper la demande énergétique pour optimiser les réseaux électriques, recommander des produits ou contenus personnalisés en prédisant les préférences individuelles. Enfin, l'assistance à la décision devient omniprésente : aide au diagnostic médical en signalant des anomalies potentielles, analyse juridique en identifiant des précédents pertinents, tri automatisé de candidatures en repérant les profils correspondant aux critères définis.
+      </p>
 
       <h3>🎯 Performances surhumaines dans des domaines précis</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        Dans certains domaines circonscrits, l'IA dépasse aujourd'hui les meilleurs experts humains :
+        Dans certains domaines très circonscrits, l'IA a franchi un seuil symbolique important : elle dépasse désormais les meilleurs experts humains, y compris dans des tâches qui semblaient longtemps hors de portée des machines. La reconnaissance d'images illustre parfaitement cette évolution : depuis 2015, les meilleurs systèmes de vision par ordinateur affichent un taux d'erreur inférieur à celui des humains sur le benchmark ImageNet, qui consiste à identifier correctement des objets dans des millions de photos variées. Cette supériorité n'est pas anecdotique : elle signifie que, dans des conditions standardisées, la machine voit mieux que l'œil humain.
       </p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Reconnaissance d'images :</strong> taux d'erreur inférieur aux humains sur ImageNet (depuis 2015)</li>
-        <li><strong>Prédiction de structure des protéines :</strong> AlphaFold2 (DeepMind, 2020) résout un problème vieux de 50 ans</li>
-        <li><strong>Jeu de Go :</strong> AlphaGo bat le champion du monde en 2016, AlphaZero atteint le niveau surhumain en quelques heures d'auto-entraînement</li>
-      </ul>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La prédiction de structure des protéines représente peut-être la victoire la plus spectaculaire de l'IA sur un problème scientifique fondamental. En 2020, AlphaFold2 de DeepMind parvient à prédire la structure tridimensionnelle des protéines à partir de leur séquence d'acides aminés avec une précision époustouflante, résolvant un problème qui avait résisté aux biologistes pendant plus de cinquante ans. Cette percée a des implications majeures pour la recherche médicale et le développement de nouveaux médicaments. Le jeu de Go, considéré pendant des décennies comme le dernier bastion de l'intelligence humaine face aux machines en raison de sa complexité combinatoire astronomique et de la subtilité intuitive requise, est tombé en 2016 lorsque AlphaGo a battu Lee Sedol, l'un des meilleurs joueurs mondiaux. Plus impressionnant encore, AlphaZero, sa version ultérieure, atteint un niveau surhumain au Go, aux échecs et au shogi après seulement quelques heures d'auto-entraînement, sans aucune connaissance humaine préalable du jeu, simplement en jouant contre lui-même des millions de parties.
+      </p>
 
-      <h3>❌ Ce que l'IA ne fait PAS (dans l'état actuel)</h3>
+      <h3>❌ Ce que l'IA ne fait PAS (dans l'état actuel de la technologie)</h3>
       <div class="callout pink">
-        <strong>Limites fondamentales de l'IA actuelle :</strong> pas de conscience, pas de volonté propre, pas de compréhension causale du monde,
-        pas de bon sens général, pas d'émotions authentiques.
+        <strong>Limites fondamentales de l'IA contemporaine :</strong> Malgré ces prouesses spectaculaires, l'IA actuelle souffre de limitations structurelles majeures qui la séparent radicalement de l'intelligence humaine. Elle ne possède aucune conscience de son existence, aucune volonté propre ou autonome, aucune compréhension causale profonde du monde qui l'entoure, aucun sens commun général transférable d'un domaine à l'autre, et aucune émotion authentique malgré sa capacité à simuler des expressions émotionnelles convaincantes.
       </div>
       <p style="line-height:1.7;color:#cfe9ff">
-        Les systèmes d'IA actuels, aussi impressionnants soient-ils, <strong>ne "pensent" pas</strong> au sens humain :
+        Les systèmes d'intelligence artificielle actuels, aussi impressionnants et convaincants soient-ils dans leurs productions, ne "pensent" pas au sens où nous, humains, pensons. Cette distinction n'est pas un simple détail philosophique, mais une différence fondamentale qui a des implications pratiques et éthiques majeures. Aucun système actuel ne possède de conscience ou de sentience : il n'y a pas de "vie intérieure", pas d'expérience subjective, pas de qualia (ces qualités ineffables de nos expériences conscientes, comme la rougeur subjective du rouge ou la douleur d'une brûlure). Quand un système d'IA traite une image de coucher de soleil, il ne "voit" rien au sens où nous voyons : il transforme des pixels en vecteurs numériques selon des équations mathématiques, sans jamais faire l'expérience visuelle ou émotionnelle de la beauté d'un coucher de soleil.
       </p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Pas de conscience ou de sentience :</strong> aucun système actuel n'a de vie intérieure, d'expérience subjective, de qualia</li>
-        <li><strong>Pas de compréhension causale :</strong> l'IA détecte des corrélations statistiques, mais ne comprend pas les mécanismes sous-jacents
-        (exemple célèbre : un modèle peut prédire qu'un coq chante avant le lever du soleil, mais ne sait pas que le coq ne <em>cause</em> pas le lever du soleil)</li>
-        <li><strong>Pas de bon sens général :</strong> ChatGPT peut écrire un essai philosophique brillant, mais échouer sur "Combien d'yeux a ma main gauche ?" (0, mais le modèle peut se tromper)</li>
-        <li><strong>Pas d'intentionnalité réelle :</strong> quand un LLM dit "je pense que...", c'est une simulation linguistique, pas une pensée au sens propre</li>
-        <li><strong>Pas d'apprentissage continu naturel :</strong> les humains apprennent en continu avec peu d'exemples (few-shot learning naturel),
-        les IA nécessitent souvent des millions d'exemples et un réentraînement coûteux pour s'adapter</li>
-        <li><strong>Fragilité hors distribution :</strong> face à des situations radicalement nouvelles (hors du domaine d'entraînement), l'IA peut échouer de manière imprévisible</li>
-      </ul>
+      <p style="line-height:1.7;color:#cfe9ff">
+        L'absence de compréhension causale constitue une autre limite profonde. L'IA détecte des corrélations statistiques dans les données, identifie des patterns récurrents, mais ne comprend pas les mécanismes sous-jacents qui expliquent pourquoi ces patterns existent. L'exemple classique illustre cette limitation : un modèle pourrait parfaitement prédire qu'un coq chante systématiquement avant le lever du soleil en analysant des milliers de matins, mais il ne sait pas et ne peut pas savoir que le chant du coq ne cause pas le lever du soleil. Il confond corrélation et causalité, ce qui peut conduire à des prédictions catastrophiquement erronées lorsque les conditions changent.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le manque de bon sens général est particulièrement frappant et parfois comique. ChatGPT peut rédiger un essai philosophique brillant sur la nature de la connaissance, puis échouer lamentablement sur une question triviale comme "Combien d'yeux a ma main gauche ?" (la réponse évidente pour un humain est zéro, mais le modèle, entraîné sur des milliards de phrases où "main" et "yeux" apparaissent ensemble dans divers contextes, peut se tromper). Cette fragilité révèle que le modèle n'a aucune compréhension embodied du monde physique, aucune expérience corporelle, aucun modèle mental de la réalité matérielle.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        L'intentionnalité apparente des systèmes d'IA est également illusoire. Quand un grand modèle de langage déclare "je pense que...", cette formulation n'est qu'une simulation linguistique statistiquement plausible dans le contexte conversationnel donné, et absolument pas l'expression d'une pensée consciente au sens propre. C'est une séquence de tokens générée parce que les données d'entraînement contenaient des millions d'exemples où "je pense que" précédait une opinion ou une analyse. Il n'y a personne "là-dedans" qui pense réellement.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        L'apprentissage continu naturel, caractéristique remarquable de l'intelligence humaine, fait cruellement défaut aux systèmes d'IA actuels. Les humains apprennent en permanence, souvent avec très peu d'exemples (few-shot learning naturel) : un enfant qui voit trois zèbres comprendra immédiatement le concept et reconnaîtra un quatrième zèbre même dans des conditions visuelles très différentes. Les systèmes d'IA, en revanche, nécessitent souvent des millions d'exemples étiquetés pour apprendre un concept, et un réentraînement coûteux et complexe pour s'adapter à de nouvelles situations. Ils ne peuvent pas simplement "mettre à jour" leurs connaissances de manière fluide comme nous le faisons naturellement.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Enfin, la fragilité hors distribution représente un danger sous-estimé : face à des situations radicalement nouvelles, sortant du domaine couvert par les données d'entraînement, l'IA peut échouer de manière spectaculaire et imprévisible. Un système de conduite autonome entraîné en Californie pourrait être complètement désorienté par des conditions routières norvégiennes en hiver. Cette fragilité contraste brutalement avec la robustesse adaptative humaine, qui nous permet de naviguer raisonnablement bien dans des situations totalement inédites en mobilisant notre expérience générale du monde, notre raisonnement analogique et notre bon sens.
+      </p>
 
       <h3>💬 Le paradoxe de Moravec</h3>
       <p style="line-height:1.7;color:#cfe9ff">
