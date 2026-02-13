@@ -1481,49 +1481,46 @@ const lessons = [
         les caractéristiques discriminantes. De même, un réseau de neurones "apprend" en voyant des milliers d'exemples étiquetés.
       </div>
 
-      <h3>📈 L'histoire en trois vagues</h3>
-      <p style="line-height:1.7;color:#cfe9ff"><strong>Première vague (1943-1969) :</strong> Les neurones formels</p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>McCulloch & Pitts (1943)</strong> : premier modèle mathématique du neurone</li>
-        <li><strong>Perceptron de Rosenblatt (1958)</strong> : premier réseau de neurones capable d'apprentissage supervisé</li>
-        <li><strong>Minsky & Papert (1969)</strong> : critique sévère des limites du perceptron → premier "hiver connexionniste"</li>
-      </ul>
-
-      <p style="line-height:1.7;color:#cfe9ff"><strong>Deuxième vague (années 1980-1990) :</strong> Renaissance avec la rétropropagation</p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Algorithme de rétropropagation (backpropagation, 1986)</strong> : permet d'entraîner des réseaux multicouches</li>
-        <li>Applications : reconnaissance de chiffres manuscrits, premiers systèmes de reconnaissance vocale</li>
-      </ul>
-
-      <p style="line-height:1.7;color:#cfe9ff"><strong>Troisième vague (2012-aujourd'hui) :</strong> Deep Learning et explosion actuelle</p>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>AlexNet (2012)</strong> : victoire écrasante en reconnaissance d'images grâce aux réseaux profonds (deep learning)</li>
-        <li><strong>AlphaGo (2016)</strong> : bat le champion du monde de Go Lee Sedol</li>
-        <li><strong>Transformers (2017-)</strong> : révolution du traitement du langage (GPT, BERT, ChatGPT...)</li>
-      </ul>
-
-      <h3>✅ Forces de l'IA connexionniste</h3>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Traite des données complexes :</strong> images, son, vidéo, texte, données non structurées</li>
-        <li><strong>Généralisation :</strong> capable d'extrapoler au-delà des exemples vus pendant l'entraînement</li>
-        <li><strong>Performance state-of-the-art :</strong> domine aujourd'hui presque tous les benchmarks (vision, langage, jeux...)</li>
-        <li><strong>Pas besoin d'expertise métier :</strong> le modèle découvre lui-même les patterns pertinents</li>
-        <li><strong>Scalabilité :</strong> plus on a de données et de puissance de calcul, meilleures sont les performances</li>
-      </ul>
-
-      <h3>❌ Faiblesses de l'IA connexionniste</h3>
-      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
-        <li><strong>Boîte noire (explicabilité limitée) :</strong> difficile de comprendre <em>pourquoi</em> le modèle a pris telle décision</li>
-        <li><strong>Dépendance aux données :</strong> nécessite d'énormes volumes de données étiquetées de qualité</li>
-        <li><strong>Coûts computationnels élevés :</strong> entraînement de GPT-4 = millions de dollars en électricité et matériel</li>
-        <li><strong>Biais algorithmiques :</strong> si les données d'entraînement sont biaisées (sexisme, racisme), le modèle reproduit ces biais</li>
-        <li><strong>Fragilité aux adversarial examples :</strong> petites perturbations imperceptibles peuvent tromper le système</li>
-        <li><strong>Manque de bon sens :</strong> pas de compréhension causale du monde, juste des corrélations statistiques</li>
-      </ul>
-
+      <h3>📈 L'histoire en trois vagues successives</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        Aujourd'hui, l'IA connexionniste (et particulièrement le deep learning) domine le paysage de l'IA. ChatGPT, DALL-E, les voitures autonomes,
-        la reconnaissance faciale : tous reposent sur des réseaux de neurones profonds entraînés sur d'immenses corpus de données.
+        L'histoire de l'IA connexionniste n'est pas linéaire. Elle s'est déroulée par vagues successives d'enthousiasme et de désillusion, chaque cycle apportant son lot d'innovations et de limitations. La première vague, qui s'étend de 1943 à 1969, voit l'émergence des neurones formels. Comme nous l'avons évoqué précédemment, McCulloch et Pitts posent en 1943 les bases théoriques du neurone artificiel. Quinze ans plus tard, en 1958, Frank Rosenblatt crée le Perceptron, premier réseau de neurones capable d'apprentissage supervisé véritable. L'enthousiasme est immense : on imagine déjà des machines capables d'apprendre n'importe quelle tâche.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Mais en 1969, Marvin Minsky et Seymour Papert publient une critique dévastatrice qui met en lumière les limites mathématiques fondamentales du perceptron simple. Cet ouvrage provoque le premier "hiver connexionniste" : les financements se tarissent, les chercheurs se réorientent, et l'approche connexionniste tombe en disgrâce pour près de deux décennies.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La deuxième vague émerge dans les années 1980 avec la redécouverte et la popularisation de l'algorithme de rétropropagation (backpropagation) en 1986. Cet algorithme mathématique résout le problème identifié par Minsky et Papert en permettant d'entraîner efficacement des réseaux multicouches. Les applications pratiques commencent à voir le jour : reconnaissance de chiffres manuscrits pour le tri automatique du courrier postal, premiers systèmes de reconnaissance vocale, traduction automatique rudimentaire. L'approche connexionniste retrouve sa crédibilité scientifique, mais reste limitée par la puissance de calcul disponible et le manque de données massives.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La troisième vague, celle que nous vivons actuellement, débute véritablement en 2012 avec AlexNet. Ce réseau de neurones profond remporte une victoire écrasante dans le concours de reconnaissance d'images ImageNet, surpassant toutes les méthodes traditionnelles avec une marge inédite. C'est le début du Deep Learning tel que nous le connaissons aujourd'hui. Les succès s'enchaînent : en 2016, AlphaGo de DeepMind bat Lee Sedol, champion du monde de Go, dans un jeu réputé inaccessible aux machines en raison de sa complexité combinatoire astronomique. Puis arrive en 2017 l'architecture Transformer, qui va révolutionner le traitement du langage naturel et donner naissance à la lignée GPT, BERT, et finalement ChatGPT qui popularisera l'IA auprès du grand public en 2022.
+      </p>
+
+      <h3>✅ Les forces qui expliquent le triomphe actuel de l'IA connexionniste</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La domination actuelle de l'IA connexionniste n'est pas le fruit du hasard. Elle repose sur des atouts structurels considérables qui la distinguent radicalement de l'IA symbolique. D'abord, cette approche excelle dans le traitement de données complexes et non structurées : images haute résolution, flux audio et vidéo, textes dans des langues multiples, données biométriques... tout ce qui paraissait hors de portée des systèmes à règles est devenu son terrain de jeu naturel.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Sa capacité de généralisation constitue un autre avantage décisif : un réseau de neurones bien entraîné peut extrapoler au-delà des exemples précis qu'il a vus pendant son apprentissage, reconnaissant des variantes, des angles différents, des contextes inédits. Cette faculté lui permet d'atteindre des performances state-of-the-art qui dominent aujourd'hui pratiquement tous les benchmarks scientifiques, que ce soit en vision par ordinateur, en traitement du langage, en jeux stratégiques ou en prédiction de structures moléculaires.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un avantage souvent sous-estimé est qu'elle ne nécessite pas d'expertise métier approfondie pour fonctionner : le modèle découvre lui-même les patterns pertinents dans les données, sans qu'un expert humain ait besoin d'encoder manuellement des milliers de règles. Enfin, sa scalabilité est remarquable : contrairement à l'IA symbolique qui s'écroule sous le poids de trop nombreuses règles, l'IA connexionniste s'améliore généralement avec plus de données et plus de puissance de calcul, créant une dynamique vertueuse où les progrès technologiques nourrissent directement les progrès en intelligence artificielle.
+      </p>
+
+      <h3>❌ Les faiblesses qui demeurent malgré les succès</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Malgré ces succès spectaculaires, l'IA connexionniste souffre de limites importantes qui tempèrent l'enthousiasme et soulèvent des questions éthiques et pratiques majeures. Le problème de la "boîte noire" est peut-être le plus préoccupant : il est extrêmement difficile, voire impossible, de comprendre précisément pourquoi un réseau de neurones profond a pris telle décision plutôt qu'une autre. Cette opacité devient problématique dans des domaines sensibles comme la justice, la médecine ou le crédit bancaire, où la capacité à expliquer et justifier une décision est cruciale.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La dépendance aux données constitue une autre faiblesse structurelle : entraîner un modèle performant nécessite d'énormes volumes de données étiquetées de haute qualité, ce qui n'est pas toujours disponible ou éthiquement acceptable à collecter. Les coûts computationnels atteignent des sommets vertigineux : l'entraînement de GPT-4 aurait coûté plusieurs dizaines de millions de dollars en électricité et infrastructure matérielle, créant une barrière à l'entrée qui concentre le pouvoir dans les mains de quelques géants technologiques.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les biais algorithmiques représentent un danger social réel : si les données d'entraînement reflètent des préjugés sociaux (sexisme, racisme, discrimination socio-économique), le modèle apprendra et reproduira fidèlement ces biais, potentiellement à une échelle massive. La fragilité face aux exemples adverses (adversarial examples) est également troublante : de minuscules perturbations, imperceptibles à l'œil humain sur une image, peuvent complètement tromper un système de reconnaissance pourtant très performant.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Enfin, et peut-être plus fondamentalement, l'IA connexionniste manque cruellement de bon sens et de compréhension causale du monde. Elle détecte des corrélations statistiques dans les données, mais ne comprend pas les mécanismes sous-jacents qui expliquent pourquoi ces corrélations existent. Elle peut prédire qu'un coq chante avant le lever du soleil, mais ne sait pas que le coq ne cause pas le lever du soleil. Cette limitation, bien que subtile, a des implications profondes pour la fiabilité et la robustesse des systèmes d'IA dans des situations inédites.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Malgré ces faiblesses, l'IA connexionniste, et particulièrement le deep learning, domine aujourd'hui le paysage de l'intelligence artificielle. ChatGPT, DALL-E, les systèmes de conduite autonome, la reconnaissance faciale omniprésente : tous reposent sur des réseaux de neurones profonds entraînés sur d'immenses corpus de données, illustrant à la fois la puissance et les dilemmes de cette approche.
       </p>
     `
   },
