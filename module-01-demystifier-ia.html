@@ -918,6 +918,78 @@
       transform:scale(1.1);
     }
 
+    /* ==================== HIÉRARCHIE INTERACTIVE ==================== */
+    .hierarchy-level-card{
+      border:1px solid rgba(168,85,247,0.5);
+      background:linear-gradient(135deg, rgba(168,85,247,0.12), rgba(168,85,247,0.06));
+      border-radius:10px;
+      padding:18px;
+      cursor:grab;
+      transition:all .3s;
+      font-size:.95em;
+      text-align:center;
+      font-weight:600;
+    }
+    .hierarchy-level-card:hover{
+      border-color:var(--neon-purple);
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 6px 25px rgba(168,85,247,.3);
+    }
+    .hierarchy-level-card.dragging{opacity:.4;cursor:grabbing}
+    .hierarchy-level-card.placed{opacity:.25;cursor:not-allowed}
+
+    .hierarchy-slot{transition:all .3s}
+    .hierarchy-slot.dragover{
+      transform:scale(1.05);
+    }
+    .hierarchy-slot.dragover > div{
+      border-color:var(--neon-green)!important;
+      background:rgba(0,255,136,.15)!important;
+    }
+
+    .hierarchy-placed-level{
+      background:linear-gradient(135deg, rgba(168,85,247,0.15), rgba(168,85,247,0.08));
+      border:2px solid rgba(168,85,247,0.6);
+      border-radius:10px;
+      padding:20px;
+      position:relative;
+      transition:all .3s;
+      text-align:center;
+      font-weight:600;
+      font-size:1.05em;
+    }
+    .hierarchy-placed-level.correct{
+      border-color:var(--neon-green);
+      background:linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,255,136,0.1));
+      box-shadow:0 0 20px rgba(0,255,136,.3);
+    }
+    .hierarchy-placed-level.wrong{
+      border-color:var(--danger);
+      background:linear-gradient(135deg, rgba(255,77,77,0.2), rgba(255,77,77,0.1));
+      box-shadow:0 0 20px rgba(255,77,77,.3);
+    }
+    .hierarchy-level-remove{
+      position:absolute;
+      top:8px;
+      right:8px;
+      background:rgba(255,77,77,.2);
+      border:1px solid rgba(255,77,77,.5);
+      color:var(--danger);
+      border-radius:50%;
+      width:24px;
+      height:24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:.85em;
+      transition:all .2s;
+    }
+    .hierarchy-level-remove:hover{
+      background:rgba(255,77,77,.4);
+      transform:scale(1.15);
+    }
+
     /* ==================== FLIP CARDS (familles) ==================== */
     .family-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .family{
@@ -1869,6 +1941,80 @@ const lessons = [
         IA &gt; Machine Learning &gt; Deep Learning &gt; Transformers<br/>
         <span style="font-size:0.9em;color:#8899aa">(du plus général au plus spécifique)</span>
       </p>
+
+      <h3>🎯 Activité : Construisez la hiérarchie</h3>
+      <div class="callout">
+        <strong>Objectif :</strong> Placez les 4 niveaux dans le bon ordre, du plus général (extérieur) au plus spécifique (intérieur).<br/>
+        <strong>Astuce :</strong> Pensez aux poupées russes : chaque niveau contient le suivant !
+      </div>
+
+      <div id="hierarchy-activity" style="margin-top:30px">
+        <div style="background:rgba(10,20,40,0.6);padding:25px;border-radius:12px;border:1px solid rgba(0,255,136,0.2)">
+
+          <!-- Niveaux à placer -->
+          <div style="margin-bottom:30px">
+            <h4 style="color:var(--neon-green);margin-bottom:15px;font-size:1.1em">🧩 Niveaux disponibles</h4>
+            <div id="hierarchy-levels-pool" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px"></div>
+          </div>
+
+          <!-- Zone de construction de la hiérarchie -->
+          <div style="margin-bottom:25px">
+            <h4 style="color:var(--neon-blue);margin-bottom:15px;font-size:1.1em">🏗️ Construisez la hiérarchie (du plus général au plus spécifique)</h4>
+            <div id="hierarchy-builder" style="display:flex;align-items:center;justify-content:center;gap:20px;padding:30px;background:rgba(168,85,247,0.05);border-radius:12px;min-height:140px;flex-wrap:wrap">
+              <div class="hierarchy-slot" data-position="1" id="hierarchy-slot-1" style="min-width:160px;min-height:100px">
+                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
+                  <div style="font-size:1.8em;margin-bottom:8px">1️⃣</div>
+                  <div style="font-size:0.85em">Plus général</div>
+                </div>
+              </div>
+              <div style="color:var(--neon-purple);font-size:1.8em;font-weight:700">⊃</div>
+              <div class="hierarchy-slot" data-position="2" id="hierarchy-slot-2" style="min-width:160px;min-height:100px">
+                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
+                  <div style="font-size:1.8em;margin-bottom:8px">2️⃣</div>
+                  <div style="font-size:0.85em">↓</div>
+                </div>
+              </div>
+              <div style="color:var(--neon-purple);font-size:1.8em;font-weight:700">⊃</div>
+              <div class="hierarchy-slot" data-position="3" id="hierarchy-slot-3" style="min-width:160px;min-height:100px">
+                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
+                  <div style="font-size:1.8em;margin-bottom:8px">3️⃣</div>
+                  <div style="font-size:0.85em">↓</div>
+                </div>
+              </div>
+              <div style="color:var(--neon-purple);font-size:1.8em;font-weight:700">⊃</div>
+              <div class="hierarchy-slot" data-position="4" id="hierarchy-slot-4" style="min-width:160px;min-height:100px">
+                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
+                  <div style="font-size:1.8em;margin-bottom:8px">4️⃣</div>
+                  <div style="font-size:0.85em">Plus spécifique</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Boutons de contrôle -->
+          <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px">
+            <button class="btn green" onclick="verifyHierarchyLesson()" style="min-width:160px">
+              ✓ Vérifier ma hiérarchie
+            </button>
+            <button class="btn pink" onclick="resetHierarchyLesson()" style="min-width:140px">
+              ↻ Réinitialiser
+            </button>
+          </div>
+
+          <!-- Feedback -->
+          <div id="hierarchy-feedback" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="callout ok" style="margin-top:25px">
+        <strong>💡 Pourquoi c'est important :</strong> Cette hiérarchie vous permet de situer précisément n'importe quel système d'IA. Quand on vous parle de "ChatGPT", vous savez maintenant qu'il s'agit d'une IA (niveau 1) qui utilise du Machine Learning (niveau 2), plus précisément du Deep Learning (niveau 3), avec une architecture Transformer (niveau 4). Cette précision terminologique est essentielle pour communiquer efficacement sur l'IA et éviter les amalgames trompeurs.
+      </div>
+
+      <script>
+        if(typeof initHierarchyLesson === 'function') {
+          setTimeout(initHierarchyLesson, 100);
+        }
+      </script>
     `
   },
   {
@@ -2055,6 +2201,9 @@ function showLesson(idx){
   // Initialiser les activités interactives selon la leçon
   if(idx === 3 && typeof initClassificationLesson === 'function') {
     setTimeout(initClassificationLesson, 150);
+  }
+  if(idx === 4 && typeof initHierarchyLesson === 'function') {
+    setTimeout(initHierarchyLesson, 150);
   }
   if(idx === 5 && typeof initTimelineLesson === 'function') {
     setTimeout(initTimelineLesson, 150);
@@ -2674,6 +2823,195 @@ function verifyClassificationLesson(){
         Les systèmes en <span style="color:var(--danger)">rouge</span> sont mal classés.
         <strong>Indice :</strong> Deep Blue et les systèmes experts utilisent des règles explicites (symbolique).
         ChatGPT, AlphaGo et la reconnaissance vocale/images apprennent par l'exemple (connexionniste).
+      `;
+    }
+  }
+}
+
+/* =========================================================
+   HIÉRARCHIE INTERACTIVE (dans le cours - leçon 5)
+========================================================= */
+const hierarchyCorrectOrder = ['ia', 'ml', 'dl', 'tr']; // Ordre correct
+
+let hierarchyLessonState = {
+  placed: {}, // position -> levelId
+  draggedLevelId: null
+};
+
+function initHierarchyLesson(){
+  const pool = document.getElementById('hierarchy-levels-pool');
+  if(!pool) return;
+
+  // Mélanger les niveaux
+  const shuffled = [...hierarchyLevels].sort(() => Math.random() - 0.5);
+
+  // Créer les cartes de niveaux
+  pool.innerHTML = '';
+  shuffled.forEach(level => {
+    const card = document.createElement('div');
+    card.className = 'hierarchy-level-card';
+    card.draggable = true;
+    card.dataset.levelId = level.id;
+    card.innerHTML = level.label;
+
+    card.addEventListener('dragstart', (e) => {
+      if(card.classList.contains('placed')) {
+        e.preventDefault();
+        return;
+      }
+      hierarchyLessonState.draggedLevelId = level.id;
+      card.classList.add('dragging');
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+    });
+
+    pool.appendChild(card);
+  });
+
+  // Setup hierarchy slots
+  for(let pos = 1; pos <= 4; pos++) {
+    const slot = document.getElementById(`hierarchy-slot-${pos}`);
+    if(!slot) continue;
+
+    slot.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      slot.classList.add('dragover');
+    });
+
+    slot.addEventListener('dragleave', () => {
+      slot.classList.remove('dragover');
+    });
+
+    slot.addEventListener('drop', (e) => {
+      e.preventDefault();
+      slot.classList.remove('dragover');
+
+      const levelId = hierarchyLessonState.draggedLevelId;
+      if(!levelId) return;
+
+      // Vérifier si la position est déjà remplie
+      if(hierarchyLessonState.placed[pos]) {
+        toast("Cette position est déjà occupée. Retirez d'abord le niveau.");
+        return;
+      }
+
+      const level = hierarchyLevels.find(l => l.id === levelId);
+      if(!level) return;
+
+      // Placer le niveau
+      hierarchyLessonState.placed[pos] = levelId;
+
+      // Marquer la carte comme placée
+      const card = document.querySelector(`.hierarchy-level-card[data-level-id="${levelId}"]`);
+      if(card) card.classList.add('placed');
+
+      // Afficher dans le slot
+      slot.innerHTML = `
+        <div class="hierarchy-placed-level" data-level-id="${levelId}">
+          ${level.label}
+          <button class="hierarchy-level-remove" onclick="removeHierarchyLesson(${pos})">✕</button>
+        </div>
+      `;
+
+      hierarchyLessonState.draggedLevelId = null;
+    });
+  }
+}
+
+function removeHierarchyLesson(position){
+  const levelId = hierarchyLessonState.placed[position];
+  if(!levelId) return;
+
+  // Retirer de l'état
+  delete hierarchyLessonState.placed[position];
+
+  // Réinitialiser le slot
+  const slot = document.getElementById(`hierarchy-slot-${position}`);
+  if(slot) {
+    const posLabels = {
+      1: 'Plus général',
+      2: '↓',
+      3: '↓',
+      4: 'Plus spécifique'
+    };
+    slot.innerHTML = `
+      <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
+        <div style="font-size:1.8em;margin-bottom:8px">${position}️⃣</div>
+        <div style="font-size:0.85em">${posLabels[position]}</div>
+      </div>
+    `;
+  }
+
+  // Retirer la marque "placed" de la carte
+  const card = document.querySelector(`.hierarchy-level-card[data-level-id="${levelId}"]`);
+  if(card) card.classList.remove('placed');
+
+  // Cacher le feedback
+  const feedback = document.getElementById('hierarchy-feedback');
+  if(feedback) feedback.style.display = 'none';
+}
+
+function resetHierarchyLesson(){
+  hierarchyLessonState.placed = {};
+  initHierarchyLesson();
+
+  const feedback = document.getElementById('hierarchy-feedback');
+  if(feedback) feedback.style.display = 'none';
+
+  toast("Hiérarchie réinitialisée.");
+}
+
+function verifyHierarchyLesson(){
+  const placedCount = Object.keys(hierarchyLessonState.placed).length;
+
+  if(placedCount !== 4) {
+    toast(`Placez tous les niveaux d'abord (${placedCount}/4).`);
+    return;
+  }
+
+  let correct = 0;
+
+  // Vérifier chaque position
+  for(let pos = 1; pos <= 4; pos++) {
+    const levelId = hierarchyLessonState.placed[pos];
+    const expectedLevelId = hierarchyCorrectOrder[pos - 1];
+
+    const slot = document.getElementById(`hierarchy-slot-${pos}`);
+    if(!slot) continue;
+
+    const placedDiv = slot.querySelector('.hierarchy-placed-level');
+    if(!placedDiv) continue;
+
+    placedDiv.classList.remove('correct', 'wrong');
+
+    if(levelId === expectedLevelId) {
+      placedDiv.classList.add('correct');
+      correct++;
+    } else {
+      placedDiv.classList.add('wrong');
+    }
+  }
+
+  // Afficher le feedback
+  const feedback = document.getElementById('hierarchy-feedback');
+  if(feedback) {
+    feedback.style.display = 'block';
+
+    if(correct === 4) {
+      feedback.className = 'callout ok';
+      feedback.innerHTML = `
+        <strong>🎉 Parfait !</strong> La hiérarchie est correcte : <strong>IA ⊃ ML ⊃ DL ⊃ Transformers</strong>.<br/>
+        Vous maîtrisez maintenant l'emboîtement des concepts clés de l'intelligence artificielle. Cette structure vous permet de situer précisément n'importe quel système d'IA et d'éviter les confusions terminologiques courantes. Vous êtes prêt pour analyser les affirmations marketing avec rigueur !
+      `;
+      toast("✓ Hiérarchie validée !", 3000);
+    } else {
+      feedback.className = 'callout warn';
+      feedback.innerHTML = `
+        <strong>⚠ Presque !</strong> ${correct}/4 niveaux sont correctement placés.<br/>
+        Les niveaux en <span style="color:var(--danger)">rouge</span> sont mal positionnés.
+        <strong>Rappel :</strong> IA est le plus général (contient tout), puis ML (apprendre des données), puis DL (réseaux profonds), puis Transformers (architecture spécifique).
       `;
     }
   }
