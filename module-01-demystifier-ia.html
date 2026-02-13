@@ -849,6 +849,75 @@
       transform:scale(1.1);
     }
 
+    /* ==================== CLASSIFICATION INTERACTIVE ==================== */
+    .classification-system-card{
+      border:1px solid rgba(136,136,136,0.4);
+      background:rgba(136,136,136,0.06);
+      border-radius:10px;
+      padding:14px;
+      cursor:grab;
+      transition:all .25s;
+      font-size:.95em;
+      line-height:1.4;
+      position:relative;
+      text-align:center;
+    }
+    .classification-system-card:hover{
+      border-color:rgba(0,255,136,0.6);
+      transform:translateY(-2px);
+      box-shadow:0 4px 20px rgba(0,255,136,.15);
+    }
+    .classification-system-card.dragging{opacity:.4;cursor:grabbing}
+    .classification-system-card.placed{opacity:.3;cursor:not-allowed}
+
+    .classification-dropzone{transition:all .3s}
+    .classification-dropzone.dragover{
+      border-style:solid!important;
+      background:rgba(0,255,136,.1)!important;
+      border-color:var(--neon-green)!important;
+    }
+
+    .classification-placed-item{
+      background:rgba(0,212,255,.08);
+      border:1px solid rgba(0,212,255,.4);
+      border-radius:8px;
+      padding:12px;
+      margin-bottom:10px;
+      position:relative;
+      transition:all .25s;
+    }
+    .classification-placed-item.correct{
+      border-color:var(--neon-green);
+      background:rgba(0,255,136,.12);
+      box-shadow:0 0 12px rgba(0,255,136,.2);
+    }
+    .classification-placed-item.wrong{
+      border-color:var(--danger);
+      background:rgba(255,77,77,.1);
+      box-shadow:0 0 12px rgba(255,77,77,.2);
+    }
+    .classification-remove-btn{
+      position:absolute;
+      top:8px;
+      right:8px;
+      background:rgba(255,77,77,.15);
+      border:1px solid rgba(255,77,77,.4);
+      color:var(--danger);
+      border-radius:50%;
+      width:22px;
+      height:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:.85em;
+      transition:all .2s;
+    }
+    .classification-remove-btn:hover{
+      background:rgba(255,77,77,.35);
+      transform:scale(1.1);
+    }
+
     /* ==================== FLIP CARDS (familles) ==================== */
     .family-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .family{
@@ -1654,6 +1723,82 @@ const lessons = [
       <p style="line-height:1.7;color:#cfe9ff">
         Malgré ces faiblesses, l'IA connexionniste, et particulièrement le deep learning, domine aujourd'hui le paysage de l'intelligence artificielle. ChatGPT, DALL-E, les systèmes de conduite autonome, la reconnaissance faciale omniprésente : tous reposent sur des réseaux de neurones profonds entraînés sur d'immenses corpus de données, illustrant à la fois la puissance et les dilemmes de cette approche.
       </p>
+
+      <h3>🧪 Activité : Laboratoire de Classification</h3>
+      <div class="callout">
+        <strong>Objectif :</strong> Maintenant que vous comprenez la différence entre IA symbolique et IA connexionniste, testez vos connaissances en classant 6 systèmes d'IA emblématiques.<br/>
+        <strong>Astuce :</strong> Posez-vous la question : "Ce système apprend-il par l'exemple (connexionniste) ou suit-il des règles explicites (symbolique) ?"
+      </div>
+
+      <div id="classification-activity" style="margin-top:30px">
+        <div style="background:rgba(10,20,40,0.6);padding:25px;border-radius:12px;border:1px solid rgba(0,255,136,0.2)">
+
+          <!-- Rappel des deux familles -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px">
+            <div style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);border-radius:10px;padding:18px">
+              <div style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-weight:700;font-size:1.05em;margin-bottom:8px">🎭 IA SYMBOLIQUE</div>
+              <div style="font-size:0.9em;line-height:1.5;color:#aabbcc">
+                <strong>Principe :</strong> Règles explicites (SI… ALORS…)<br/>
+                <strong>Analogie :</strong> Livre de recettes<br/>
+                <strong>Exemple :</strong> Deep Blue (échecs)
+              </div>
+            </div>
+            <div style="background:rgba(255,0,128,0.08);border:1px solid rgba(255,0,128,0.3);border-radius:10px;padding:18px">
+              <div style="font-family:'Space Mono',monospace;color:var(--neon-pink);font-weight:700;font-size:1.05em;margin-bottom:8px">🧠 IA CONNEXIONNISTE</div>
+              <div style="font-size:0.9em;line-height:1.5;color:#aabbcc">
+                <strong>Principe :</strong> Apprend par l'exemple<br/>
+                <strong>Analogie :</strong> Enfant qui apprend<br/>
+                <strong>Exemple :</strong> ChatGPT, AlphaGo
+              </div>
+            </div>
+          </div>
+
+          <!-- Systèmes à classer -->
+          <div style="margin-bottom:25px">
+            <h4 style="color:var(--neon-green);margin-bottom:15px;font-size:1.1em">🔄 Systèmes à classer</h4>
+            <div id="classification-systems-pool" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px"></div>
+          </div>
+
+          <!-- Zones de dépôt -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:25px">
+            <div>
+              <h4 style="color:var(--neon-blue);margin-bottom:12px;font-size:1.05em">📥 IA Symbolique</h4>
+              <div id="classification-dropzone-symbolique" class="classification-dropzone" data-type="symbolique" style="min-height:200px;border:2px dashed rgba(0,212,255,0.4);background:rgba(0,212,255,0.04);border-radius:10px;padding:15px">
+                <div style="opacity:0.5;text-align:center;padding:20px;color:#8899aa">Glissez les systèmes symboliques ici</div>
+              </div>
+            </div>
+            <div>
+              <h4 style="color:var(--neon-pink);margin-bottom:12px;font-size:1.05em">📥 IA Connexionniste</h4>
+              <div id="classification-dropzone-connexionniste" class="classification-dropzone" data-type="connexionniste" style="min-height:200px;border:2px dashed rgba(255,0,128,0.4);background:rgba(255,0,128,0.04);border-radius:10px;padding:15px">
+                <div style="opacity:0.5;text-align:center;padding:20px;color:#8899aa">Glissez les systèmes connexionnistes ici</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Boutons de contrôle -->
+          <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px">
+            <button class="btn green" onclick="verifyClassificationLesson()" style="min-width:160px">
+              ✓ Vérifier ma classification
+            </button>
+            <button class="btn pink" onclick="resetClassificationLesson()" style="min-width:140px">
+              ↻ Réinitialiser
+            </button>
+          </div>
+
+          <!-- Feedback -->
+          <div id="classification-feedback" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="callout ok" style="margin-top:25px">
+        <strong>💡 Ce qu'il faut retenir :</strong> La distinction symbolique/connexionniste n'est pas qu'un débat théorique. Elle a des implications pratiques majeures : l'explicabilité des décisions, la quantité de données nécessaires, la capacité d'adaptation, les garanties formelles de sécurité... Comprendre ces différences vous permet de choisir la bonne approche pour chaque problème et d'anticiper les limites de chaque système.
+      </div>
+
+      <script>
+        if(typeof initClassificationLesson === 'function') {
+          setTimeout(initClassificationLesson, 100);
+        }
+      </script>
     `
   },
   {
@@ -1907,7 +2052,10 @@ function showLesson(idx){
     ${L.html}
   `;
 
-  // Initialiser la frise chronologique pour la leçon 6
+  // Initialiser les activités interactives selon la leçon
+  if(idx === 3 && typeof initClassificationLesson === 'function') {
+    setTimeout(initClassificationLesson, 150);
+  }
   if(idx === 5 && typeof initTimelineLesson === 'function') {
     setTimeout(initTimelineLesson, 150);
   }
@@ -2337,6 +2485,195 @@ function verifyTimelineLesson(){
         <strong>⚠ Presque !</strong> ${correct}/10 événements sont correctement placés.<br/>
         Les zones en <span style="color:var(--danger)">rouge</span> contiennent des erreurs.
         Réfléchissez à la logique temporelle : les systèmes experts précèdent le deep learning, Deep Blue précède AlphaGo, etc.
+      `;
+    }
+  }
+}
+
+/* =========================================================
+   CLASSIFICATION INTERACTIVE (dans le cours - leçon 4)
+========================================================= */
+let classificationLessonState = {
+  placed: { symbolique: [], connexionniste: [] },
+  draggedSystemId: null
+};
+
+function initClassificationLesson(){
+  const pool = document.getElementById('classification-systems-pool');
+  if(!pool) return;
+
+  // Mélanger les systèmes
+  const shuffled = [...systemsData].sort(() => Math.random() - 0.5);
+
+  // Créer les cartes de systèmes
+  pool.innerHTML = '';
+  shuffled.forEach(sys => {
+    const card = document.createElement('div');
+    card.className = 'classification-system-card';
+    card.draggable = true;
+    card.dataset.systemId = sys.id;
+    card.innerHTML = `<div style="font-size:1.3em;margin-bottom:6px">${sys.name.split(' ')[0]}</div><div style="font-size:0.9em">${sys.name.substring(sys.name.indexOf(' ')+1)}</div>`;
+
+    card.addEventListener('dragstart', (e) => {
+      if(card.classList.contains('placed')) {
+        e.preventDefault();
+        return;
+      }
+      classificationLessonState.draggedSystemId = sys.id;
+      card.classList.add('dragging');
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+    });
+
+    pool.appendChild(card);
+  });
+
+  // Setup dropzones
+  ['symbolique', 'connexionniste'].forEach(type => {
+    const dropzone = document.getElementById(`classification-dropzone-${type}`);
+    if(!dropzone) return;
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+
+      const systemId = classificationLessonState.draggedSystemId;
+      if(!systemId) return;
+
+      const system = systemsData.find(s => s.id === systemId);
+      if(!system) return;
+
+      // Ajouter au tableau
+      classificationLessonState.placed[type].push(systemId);
+
+      // Marquer la carte comme placée
+      const card = document.querySelector(`.classification-system-card[data-system-id="${systemId}"]`);
+      if(card) card.classList.add('placed');
+
+      // Afficher dans la dropzone
+      renderClassificationDropzone(type);
+
+      classificationLessonState.draggedSystemId = null;
+    });
+  });
+}
+
+function renderClassificationDropzone(type){
+  const dropzone = document.getElementById(`classification-dropzone-${type}`);
+  if(!dropzone) return;
+
+  const systems = classificationLessonState.placed[type];
+
+  if(systems.length === 0) {
+    dropzone.innerHTML = `<div style="opacity:0.5;text-align:center;padding:20px;color:#8899aa">Glissez les systèmes ${type}s ici</div>`;
+  } else {
+    dropzone.innerHTML = systems.map(sysId => {
+      const sys = systemsData.find(s => s.id === sysId);
+      return `
+        <div class="classification-placed-item" data-system-id="${sysId}">
+          ${sys.name}
+          <button class="classification-remove-btn" onclick="removeClassificationLesson('${type}', ${sysId})">✕</button>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+function removeClassificationLesson(type, systemId){
+  // Retirer du tableau
+  classificationLessonState.placed[type] = classificationLessonState.placed[type].filter(id => id !== systemId);
+
+  // Retirer la marque "placed" de la carte
+  const card = document.querySelector(`.classification-system-card[data-system-id="${systemId}"]`);
+  if(card) card.classList.remove('placed');
+
+  // Re-render la dropzone
+  renderClassificationDropzone(type);
+
+  // Effacer les classes correct/wrong
+  const allItems = document.querySelectorAll('.classification-placed-item');
+  allItems.forEach(item => {
+    item.classList.remove('correct', 'wrong');
+  });
+
+  // Cacher le feedback si on retire des éléments
+  const feedback = document.getElementById('classification-feedback');
+  if(feedback) feedback.style.display = 'none';
+}
+
+function resetClassificationLesson(){
+  classificationLessonState.placed = { symbolique: [], connexionniste: [] };
+  initClassificationLesson();
+
+  const feedback = document.getElementById('classification-feedback');
+  if(feedback) feedback.style.display = 'none';
+
+  toast("Classification réinitialisée.");
+}
+
+function verifyClassificationLesson(){
+  const totalPlaced = classificationLessonState.placed.symbolique.length +
+                      classificationLessonState.placed.connexionniste.length;
+
+  if(totalPlaced !== systemsData.length) {
+    toast(`Classez tous les systèmes d'abord (${totalPlaced}/${systemsData.length}).`);
+    return;
+  }
+
+  let correct = 0;
+
+  // Vérifier chaque type
+  ['symbolique', 'connexionniste'].forEach(type => {
+    const dropzone = document.getElementById(`classification-dropzone-${type}`);
+    if(!dropzone) return;
+
+    classificationLessonState.placed[type].forEach(sysId => {
+      const system = systemsData.find(s => s.id === sysId);
+      const item = dropzone.querySelector(`.classification-placed-item[data-system-id="${sysId}"]`);
+
+      if(item) {
+        item.classList.remove('correct', 'wrong');
+
+        if(system.type === type) {
+          item.classList.add('correct');
+          correct++;
+        } else {
+          item.classList.add('wrong');
+        }
+      }
+    });
+  });
+
+  // Afficher le feedback
+  const feedback = document.getElementById('classification-feedback');
+  if(feedback) {
+    feedback.style.display = 'block';
+
+    if(correct === systemsData.length) {
+      feedback.className = 'callout ok';
+      feedback.innerHTML = `
+        <strong>🎉 Excellent !</strong> Tous les systèmes sont correctement classés (${correct}/${systemsData.length}).<br/>
+        Vous maîtrisez maintenant la distinction fondamentale entre IA symbolique et IA connexionniste. Cette compréhension vous sera essentielle pour analyser les affirmations marketing et identifier les véritables capacités d'un système d'IA.
+      `;
+      toast("✓ Classification validée !", 3000);
+    } else {
+      feedback.className = 'callout warn';
+      feedback.innerHTML = `
+        <strong>⚠ Presque !</strong> ${correct}/${systemsData.length} systèmes sont correctement classés.<br/>
+        Les systèmes en <span style="color:var(--danger)">rouge</span> sont mal classés.
+        <strong>Indice :</strong> Deep Blue et les systèmes experts utilisent des règles explicites (symbolique).
+        ChatGPT, AlphaGo et la reconnaissance vocale/images apprennent par l'exemple (connexionniste).
       `;
     }
   }
