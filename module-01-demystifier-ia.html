@@ -1338,21 +1338,46 @@ function updateBriefingProgress(){
 ========================================================= */
 const lessons = [
   {
-    title:"01 — L’IA : entre mythes et réalité",
-    kicker:"Pourquoi autant d’idées reçues ? Le fossé entre SF et réalité.",
+    title:"01 — L'IA : entre mythes et réalité",
+    kicker:"Pourquoi autant d'idées reçues ? Le fossé entre SF et réalité.",
     html:`
       <div class="pill">VERIT-IA</div><div class="pill">Dossier Zéro</div><div class="pill">Démystification</div>
       <div class="divider"></div>
+
+      <h3>🎬 L'omniprésence de l'IA en 2026</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        En 2026, l’IA est partout : assistants, recommandations, traduction, génération de texte et d’images…
-        Mais l’imaginaire collectif confond souvent <strong>capacité technique</strong> et <strong>intelligence humaine</strong>.
+        En 2026, l'intelligence artificielle est devenue omniprésente dans notre quotidien. Elle alimente les assistants vocaux (Siri, Alexa, Google Assistant),
+        personnalise nos fils d'actualité sur les réseaux sociaux, traduit instantanément des textes dans des dizaines de langues, et génère des images,
+        des vidéos et des textes à partir de simples descriptions. Des millions de personnes utilisent ChatGPT, Midjourney ou DALL-E chaque jour.
       </p>
+
+      <h3>🧠 La grande confusion : capacité technique vs intelligence humaine</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Malgré cette familiarité croissante, l'imaginaire collectif confond encore largement <strong>capacité technique</strong> et <strong>intelligence humaine</strong>.
+        Les films de science-fiction, depuis <em>2001 : L'Odyssée de l'espace</em> jusqu'à <em>Her</em> ou <em>Ex Machina</em>, ont nourri l'idée d'une IA consciente,
+        dotée d'émotions et de volonté propre. Cette représentation culturelle influence profondément notre perception de ce que l'IA peut réellement accomplir.
+      </p>
+
       <div class="callout warn">
-        <strong>Mythe courant :</strong> « L’IA comprend comme un humain. »<br/>
-        <strong>Réalité :</strong> elle calcule, apprend des régularités, et prédit des sorties plausibles selon des données.
+        <strong>Mythe courant :</strong> « L'IA comprend comme un humain, elle pense et ressent. »<br/>
+        <strong>Réalité :</strong> L'IA actuelle calcule, identifie des régularités statistiques dans d'énormes volumes de données,
+        et génère des sorties plausibles en fonction de patterns appris. Elle ne "comprend" pas au sens où nous comprenons,
+        elle ne possède ni conscience, ni intentionnalité, ni compréhension du monde.
       </div>
+
+      <h3>📊 Quelques chiffres révélateurs</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Pour illustrer l'écart entre perception et réalité :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>63% des utilisateurs</strong> attribuent à ChatGPT une forme de "compréhension" réelle (étude Stanford 2024)</li>
+        <li><strong>58% des personnes interrogées</strong> pensent que l'IA générative "pense par elle-même" (enquête Pew Research 2025)</li>
+        <li>Pourtant, <strong>0%</strong> des systèmes d'IA actuels ne possèdent de conscience au sens scientifique du terme</li>
+      </ul>
+
       <div class="callout">
-        <strong>Mission :</strong> apprendre à distinguer <em>ce qui est possible</em> de <em>ce qui est exagéré</em>, puis conclure une enquête.
+        <strong>Votre mission :</strong> apprendre à distinguer <em>ce qui est techniquement possible</em> de <em>ce qui relève de l'exagération ou du fantasme</em>,
+        puis mener une enquête pour démystifier les affirmations marketing autour de l'IA.
       </div>
     `
   },
@@ -1360,47 +1385,163 @@ const lessons = [
     title:"02 — Les origines : de Turing à Dartmouth",
     kicker:"1950 : Test de Turing. 1956 : Dartmouth (John McCarthy).",
     html:`
+      <h3>🧪 1950 : Le test de Turing, fondement conceptuel</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        <strong>1950</strong> : Alan Turing propose un test d’imitation (conversation) pour évaluer si une machine peut « paraître humaine ».<br/>
-        <strong>1956</strong> : à Dartmouth, le terme « intelligence artificielle » est popularisé (John McCarthy).
+        En 1950, le mathématicien britannique <strong>Alan Turing</strong> publie un article fondateur intitulé <em>"Computing Machinery and Intelligence"</em>.
+        Il y propose le célèbre <strong>Test de Turing</strong> (ou "jeu de l'imitation") : si un humain conversant avec une machine ne peut pas déterminer
+        s'il parle à un ordinateur ou à un autre humain, alors on peut dire que la machine fait preuve d'intelligence.
       </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Ce test ne mesure pas l'intelligence au sens absolu, mais la <strong>capacité d'imitation</strong>. Il a profondément influencé la recherche en IA
+        et reste aujourd'hui une référence philosophique majeure, même si de nombreux chercheurs le jugent incomplet.
+      </p>
+
+      <h3>🎓 1956 : La conférence de Dartmouth, acte de naissance officiel</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        En été 1956, au Dartmouth College (New Hampshire, États-Unis), un groupe de chercheurs se réunit pour une conférence de six semaines
+        organisée par <strong>John McCarthy, Marvin Minsky, Nathaniel Rochester et Claude Shannon</strong>. C'est lors de cet événement que le terme
+        <strong>"intelligence artificielle"</strong> est officiellement proposé et popularisé.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les participants espéraient qu'une machine pourrait simuler tous les aspects de l'intelligence humaine en quelques décennies.
+        Cette ambition, bien que non réalisée dans les délais imaginés, a lancé un domaine de recherche qui continue de révolutionner le monde 70 ans plus tard.
+      </p>
+
       <div class="callout ok">
-        <strong>À retenir :</strong> l’IA ne naît pas avec ChatGPT. C’est une histoire de plusieurs décennies.
+        <strong>À retenir :</strong> L'IA ne naît pas avec ChatGPT en 2022. C'est une discipline scientifique vieille de plus de 70 ans,
+        avec des cycles d'enthousiasme ("étés de l'IA") et de désillusion ("hivers de l'IA"). La révolution actuelle est l'aboutissement
+        de décennies de recherche fondamentale.
       </div>
+
+      <h3>📜 Les pionniers méconnus</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Avant Turing et Dartmouth, d'autres visionnaires avaient posé des jalons importants :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Warren McCulloch et Walter Pitts (1943)</strong> : modèle mathématique du neurone artificiel</li>
+        <li><strong>Norbert Wiener (1948)</strong> : cybernétique, fondements théoriques du feedback et de l'apprentissage machine</li>
+      </ul>
     `
   },
   {
     title:"03 — IA symbolique : le cerveau logique",
     kicker:"Règles SI… ALORS, systèmes experts, Deep Blue. Transparent mais rigide.",
     html:`
-      <div class="callout">
-        <strong>Principe :</strong> représenter un problème via des symboles + appliquer des règles explicites (logique, heuristiques, arbres de décision).
-      </div>
-      <div class="callout ok">
-        <strong>Analogie :</strong> un livre de recettes très détaillé : si vous suivez la recette, vous obtenez le plat attendu.
-      </div>
-      <div class="callout pink">
-        <strong>Exemple :</strong> Deep Blue (1997) — calcule massivement, ne « comprend » pas les échecs.
-      </div>
+      <h3>⚙️ Principe fondamental</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Forces :</strong> explicable, prévisible, auditabilité.<br/>
-        <strong>Faiblesses :</strong> rigidité — hors des règles prévues, le système peut échouer.
+        L'<strong>IA symbolique</strong> (ou "IA classique") repose sur la manipulation de <strong>symboles</strong> et l'application de <strong>règles explicites</strong>
+        définies par des experts humains. Ces règles prennent souvent la forme de logique formelle : <em>SI condition ALORS action</em>.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Cette approche a dominé les premières décennies de l'IA (années 1960-1980). Les chercheurs pensaient pouvoir encoder toute l'intelligence humaine
+        sous forme de règles logiques et de représentations symboliques du monde (ontologies, graphes de connaissances, arbres de décision).
+      </p>
+
+      <div class="callout ok">
+        <strong>Analogie :</strong> Un livre de recettes de cuisine très détaillé. Si vous suivez scrupuleusement chaque étape, vous obtiendrez le plat attendu.
+        Mais si un ingrédient manque ou qu'une étape n'est pas prévue dans la recette, le système ne sait pas improviser.
+      </div>
+
+      <h3>🎯 Exemples emblématiques</h3>
+      <p style="line-height:1.7;color:#cfe9ff"><strong>Les systèmes experts (années 1970-1980) :</strong></p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>MYCIN (1976)</strong> : diagnostic médical (infections bactériennes), avec des règles du type "SI fièvre ET bactérie gram-positive ALORS prescrire pénicilline"</li>
+        <li><strong>DENDRAL (1965)</strong> : identification de structures moléculaires en chimie organique</li>
+        <li>Ces systèmes atteignaient parfois des performances comparables aux experts humains <em>dans leur domaine très restreint</em></li>
+      </ul>
+
+      <div class="callout pink">
+        <strong>Cas iconique : Deep Blue (1997)</strong><br/>
+        Le superordinateur d'IBM bat le champion du monde d'échecs Garry Kasparov. Deep Blue évalue jusqu'à 200 millions de positions par seconde
+        grâce à des algorithmes de recherche (minimax, élagage alpha-bêta) et des règles d'évaluation. Mais il ne "comprend" pas les échecs au sens humain :
+        il calcule massivement sans conscience stratégique ni intuition. Sa victoire marque un tournant symbolique, mais pas conceptuel.
+      </div>
+
+      <h3>✅ Forces de l'IA symbolique</h3>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Explicabilité totale :</strong> on peut toujours retracer le raisonnement (audit trail)</li>
+        <li><strong>Prévisibilité :</strong> à situation identique, réponse identique</li>
+        <li><strong>Auditabilité :</strong> crucial pour des domaines réglementés (médical, juridique, aéronautique)</li>
+        <li><strong>Peu de données nécessaires :</strong> les règles sont encodées manuellement par des experts</li>
+      </ul>
+
+      <h3>❌ Faiblesses de l'IA symbolique</h3>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Rigidité extrême :</strong> hors des règles prévues, le système échoue brutalement</li>
+        <li><strong>Scalabilité limitée :</strong> difficile de maintenir des milliers de règles cohérentes (goulot d'étranglement de la connaissance)</li>
+        <li><strong>Mauvaise gestion de l'incertitude :</strong> le monde réel est ambigu, bruité, incomplet</li>
+        <li><strong>Coût humain élevé :</strong> nécessite l'intervention constante d'experts pour encoder et maintenir les règles</li>
+      </ul>
+
+      <p style="line-height:1.7;color:#cfe9ff">
+        Ces limites ont conduit aux "hivers de l'IA" (périodes de désillusion dans les années 1970 et 1990), jusqu'à l'émergence d'une approche radicalement différente :
+        l'IA connexionniste.
       </p>
     `
   },
   {
     title:"04 — IA connexionniste : le cerveau qui apprend",
-    kicker:"Réseaux de neurones, apprentissage par l’exemple. Adaptable, parfois boîte noire.",
+    kicker:"Réseaux de neurones, apprentissage par l'exemple. Adaptable, parfois boîte noire.",
     html:`
-      <div class="callout">
-        <strong>Principe :</strong> apprendre à partir de données : le modèle ajuste ses paramètres pour réduire l’erreur sur des exemples.
-      </div>
-      <div class="callout ok">
-        <strong>Analogie :</strong> un enfant qui apprend à reconnaître un chat en en voyant beaucoup (sans règles explicites).
-      </div>
+      <h3>🧠 Principe fondamental : l'apprentissage par l'exemple</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Forces :</strong> traite des données complexes (images, voix, texte), peut généraliser.<br/>
-        <strong>Faiblesses :</strong> manque de transparence (explicabilité plus difficile), dépendance aux données.
+        Contrairement à l'IA symbolique où les règles sont explicitement programmées, l'<strong>IA connexionniste</strong> (ou apprentissage automatique / machine learning)
+        <strong>apprend à partir de données</strong>. Le système ajuste automatiquement ses paramètres internes pour minimiser l'erreur entre ses prédictions et les résultats attendus.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Cette approche s'inspire du fonctionnement du cerveau humain : des <strong>neurones artificiels</strong> interconnectés forment des réseaux qui modifient
+        progressivement leurs connexions (poids synaptiques) en fonction de l'expérience (entraînement sur des données). C'est le paradigme des <strong>réseaux de neurones</strong>.
+      </p>
+
+      <div class="callout ok">
+        <strong>Analogie :</strong> Un enfant qui apprend à reconnaître un chat. Il n'a pas besoin qu'on lui donne une liste de règles
+        ("SI moustaches ET poils ET quatre pattes ALORS chat"). Il voit des dizaines, des centaines de chats, et son cerveau extrait intuitivement
+        les caractéristiques discriminantes. De même, un réseau de neurones "apprend" en voyant des milliers d'exemples étiquetés.
+      </div>
+
+      <h3>📈 L'histoire en trois vagues</h3>
+      <p style="line-height:1.7;color:#cfe9ff"><strong>Première vague (1943-1969) :</strong> Les neurones formels</p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>McCulloch & Pitts (1943)</strong> : premier modèle mathématique du neurone</li>
+        <li><strong>Perceptron de Rosenblatt (1958)</strong> : premier réseau de neurones capable d'apprentissage supervisé</li>
+        <li><strong>Minsky & Papert (1969)</strong> : critique sévère des limites du perceptron → premier "hiver connexionniste"</li>
+      </ul>
+
+      <p style="line-height:1.7;color:#cfe9ff"><strong>Deuxième vague (années 1980-1990) :</strong> Renaissance avec la rétropropagation</p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Algorithme de rétropropagation (backpropagation, 1986)</strong> : permet d'entraîner des réseaux multicouches</li>
+        <li>Applications : reconnaissance de chiffres manuscrits, premiers systèmes de reconnaissance vocale</li>
+      </ul>
+
+      <p style="line-height:1.7;color:#cfe9ff"><strong>Troisième vague (2012-aujourd'hui) :</strong> Deep Learning et explosion actuelle</p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>AlexNet (2012)</strong> : victoire écrasante en reconnaissance d'images grâce aux réseaux profonds (deep learning)</li>
+        <li><strong>AlphaGo (2016)</strong> : bat le champion du monde de Go Lee Sedol</li>
+        <li><strong>Transformers (2017-)</strong> : révolution du traitement du langage (GPT, BERT, ChatGPT...)</li>
+      </ul>
+
+      <h3>✅ Forces de l'IA connexionniste</h3>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Traite des données complexes :</strong> images, son, vidéo, texte, données non structurées</li>
+        <li><strong>Généralisation :</strong> capable d'extrapoler au-delà des exemples vus pendant l'entraînement</li>
+        <li><strong>Performance state-of-the-art :</strong> domine aujourd'hui presque tous les benchmarks (vision, langage, jeux...)</li>
+        <li><strong>Pas besoin d'expertise métier :</strong> le modèle découvre lui-même les patterns pertinents</li>
+        <li><strong>Scalabilité :</strong> plus on a de données et de puissance de calcul, meilleures sont les performances</li>
+      </ul>
+
+      <h3>❌ Faiblesses de l'IA connexionniste</h3>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Boîte noire (explicabilité limitée) :</strong> difficile de comprendre <em>pourquoi</em> le modèle a pris telle décision</li>
+        <li><strong>Dépendance aux données :</strong> nécessite d'énormes volumes de données étiquetées de qualité</li>
+        <li><strong>Coûts computationnels élevés :</strong> entraînement de GPT-4 = millions de dollars en électricité et matériel</li>
+        <li><strong>Biais algorithmiques :</strong> si les données d'entraînement sont biaisées (sexisme, racisme), le modèle reproduit ces biais</li>
+        <li><strong>Fragilité aux adversarial examples :</strong> petites perturbations imperceptibles peuvent tromper le système</li>
+        <li><strong>Manque de bon sens :</strong> pas de compréhension causale du monde, juste des corrélations statistiques</li>
+      </ul>
+
+      <p style="line-height:1.7;color:#cfe9ff">
+        Aujourd'hui, l'IA connexionniste (et particulièrement le deep learning) domine le paysage de l'IA. ChatGPT, DALL-E, les voitures autonomes,
+        la reconnaissance faciale : tous reposent sur des réseaux de neurones profonds entraînés sur d'immenses corpus de données.
       </p>
     `
   },
@@ -1408,15 +1549,89 @@ const lessons = [
     title:"05 — La hiérarchie des concepts",
     kicker:"IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers",
     html:`
+      <h3>🎯 Comprendre l'emboîtement des concepts</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        L'un des malentendus les plus courants est de confondre "Intelligence Artificielle", "Machine Learning", "Deep Learning" et "Transformers".
+        Ces termes sont <strong>emboîtés les uns dans les autres</strong>, comme des poupées russes. Voici la hiérarchie précise :
+      </p>
+
+      <h3>🌐 Niveau 1 : Intelligence Artificielle (IA)</h3>
       <div class="callout">
-        <strong>IA :</strong> ensemble de méthodes visant des tâches « intelligentes » (raisonnement, perception, langage…).<br/>
-        <strong>Machine Learning :</strong> apprend des patterns à partir de données.<br/>
-        <strong>Deep Learning :</strong> réseaux de neurones profonds (beaucoup de couches).<br/>
-        <strong>Transformers :</strong> architecture moderne pour le langage (GPT, BERT…) basée sur l’attention.
+        <strong>Définition :</strong> Ensemble de toutes les méthodes et techniques visant à faire accomplir à une machine des tâches
+        qui nécessiteraient de l'intelligence si elles étaient réalisées par un humain (raisonnement, perception, langage, planification, apprentissage...).
       </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        L'IA est le terme le plus large. Il inclut <em>toutes</em> les approches : IA symbolique, systèmes experts, recherche heuristique,
+        planification automatique, robotique, vision par ordinateur, traitement du langage naturel, apprentissage automatique, etc.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Exemples non-ML :</strong> Deep Blue (échecs), système expert MYCIN, GPS de planification d'itinéraires classiques, chatbots à règles (ELIZA).
+      </p>
+
+      <h3>📊 Niveau 2 : Machine Learning (Apprentissage Automatique)</h3>
+      <div class="callout">
+        <strong>Définition :</strong> Sous-ensemble de l'IA qui se concentre sur les systèmes capables <strong>d'apprendre à partir de données</strong>,
+        sans être explicitement programmés pour chaque tâche. Le système améliore ses performances avec l'expérience (les données).
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le ML utilise des algorithmes statistiques pour identifier des patterns dans les données. Il existe plusieurs familles :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Apprentissage supervisé :</strong> on fournit des exemples étiquetés (ex : photos de chats avec label "chat")</li>
+        <li><strong>Apprentissage non supervisé :</strong> le système découvre lui-même des structures (clustering, réduction de dimension)</li>
+        <li><strong>Apprentissage par renforcement :</strong> l'agent apprend par essai-erreur en maximisant une récompense</li>
+      </ul>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Algorithmes classiques :</strong> régression linéaire, arbres de décision, SVM, k-means, forêts aléatoires, réseaux de neurones simples.
+      </p>
+
+      <h3>🧠 Niveau 3 : Deep Learning (Apprentissage Profond)</h3>
+      <div class="callout">
+        <strong>Définition :</strong> Sous-ensemble du Machine Learning basé sur des <strong>réseaux de neurones profonds</strong>,
+        c'est-à-dire des réseaux comportant de nombreuses couches cachées (dizaines, centaines, voire milliers de couches).
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le deep learning a révolutionné l'IA depuis 2012 grâce à trois facteurs :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Big Data :</strong> disponibilité de milliards d'exemples (ImageNet, Common Crawl...)</li>
+        <li><strong>Puissance de calcul :</strong> GPU/TPU permettant d'entraîner des réseaux géants</li>
+        <li><strong>Architectures innovantes :</strong> CNN (images), RNN/LSTM (séquences), Transformers (langage)</li>
+      </ul>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Exemples :</strong> reconnaissance d'images (ResNet, EfficientNet), reconnaissance vocale (DeepSpeech), traduction automatique (Google Translate),
+        génération d'images (DALL-E, Stable Diffusion), modèles de langage (GPT, BERT).
+      </p>
+
+      <h3>⚡ Niveau 4 : Transformers</h3>
+      <div class="callout">
+        <strong>Définition :</strong> Architecture de réseau de neurones profond basée sur un mécanisme d'<strong>attention</strong>,
+        proposée en 2017 (article "Attention is All You Need", Google Brain). Domine aujourd'hui le traitement du langage naturel.
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les Transformers ont remplacé les architectures précédentes (RNN, LSTM) pour le langage grâce à leur capacité à traiter des séquences longues
+        en parallèle et à capturer des dépendances à longue distance. Ils sont la base de la quasi-totalité des LLM (Large Language Models) modernes.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Exemples emblématiques :</strong>
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>GPT (Generative Pre-trained Transformer) :</strong> GPT-3, GPT-4, ChatGPT (OpenAI)</li>
+        <li><strong>BERT (Bidirectional Encoder Representations from Transformers) :</strong> Google Search, compréhension de requêtes</li>
+        <li><strong>T5, PaLM, LLaMA, Claude, Gemini...</strong> : tous des Transformers</li>
+      </ul>
+
       <div class="callout ok">
-        <strong>À retenir :</strong> « IA » est un grand parapluie. ChatGPT est une IA… mais toutes les IA ne sont pas des ChatGPT.
+        <strong>À retenir :</strong> « IA » est un grand parapluie. <strong>ChatGPT est une IA</strong> (niveau 1), qui utilise du <strong>Machine Learning</strong> (niveau 2),
+        plus précisément du <strong>Deep Learning</strong> (niveau 3), avec une architecture <strong>Transformer</strong> (niveau 4).
+        Mais <em>toutes les IA ne sont pas des ChatGPT</em> : Deep Blue est une IA sans ML, les arbres de décision sont du ML sans deep learning, etc.
       </div>
+
+      <h3>📐 Schéma mental</h3>
+      <p style="line-height:1.7;color:#cfe9ff;text-align:center;font-family:'Space Mono',monospace">
+        IA &gt; Machine Learning &gt; Deep Learning &gt; Transformers<br/>
+        <span style="font-size:0.9em;color:#8899aa">(du plus général au plus spécifique)</span>
+      </p>
     `
   },
   {
@@ -1433,22 +1648,97 @@ const lessons = [
     `
   },
   {
-    title:"07 — Ce que l’IA fait… et ne fait PAS",
-    kicker:"L’IA calcule et détecte des patterns, mais ne « comprend » pas comme un humain.",
+    title:"07 — Ce que l'IA fait… et ne fait PAS",
+    kicker:"L'IA calcule et détecte des patterns, mais ne « comprend » pas comme un humain.",
     html:`
+      <h3>✅ Ce que l'IA sait faire aujourd'hui</h3>
       <div class="callout ok">
-        <strong>Ce que l’IA sait faire :</strong> prédire, classer, générer, optimiser… à partir de données et d’objectifs.
-      </div>
-      <div class="callout pink">
-        <strong>Ce que l’IA ne fait pas (dans l’usage courant) :</strong> conscience, volonté propre, compréhension humaine du monde.
+        <strong>Tâches maîtrisées par l'IA moderne :</strong> prédire, classer, générer, optimiser, reconnaître, traduire, résumer, recommander…
+        à partir de données et d'objectifs définis.
       </div>
       <p style="line-height:1.7;color:#cfe9ff">
-        Les modèles modernes peuvent produire des réponses très convaincantes, mais cela ne signifie pas qu’ils « pensent » au sens humain.
+        L'IA excelle dans des tâches bien définies avec des critères mesurables :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Reconnaissance de patterns :</strong> détecter des visages, diagnostiquer des maladies sur imagerie médicale, identifier des fraudes bancaires</li>
+        <li><strong>Génération de contenu :</strong> rédiger des textes, créer des images photoréalistes, composer de la musique, synthétiser des voix</li>
+        <li><strong>Traduction automatique :</strong> Google Translate, DeepL (performances proches d'un traducteur professionnel pour certaines paires de langues)</li>
+        <li><strong>Jeux et optimisation :</strong> battre les meilleurs humains aux échecs, au Go, à StarCraft II, Dota 2</li>
+        <li><strong>Prédiction :</strong> prévoir la météo, anticiper la demande énergétique, recommander des produits/contenus personnalisés</li>
+        <li><strong>Assistance à la décision :</strong> aide au diagnostic médical, analyse juridique, tri de candidatures</li>
+      </ul>
+
+      <h3>🎯 Performances surhumaines dans des domaines précis</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Dans certains domaines circonscrits, l'IA dépasse aujourd'hui les meilleurs experts humains :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Reconnaissance d'images :</strong> taux d'erreur inférieur aux humains sur ImageNet (depuis 2015)</li>
+        <li><strong>Prédiction de structure des protéines :</strong> AlphaFold2 (DeepMind, 2020) résout un problème vieux de 50 ans</li>
+        <li><strong>Jeu de Go :</strong> AlphaGo bat le champion du monde en 2016, AlphaZero atteint le niveau surhumain en quelques heures d'auto-entraînement</li>
+      </ul>
+
+      <h3>❌ Ce que l'IA ne fait PAS (dans l'état actuel)</h3>
+      <div class="callout pink">
+        <strong>Limites fondamentales de l'IA actuelle :</strong> pas de conscience, pas de volonté propre, pas de compréhension causale du monde,
+        pas de bon sens général, pas d'émotions authentiques.
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les systèmes d'IA actuels, aussi impressionnants soient-ils, <strong>ne "pensent" pas</strong> au sens humain :
+      </p>
+      <ul style="line-height:1.8;color:#cfe9ff;margin-left:20px">
+        <li><strong>Pas de conscience ou de sentience :</strong> aucun système actuel n'a de vie intérieure, d'expérience subjective, de qualia</li>
+        <li><strong>Pas de compréhension causale :</strong> l'IA détecte des corrélations statistiques, mais ne comprend pas les mécanismes sous-jacents
+        (exemple célèbre : un modèle peut prédire qu'un coq chante avant le lever du soleil, mais ne sait pas que le coq ne <em>cause</em> pas le lever du soleil)</li>
+        <li><strong>Pas de bon sens général :</strong> ChatGPT peut écrire un essai philosophique brillant, mais échouer sur "Combien d'yeux a ma main gauche ?" (0, mais le modèle peut se tromper)</li>
+        <li><strong>Pas d'intentionnalité réelle :</strong> quand un LLM dit "je pense que...", c'est une simulation linguistique, pas une pensée au sens propre</li>
+        <li><strong>Pas d'apprentissage continu naturel :</strong> les humains apprennent en continu avec peu d'exemples (few-shot learning naturel),
+        les IA nécessitent souvent des millions d'exemples et un réentraînement coûteux pour s'adapter</li>
+        <li><strong>Fragilité hors distribution :</strong> face à des situations radicalement nouvelles (hors du domaine d'entraînement), l'IA peut échouer de manière imprévisible</li>
+      </ul>
+
+      <h3>💬 Le paradoxe de Moravec</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Hans Moravec (chercheur en robotique) a formulé un paradoxe frappant :
+      </p>
+      <div class="callout">
+        <strong>« Ce qui est facile pour les humains est difficile pour l'IA, et vice-versa. »</strong><br/>
+        <em>Exemples :</em><br/>
+        • Jouer aux échecs au niveau grand-maître : <strong>facile pour l'IA</strong> (Deep Blue, 1997), très difficile pour les humains<br/>
+        • Saisir délicatement un œuf sans le casser : <strong>facile pour un enfant de 3 ans</strong>, extrêmement difficile pour un robot<br/>
+        • Comprendre l'ironie, le second degré, le contexte social implicite : <strong>facile pour un humain</strong>, très difficile pour l'IA
+      </div>
+
+      <h3>🔮 Intelligence Artificielle Générale (AGI) : le Graal non atteint</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Toutes les IA actuelles sont des <strong>IA faibles (ou étroites)</strong> : excellentes dans un domaine précis, mais incapables de généraliser
+        largement comme un humain. L'<strong>Intelligence Artificielle Générale (AGI)</strong> — une IA capable de raisonner, apprendre et s'adapter
+        dans <em>n'importe quel</em> domaine aussi bien qu'un humain — reste un objectif de recherche non atteint.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Estimations d'experts (2024) :</strong> les prédictions sur l'arrivée de l'AGI varient de 10 ans à "jamais". Il n'y a pas de consensus scientifique.
+      </p>
+
+      <h3>⚠️ Le risque de l'anthropomorphisme</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les modèles modernes (GPT-4, Claude, Gemini) sont si convaincants dans leurs réponses qu'ils créent une <strong>illusion de compréhension</strong>.
+        C'est ce qu'on appelle l'<strong>effet ELIZA</strong> (du nom d'un chatbot des années 1960) : notre tendance naturelle à attribuer
+        de l'intelligence, des émotions et des intentions à des systèmes qui ne font que simuler des patterns linguistiques.
+      </p>
+      <div class="callout warn">
+        <strong>Piège cognitif :</strong> Quand ChatGPT dit "Je comprends votre frustration", il ne <em>ressent</em> rien. C'est une séquence de tokens
+        statistiquement plausible dans ce contexte conversationnel, pas une empathie réelle. Confondre simulation et compréhension est une erreur
+        aux conséquences potentiellement graves (sur-confiance, délégation inappropriée de décisions critiques, etc.).
+      </div>
+
+      <p style="line-height:1.7;color:#cfe9ff">
+        <strong>Conclusion :</strong> L'IA actuelle est un outil extraordinairement puissant pour amplifier certaines capacités humaines.
+        Mais elle reste fondamentalement différente de l'intelligence humaine. Comprendre cette différence est essentiel pour utiliser l'IA de manière éclairée et critique.
       </p>
     `
   },
   {
-    title:"08 — Briefing de mission",
+    title:"08 — Mission",
     kicker:"TechCorp prétend avoir créé « Genius AI ». Vous devez analyser les preuves.",
     html:`
       <div class="callout">
