@@ -717,6 +717,138 @@
       font-size:.95em;
     }
 
+    /* ==================== FRISE CHRONOLOGIQUE HORIZONTALE ==================== */
+    .timeline-event-card{
+      border:1px solid rgba(0,212,255,.4);
+      background:rgba(0,212,255,.06);
+      border-radius:10px;
+      padding:12px;
+      cursor:grab;
+      transition:all .25s;
+      font-size:.9em;
+      line-height:1.4;
+      position:relative;
+    }
+    .timeline-event-card:hover{
+      border-color:rgba(0,212,255,.8);
+      transform:translateY(-2px);
+      box-shadow:0 4px 20px rgba(0,212,255,.2);
+    }
+    .timeline-event-card.dragging{opacity:.4;cursor:grabbing}
+    .timeline-event-card.placed{opacity:.3;cursor:not-allowed;border-color:rgba(136,136,136,.3)}
+    .timeline-event-card .event-code{
+      font-family:'Space Mono',monospace;
+      color:var(--neon-blue);
+      font-weight:700;
+      font-size:.85em;
+      margin-bottom:6px;
+      display:block;
+    }
+
+    #timeline-horizontal{position:relative;min-height:180px}
+    .timeline-line{
+      position:absolute;
+      top:50%;
+      left:20px;
+      right:20px;
+      height:3px;
+      background:linear-gradient(90deg,var(--neon-green) 0%,var(--neon-blue) 50%,var(--neon-purple) 100%);
+      border-radius:2px;
+      box-shadow:0 0 10px rgba(0,255,136,.3);
+    }
+    .timeline-slots{
+      position:relative;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      padding:0 10px;
+      min-height:180px;
+    }
+    .timeline-slot{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      position:relative;
+      padding:0 5px;
+    }
+    .timeline-slot-year{
+      font-family:'Space Mono',monospace;
+      font-size:.95em;
+      font-weight:700;
+      color:var(--neon-purple);
+      background:rgba(168,85,247,.15);
+      border:1px solid rgba(168,85,247,.5);
+      border-radius:20px;
+      padding:6px 12px;
+      margin-bottom:15px;
+      z-index:2;
+      position:relative;
+      white-space:nowrap;
+    }
+    .timeline-slot-dropzone{
+      min-width:100%;
+      min-height:90px;
+      border:2px dashed rgba(168,85,247,.4);
+      background:rgba(168,85,247,.04);
+      border-radius:10px;
+      padding:8px;
+      transition:all .25s;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:.85em;
+      color:rgba(136,136,136,.6);
+      position:relative;
+    }
+    .timeline-slot-dropzone.dragover{
+      border-color:var(--neon-green);
+      background:rgba(0,255,136,.1);
+      border-style:solid;
+    }
+    .timeline-slot-dropzone.filled{
+      border-style:solid;
+      border-color:rgba(0,212,255,.6);
+      background:rgba(0,212,255,.08);
+    }
+    .timeline-slot-dropzone.correct{
+      border-color:var(--neon-green);
+      background:rgba(0,255,136,.1);
+      box-shadow:0 0 15px rgba(0,255,136,.3);
+    }
+    .timeline-slot-dropzone.wrong{
+      border-color:var(--danger);
+      background:rgba(255,77,77,.08);
+      box-shadow:0 0 15px rgba(255,77,77,.3);
+    }
+    .timeline-slot-content{
+      font-size:.88em;
+      line-height:1.3;
+      color:#cfe9ff;
+    }
+    .timeline-slot-remove{
+      position:absolute;
+      top:5px;
+      right:5px;
+      background:rgba(255,77,77,.2);
+      border:1px solid rgba(255,77,77,.5);
+      color:var(--danger);
+      border-radius:50%;
+      width:22px;
+      height:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:.85em;
+      transition:all .2s;
+    }
+    .timeline-slot-remove:hover{
+      background:rgba(255,77,77,.4);
+      transform:scale(1.1);
+    }
+
     /* ==================== FLIP CARDS (familles) ==================== */
     .family-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .family{
@@ -1598,13 +1730,62 @@ const lessons = [
     title:"06 — Les grandes dates qui ont tout changé",
     kicker:"10 repères clés : 1950 → 2024",
     html:`
+      <h3>📅 Une histoire de 75 ans en 10 dates</h3>
       <p style="line-height:1.7;color:#cfe9ff">
-        Vous rencontrerez ces repères dans le Terminal 1 (archives).<br/>
-        Objectif : relier chaque événement à la bonne date (Turing, Dartmouth, systèmes experts, Deep Blue, deep learning, AlphaGo, Transformers, GPT-3, ChatGPT, compétition récente…).
+        L'intelligence artificielle n'est pas née avec ChatGPT. C'est une discipline scientifique vieille de plus de 70 ans, qui a connu des cycles alternés d'enthousiasme débordant et de désillusion profonde. Pour comprendre la révolution actuelle, il est essentiel de connaître les jalons historiques qui ont façonné ce domaine.
       </p>
-      <div class="callout warn">
-        <strong>Consigne :</strong> en cas d’erreur dans le jeu, votre <strong>crédibilité</strong> baisse. Elle a un vrai impact.
+      <p style="line-height:1.7;color:#cfe9ff">
+        Ci-dessous, découvrez les 10 dates clés qui ont marqué l'évolution de l'IA, depuis les fondations théoriques posées par Alan Turing jusqu'à l'émergence spectaculaire de l'IA générative accessible au grand public.
+      </p>
+
+      <h3>🎯 Activité : Reconstruisez la chronologie</h3>
+      <div class="callout">
+        <strong>Objectif :</strong> Placez chaque événement sur la bonne date de la frise chronologique en glissant-déposant les cartes.<br/>
+        <strong>Astuce :</strong> Réfléchissez à la logique temporelle : les systèmes experts précèdent le deep learning, Deep Blue précède AlphaGo, etc.
       </div>
+
+      <div id="timeline-activity" style="margin-top:30px">
+        <div style="background:rgba(10,20,40,0.6);padding:25px;border-radius:12px;border:1px solid rgba(0,255,136,0.2)">
+
+          <!-- Pool d'événements à placer -->
+          <div style="margin-bottom:30px">
+            <h4 style="color:var(--neon-green);margin-bottom:15px;font-size:1.1em">📦 Événements à placer</h4>
+            <div id="timeline-events-pool" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px"></div>
+          </div>
+
+          <!-- Frise horizontale -->
+          <div style="margin-bottom:25px">
+            <h4 style="color:var(--neon-blue);margin-bottom:20px;font-size:1.1em">📍 Frise chronologique (1950 → 2024)</h4>
+            <div id="timeline-horizontal" style="position:relative;background:linear-gradient(90deg,rgba(0,255,136,0.05),rgba(0,212,255,0.05));padding:40px 20px;border-radius:8px;overflow-x:auto">
+              <!-- La ligne de temps sera générée ici -->
+            </div>
+          </div>
+
+          <!-- Boutons de contrôle -->
+          <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px">
+            <button class="btn green" onclick="verifyTimelineLesson()" style="min-width:160px">
+              ✓ Vérifier mes réponses
+            </button>
+            <button class="btn pink" onclick="resetTimelineLesson()" style="min-width:140px">
+              ↻ Réinitialiser
+            </button>
+          </div>
+
+          <!-- Feedback -->
+          <div id="timeline-feedback" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="callout ok" style="margin-top:25px">
+        <strong>💡 Pourquoi ces dates sont importantes :</strong> Chaque jalon représente soit une innovation théorique majeure (Test de Turing, conférence de Dartmouth, architecture Transformer), soit une démonstration spectaculaire qui a capturé l'attention du public (Deep Blue, AlphaGo, ChatGPT), soit un tournant technologique (essor du deep learning en 2010). Ensemble, ces repères dessinent la trajectoire d'une discipline qui a alterné entre "étés" et "hivers" avant d'atteindre la maturité actuelle.
+      </div>
+
+      <script>
+        // Initialisation de la frise lors de l'affichage de la leçon 6
+        if(typeof initTimelineLesson === 'function') {
+          setTimeout(initTimelineLesson, 100);
+        }
+      </script>
     `
   },
   {
@@ -1725,6 +1906,11 @@ function showLesson(idx){
     <div class="divider"></div>
     ${L.html}
   `;
+
+  // Initialiser la frise chronologique pour la leçon 6
+  if(idx === 5 && typeof initTimelineLesson === 'function') {
+    setTimeout(initTimelineLesson, 150);
+  }
 
   // progression
   state.lessonSeen.add(idx);
@@ -1966,6 +2152,194 @@ function downloadCertificateFromGame(){
   const name = ($('certificate-name-game')?.value || "").trim() || "Participant";
   const date = new Date().toLocaleDateString('fr-FR', { year:'numeric', month:'long', day:'numeric' });
   generateCertificateHTML(name, date, state.finalScorePct);
+}
+
+/* =========================================================
+   FRISE CHRONOLOGIQUE HORIZONTALE (dans le cours - leçon 6)
+========================================================= */
+let timelineLessonState = {
+  placed: {}, // year -> eventId
+  draggedEventId: null
+};
+
+function initTimelineLesson(){
+  const pool = document.getElementById('timeline-events-pool');
+  const timeline = document.getElementById('timeline-horizontal');
+
+  if(!pool || !timeline) return;
+
+  // Mélanger les événements
+  const shuffled = [...timelineEvents].sort(() => Math.random() - 0.5);
+
+  // Créer les cartes d'événements
+  pool.innerHTML = '';
+  shuffled.forEach(ev => {
+    const card = document.createElement('div');
+    card.className = 'timeline-event-card';
+    card.draggable = true;
+    card.dataset.eventId = ev.id;
+    card.innerHTML = `
+      <span class="event-code">📌 EV-${String(ev.id).padStart(2,'0')}</span>
+      <div>${ev.desc}</div>
+    `;
+
+    card.addEventListener('dragstart', (e) => {
+      if(card.classList.contains('placed')) {
+        e.preventDefault();
+        return;
+      }
+      timelineLessonState.draggedEventId = ev.id;
+      card.classList.add('dragging');
+    });
+
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+    });
+
+    pool.appendChild(card);
+  });
+
+  // Créer la frise horizontale
+  timeline.innerHTML = `
+    <div class="timeline-line"></div>
+    <div class="timeline-slots">
+      ${timelineYears.map(year => `
+        <div class="timeline-slot">
+          <div class="timeline-slot-year">📅 ${year}</div>
+          <div class="timeline-slot-dropzone"
+               data-year="${year}"
+               id="timeline-dropzone-${year}">
+            <span style="opacity:0.5;font-size:0.85em">Glissez ici</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  // Ajouter les event listeners aux dropzones
+  timelineYears.forEach(year => {
+    const dropzone = document.getElementById(`timeline-dropzone-${year}`);
+    if(!dropzone) return;
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.classList.remove('dragover');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+
+      const eventId = timelineLessonState.draggedEventId;
+      if(!eventId) return;
+
+      // Vérifier si la zone est déjà remplie
+      if(timelineLessonState.placed[year]) {
+        toast("Cette zone est déjà remplie. Retirez d'abord l'événement.");
+        return;
+      }
+
+      // Placer l'événement
+      const event = timelineEvents.find(e => e.id === eventId);
+      timelineLessonState.placed[year] = eventId;
+
+      // Marquer la carte comme placée
+      const card = document.querySelector(`.timeline-event-card[data-event-id="${eventId}"]`);
+      if(card) card.classList.add('placed');
+
+      // Afficher l'événement dans la dropzone
+      dropzone.innerHTML = `
+        <div class="timeline-slot-content">${event.desc}</div>
+        <button class="timeline-slot-remove" onclick="removeTimelineLesson('${year}')">✕</button>
+      `;
+      dropzone.classList.add('filled');
+
+      timelineLessonState.draggedEventId = null;
+    });
+  });
+}
+
+function removeTimelineLesson(year){
+  const eventId = timelineLessonState.placed[year];
+  if(!eventId) return;
+
+  // Retirer de l'état
+  delete timelineLessonState.placed[year];
+
+  // Réinitialiser la dropzone
+  const dropzone = document.getElementById(`timeline-dropzone-${year}`);
+  if(dropzone) {
+    dropzone.innerHTML = '<span style="opacity:0.5;font-size:0.85em">Glissez ici</span>';
+    dropzone.classList.remove('filled', 'correct', 'wrong');
+  }
+
+  // Retirer la marque "placed" de la carte
+  const card = document.querySelector(`.timeline-event-card[data-event-id="${eventId}"]`);
+  if(card) card.classList.remove('placed');
+}
+
+function resetTimelineLesson(){
+  timelineLessonState.placed = {};
+  initTimelineLesson();
+
+  const feedback = document.getElementById('timeline-feedback');
+  if(feedback) feedback.style.display = 'none';
+
+  toast("Frise réinitialisée.");
+}
+
+function verifyTimelineLesson(){
+  const placedCount = Object.keys(timelineLessonState.placed).length;
+
+  if(placedCount !== timelineEvents.length) {
+    toast(`Placez tous les événements d'abord (${placedCount}/${timelineEvents.length}).`);
+    return;
+  }
+
+  let correct = 0;
+
+  timelineYears.forEach(year => {
+    const dropzone = document.getElementById(`timeline-dropzone-${year}`);
+    const placedId = timelineLessonState.placed[year];
+    const expectedEvent = timelineEvents.find(e => e.year === year);
+
+    if(dropzone) {
+      dropzone.classList.remove('correct', 'wrong');
+
+      if(placedId === expectedEvent?.id) {
+        dropzone.classList.add('correct');
+        correct++;
+      } else {
+        dropzone.classList.add('wrong');
+      }
+    }
+  });
+
+  // Afficher le feedback
+  const feedback = document.getElementById('timeline-feedback');
+  if(feedback) {
+    feedback.style.display = 'block';
+
+    if(correct === timelineEvents.length) {
+      feedback.className = 'callout ok';
+      feedback.innerHTML = `
+        <strong>🎉 Parfait !</strong> Vous avez correctement placé tous les événements (${correct}/10).<br/>
+        Vous maîtrisez maintenant les grands jalons de l'histoire de l'IA. Ces repères temporels vous seront utiles pour contextualiser les innovations futures et comprendre la trajectoire de ce domaine.
+      `;
+      toast("✓ Chronologie validée !", 3000);
+    } else {
+      feedback.className = 'callout warn';
+      feedback.innerHTML = `
+        <strong>⚠ Presque !</strong> ${correct}/10 événements sont correctement placés.<br/>
+        Les zones en <span style="color:var(--danger)">rouge</span> contiennent des erreurs.
+        Réfléchissez à la logique temporelle : les systèmes experts précèdent le deep learning, Deep Blue précède AlphaGo, etc.
+      `;
+    }
+  }
 }
 
 /* =========================================================
