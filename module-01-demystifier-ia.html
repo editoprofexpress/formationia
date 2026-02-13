@@ -990,6 +990,92 @@
       transform:scale(1.15);
     }
 
+    /* ==================== ENQUÊTE MISSION ==================== */
+    .mission-evidence-btn{
+      background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(0,212,255,0.05));
+      border:1px solid rgba(0,212,255,0.4);
+      border-radius:12px;
+      padding:18px;
+      cursor:pointer;
+      transition:all .3s;
+      text-align:center;
+    }
+    .mission-evidence-btn:hover{
+      border-color:var(--neon-blue);
+      background:linear-gradient(135deg,rgba(0,212,255,0.2),rgba(0,212,255,0.1));
+      transform:translateY(-3px);
+      box-shadow:0 6px 25px rgba(0,212,255,.25);
+    }
+    .mission-evidence-btn.seen{
+      border-color:rgba(0,255,136,0.5);
+      background:linear-gradient(135deg,rgba(0,255,136,0.12),rgba(0,255,136,0.06));
+    }
+    .mission-evidence-icon{
+      font-size:2.5em;
+      margin-bottom:10px;
+    }
+    .mission-evidence-number{
+      font-family:'Space Mono',monospace;
+      color:var(--neon-blue);
+      font-weight:700;
+      font-size:0.9em;
+      margin-bottom:8px;
+    }
+    .mission-evidence-title{
+      font-weight:600;
+      font-size:1em;
+      margin-bottom:4px;
+    }
+
+    .mission-option{
+      background:rgba(136,136,136,0.06);
+      border:2px solid rgba(136,136,136,0.3);
+      border-radius:12px;
+      padding:16px;
+      cursor:pointer;
+      transition:all .3s;
+      text-align:center;
+      color:var(--text);
+      font-family:'Exo 2',sans-serif;
+    }
+    .mission-option:hover{
+      border-color:rgba(0,255,136,0.6);
+      background:rgba(0,255,136,0.08);
+      transform:scale(1.03);
+    }
+    .mission-option.selected{
+      border-color:var(--neon-blue);
+      background:rgba(0,212,255,0.15);
+      box-shadow:0 0 20px rgba(0,212,255,.3);
+    }
+    .mission-option.correct{
+      border-color:var(--neon-green);
+      background:rgba(0,255,136,0.2);
+      box-shadow:0 0 25px rgba(0,255,136,.4);
+    }
+    .mission-option.wrong{
+      border-color:var(--danger);
+      background:rgba(255,77,77,0.15);
+      box-shadow:0 0 25px rgba(255,77,77,.3);
+    }
+
+    .mission-explanation{
+      background:rgba(0,212,255,0.08);
+      border-left:4px solid var(--neon-blue);
+      padding:14px;
+      border-radius:8px;
+      font-size:0.95em;
+      line-height:1.6;
+    }
+    .mission-explanation.correct{
+      background:rgba(0,255,136,0.12);
+      border-left-color:var(--neon-green);
+    }
+    .mission-explanation.wrong{
+      background:rgba(255,77,77,0.1);
+      border-left-color:var(--danger);
+    }
+
     /* ==================== FLIP CARDS (familles) ==================== */
     .family-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .family{
@@ -2166,16 +2252,137 @@ const lessons = [
     `
   },
   {
-    title:"08 — Mission",
-    kicker:"TechCorp prétend avoir créé « Genius AI ». Vous devez analyser les preuves.",
+    title:"08 — Mission : Opération « Dossier Zéro »",
+    kicker:"Démystifier les affirmations de TechCorp sur « Genius AI »",
     html:`
+      <div class="callout" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.5)">
+        <strong style="color:var(--neon-blue);font-size:1.1em">🕵️ BRIEFING NEXUS — CLASSIFIÉ</strong><br/><br/>
+        <strong>Agent</strong>, vous avez étudié le dossier de départ. Il est temps de mettre vos connaissances en pratique.<br/><br/>
+        <strong>CAS :</strong> TechCorp, une startup du secteur médical, vient d'annoncer « <strong>Genius AI</strong> », présentée comme une "Super IA révolutionnaire capable de diagnostiquer n'importe quelle maladie avec une précision inégalée". L'annonce a provoqué un emballement médiatique, mais plusieurs experts indépendants expriment des doutes.<br/><br/>
+        <strong>VOTRE MISSION :</strong> Analyser les documents disponibles, démystifier les affirmations marketing, et rédiger un rapport technique factuel sur cette IA.<br/><br/>
+        <strong>OBJECTIFS :</strong><br/>
+        1️⃣ Identifier le <strong>type d'IA</strong> réellement utilisé (symbolique ou connexionniste)<br/>
+        2️⃣ Déterminer sa <strong>faiblesse principale</strong><br/>
+        3️⃣ Recommander la <strong>meilleure approche</strong> pour un futur projet d'imagerie médicale
+      </div>
+
+      <h3>📰 Article du « Quotidien Tech » (12 février 2026)</h3>
+      <div style="background:rgba(10,20,40,0.8);border-left:4px solid var(--neon-purple);padding:20px;border-radius:8px;margin-bottom:25px">
+        <h4 style="color:var(--neon-purple);margin-bottom:12px">TechCorp dévoile Genius AI, "la percée du siècle"</h4>
+        <p style="line-height:1.7;color:#cfe9ff;margin-bottom:12px">
+          Le PDG de TechCorp, Marcus Valen, a présenté hier « Genius AI », décrite comme une intelligence artificielle "dépassant les capacités humaines" en matière de diagnostic médical. Selon le communiqué de presse, le système "comprend véritablement la médecine" et peut "raisonner comme un expert pour identifier n'importe quelle maladie".
+        </p>
+        <p style="line-height:1.7;color:#cfe9ff;margin-bottom:12px">
+          La démonstration a impressionné les investisseurs, faisant grimper l'action TechCorp de 47% en une seule journée. Pourtant, plusieurs chercheurs en IA contactés par notre rédaction restent sceptiques et demandent à voir les preuves techniques derrière les promesses marketing.
+        </p>
+        <p style="line-height:1.7;color:#aabbcc;font-style:italic">
+          "Les mots 'Super IA' et 'comprend véritablement' sont des signaux d'alarme typiques d'une communication exagérée", déclare le Dr Sarah Chen, chercheuse en IA à Stanford. "Il faut vérifier les faits."
+        </p>
+      </div>
+
+      <h3>🔍 Investigation : Collectez les preuves</h3>
+      <div class="callout warn">
+        <strong>Consigne :</strong> Consultez attentivement chaque preuve avant de formuler vos déductions. Les preuves contradictoires ou complémentaires vous permettront de démêler la réalité technique du discours marketing.
+      </div>
+
+      <div id="investigation-evidence-mission" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin:25px 0">
+        <!-- Les preuves seront générées ici -->
+      </div>
+
+      <h3>📊 Rapport d'analyse : Vos déductions</h3>
       <div class="callout">
-        <strong>Cas :</strong> TechCorp annonce une « Super IA » révolutionnaire. Des experts doutent.<br/>
-        <strong>Votre mission :</strong> collecter des preuves et déterminer : (1) type d’IA, (2) faiblesse, (3) meilleure approche pour l’imagerie médicale.
+        Une fois les preuves examinées, formulez vos conclusions en répondant aux 3 questions ci-dessous. Chaque réponse doit être justifiée par les indices collectés.
       </div>
-      <div class="btn-row">
-        <button class="btn green" onclick="enterGame()">▶ Lancer l’opération (phase de jeu)</button>
+
+      <div id="investigation-deductions-mission" style="margin:25px 0">
+        <!-- Question 1 -->
+        <div class="investigation-question" style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:20px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
+            <span style="font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1.3em;font-weight:700">Q1</span>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:1.05em;margin-bottom:4px">Quel type d'IA est Genius AI ?</div>
+              <div style="color:#8899aa;font-size:0.9em">Basez-vous sur les indices techniques : règles, apprentissage, transparence...</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <button class="mission-option" data-question="1" data-answer="symbolique" onclick="selectMissionAnswer(1,'symbolique',this)">
+              <div style="font-size:1.5em;margin-bottom:6px">🎭</div>
+              <div style="font-weight:600;margin-bottom:4px">IA Symbolique</div>
+              <div style="font-size:0.85em;opacity:0.8">Règles explicites, logique programmée</div>
+            </button>
+            <button class="mission-option" data-question="1" data-answer="connexionniste" onclick="selectMissionAnswer(1,'connexionniste',this)">
+              <div style="font-size:1.5em;margin-bottom:6px">🧠</div>
+              <div style="font-weight:600;margin-bottom:4px">IA Connexionniste</div>
+              <div style="font-size:0.85em;opacity:0.8">Apprentissage par l'exemple, réseaux de neurones</div>
+            </button>
+          </div>
+          <div class="mission-explanation" id="mission-explain-1" style="display:none;margin-top:15px"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="investigation-question" style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:20px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
+            <span style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:1.3em;font-weight:700">Q2</span>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:1.05em;margin-bottom:4px">Quelle est la principale faiblesse de Genius AI ?</div>
+              <div style="color:#8899aa;font-size:0.9em">Réfléchissez aux limites observées dans les indices...</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <button class="mission-option" data-question="2" data-answer="opacite" onclick="selectMissionAnswer(2,'opacite',this)">
+              <div style="font-size:1.5em;margin-bottom:6px">🌫️</div>
+              <div style="font-weight:600;margin-bottom:4px">Manque de transparence</div>
+              <div style="font-size:0.85em;opacity:0.8">Décisions inexplicables, boîte noire</div>
+            </button>
+            <button class="mission-option" data-question="2" data-answer="rigidite" onclick="selectMissionAnswer(2,'rigidite',this)">
+              <div style="font-size:1.5em;margin-bottom:6px">🔒</div>
+              <div style="font-weight:600;margin-bottom:4px">Rigidité extrême</div>
+              <div style="font-size:0.85em;opacity:0.8">Échec face à l'imprévu, pas d'adaptation</div>
+            </button>
+          </div>
+          <div class="mission-explanation" id="mission-explain-2" style="display:none;margin-top:15px"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="investigation-question" style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:20px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
+            <span style="font-family:'Space Mono',monospace;color:var(--neon-purple);font-size:1.3em;font-weight:700">Q3</span>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:1.05em;margin-bottom:4px">Pour un projet d'analyse de radiographies, quelle approche recommandez-vous ?</div>
+              <div style="color:#8899aa;font-size:0.9em">Pensez aux forces de chaque approche pour ce cas d'usage...</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <button class="mission-option" data-question="3" data-answer="symbolique" onclick="selectMissionAnswer(3,'symbolique',this)">
+              <div style="font-size:1.5em;margin-bottom:6px">📝</div>
+              <div style="font-weight:600;margin-bottom:4px">Programmer des règles</div>
+              <div style="font-size:0.85em;opacity:0.8">Encoder manuellement les critères de diagnostic</div>
+            </button>
+            <button class="mission-option" data-question="3" data-answer="connexionniste" onclick="selectMissionAnswer(3,'connexionniste',this)">
+              <div style="font-size:1.5em;margin-bottom:6px">🧠</div>
+              <div style="font-weight:600;margin-bottom:4px">Apprendre sur des images</div>
+              <div style="font-size:0.85em;opacity:0.8">Entraîner un réseau de neurones sur des milliers d'exemples</div>
+            </button>
+          </div>
+          <div class="mission-explanation" id="mission-explain-3" style="display:none;margin-top:15px"></div>
+        </div>
       </div>
+
+      <!-- Bouton de soumission -->
+      <div style="text-align:center;margin:30px 0">
+        <button class="btn green" id="mission-submit-btn" onclick="submitMissionReport()" disabled style="font-size:1.1em;padding:18px 40px">
+          📋 Soumettre le rapport final
+        </button>
+      </div>
+
+      <!-- Feedback final -->
+      <div id="mission-final-feedback" style="display:none"></div>
+
+      <script>
+        if(typeof initInvestigationMission === 'function') {
+          setTimeout(initInvestigationMission, 100);
+        }
+      </script>
     `
   }
 ];
@@ -2207,6 +2414,9 @@ function showLesson(idx){
   }
   if(idx === 5 && typeof initTimelineLesson === 'function') {
     setTimeout(initTimelineLesson, 150);
+  }
+  if(idx === 7 && typeof initInvestigationMission === 'function') {
+    setTimeout(initInvestigationMission, 150);
   }
 
   // progression
@@ -3015,6 +3225,246 @@ function verifyHierarchyLesson(){
       `;
     }
   }
+}
+
+/* =========================================================
+   ENQUÊTE MISSION (dans le cours - leçon 8)
+========================================================= */
+const missionEvidence = [
+  {
+    id: 1,
+    icon: '📄',
+    title: 'Documentation technique',
+    content: `Le manuel technique interne de TechCorp révèle une base de données massive contenant plus de 50 000 règles médicales, créée par une équipe de 500 experts médicaux sur 8 ans.
+
+Chaque symptôme observé est associé à des diagnostics possibles via des instructions formelles du type : "SI [fièvre > 38.5°C ET douleur_thoracique = vive] ALORS [envisager pneumonie OU infarctus]".
+
+Le système consulte séquentiellement cette base de règles pour identifier les correspondances avec les symptômes saisis par le praticien.`
+  },
+  {
+    id: 2,
+    icon: '🏁',
+    title: 'Performance aux échecs',
+    content: `Durant la présentation, TechCorp a démontré que Genius AI peut également jouer aux échecs à un niveau grand-maître.
+
+Le système évalue jusqu'à 300 millions de positions par seconde grâce à un supercalculateur dédié. Les algorithmes de recherche et d'évaluation ont été programmés directement par des champions d'échecs internationaux.
+
+Cette capacité de calcul massif permet d'explorer toutes les variantes possibles sur plusieurs coups d'avance.`
+  },
+  {
+    id: 3,
+    icon: '⚠️',
+    title: 'Limites observées',
+    content: `Un rapport confidentiel de beta-testeurs en milieu hospitalier souligne une faiblesse critique : face à une maladie rare absente de sa base de règles (par exemple, une combinaison atypique de symptômes pour une pathologie émergente), Genius AI échoue totalement.
+
+Le système répond "aucun diagnostic correspondant trouvé" plutôt que de raisonner par analogie comme le ferait un médecin expérimenté qui s'appuierait sur sa compréhension générale de la physiologie humaine.`
+  },
+  {
+    id: 4,
+    icon: '🔍',
+    title: 'Transparence des décisions',
+    content: `Un des atouts majeurs mis en avant par TechCorp est la transparence totale du système.
+
+Pour chaque diagnostic proposé, Genius AI affiche exactement quelle règle de sa base de connaissances a été déclenchée, permettant au médecin de vérifier la logique suivie.
+
+Cette traçabilité parfaite des décisions est présentée comme un avantage décisif pour l'acceptabilité en milieu médical et la conformité réglementaire.`
+  },
+  {
+    id: 5,
+    icon: '👨‍💻',
+    title: 'Témoignage d\'ingénieur',
+    content: `Une source anonyme, ingénieure ayant travaillé sur le projet, a contacté Le Quotidien Tech :
+
+"Contrairement au discours marketing, il n'y a aucun réseau de neurones dans Genius AI, aucun apprentissage automatique, aucune IA générative. Tout repose sur une gigantesque arborescence de décisions logiques programmée manuellement par des experts. C'est puissant dans son domaine, mais appeler ça une 'Super IA qui comprend véritablement' est trompeur."`
+  }
+];
+
+const missionCorrectAnswers = {
+  1: 'symbolique',  // Type d'IA
+  2: 'rigidite',    // Faiblesse principale
+  3: 'connexionniste' // Approche pour radiographies
+};
+
+let missionState = {
+  evidenceSeen: new Set(),
+  answers: {},
+  submitted: false
+};
+
+function initInvestigationMission() {
+  const evidenceContainer = document.getElementById('investigation-evidence-mission');
+  if(!evidenceContainer) return;
+
+  // Générer les boutons de preuves
+  evidenceContainer.innerHTML = missionEvidence.map(ev => `
+    <button class="mission-evidence-btn" onclick="openMissionEvidence(${ev.id})">
+      <div class="mission-evidence-icon">${ev.icon}</div>
+      <div class="mission-evidence-number">PREUVE #${ev.id}</div>
+      <div class="mission-evidence-title">${ev.title}</div>
+    </button>
+  `).join('');
+}
+
+function openMissionEvidence(evidenceId) {
+  const evidence = missionEvidence.find(e => e.id === evidenceId);
+  if(!evidence) return;
+
+  // Marquer comme vue
+  missionState.evidenceSeen.add(evidenceId);
+
+  // Mettre à jour le bouton visuellement
+  const buttons = document.querySelectorAll('.mission-evidence-btn');
+  buttons[evidenceId - 1].classList.add('seen');
+
+  // Afficher dans une modal
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody = document.getElementById('modal-body');
+
+  if(modal && modalTitle && modalBody) {
+    modalTitle.textContent = `${evidence.icon} ${evidence.title}`;
+    modalBody.innerHTML = evidence.content.split('\n\n').map(p => `<p style="margin-bottom:15px;line-height:1.7">${p}</p>`).join('');
+    modal.classList.add('show');
+  }
+
+  // Toast de progression
+  toast(`Preuve ${evidenceId}/${missionEvidence.length} consultée.`);
+
+  // Activer le bouton de soumission si toutes les questions sont répondues
+  updateMissionSubmitButton();
+}
+
+function selectMissionAnswer(question, answer, button) {
+  // Enregistrer la réponse
+  missionState.answers[question] = answer;
+
+  // Mise à jour visuelle : retirer "selected" de tous les boutons de cette question
+  const questionDiv = button.closest('.investigation-question');
+  questionDiv.querySelectorAll('.mission-option').forEach(opt => {
+    opt.classList.remove('selected');
+  });
+
+  // Ajouter "selected" au bouton cliqué
+  button.classList.add('selected');
+
+  // Cacher l'explication précédente
+  const explain = document.getElementById(`mission-explain-${question}`);
+  if(explain) explain.style.display = 'none';
+
+  // Vérifier si toutes les questions ont une réponse
+  updateMissionSubmitButton();
+}
+
+function updateMissionSubmitButton() {
+  const submitBtn = document.getElementById('mission-submit-btn');
+  if(!submitBtn) return;
+
+  const allAnswered = Object.keys(missionState.answers).length === 3;
+  submitBtn.disabled = !allAnswered;
+}
+
+function submitMissionReport() {
+  if(missionState.submitted) return;
+
+  missionState.submitted = true;
+
+  let correct = 0;
+
+  // Vérifier chaque réponse
+  for(let q = 1; q <= 3; q++) {
+    const userAnswer = missionState.answers[q];
+    const correctAnswer = missionCorrectAnswers[q];
+    const isCorrect = userAnswer === correctAnswer;
+
+    if(isCorrect) correct++;
+
+    // Mise à jour visuelle des options
+    const questionDiv = document.querySelectorAll('.investigation-question')[q - 1];
+    questionDiv.querySelectorAll('.mission-option').forEach(opt => {
+      const optAnswer = opt.getAttribute('data-answer');
+      if(optAnswer === correctAnswer) {
+        opt.classList.add('correct');
+      } else if(optAnswer === userAnswer && !isCorrect) {
+        opt.classList.add('wrong');
+      }
+    });
+
+    // Afficher l'explication
+    const explain = document.getElementById(`mission-explain-${q}`);
+    if(explain) {
+      explain.style.display = 'block';
+      explain.className = 'mission-explanation ' + (isCorrect ? 'correct' : 'wrong');
+
+      const explanations = {
+        1: {
+          symbolique: `<strong>✓ Correct !</strong> Genius AI est bien une <strong>IA symbolique</strong>. Les preuves convergent : base de 50 000 règles SI...ALORS programmées par des experts, transparence totale des décisions, aucun apprentissage automatique (témoignage ingénieur), capacité de calcul massif aux échecs (comme Deep Blue). C'est un système expert classique, pas un système d'apprentissage.`,
+          connexionniste: `<strong>✗ Incorrect.</strong> Genius AI n'est PAS connexionniste. Le témoignage de l'ingénieure est explicite : "aucun réseau de neurones, aucun apprentissage automatique". Les 50 000 règles programmées manuellement et la transparence totale caractérisent une <strong>IA symbolique</strong> classique (système expert).`
+        },
+        2: {
+          rigidite: `<strong>✓ Exact !</strong> La <strong>rigidité</strong> est la faiblesse principale. Le rapport des beta-testeurs est clair : face à une maladie absente de la base de règles, le système échoue complètement, incapable de raisonner par analogie. C'est la limite typique de l'IA symbolique : pas d'adaptation, pas de généralisation hors du cadre programmé.`,
+          opacite: `<strong>✗ Incorrect.</strong> Au contraire, Genius AI est <strong>totalement transparent</strong> (preuve #4) : chaque décision montre exactement quelle règle a été appliquée. La vraie faiblesse est la <strong>rigidité</strong> : échec face à l'imprévu (preuve #3), incapacité à généraliser hors des règles programmées.`
+        },
+        3: {
+          connexionniste: `<strong>✓ Parfait !</strong> Pour analyser des radiographies, l'<strong>IA connexionniste</strong> (Deep Learning) est l'approche idéale. Les images médicales sont des données complexes, non structurées, avec d'immenses variabilités. Programmer manuellement toutes les règles pour reconnaître tous les patterns pathologiques serait impossible. Un CNN entraîné sur des milliers d'exemples annotés apprendra automatiquement à détecter les anomalies, avec une précision qui surpasse souvent l'œil humain.`,
+          symbolique: `<strong>✗ Incorrect.</strong> Programmer manuellement des règles pour reconnaître tous les patterns visuels possibles sur des radiographies serait extrêmement difficile et rigide. L'<strong>IA connexionniste</strong> (Deep Learning, CNN) est l'approche moderne dominante : elle apprend automatiquement à partir de milliers d'images annotées, atteignant des performances surhumaines en reconnaissance d'images médicales.`
+        }
+      };
+
+      explain.innerHTML = explanations[q][userAnswer] || '';
+    }
+  }
+
+  // Feedback final global
+  const finalFeedback = document.getElementById('mission-final-feedback');
+  if(finalFeedback) {
+    finalFeedback.style.display = 'block';
+
+    if(correct === 3) {
+      finalFeedback.className = 'callout ok';
+      finalFeedback.innerHTML = `
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:3em;margin-bottom:15px">🎉</div>
+          <h3 style="color:var(--neon-green);margin-bottom:15px">Enquête résolue avec succès !</h3>
+          <p style="line-height:1.8;margin-bottom:20px;font-size:1.05em">
+            Vous avez correctement identifié <strong>Genius AI</strong> comme une IA symbolique classique (système expert), démystifié le discours marketing exagéré de TechCorp, et recommandé l'approche appropriée pour l'imagerie médicale.
+          </p>
+          <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:18px;margin:20px 0;text-align:left">
+            <strong style="color:var(--neon-green)">📋 Rapport final :</strong><br/><br/>
+            <strong>1. Type d'IA :</strong> Symbolique (système expert basé sur 50 000 règles programmées)<br/>
+            <strong>2. Faiblesse :</strong> Rigidité extrême face à l'imprévu, aucune capacité de généralisation<br/>
+            <strong>3. Recommandation :</strong> Pour l'imagerie médicale, privilégier le Deep Learning (CNN) qui apprend sur des images
+          </div>
+          <p style="line-height:1.8;color:#aabbcc">
+            <strong style="color:var(--neon-blue)">Leçon retenue :</strong> Les termes "Super IA", "comprend véritablement" ou "révolutionnaire" sont souvent des signaux d'alarme marketing. Seule l'analyse technique factuelle permet de distinguer les capacités réelles des affirmations exagérées. Vous êtes maintenant équipé pour démystifier l'IA avec rigueur ! 🕵️
+          </p>
+        </div>
+      `;
+      toast("✓ Mission accomplie !", 3500);
+    } else {
+      finalFeedback.className = 'callout warn';
+      finalFeedback.innerHTML = `
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:2.5em;margin-bottom:15px">🤔</div>
+          <h3 style="color:var(--neon-blue);margin-bottom:15px">Rapport partiellement correct (${correct}/3)</h3>
+          <p style="line-height:1.8;margin-bottom:15px">
+            Consultez les explications détaillées ci-dessus pour comprendre les erreurs. Les preuves contenaient tous les indices nécessaires pour identifier :
+          </p>
+          <ul style="text-align:left;max-width:600px;margin:0 auto;line-height:2">
+            <li>Genius AI = <strong>IA symbolique</strong> (règles explicites, pas d'apprentissage)</li>
+            <li>Faiblesse = <strong>rigidité</strong> (échec face à l'imprévu)</li>
+            <li>Imagerie médicale = <strong>IA connexionniste</strong> (apprentissage sur images)</li>
+          </ul>
+          <p style="margin-top:20px;color:#aabbcc">
+            Relisez les preuves et les explications pour consolider votre compréhension ! 📚
+          </p>
+        </div>
+      `;
+    }
+  }
+
+  // Désactiver le bouton de soumission
+  const submitBtn = document.getElementById('mission-submit-btn');
+  if(submitBtn) submitBtn.disabled = true;
 }
 
 /* =========================================================
