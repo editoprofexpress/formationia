@@ -812,6 +812,11 @@
             <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
             Mission
           </div>
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2);">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
+            Attestation de réussite
+          </div>
         </div>
       </nav>
 
@@ -2584,9 +2589,571 @@ function submitMissionReport() {
     }
   }
 
-  // Désactiver le bouton de soumission
+  // Désactiver le bouton de soumission + proposer le quiz
   const submitBtn = document.getElementById('mission-submit-btn');
   if(submitBtn) submitBtn.disabled = true;
+
+  // Si 3/3, proposer le quiz de certification
+  if(correct === 3){
+    setTimeout(()=>{
+      const quizProposal = document.createElement('div');
+      quizProposal.className = 'callout';
+      quizProposal.style.cssText = 'margin-top:30px;background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.5);';
+      quizProposal.innerHTML = `
+        <div style="text-align:center">
+          <div style="font-size:2.5em;margin-bottom:15px">🎓</div>
+          <h3 style="color:var(--neon-blue);margin-bottom:15px">Prêt pour la certification ?</h3>
+          <p style="line-height:1.8;margin-bottom:20px">
+            Vous avez brillamment terminé la mission ! Passez maintenant le <strong>quiz de certification</strong>
+            pour obtenir votre attestation officielle de réussite du module.
+          </p>
+          <button class="btn green" onclick="startCertificationQuiz()" style="font-size:1.1em;padding:15px 40px">
+            📝 Commencer le quiz de certification
+          </button>
+        </div>
+      `;
+      finalFeedback.after(quizProposal);
+    }, 1000);
+  }
+}
+
+/* =========================================================
+   QUIZ DE CERTIFICATION
+========================================================= */
+let certificateUnlocked = false;
+let finalScore = 0;
+let quizState = { currentQuestion: 0, score: 0, answers: [] };
+
+const quizQuestions = [
+  {
+    question: "Quelle est la principale différence entre l'IA actuelle et l'intelligence humaine ?",
+    options: [
+      "L'IA actuelle est plus intelligente que les humains",
+      "L'IA actuelle excelle dans des tâches spécifiques mais n'a pas de conscience ni de compréhension véritable",
+      "L'IA actuelle peut comprendre et ressentir comme un humain",
+      "L'IA actuelle peut apprendre n'importe quelle tâche sans données"
+    ],
+    correct: 1
+  },
+  {
+    question: "Qu'est-ce qui caractérise l'IA symbolique ?",
+    options: [
+      "Elle apprend par l'exemple à partir de données",
+      "Elle utilise des règles explicites programmées par des humains",
+      "Elle fonctionne uniquement avec des réseaux de neurones",
+      "Elle peut s'adapter automatiquement à de nouvelles situations"
+    ],
+    correct: 1
+  },
+  {
+    question: "Quelle est la principale limite de l'IA symbolique ?",
+    options: [
+      "Elle manque de transparence (boîte noire)",
+      "Elle nécessite trop de données d'entraînement",
+      "Elle est trop rigide face à l'imprévu",
+      "Elle consomme trop d'énergie"
+    ],
+    correct: 2
+  },
+  {
+    question: "Qu'est-ce qui caractérise l'IA connexionniste (Machine Learning) ?",
+    options: [
+      "Elle fonctionne avec des règles explicites",
+      "Elle apprend des patterns à partir d'exemples",
+      "Elle ne nécessite aucune donnée d'entraînement",
+      "Elle peut expliquer toutes ses décisions facilement"
+    ],
+    correct: 1
+  },
+  {
+    question: "Quelle est la hiérarchie correcte des concepts d'IA ?",
+    options: [
+      "Transformers ⊃ Deep Learning ⊃ Machine Learning ⊃ IA",
+      "IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers",
+      "Machine Learning ⊃ IA ⊃ Deep Learning ⊃ Transformers",
+      "Deep Learning ⊃ IA ⊃ Machine Learning ⊃ Transformers"
+    ],
+    correct: 1
+  },
+  {
+    question: "Pour quelle tâche l'IA connexionniste (Deep Learning) est-elle particulièrement adaptée ?",
+    options: [
+      "Diagnostic médical basé sur des règles précises",
+      "Calculs mathématiques simples",
+      "Reconnaissance d'images et patterns complexes",
+      "Application stricte de lois et règlements"
+    ],
+    correct: 2
+  },
+  {
+    question: "Qu'est-ce qu'un 'signal d'alarme' dans une annonce d'IA selon le module ?",
+    options: [
+      "L'utilisation de termes techniques précis",
+      "La mention de limitations et faiblesses",
+      "Des termes comme 'Super IA', 'comprend véritablement', 'révolutionnaire'",
+      "La présentation de résultats de tests indépendants"
+    ],
+    correct: 2
+  },
+  {
+    question: "Quelle affirmation sur l'IA actuelle est VRAIE ?",
+    options: [
+      "L'IA peut vraiment 'comprendre' le sens des mots comme un humain",
+      "L'IA actuelle est consciente et peut ressentir des émotions",
+      "L'IA actuelle excelle dans des tâches spécifiques mais n'a pas de compréhension générale",
+      "L'IA peut apprendre n'importe quoi sans avoir besoin de données"
+    ],
+    correct: 2
+  }
+];
+
+function startCertificationQuiz(){
+  quizState = { currentQuestion: 0, score: 0, answers: [] };
+  showQuizQuestion();
+}
+
+function showQuizQuestion(){
+  const q = quizQuestions[quizState.currentQuestion];
+  const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
+
+  $('briefing-content').innerHTML = `
+    <div class="module-title" style="color:var(--neon-blue)">📝 Quiz de Certification</div>
+    <div class="module-kicker">Module 1 — Démystifier l'IA (DOSSIER ZÉRO)</div>
+    <div class="divider"></div>
+
+    <div class="callout" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.5);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
+        <span style="color:var(--neon-blue);font-weight:600">Question ${quizState.currentQuestion + 1}/${quizQuestions.length}</span>
+        <span style="color:#8899aa">Progression : ${progress}%</span>
+      </div>
+      <div style="background:rgba(0,212,255,0.2);height:8px;border-radius:10px;overflow:hidden">
+        <div style="background:var(--neon-blue);height:100%;width:${progress}%;transition:width 0.3s"></div>
+      </div>
+    </div>
+
+    <div style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,212,255,0.3);border-radius:12px;padding:30px;margin:30px 0">
+      <h3 style="color:var(--text);font-size:1.2em;line-height:1.6;margin-bottom:25px">${q.question}</h3>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${q.options.map((opt, i) => `
+          <button class="mission-option" onclick="answerQuizQuestion(${i})"
+            style="text-align:left;padding:15px 20px;font-size:1em;cursor:pointer;transition:all 0.3s">
+            <div style="font-weight:600;margin-bottom:4px">${String.fromCharCode(65 + i)}. ${opt}</div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:20px">
+      <strong>⚠️ Important :</strong> Réfléchissez bien avant de répondre. Vous ne pourrez pas revenir en arrière.
+    </div>
+  `;
+}
+
+function answerQuizQuestion(answerIndex){
+  const q = quizQuestions[quizState.currentQuestion];
+  const isCorrect = answerIndex === q.correct;
+
+  quizState.answers.push({
+    question: quizState.currentQuestion,
+    answer: answerIndex,
+    correct: isCorrect
+  });
+
+  if(isCorrect) quizState.score++;
+
+  // Passer à la question suivante ou afficher les résultats
+  quizState.currentQuestion++;
+
+  if(quizState.currentQuestion < quizQuestions.length){
+    showQuizQuestion();
+  } else {
+    showQuizResults();
+  }
+}
+
+function showQuizResults(){
+  const scorePct = Math.round((quizState.score / quizQuestions.length) * 100);
+  const passed = scorePct >= 70;
+
+  if(passed){
+    certificateUnlocked = true;
+    finalScore = scorePct;
+    unlockCertificate(scorePct);
+  }
+
+  $('briefing-content').innerHTML = `
+    <div class="module-title" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
+      ${passed ? '🎉 Quiz réussi !' : '😔 Quiz non réussi'}
+    </div>
+    <div class="module-kicker">Résultats de la certification</div>
+    <div class="divider"></div>
+
+    <div class="callout ${passed ? 'ok' : 'warn'}" style="text-align:center;padding:40px 20px">
+      <div style="font-size:4em;margin-bottom:20px">${passed ? '✅' : '❌'}</div>
+      <h2 style="font-size:2em;margin-bottom:15px;color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
+        Score : ${quizState.score}/${quizQuestions.length} (${scorePct}%)
+      </h2>
+      <p style="font-size:1.1em;line-height:1.8;margin-bottom:20px">
+        ${passed
+          ? 'Félicitations ! Vous avez validé le quiz de certification avec un excellent score.'
+          : 'Le score minimum requis est de 70%. Révisez les leçons et réessayez.'}
+      </p>
+
+      ${passed ? `
+        <div style="margin-top:30px">
+          <p style="margin-bottom:15px;color:var(--neon-blue)">🎓 <strong>Votre attestation est maintenant disponible !</strong></p>
+          <button class="btn green" onclick="showCertificateInFolder()" style="font-size:1.1em;padding:15px 40px">
+            📥 Accéder à l'attestation
+          </button>
+        </div>
+      ` : `
+        <div style="margin-top:30px">
+          <button class="btn" onclick="startCertificationQuiz()" style="font-size:1.1em;padding:15px 40px">
+            🔄 Réessayer le quiz
+          </button>
+        </div>
+      `}
+    </div>
+
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📊 Détail de vos réponses</h3>
+    ${quizQuestions.map((q, i) => {
+      const userAnswer = quizState.answers[i];
+      const isCorrect = userAnswer.correct;
+      return `
+        <div style="background:rgba(10,20,40,0.6);border:1px solid ${isCorrect ? 'rgba(0,255,136,0.3)' : 'rgba(255,77,77,0.3)'};
+          border-radius:12px;padding:20px;margin-bottom:15px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:1.5em">${isCorrect ? '✅' : '❌'}</span>
+            <strong style="color:${isCorrect ? 'var(--neon-green)' : 'var(--danger)'}">Question ${i + 1}</strong>
+          </div>
+          <p style="margin-bottom:10px;line-height:1.6">${q.question}</p>
+          <p style="color:#8899aa;margin-bottom:5px">Votre réponse : <strong>${q.options[userAnswer.answer]}</strong></p>
+          ${!isCorrect ? `<p style="color:var(--neon-green)">Bonne réponse : <strong>${q.options[q.correct]}</strong></p>` : ''}
+        </div>
+      `;
+    }).join('')}
+  `;
+}
+
+function unlockCertificate(score){
+  const navItem = $('certificate-nav-item');
+  navItem.style.opacity = '1';
+  navItem.style.cursor = 'pointer';
+  navItem.style.background = 'rgba(0,255,136,0.05)';
+
+  const icon = navItem.querySelector('.nav-icon');
+  if(icon) icon.textContent = '🎓';
+
+  const num = navItem.querySelector('.nav-number');
+  if(num){
+    num.style.background = 'rgba(0,255,136,0.2)';
+    num.style.color = 'var(--neon-green)';
+    num.textContent = '✓';
+  }
+
+  toast("🎓 Attestation débloquée ! Consultez l'onglet Attestation.", 4000);
+}
+
+function showCertificateInFolder(){
+  if(!certificateUnlocked){
+    $('briefing-content').innerHTML = `
+      <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
+      <div class="module-kicker">Attestation verrouillée</div>
+      <div class="divider"></div>
+
+      <div class="callout warn" style="text-align:center;padding:40px 20px">
+        <div style="font-size:4em;margin-bottom:20px">🔒</div>
+        <h3 style="color:var(--neon-pink);margin-bottom:20px">Attestation verrouillée</h3>
+        <p style="margin-bottom:20px;line-height:1.8">
+          Pour obtenir votre attestation de réussite au module, vous devez :
+        </p>
+
+        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:500px;text-align:left">
+          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.2em">1️⃣</span>
+            <span>Compléter la <strong>Mission</strong> avec succès (3/3 bonnes réponses)</span>
+          </p>
+          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.2em">2️⃣</span>
+            <span>Réussir le <strong>Quiz de certification</strong> avec au moins <strong>70%</strong></span>
+          </p>
+        </div>
+
+        <button class="btn" onclick="showLesson(7)" style="margin-top:20px">
+          🎮 Commencer la mission
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  // Attestation débloquée
+  $('briefing-content').innerHTML = `
+    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
+    <div class="module-kicker">Module 1 — Démystifier l'IA (DOSSIER ZÉRO)</div>
+    <div class="divider"></div>
+
+    <div class="callout ok" style="text-align:center;padding:30px 20px">
+      <div style="font-size:3em;margin-bottom:15px">🎉</div>
+      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <p style="line-height:1.8;margin-bottom:15px">
+        Vous avez terminé avec succès le <strong>Module 1 - Démystifier l'IA</strong> de la formation
+        <strong>Intelligence Artificielle Responsable</strong>.
+      </p>
+      <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;
+        padding:20px;margin:20px auto;max-width:400px">
+        <p style="margin-bottom:10px"><strong>Score certification :</strong>
+          <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span>
+        </p>
+        <p style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">
+          Référence : IA-DEMYST-${String(Math.floor(Math.random()*90000)+10000)}
+        </p>
+      </div>
+    </div>
+
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📜 Télécharger votre attestation</h3>
+    <div class="callout" style="padding:30px">
+      <p style="margin-bottom:20px;line-height:1.8">
+        Renseignez votre nom pour générer votre attestation officielle de réussite au format HTML.
+        Vous pourrez ensuite l'ouvrir dans votre navigateur et l'imprimer en PDF si nécessaire.
+      </p>
+      <div style="margin-bottom:15px">
+        <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue)">
+          Nom sur l'attestation :
+        </label>
+        <input id="certificate-name-folder" type="text" placeholder="Prénom NOM"
+          style="width:100%;max-width:500px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,0.35);
+          background:rgba(0,0,0,0.2);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none"/>
+      </div>
+      <button class="btn green" onclick="downloadCertificateFromFolder()" style="font-size:1.1em;padding:15px 40px;margin-top:15px">
+        📥 Télécharger l'attestation (HTML)
+      </button>
+      <p style="margin-top:15px;color:#8899aa;font-size:0.9em">
+        💡 <strong>Astuce :</strong> Ouvrez le fichier HTML téléchargé et utilisez Ctrl+P (Cmd+P sur Mac) pour l'imprimer en PDF.
+      </p>
+    </div>
+
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">✅ Compétences validées</h3>
+    <div class="callout">
+      <ul style="line-height:2;margin-left:20px">
+        <li>Distinguer IA actuelle et intelligence humaine</li>
+        <li>Connaître les origines de l'IA (1950–2024)</li>
+        <li>Différencier IA symbolique et connexionniste</li>
+        <li>Comprendre la hiérarchie IA ⊃ ML ⊃ DL ⊃ Transformers</li>
+        <li>Identifier le type d'un système d'IA</li>
+        <li>Évaluer forces et faiblesses des approches</li>
+        <li>Démystifier les affirmations marketing exagérées</li>
+      </ul>
+    </div>
+  `;
+}
+
+function downloadCertificateFromFolder(){
+  const name = ($('certificate-name-folder')?.value || '').trim() || 'Participant';
+  const date = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  generateCertificateHTML(name, date, finalScore);
+}
+
+function generateCertificateHTML(name, date, score){
+  const certificateHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attestation - Module 1 : Démystifier l'IA</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .certificate {
+      background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
+      border: 3px solid #00ff88;
+      border-radius: 20px;
+      padding: 50px 60px;
+      max-width: 800px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+    }
+    .certificate::before {
+      content: '';
+      position: absolute;
+      top: 15px; left: 15px; right: 15px; bottom: 15px;
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 15px;
+      pointer-events: none;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .logo {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5em;
+      background: linear-gradient(90deg, #00ff88, #00d4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      color: #00d4ff;
+      font-size: 1.1em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .content {
+      text-align: center;
+      color: #e0e0e0;
+      line-height: 1.8;
+    }
+    .certifies {
+      font-size: 1.1em;
+      margin: 30px 0 15px;
+    }
+    .name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2em;
+      color: #ffffff;
+      margin: 20px 0;
+      padding: 15px 0;
+      border-top: 1px solid rgba(0,212,255,0.3);
+      border-bottom: 1px solid rgba(0,212,255,0.3);
+    }
+    .module {
+      background: rgba(0,255,136,0.1);
+      border: 1px solid rgba(0,255,136,0.3);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .module-title {
+      color: #00ff88;
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .score {
+      display: inline-block;
+      background: linear-gradient(135deg, #00ff88, #00d4ff);
+      color: #0a1628;
+      padding: 8px 25px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(0,212,255,0.2);
+    }
+    .footer-item {
+      text-align: center;
+    }
+    .footer-label {
+      color: #888;
+      font-size: 0.85em;
+      margin-bottom: 5px;
+    }
+    .footer-value {
+      color: #00d4ff;
+      font-weight: 600;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .skill {
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.3);
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 0.85em;
+      color: #00d4ff;
+    }
+    @media print {
+      body { background: white; }
+      .certificate { box-shadow: none; border-width: 2px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="certificate">
+    <div class="header">
+      <div class="logo">🤖🕵️</div>
+      <div class="title">Attestation de Réussite</div>
+      <div class="subtitle">Formation IA Responsable</div>
+    </div>
+
+    <div class="content">
+      <p class="certifies">Cette attestation certifie que</p>
+      <div class="name">${name}</div>
+      <p>a complété avec succès le</p>
+
+      <div class="module">
+        <div class="module-title">Module 1 : Démystifier l'Intelligence Artificielle</div>
+        <p style="color: #b0b0b0; margin-top: 10px;">Dossier Zéro — Mythes, Réalité et Fondamentaux</p>
+        <div class="score">Score : ${score}%</div>
+      </div>
+
+      <p style="margin-bottom: 15px;">Compétences validées :</p>
+      <div class="skills">
+        <span class="skill">IA vs Intelligence Humaine</span>
+        <span class="skill">Origines (1950-2024)</span>
+        <span class="skill">IA Symbolique vs Connexionniste</span>
+        <span class="skill">Hiérarchie IA ⊃ ML ⊃ DL</span>
+        <span class="skill">Analyse Critique</span>
+        <span class="skill">Démystification</span>
+      </div>
+
+      <div class="footer">
+        <div class="footer-item">
+          <div class="footer-label">Date</div>
+          <div class="footer-value">${date}</div>
+        </div>
+        <div class="footer-item">
+          <div class="footer-label">Programme</div>
+          <div class="footer-value">IA Responsable</div>
+        </div>
+        <div class="footer-item">
+          <div class="footer-label">Organisme</div>
+          <div class="footer-value">Prof Express</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const blob = new Blob([certificateHTML], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Attestation_Module1_Demystifier_IA_${name.replace(/\s+/g, '_')}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  toast("✅ Attestation téléchargée ! Ouvrez le fichier HTML pour l'imprimer en PDF.", 4000);
 }
 
 
