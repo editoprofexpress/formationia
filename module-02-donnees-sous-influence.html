@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Données sous Influence — Module 2 (Apprentissage & Biais)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root{
+      --neon-green:#00ff88;
+      --neon-blue:#00d4ff;
+      --neon-pink:#ff0080;
+      --neon-purple:#a855f7;
+      --dark-bg:#0a0e17;
+      --panel-bg:rgba(10,20,40,0.95);
+      --text:#e0f0ff;
+      --muted:#8899aa;
+      --danger:#ff4d4d;
+      --warn:#ffcc00;
+      --ok:#00ff88;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+    body{
+      font-family:'Exo 2',sans-serif;
+      background:var(--dark-bg);
+      color:var(--text);
+      overflow:hidden;
+      height:100vh;
+    }
+
+    /* ==================== TITRE ==================== */
+    #title-screen{
+      position:fixed;inset:0;
+      background:url('images/module2-title-bg.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#0d1a2a 50%,#0a0e17 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:1000;
+      transition:opacity .5s, visibility .5s;
+    }
+    #title-screen::before{content:'';position:absolute;inset:0;background:rgba(10,14,23,0.7);z-index:-1}
+    #title-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .title-logo{font-size:4em;margin-bottom:20px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    .main-title{
+      font-family:'Space Mono',monospace;
+      font-size:2.8em;font-weight:700;text-transform:uppercase;letter-spacing:5px;
+      background:linear-gradient(90deg,var(--neon-green),var(--neon-blue),var(--neon-pink));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+      text-shadow:0 0 50px rgba(0,255,136,.5);
+      margin-bottom:10px;text-align:center;
+    }
+    .subtitle{font-size:1.3em;color:#8899aa;margin-bottom:50px;font-weight:300;text-align:center}
+    .intro-text{max-width:820px;text-align:center;line-height:1.8;margin:0 20px 35px;color:#aabbcc}
+    .start-btn{
+      font-family:'Space Mono',monospace;font-size:1.1em;
+      padding:18px 55px;background:transparent;
+      border:2px solid var(--neon-green);color:var(--neon-green);
+      cursor:pointer;text-transform:uppercase;letter-spacing:3px;
+      transition:all .3s;position:relative;overflow:hidden;
+    }
+    .start-btn::before{
+      content:'';position:absolute;top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(0,255,136,.3),transparent);
+      transition:left .5s;
+    }
+    .start-btn:hover::before{left:100%}
+    .start-btn:hover{
+      background:rgba(0,255,136,.08);
+      box-shadow:0 0 30px rgba(0,255,136,.5), inset 0 0 30px rgba(0,255,136,.08);
+      transform:scale(1.05);
+    }
+
+    /* ==================== LIENS RETOUR ==================== */
+    .back-link-title{
+      position:absolute;top:20px;left:20px;
+      display:flex;align-items:center;gap:8px;
+      padding:10px 16px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);
+      border-radius:6px;color:#8899aa;text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-title:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#aabbcc}
+
+    .back-link-sidebar{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 15px;margin:0 15px 20px;
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:8px;color:var(--neon-blue);text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-sidebar:hover{background:rgba(0,212,255,0.15);border-color:var(--neon-blue);transform:translateX(-3px)}
+    .back-link-sidebar .back-arrow{transition:transform .3s}
+    .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
+
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      z-index:999;display:none;flex-direction:column;overflow:hidden;
+    }
+    #briefing-screen.active{display:flex}
+
+    .briefing-header{
+      background:rgba(10,20,40,0.95);
+      border-bottom:1px solid rgba(0,255,136,0.3);
+      padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
+    }
+    .briefing-title{
+      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-green);
+      display:flex;align-items:center;gap:15px;
+    }
+    .briefing-title::before{content:'🧬';font-size:1.5em}
+    .briefing-progress{display:flex;align-items:center;gap:10px;color:#8899aa;font-size:0.9em}
+    .briefing-progress-bar{width:200px;height:6px;background:rgba(0,255,136,0.1);border-radius:3px;overflow:hidden}
+    .briefing-progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));transition:width .3s}
+
+    .briefing-body{display:flex;flex:1;overflow:hidden}
+
+    .briefing-nav{
+      width:280px;background:rgba(10,20,40,0.9);
+      border-right:1px solid rgba(0,255,136,0.2);
+      padding:20px 0;overflow-y:auto;
+    }
+    .briefing-nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:15px 20px;cursor:pointer;
+      border-left:3px solid transparent;transition:all .3s;color:#8899aa;
+    }
+    .briefing-nav-item:hover{background:rgba(0,255,136,0.05);color:var(--text)}
+    .briefing-nav-item.active{border-left-color:var(--neon-green);background:rgba(0,255,136,0.1);color:var(--neon-green)}
+    .briefing-nav-item.completed{color:var(--neon-blue)}
+    .briefing-nav-item.completed::after{content:'✓';margin-left:auto;color:var(--neon-green)}
+    .nav-icon{font-size:1.2em;width:30px;text-align:center}
+    .nav-number{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      background:rgba(0,255,136,0.2);padding:2px 8px;border-radius:3px;
+    }
+
+    .briefing-content{flex:1;overflow-y:auto;padding:40px 60px;max-width:900px;margin:0 auto}
+    .briefing-content::-webkit-scrollbar{width:8px}
+    .briefing-content::-webkit-scrollbar-track{background:rgba(0,255,136,0.05)}
+    .briefing-content::-webkit-scrollbar-thumb{background:rgba(0,255,136,0.3);border-radius:4px}
+
+    .briefing-footer{
+      background:rgba(10,20,40,0.95);border-top:1px solid rgba(0,255,136,0.3);
+      padding:20px 30px;display:flex;justify-content:space-between;align-items:center;
+    }
+    .briefing-btn{
+      font-family:'Space Mono',monospace;padding:12px 30px;
+      border:2px solid var(--neon-green);background:transparent;
+      color:var(--neon-green);cursor:pointer;font-size:1em;transition:all .3s;
+      display:flex;align-items:center;gap:10px;
+    }
+    .briefing-btn:hover{background:rgba(0,255,136,0.1);box-shadow:0 0 20px rgba(0,255,136,.3)}
+    .briefing-btn.primary{background:var(--neon-green);color:var(--dark-bg)}
+    .briefing-btn.primary:hover{background:var(--neon-blue);border-color:var(--neon-blue)}
+    .briefing-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+    /* ==================== CONTENU COURS ==================== */
+    .module-title{
+      font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-green);
+      margin-bottom:30px;padding-bottom:15px;border-bottom:1px solid rgba(0,255,136,0.3);
+    }
+    .module-kicker{color:var(--muted);margin-bottom:18px;line-height:1.5}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.5),transparent);margin:18px 0}
+    .pill{
+      display:inline-block;padding:6px 10px;
+      border:1px solid rgba(0,255,136,.5);border-radius:999px;
+      font-family:'Space Mono',monospace;font-size:.78em;
+      color:var(--neon-green);background:rgba(0,255,136,.05);
+      margin-right:8px;margin-bottom:8px;
+    }
+    .callout{
+      background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);
+      padding:14px;border-radius:14px;box-shadow:0 0 22px rgba(0,255,136,0.18);
+      margin:12px 0;line-height:1.6;color:#cfe9ff;
+    }
+    .callout.warn{background:rgba(255,204,0,0.08);border-color:rgba(255,204,0,0.30);box-shadow:0 0 18px rgba(255,204,0,0.16)}
+    .callout.ok{background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.35);box-shadow:0 0 18px rgba(0,255,136,0.18)}
+    .callout.pink{background:rgba(255,0,128,0.10);border-color:rgba(255,0,128,0.30);box-shadow:0 0 18px rgba(255,0,128,0.16)}
+    .callout.purple{background:rgba(168,85,247,0.10);border-color:rgba(168,85,247,0.35);box-shadow:0 0 18px rgba(168,85,247,0.18)}
+
+    .btn{
+      font-family:'Space Mono',monospace;
+      border:1px solid rgba(0,212,255,.38);
+      background:linear-gradient(135deg,rgba(0,212,255,.18),rgba(168,85,247,.12));
+      color:var(--text);padding:12px 16px;border-radius:12px;cursor:pointer;
+      transition:transform .15s,box-shadow .15s,border-color .15s;
+      box-shadow:0 0 30px rgba(0,212,255,.18);
+      display:inline-flex;align-items:center;gap:10px;user-select:none;font-size:.85em;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(0,212,255,.35);border-color:rgba(0,212,255,.65)}
+    .btn:active{transform:translateY(0)}
+    .btn.green,.btn.primary{
+      border-color:rgba(0,255,136,.55);
+      background:linear-gradient(135deg,rgba(0,255,136,.22),rgba(0,212,255,.16));
+      box-shadow:0 0 22px rgba(0,255,136,.35);color:var(--neon-green);
+    }
+    .btn.pink,.btn.danger{
+      border-color:rgba(255,0,128,.55);
+      background:linear-gradient(135deg,rgba(255,0,128,.20),rgba(0,212,255,.10));
+      box-shadow:0 0 22px rgba(255,0,128,.35);color:var(--neon-pink);
+    }
+    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* ==================== EXPÉRIENCES LAB ==================== */
+    .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
+    .exp-card{
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:12px;padding:20px;cursor:pointer;transition:all .3s;text-align:center;
+    }
+    .exp-card:hover{border-color:var(--neon-blue);background:rgba(0,212,255,0.12);transform:translateY(-3px);box-shadow:0 6px 25px rgba(0,212,255,.25)}
+    .exp-card.done{border-color:rgba(0,255,136,.5);background:rgba(0,255,136,.08)}
+    .exp-card .exp-icon{font-size:2.5em;margin-bottom:10px}
+    .exp-card .exp-num{font-family:'Space Mono',monospace;color:var(--neon-blue);font-weight:700;font-size:0.9em;margin-bottom:8px}
+    .exp-card .exp-name{font-weight:600;font-size:1em}
+
+    .data-item{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:70px;height:70px;font-size:2em;
+      border:2px solid rgba(0,212,255,.3);border-radius:12px;
+      cursor:pointer;transition:all .2s;background:rgba(0,212,255,.03);
+    }
+    .data-item:hover{border-color:var(--neon-blue);background:rgba(0,212,255,.1)}
+    .data-item.selected{border-color:var(--neon-green);background:rgba(0,255,136,.15);box-shadow:0 0 15px rgba(0,255,136,.3)}
+
+    .cv-table{width:100%;border-collapse:collapse;font-size:0.85em;margin:15px 0}
+    .cv-table th{
+      background:rgba(0,212,255,.12);color:var(--neon-blue);
+      padding:10px 8px;border:1px solid rgba(0,212,255,.2);
+      font-family:'Space Mono',monospace;cursor:pointer;transition:all .2s;
+    }
+    .cv-table th:hover{background:rgba(0,212,255,.25)}
+    .cv-table th.highlight{background:rgba(255,0,128,.2);color:var(--neon-pink);border-color:rgba(255,0,128,.4)}
+    .cv-table td{padding:8px;border:1px solid rgba(0,212,255,.12);text-align:center}
+    .cv-table tr:nth-child(even){background:rgba(0,212,255,.03)}
+    .cv-table .accepted{color:var(--neon-green)}
+    .cv-table .rejected{color:var(--danger)}
+
+    .slider-group{margin:15px 0}
+    .slider-group label{display:block;margin-bottom:8px;font-family:'Space Mono',monospace;font-size:0.85em;color:var(--neon-blue)}
+    .slider-group input[type=range]{
+      width:100%;-webkit-appearance:none;height:8px;
+      background:rgba(0,212,255,.2);border-radius:4px;outline:none;
+    }
+    .slider-group input[type=range]::-webkit-slider-thumb{
+      -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+      background:var(--neon-green);cursor:pointer;box-shadow:0 0 10px rgba(0,255,136,.5);
+    }
+    .accuracy-bar{
+      height:24px;border-radius:12px;overflow:hidden;
+      background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);
+      margin:8px 0;position:relative;
+    }
+    .accuracy-fill{height:100%;border-radius:12px;transition:width .5s;position:relative}
+    .accuracy-label{
+      position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      font-family:'Space Mono',monospace;font-size:0.75em;color:white;text-shadow:0 0 5px rgba(0,0,0,.8);
+    }
+
+    /* ==================== QUIZ ==================== */
+    .q-card{
+      border:1px solid rgba(0,212,255,.35);background:rgba(0,212,255,.03);
+      border-radius:14px;padding:16px;margin-top:12px;
+    }
+    .q-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .q-head .mono{font-family:'Space Mono',monospace;color:var(--neon-blue)}
+    .q-text{line-height:1.5;color:#d9f2ff}
+    .opts{display:grid;gap:8px;margin-top:12px}
+    .opt{
+      border:1px solid rgba(0,212,255,.25);background:rgba(0,212,255,.02);
+      border-radius:12px;padding:12px;cursor:pointer;transition:.2s;
+    }
+    .opt:hover{border-color:rgba(0,212,255,.65);background:rgba(0,212,255,.08)}
+    .opt.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.08)}
+    .opt.correct{border-color:var(--neon-green);background:rgba(0,255,136,.08)}
+    .opt.wrong{border-color:var(--danger);background:rgba(255,77,77,.08)}
+    .explain{
+      display:none;margin-top:10px;border-left:4px solid var(--neon-blue);
+      background:rgba(0,212,255,.06);padding:12px;border-radius:10px;line-height:1.55;color:#cfe9ff;
+    }
+    .explain.show{display:block}
+
+    /* ==================== MODAL ==================== */
+    .modal{
+      position:fixed;inset:0;display:none;
+      background:rgba(0,5,15,0.88);backdrop-filter:blur(8px);
+      z-index:2000;align-items:center;justify-content:center;padding:18px;
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      max-width:680px;width:90vw;
+      background:linear-gradient(135deg,rgba(10,20,50,0.98),rgba(5,15,35,0.98));
+      border:1px solid rgba(0,212,255,0.4);border-radius:20px;padding:24px;
+      box-shadow:0 0 60px rgba(0,212,255,.25),0 0 120px rgba(0,212,255,.08),inset 0 1px 0 rgba(0,212,255,.15);
+      animation:modalIn .3s ease forwards;
+    }
+    @keyframes modalIn{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+    .modal-card h3{font-family:'Space Mono',monospace;color:var(--neon-blue);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+    .modal-card p{line-height:1.65;color:#cfe9ff}
+    .modal-actions{margin-top:16px;display:flex;justify-content:flex-end}
+
+    /* ==================== TOAST ==================== */
+    #toast{
+      position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(0,212,255,0.28);background:rgba(0,10,25,0.85);
+      box-shadow:0 0 30px rgba(0,212,255,.18);z-index:2500;
+      max-width:92vw;display:none;font-size:0.9em;color:#d9f2ff;line-height:1.4;
+    }
+    #toast.show{display:block;animation:toastIn .18s ease}
+    @keyframes toastIn{from{transform:translateX(-50%) translateY(6px);opacity:.2}to{transform:translateX(-50%) translateY(0);opacity:1}}
+
+    /* ==================== RESPONSIVE ==================== */
+    @media(max-width:768px){
+      .main-title{font-size:1.8em}
+      .briefing-nav{display:none}
+      .briefing-content{padding:20px}
+      .module-title{font-size:1.3em}
+      .briefing-footer{flex-direction:column;gap:10px}
+      .briefing-btn{width:100%;justify-content:center}
+      .exp-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== TITLE SCREEN ==================== -->
+  <section id="title-screen">
+    <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+      <span>←</span><span>Modules</span>
+    </a>
+    <div class="title-logo">🧬</div>
+    <h1 class="main-title">DONNÉES SOUS INFLUENCE</h1>
+    <p class="subtitle">Module 2 — Apprentissage, Données & Biais</p>
+    <p class="intro-text">
+      <strong>Laboratoires SYNAPTIK.</strong> Vous intégrez l'équipe de recherche en IA du laboratoire SYNAPTIK.
+      Votre mission : comprendre comment une IA apprend à partir de données, identifier les biais cachés
+      dans les jeux d'entraînement, et faire des choix éthiques responsables.
+    </p>
+    <button class="start-btn" onclick="startModule()">Accéder au Laboratoire</button>
+    <div style="margin-top:40px;opacity:0.7">
+      <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain">
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== BRIEFING SCREEN ==================== -->
+  <div id="briefing-screen">
+    <div class="briefing-header">
+      <div class="briefing-title">SYNAPTIK // DONNÉES SOUS INFLUENCE</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Dossier 1/8</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width:12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="briefing-body">
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
+        <div class="briefing-nav-item active" onclick="showLesson(0)">
+          <span class="nav-icon">🧠</span><span class="nav-number">01</span>Apprendre pour une machine
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(1)">
+          <span class="nav-icon">⛽</span><span class="nav-number">02</span>Les données d'entraînement
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(2)">
+          <span class="nav-icon">🎯</span><span class="nav-number">03</span>Supervisé vs non supervisé
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(3)">
+          <span class="nav-icon">⚖️</span><span class="nav-number">04</span>Poids et optimisation
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(4)">
+          <span class="nav-icon">⚠️</span><span class="nav-number">05</span>Biais et déséquilibres
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(5)">
+          <span class="nav-icon">📈</span><span class="nav-number">06</span>Surapprentissage
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(6)">
+          <span class="nav-icon">🌱</span><span class="nav-number">07</span>Apprentissage responsable
+        </div>
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" onclick="showLesson(7)">
+            <span class="nav-icon">🔬</span>
+            <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green)">▶</span>
+            Expériences SYNAPTIK
+          </div>
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
+        </div>
+      </nav>
+      <div class="briefing-content" id="briefing-content"></div>
+    </div>
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>← Dossier précédent</button>
+      <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">Dossier suivant →</button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3 id="modal-title">Titre</h3>
+      <p id="modal-body">Contenu</p>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast"></div>
+
+<script>
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+const $ = (id) => document.getElementById(id);
+
+function toast(msg, ms=2200){
+  const el=$('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(window.__toastT);
+  window.__toastT=setTimeout(()=>el.classList.remove('show'),ms);
+}
+
+function openModal(title,body){
+  $('modal-title').innerHTML=title;
+  $('modal-body').innerHTML=body;
+  $('modal').classList.add('show');
+}
+function closeModal(){$('modal').classList.remove('show')}
+
+/* =========================================================
+   ÉTAT GLOBAL
+========================================================= */
+const state={
+  lessonSeen:new Set(),
+  expDone:new Set(),
+  quizScore:0,
+  quizTotal:0,
+};
+
+let currentLesson=0;
+const totalLessons=8;
+let certificateUnlocked=false;
+let finalScore=0;
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+function startModule(){
+  $('title-screen').classList.add('hidden');
+  $('briefing-screen').classList.add('active');
+  showLesson(0);
+  toast("Accès autorisé. Bienvenue au laboratoire SYNAPTIK.");
+}
+
+function prevLesson(){if(currentLesson>0)showLesson(currentLesson-1)}
+function nextLesson(){if(currentLesson<totalLessons-1)showLesson(currentLesson+1)}
+
+function updateBriefingProgress(){
+  const pct=Math.round(((currentLesson+1)/totalLessons)*100);
+  $('progress-text').textContent=`Dossier ${currentLesson+1}/${totalLessons}`;
+  $('progress-fill').style.width=pct+'%';
+  const prevBtn=$('prev-btn'), nextBtn=$('next-btn');
+  if(prevBtn) prevBtn.disabled=(currentLesson===0);
+  if(nextBtn){
+    if(currentLesson===totalLessons-1){
+      nextBtn.textContent='Terminé ✓';nextBtn.disabled=true;nextBtn.style.opacity='0.5';
+    } else {
+      nextBtn.innerHTML='Dossier suivant →';nextBtn.onclick=nextLesson;nextBtn.disabled=false;nextBtn.style.opacity='1';
+    }
+  }
+}
+
+function showLesson(idx){
+  currentLesson=idx;
+  state.lessonSeen.add(idx);
+  const content=$('briefing-content');
+  const lesson=lessons[idx];
+  content.innerHTML=`
+    <div class="module-title">${lesson.title}</div>
+    <div class="module-kicker">${lesson.kicker}</div>
+    <div class="divider"></div>
+    ${lesson.html}
+  `;
+  content.scrollTop=0;
+  // Update nav
+  document.querySelectorAll('.briefing-nav-item').forEach((item,i)=>{
+    item.classList.remove('active');
+    if(i===idx) item.classList.add('active');
+    if(state.lessonSeen.has(i) && i!==idx) item.classList.add('completed');
+  });
+  updateBriefingProgress();
+  // Init interactives
+  if(lesson.init) setTimeout(lesson.init,100);
+}
+
+/* =========================================================
+   CONTENU DES LEÇONS (placeholder - sera complété)
+========================================================= */
+const lessons = [
+  /* ---- LEÇON 1 ---- */
+  {
+    title:"01 — Qu'est-ce qu'apprendre pour une machine ?",
+    kicker:"La différence fondamentale entre l'apprentissage humain et l'apprentissage machine.",
+    html:`
+      <div class="pill">SYNAPTIK</div><div class="pill">Module 2</div><div class="pill">Fondamentaux</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🧒 L'apprentissage humain vs l'apprentissage machine</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un enfant apprend à reconnaître un chat en voyant quelques exemples. Après avoir vu trois ou quatre chats différents, il peut identifier un chat qu'il n'a jamais vu auparavant, même s'il est d'une race différente, dans une position inhabituelle, ou partiellement caché derrière un meuble. Il <strong>comprend intuitivement</strong> ce qu'est un chat : un animal vivant, doux, qui miaule, avec des moustaches et des griffes.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Une machine, elle, ne comprend rien de tout cela. Pour "apprendre" à reconnaître un chat, elle a besoin de <strong>dizaines de milliers d'images étiquetées</strong>. Son apprentissage consiste à ajuster des millions de paramètres numériques (des nombres décimaux) pour minimiser l'écart entre ses prédictions et les bonnes réponses. C'est un processus purement mathématique, sans aucune compréhension du monde réel.
+      </p>
+
+      <div class="callout ok">
+        <strong>L'équation fondamentale :</strong><br/>
+        <span style="font-family:'Space Mono',monospace;color:var(--neon-green)">Données + Algorithme + Calcul = Modèle entraîné</span><br/><br/>
+        Sans données, pas d'apprentissage. Sans algorithme, pas de méthode. Sans puissance de calcul, pas de résultat. Ces trois ingrédients sont indissociables.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚙️ Concrètement, que fait la machine ?</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Imaginons qu'on veuille entraîner un modèle à distinguer les photos de chats des photos de chiens. Le processus se déroule ainsi :
+      </p>
+      <ol style="line-height:2;color:#cfe9ff;margin-left:20px">
+        <li>On montre au modèle une photo étiquetée "chat"</li>
+        <li>Le modèle fait une prédiction (ex : "60% chat, 40% chien")</li>
+        <li>On compare sa prédiction à la bonne réponse</li>
+        <li>On calcule l'erreur (il s'est trompé de 40%)</li>
+        <li>On ajuste légèrement ses paramètres pour réduire cette erreur</li>
+        <li>On recommence avec la photo suivante... des millions de fois</li>
+      </ol>
+
+      <div class="callout warn">
+        <strong>Attention au piège :</strong> Quand on dit qu'une IA "apprend", il ne faut pas projeter notre expérience humaine de l'apprentissage. La machine n'a pas d'expérience subjective, pas de curiosité, pas de moment "eurêka". Elle optimise une fonction mathématique, point final.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Quelques ordres de grandeur</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:15px 0">
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🖼️</div>
+          <strong>ImageNet</strong><br/>14 millions d'images<br/>pour la reconnaissance visuelle
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">📝</div>
+          <strong>GPT-3</strong><br/>570 Go de texte<br/>~300 milliards de mots
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🎨</div>
+          <strong>LAION-5B</strong><br/>5,85 milliards de paires<br/>image + texte
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">💰</div>
+          <strong>GPT-4</strong><br/>~100 millions $<br/>coût d'entraînement estimé
+        </div>
+      </div>
+    `
+  },
+  /* ---- LEÇON 2 ---- */
+  {
+    title:"02 — Les données d'entraînement : le carburant de l'IA",
+    kicker:"Sans données, pas d'IA. Mais toutes les données ne se valent pas.",
+    html:`
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">⛽ Le carburant indispensable</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Si l'algorithme est le moteur de l'IA, les données sont son carburant. Un modèle d'IA, aussi sophistiqué soit-il, est fondamentalement limité par la qualité et la diversité des données sur lesquelles il a été entraîné. C'est le principe fondamental du <strong>"Garbage In, Garbage Out"</strong> (données médiocres en entrée = résultats médiocres en sortie).
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📦 Types de données d'entraînement</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout"><strong>📝 Texte</strong><br/>Livres, articles web, conversations, code source, sous-titres de films...</div>
+        <div class="callout"><strong>🖼️ Images</strong><br/>Photos, dessins, captures d'écran, images satellites, scans médicaux...</div>
+        <div class="callout"><strong>🔊 Audio</strong><br/>Parole, musique, sons d'environnement, enregistrements médicaux...</div>
+        <div class="callout"><strong>📊 Données structurées</strong><br/>Tableaux, bases de données, capteurs IoT, transactions financières...</div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 D'où viennent les données ?</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les sources de données d'entraînement sont multiples et leur provenance soulève des questions importantes. Le <strong>web scraping</strong> consiste à collecter automatiquement des milliards de pages web (CommonCrawl indexe plus de 250 milliards de pages). Les <strong>datasets publics</strong> sont des collections organisées et annotées par des chercheurs (ImageNet, Wikipedia, OpenSubtitles). Le <strong>crowdsourcing</strong> fait appel à des milliers d'annotateurs humains qui étiquettent manuellement les données (Amazon Mechanical Turk). Enfin, les <strong>données propriétaires</strong> sont collectées directement par les entreprises auprès de leurs utilisateurs.
+      </p>
+
+      <div class="callout pink">
+        <strong>Le problème du consentement :</strong> De nombreux modèles d'IA ont été entraînés sur des données collectées sans le consentement explicite de leurs créateurs originaux. Des artistes ont découvert que leurs œuvres étaient utilisées pour entraîner des générateurs d'images comme Stable Diffusion. Cette question du consentement et du droit d'auteur est au cœur de nombreux procès en 2025-2026.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚖️ Qualité vs Quantité</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Pendant longtemps, l'approche dominante était "plus de données = meilleur modèle". Mais la recherche récente montre que la <strong>qualité des données</strong> est souvent plus importante que leur quantité. Le modèle Phi-2 de Microsoft, entraîné sur des données soigneusement sélectionnées et de haute qualité, rivalise avec des modèles entraînés sur des corpus 10 fois plus volumineux. L'étiquetage correct, la diversité des exemples et l'absence de duplications comptent davantage que le volume brut.
+      </p>
+
+      <div class="callout ok">
+        <strong>À retenir :</strong> Les données d'entraînement ne sont pas neutres. Elles reflètent les choix, les biais et les limitations de ceux qui les ont collectées, annotées et organisées. Comprendre d'où viennent les données est la première étape pour comprendre les forces et les faiblesses d'un modèle d'IA.
+      </div>
+    `
+  },
+  /* ---- LEÇON 3 ---- */
+  {
+    title:"03 — Supervisé vs non supervisé",
+    kicker:"Deux grandes familles d'apprentissage aux philosophies opposées.",
+    html:`
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎓 Apprentissage supervisé : le professeur guide</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Dans l'apprentissage supervisé, on fournit au modèle des exemples <strong>étiquetés</strong> : chaque donnée d'entrée est accompagnée de la bonne réponse attendue. Le modèle apprend à associer les entrées aux sorties correctes, comme un élève qui s'entraîne avec des exercices corrigés.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout">
+          <strong>Exemples concrets :</strong><br/>
+          • Photo + étiquette "chat" → classification d'images<br/>
+          • Email + étiquette "spam" → filtre anti-spam<br/>
+          • Symptômes + diagnostic → aide médicale<br/>
+          • Prix passés + prix futur → prédiction financière
+        </div>
+        <div class="callout warn">
+          <strong>Coût caché :</strong> L'étiquetage manuel est coûteux et chronophage. Pour créer ImageNet, il a fallu des millions d'heures de travail humain sur Amazon Mechanical Turk. Chaque image a été vérifiée et catégorisée par plusieurs personnes.
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 Apprentissage non supervisé : l'explorateur autonome</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Dans l'apprentissage non supervisé, le modèle reçoit des données <strong>sans étiquettes</strong>. Il doit découvrir seul les structures cachées, les groupes naturels et les patterns dans les données. C'est comme donner à quelqu'un un tas de photos sans explication et lui demander de les trier par catégories logiques.
+      </p>
+      <div class="callout">
+        <strong>Exemples concrets :</strong><br/>
+        • <strong>Clustering :</strong> Regrouper des clients similaires pour le marketing ciblé<br/>
+        • <strong>Détection d'anomalies :</strong> Identifier des transactions bancaires frauduleuses<br/>
+        • <strong>Réduction de dimension :</strong> Compresser des données complexes en visualisations compréhensibles
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎮 Apprentissage par renforcement : l'aventurier</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le troisième type d'apprentissage fonctionne par <strong>essai-erreur</strong>. Un agent interagit avec un environnement, reçoit des récompenses quand il fait de bons choix et des pénalités quand il se trompe. Il affine progressivement sa stratégie pour maximiser sa récompense totale. C'est ainsi qu'AlphaGo a appris à battre les meilleurs joueurs de Go en jouant des millions de parties contre lui-même.
+      </p>
+
+      <div class="callout ok">
+        <strong>Résumé comparatif :</strong><br/>
+        <strong style="color:var(--neon-blue)">Supervisé</strong> = "Voici les réponses, apprends les règles"<br/>
+        <strong style="color:var(--neon-pink)">Non supervisé</strong> = "Trouve les patterns toi-même"<br/>
+        <strong style="color:var(--neon-purple)">Renforcement</strong> = "Essaie, je te dirai si c'est bien ou mal"
+      </div>
+    `
+  },
+  /* ---- LEÇON 4 ---- */
+  {
+    title:"04 — Poids, ajustement et optimisation",
+    kicker:"Comment un réseau de neurones ajuste des milliards de paramètres pour apprendre.",
+    html:`
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚖️ Les poids : les boutons de réglage de l'IA</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un réseau de neurones est constitué de millions, voire de milliards de <strong>poids</strong> (ou paramètres). Chaque poids est un simple nombre décimal (comme 0.347 ou -1.208) qui influence la façon dont le réseau traite l'information. Entraîner un modèle, c'est ajuster tous ces poids pour que le réseau donne les bonnes réponses.
+      </p>
+
+      <div class="callout">
+        <strong>Analogie :</strong> Imaginez un immense tableau de bord avec des milliards de boutons rotatifs. Chaque bouton contrôle un aspect infime du comportement du modèle. L'entraînement consiste à tourner chaque bouton, micro-ajustement par micro-ajustement, jusqu'à ce que l'ensemble produise les résultats souhaités.
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="text-align:center">
+          <strong style="color:var(--neon-blue)">GPT-3</strong><br/>175 milliards de paramètres
+        </div>
+        <div class="callout" style="text-align:center">
+          <strong style="color:var(--neon-pink)">GPT-4</strong><br/>~1 760 milliards estimés
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📉 La descente de gradient : trouver le chemin optimal</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La <strong>fonction de perte</strong> (loss function) mesure à quel point le modèle se trompe. L'objectif de l'entraînement est de <strong>minimiser cette erreur</strong>. Pour cela, on utilise un algorithme appelé <strong>descente de gradient</strong> : à chaque étape, on calcule dans quelle direction ajuster les poids pour réduire l'erreur, puis on fait un petit pas dans cette direction.
+      </p>
+
+      <div class="callout ok">
+        <strong>Analogie :</strong> Imaginez que vous êtes perdu dans un brouillard épais sur une montagne et que vous cherchez la vallée (le minimum d'erreur). Vous ne voyez pas le paysage global, mais vous pouvez sentir la pente sous vos pieds. À chaque pas, vous descendez dans la direction la plus pentue. C'est exactement ce que fait la descente de gradient.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Epochs et learning rate</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Une <strong>epoch</strong> correspond à un passage complet à travers toutes les données d'entraînement. Un modèle est typiquement entraîné sur plusieurs dizaines d'epochs. Le <strong>learning rate</strong> (taux d'apprentissage) contrôle la taille des pas : trop grand, le modèle oscille et rate l'optimum ; trop petit, l'entraînement prend une éternité.
+      </p>
+
+      <div class="callout warn">
+        <strong>Piège courant :</strong> Plus d'epochs ne signifie pas toujours un meilleur modèle. Au-delà d'un certain point, le modèle commence à <em>mémoriser</em> les données d'entraînement plutôt qu'à apprendre des règles générales. C'est le <strong>surapprentissage</strong>, que nous verrons dans la leçon 06.
+      </div>
+    `
+  },
+  /* ---- LEÇON 5 ---- */
+  {
+    title:"05 — Quand les données mentent : biais et déséquilibres",
+    kicker:"Les données reflètent le monde tel qu'il est — avec ses injustices.",
+    html:`
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚠️ Le biais, ennemi invisible de l'IA</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un modèle d'IA n'est jamais meilleur que les données sur lesquelles il a été entraîné. Si ces données contiennent des <strong>biais</strong> — des déséquilibres, des préjugés historiques, des représentations inégales — le modèle les apprendra et les reproduira fidèlement, souvent à une échelle bien plus grande que les humains ne l'auraient fait.
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Cas réels qui ont fait scandale</h3>
+
+      <div class="callout pink">
+        <strong>Amazon (2018) — Recrutement biaisé</strong><br/>
+        Amazon a développé un outil de recrutement basé sur l'IA, entraîné sur 10 ans de CV reçus. Problème : la majorité des candidats étaient des hommes (reflet de l'industrie tech). Le modèle a appris à <strong>pénaliser systématiquement</strong> les CV contenant le mot "femmes" (ex : "capitaine de l'équipe féminine de football") ou provenant de certaines universités féminines. Amazon a dû abandonner l'outil.
+      </div>
+
+      <div class="callout pink">
+        <strong>COMPAS (2016) — Justice prédictive</strong><br/>
+        Le logiciel COMPAS, utilisé par des tribunaux américains pour prédire le risque de récidive, a été analysé par ProPublica. Résultat : il était <strong>2 fois plus susceptible</strong> de faussement classer les accusés noirs comme "à haut risque" par rapport aux accusés blancs, même à niveau de risque réel comparable.
+      </div>
+
+      <div class="callout pink">
+        <strong>Google Photos (2015) — Classification raciste</strong><br/>
+        L'algorithme de reconnaissance d'images de Google Photos a classifié des photos de personnes noires comme "gorilles". Cette erreur dramatique était due à un <strong>jeu de données d'entraînement insuffisamment diversifié</strong>, sous-représentant les personnes à peau foncée.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔎 Les types de biais</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout"><strong>Biais historique</strong><br/>Les données reflètent les discriminations passées (ex : moins de femmes PDG → l'IA associe "PDG" à "homme")</div>
+        <div class="callout"><strong>Biais de représentation</strong><br/>Certains groupes sont sous-représentés dans les données (ex : peu de photos de personnes âgées asiatiques)</div>
+        <div class="callout"><strong>Biais de mesure</strong><br/>Les données sont collectées différemment selon les groupes (ex : plus de contrôles policiers dans certains quartiers)</div>
+        <div class="callout"><strong>Biais d'étiquetage</strong><br/>Les annotateurs humains projettent leurs propres préjugés dans les étiquettes qu'ils attribuent</div>
+      </div>
+
+      <div class="callout ok">
+        <strong>À retenir :</strong> Le biais n'est pas un bug technique qu'on peut simplement "corriger" dans le code. C'est un problème <strong>structurel</strong> qui nécessite d'interroger les données elles-mêmes, leur provenance, leur représentativité, et les choix humains qui ont présidé à leur collecte.
+      </div>
+    `
+  },
+  /* ---- LEÇON 6 ---- */
+  {
+    title:"06 — Surapprentissage : quand l'IA apprend trop bien",
+    kicker:"Mémoriser n'est pas comprendre. Le piège de la performance trompeuse.",
+    html:`
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📈 Le paradoxe : trop bien apprendre, c'est mal apprendre</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le <strong>surapprentissage</strong> (overfitting) est l'un des problèmes les plus courants en machine learning. Il se produit lorsqu'un modèle <strong>mémorise</strong> les données d'entraînement au lieu d'en extraire des règles générales. Le modèle obtient d'excellents résultats sur les données qu'il connaît, mais échoue lamentablement sur des données nouvelles.
+      </p>
+
+      <div class="callout ok">
+        <strong>Analogie :</strong> Un élève qui apprend par cœur les réponses d'un examen passé. Il obtient 100% en s'auto-testant sur les mêmes questions. Mais face à un nouvel examen avec des questions différentes, il échoue car il n'a pas vraiment compris les concepts sous-jacents.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Training accuracy vs Validation accuracy</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Pour détecter le surapprentissage, on divise les données en deux ensembles : les données d'<strong>entraînement</strong> (sur lesquelles le modèle apprend) et les données de <strong>validation</strong> (qu'il n'a jamais vues, et qui servent à tester sa capacité de généralisation).
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le signal d'alerte typique du surapprentissage : la précision sur les données d'entraînement continue de monter (95%, 97%, 99%...) tandis que la précision sur les données de validation <strong>stagne ou baisse</strong>. Les deux courbes divergent — c'est le signe que le modèle mémorise au lieu d'apprendre.
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🛡️ Comment lutter contre le surapprentissage ?</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout"><strong>Plus de données</strong><br/>Plus le jeu d'entraînement est grand et diversifié, plus il est difficile de le mémoriser</div>
+        <div class="callout"><strong>Modèle plus simple</strong><br/>Réduire la complexité du modèle (moins de couches, moins de paramètres)</div>
+        <div class="callout"><strong>Regularisation</strong><br/>Techniques mathématiques qui pénalisent les poids extrêmes (L1, L2, Dropout)</div>
+        <div class="callout"><strong>Early stopping</strong><br/>Arrêter l'entraînement dès que la performance de validation commence à baisser</div>
+      </div>
+
+      <div class="callout warn">
+        <strong>L'inverse existe aussi :</strong> Le <strong>sous-apprentissage</strong> (underfitting) se produit quand le modèle est trop simple pour capturer les patterns des données. Il échoue sur les données d'entraînement ET de validation. Le défi est de trouver le juste milieu entre sous-apprentissage et surapprentissage.
+      </div>
+    `
+  },
+  /* ---- LEÇON 7 ---- */
+  {
+    title:"07 — Vers un apprentissage responsable",
+    kicker:"Auditer, équilibrer, tester : les bonnes pratiques pour une IA de confiance.",
+    html:`
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🌱 Construire une IA de confiance</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Face aux risques de biais, de surapprentissage et de données de mauvaise qualité, la communauté scientifique et l'industrie ont développé un ensemble de <strong>bonnes pratiques</strong> pour un apprentissage plus responsable. Ces pratiques ne sont pas optionnelles : elles sont devenues essentielles pour déployer des systèmes d'IA fiables et équitables.
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Les piliers de l'apprentissage responsable</h3>
+
+      <div class="callout">
+        <strong>1. Auditer les données avant l'entraînement</strong><br/>
+        Inspecter systématiquement les jeux de données : d'où viennent-ils ? Qui les a annotés ? Quels groupes sont représentés ou sous-représentés ? Les <strong>"Datasheets for Datasets"</strong> (Gebru et al., 2018) proposent un format standardisé pour documenter ces informations.
+      </div>
+
+      <div class="callout">
+        <strong>2. Équilibrer les datasets</strong><br/>
+        S'assurer que toutes les catégories, tous les groupes démographiques, toutes les situations sont représentés de manière équitable. Utiliser des techniques comme le <strong>suréchantillonnage</strong> des classes minoritaires ou le <strong>sous-échantillonnage</strong> des classes majoritaires.
+      </div>
+
+      <div class="callout">
+        <strong>3. Tester contre les biais</strong><br/>
+        Évaluer systématiquement les performances du modèle sur différents sous-groupes. Les <strong>"Model Cards"</strong> (Mitchell et al., 2019) documentent les performances du modèle ventilées par genre, ethnie, âge, etc.
+      </div>
+
+      <div class="callout">
+        <strong>4. Maintenir une supervision humaine</strong><br/>
+        Le principe du <strong>"human-in-the-loop"</strong> : pour les décisions critiques (justice, santé, emploi), un humain doit toujours pouvoir vérifier, comprendre et invalider la décision de l'IA.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🇪🇺 Le cadre réglementaire émerge</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        L'<strong>AI Act européen</strong> (2024) classe les systèmes d'IA par niveau de risque et impose des exigences strictes pour les systèmes à haut risque : transparence des données d'entraînement, documentation technique, tests de biais, supervision humaine obligatoire. C'est le premier cadre réglementaire complet au monde dédié à l'IA.
+      </p>
+
+      <div class="callout ok">
+        <strong>Votre rôle en tant que citoyen :</strong><br/>
+        • Questionnez les résultats de l'IA — ne les acceptez pas aveuglément<br/>
+        • Demandez de la transparence sur les données utilisées<br/>
+        • Signalez les biais que vous observez<br/>
+        • Soutenez les initiatives d'IA éthique et responsable
+      </div>
+    `
+  },
+  /* ---- LEÇON 8 (MISSION) ---- */
+  {
+    title:"🔬 Expériences SYNAPTIK — Mission",
+    kicker:"Mettez en pratique vos connaissances dans 4 expériences de laboratoire.",
+    html:`
+      <div class="pill" style="border-color:var(--neon-green)">MISSION</div>
+      <div class="pill">4 EXPÉRIENCES</div>
+      <div class="divider"></div>
+
+      <div class="callout ok">
+        <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px">
+          <img src="images/module2-supervisor.png" alt="Dr. Nakamura" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--neon-green);object-fit:cover;background:rgba(0,255,136,.1)"/>
+          <div>
+            <strong style="color:var(--neon-green)">Dr. Iris Nakamura</strong><br/>
+            <span style="color:var(--muted);font-size:0.9em">Directrice du laboratoire SYNAPTIK</span>
+          </div>
+        </div>
+        <p style="line-height:1.7">
+          "Bienvenue dans notre laboratoire. Vous allez réaliser 4 expériences qui mettront à l'épreuve tout ce que vous avez appris sur l'apprentissage machine, les données et les biais. Complétez les 4 expériences, puis passez l'évaluation finale pour obtenir votre attestation."
+        </p>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin:25px 0 15px">Choisissez une expérience :</h3>
+      <div class="exp-grid" id="exp-grid">
+        <div class="exp-card" id="exp-card-1" onclick="startExperiment(1)">
+          <div class="exp-icon">🧪</div>
+          <div class="exp-num">EXP. 01</div>
+          <div class="exp-name">Le Dataset Builder</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Construisez un jeu d'entraînement équilibré</div>
+        </div>
+        <div class="exp-card" id="exp-card-2" onclick="startExperiment(2)">
+          <div class="exp-icon">🔍</div>
+          <div class="exp-num">EXP. 02</div>
+          <div class="exp-name">Le Biais Caché</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Identifiez le biais dans un dataset de recrutement</div>
+        </div>
+        <div class="exp-card" id="exp-card-3" onclick="startExperiment(3)">
+          <div class="exp-icon">📊</div>
+          <div class="exp-num">EXP. 03</div>
+          <div class="exp-name">Le Labo Overfitting</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Trouvez l'équilibre parfait pour éviter le surapprentissage</div>
+        </div>
+        <div class="exp-card" id="exp-card-4" onclick="startExperiment(4)">
+          <div class="exp-icon">⚖️</div>
+          <div class="exp-num">EXP. 04</div>
+          <div class="exp-name">Le Dilemme Éthique</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Faites face à un choix moral sur l'utilisation des données</div>
+        </div>
+      </div>
+
+      <div id="exp-zone" style="margin-top:25px"></div>
+
+      <div id="quiz-zone" style="display:none;margin-top:25px"></div>
+    `,
+    init: function(){ updateExpCards(); }
+  }
+];
+
+/* =========================================================
+   EXPÉRIENCES
+========================================================= */
+function updateExpCards(){
+  [1,2,3,4].forEach(i=>{
+    const card=document.getElementById('exp-card-'+i);
+    if(card && state.expDone.has(i)) card.classList.add('done');
+  });
+}
+
+function startExperiment(id){
+  const zone=$('exp-zone');
+  if(id===1) renderExp1(zone);
+  else if(id===2) renderExp2(zone);
+  else if(id===3) renderExp3(zone);
+  else if(id===4) renderExp4(zone);
+  zone.scrollIntoView({behavior:'smooth'});
+}
+
+function completeExperiment(id){
+  state.expDone.add(id);
+  updateExpCards();
+  toast("Expérience "+id+" terminée !");
+  if(state.expDone.size===4){
+    setTimeout(()=>{
+      toast("Toutes les expériences sont terminées ! Passez au quiz ci-dessous.",3500);
+      showQuiz();
+    },1500);
+  }
+}
+
+/* ---- EXP 1 : DATASET BUILDER ---- */
+const dataItems=[
+  {id:1,type:'cat',emoji:'🐱'},{id:2,type:'cat',emoji:'🐱'},{id:3,type:'cat',emoji:'🐱'},{id:4,type:'cat',emoji:'🐱'},
+  {id:5,type:'dog',emoji:'🐶'},{id:6,type:'dog',emoji:'🐶'},{id:7,type:'dog',emoji:'🐶'},{id:8,type:'dog',emoji:'🐶'},
+  {id:9,type:'bird',emoji:'🐦'},{id:10,type:'bird',emoji:'🐦'},{id:11,type:'bird',emoji:'🐦'},{id:12,type:'bird',emoji:'🐦'},
+  {id:13,type:'fish',emoji:'🐟'},{id:14,type:'fish',emoji:'🐟'},{id:15,type:'fish',emoji:'🐟'},{id:16,type:'fish',emoji:'🐟'},
+];
+let exp1Selected=new Set();
+
+function renderExp1(zone){
+  exp1Selected.clear();
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🧪 EXP. 01 — Le Dataset Builder</h3>
+      <p style="margin-bottom:15px;line-height:1.6">Sélectionnez des images pour construire votre jeu d'entraînement. Pour que le modèle apprenne bien, votre dataset doit être <strong>équilibré</strong> (autant d'exemples de chaque catégorie) et <strong>suffisamment grand</strong>.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0" id="exp1-pool">
+        ${dataItems.map(d=>`<div class="data-item" data-id="${d.id}" onclick="toggleDataItem(${d.id})">${d.emoji}</div>`).join('')}
+      </div>
+
+      <div style="margin:15px 0">
+        <div style="display:flex;justify-content:space-between;font-size:0.85em;color:var(--muted);margin-bottom:8px">
+          <span>Sélectionnés : <span id="exp1-count">0</span>/16</span>
+          <span>Équilibre : <span id="exp1-balance">—</span></span>
+        </div>
+        <div class="accuracy-bar"><div class="accuracy-fill" id="exp1-balance-bar" style="width:0;background:var(--neon-blue)"></div></div>
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:center;margin:20px 0">
+        <button class="btn green" onclick="trainExp1()">Entraîner le modèle</button>
+        <button class="btn pink" onclick="renderExp1($('exp-zone'))">Réinitialiser</button>
+      </div>
+
+      <div id="exp1-result"></div>
+    </div>`;
+}
+
+function toggleDataItem(id){
+  if(exp1Selected.has(id)) exp1Selected.delete(id); else exp1Selected.add(id);
+  document.querySelectorAll('.data-item').forEach(el=>{
+    el.classList.toggle('selected',exp1Selected.has(parseInt(el.dataset.id)));
+  });
+  const counts={cat:0,dog:0,bird:0,fish:0};
+  exp1Selected.forEach(sid=>{const d=dataItems.find(x=>x.id===sid);if(d)counts[d.type]++});
+  $('exp1-count').textContent=exp1Selected.size;
+  const vals=Object.values(counts).filter(v=>v>0);
+  const balance=vals.length>0?Math.min(...vals)/Math.max(...vals):0;
+  $('exp1-balance').textContent=Math.round(balance*100)+'%';
+  $('exp1-balance-bar').style.width=Math.round(balance*100)+'%';
+  $('exp1-balance-bar').style.background=balance>0.7?'var(--neon-green)':balance>0.4?'var(--warn)':'var(--danger)';
+}
+
+function trainExp1(){
+  if(exp1Selected.size<4){toast("Sélectionnez au moins 4 images pour entraîner.");return}
+  const counts={cat:0,dog:0,bird:0,fish:0};
+  exp1Selected.forEach(sid=>{const d=dataItems.find(x=>x.id===sid);if(d)counts[d.type]++});
+  const total=exp1Selected.size;
+  const vals=Object.values(counts).filter(v=>v>0);
+  const balance=vals.length>0?Math.min(...vals)/Math.max(...vals):0;
+  const typesUsed=vals.length;
+  const accuracy=Math.min(96,35+balance*35+Math.min(total,12)*2+typesUsed*5);
+  const isGood=accuracy>=75&&balance>=0.6;
+
+  $('exp1-result').innerHTML=`
+    <div class="callout ${isGood?'ok':'warn'}" style="margin-top:15px">
+      <h4 style="color:${isGood?'var(--neon-green)':'var(--warn)'};margin-bottom:10px">${isGood?'Excellent résultat !':'Résultat insuffisant'}</h4>
+      <p style="margin-bottom:10px">Précision du modèle : <strong style="font-size:1.3em;color:${isGood?'var(--neon-green)':'var(--warn)'}">${Math.round(accuracy)}%</strong></p>
+      <div class="accuracy-bar"><div class="accuracy-fill" style="width:${accuracy}%;background:${isGood?'var(--neon-green)':'var(--warn)'}"><span class="accuracy-label">${Math.round(accuracy)}%</span></div></div>
+      <p style="margin-top:12px;line-height:1.6;font-size:0.9em">${isGood
+        ?'Votre dataset était équilibré et diversifié. Le modèle a appris à distinguer correctement les différentes catégories sans biais.'
+        :'Le dataset manque d\'équilibre ou de diversité. Le modèle a tendance à favoriser les catégories surreprésentées. Essayez avec un dataset plus équilibré !'
+      }</p>
+      ${isGood?'<button class="btn green" onclick="completeExperiment(1)" style="margin-top:15px">Valider l\'expérience ✓</button>':'<button class="btn" onclick="renderExp1($(\'exp-zone\'))" style="margin-top:15px">Réessayer</button>'}
+    </div>`;
+}
+
+/* ---- EXP 2 : BIAIS CACHÉ ---- */
+const cvData=[
+  {nom:'Thomas D.',age:34,exp:'8 ans',diplome:'Master',genre:'M',resultat:'Accepté'},
+  {nom:'Sophie M.',age:31,exp:'7 ans',diplome:'Master',genre:'F',resultat:'Refusé'},
+  {nom:'Pierre L.',age:28,exp:'4 ans',diplome:'Licence',genre:'M',resultat:'Accepté'},
+  {nom:'Marie K.',age:35,exp:'10 ans',diplome:'Doctorat',genre:'F',resultat:'Refusé'},
+  {nom:'Lucas R.',age:26,exp:'3 ans',diplome:'Licence',genre:'M',resultat:'Accepté'},
+  {nom:'Julie B.',age:29,exp:'6 ans',diplome:'Master',genre:'F',resultat:'Accepté'},
+  {nom:'Antoine V.',age:40,exp:'15 ans',diplome:'Master',genre:'M',resultat:'Accepté'},
+  {nom:'Claire H.',age:33,exp:'9 ans',diplome:'Doctorat',genre:'F',resultat:'Refusé'},
+  {nom:'Marc F.',age:30,exp:'5 ans',diplome:'Licence',genre:'M',resultat:'Accepté'},
+  {nom:'Emma G.',age:27,exp:'4 ans',diplome:'Master',genre:'F',resultat:'Refusé'},
+];
+let exp2Found=false;
+
+function renderExp2(zone){
+  exp2Found=false;
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🔍 EXP. 02 — Le Biais Caché</h3>
+      <p style="margin-bottom:15px;line-height:1.6">Ce dataset de recrutement a été utilisé pour entraîner une IA de tri de CV. Analysez les données et <strong>cliquez sur l'en-tête de la colonne</strong> qui contient un biais discriminatoire.</p>
+
+      <div style="overflow-x:auto">
+        <table class="cv-table">
+          <tr>
+            <th onclick="analyzeColumn('nom')">Nom</th>
+            <th onclick="analyzeColumn('age')">Âge</th>
+            <th onclick="analyzeColumn('exp')">Expérience</th>
+            <th onclick="analyzeColumn('diplome')">Diplôme</th>
+            <th onclick="analyzeColumn('genre')">Genre</th>
+            <th>Résultat IA</th>
+          </tr>
+          ${cvData.map(cv=>`<tr>
+            <td>${cv.nom}</td><td>${cv.age}</td><td>${cv.exp}</td><td>${cv.diplome}</td><td>${cv.genre}</td>
+            <td class="${cv.resultat==='Accepté'?'accepted':'rejected'}">${cv.resultat}</td>
+          </tr>`).join('')}
+        </table>
+      </div>
+
+      <div id="exp2-result" style="margin-top:15px"></div>
+    </div>`;
+}
+
+function analyzeColumn(col){
+  if(exp2Found)return;
+  const headers=document.querySelectorAll('.cv-table th');
+  headers.forEach(h=>h.classList.remove('highlight'));
+
+  if(col==='genre'){
+    exp2Found=true;
+    headers[4].classList.add('highlight');
+    const mAccepted=cvData.filter(c=>c.genre==='M'&&c.resultat==='Accepté').length;
+    const mTotal=cvData.filter(c=>c.genre==='M').length;
+    const fAccepted=cvData.filter(c=>c.genre==='F'&&c.resultat==='Accepté').length;
+    const fTotal=cvData.filter(c=>c.genre==='F').length;
+    $('exp2-result').innerHTML=`
+      <div class="callout ok">
+        <h4 style="color:var(--neon-green);margin-bottom:10px">Biais identifié : Genre !</h4>
+        <p style="line-height:1.6;margin-bottom:12px">
+          <strong>Hommes acceptés :</strong> ${mAccepted}/${mTotal} (${Math.round(mAccepted/mTotal*100)}%)<br/>
+          <strong>Femmes acceptées :</strong> ${fAccepted}/${fTotal} (${Math.round(fAccepted/fTotal*100)}%)
+        </p>
+        <p style="line-height:1.6;font-size:0.9em">Le modèle a appris un biais de genre à partir de données historiques déséquilibrées. Des femmes avec plus d'expérience et de diplômes que certains hommes sont rejetées. C'est exactement le problème rencontré par Amazon en 2018.</p>
+        <button class="btn green" onclick="completeExperiment(2)" style="margin-top:15px">Valider l'expérience ✓</button>
+      </div>`;
+  } else {
+    const colIdx={nom:0,age:1,exp:2,diplome:3}[col];
+    if(colIdx!==undefined) headers[colIdx].classList.add('highlight');
+    $('exp2-result').innerHTML=`
+      <div class="callout warn">
+        <p>La colonne <strong>"${col}"</strong> ne montre pas de corrélation significative avec les décisions de l'IA. Cherchez une variable qui sépare clairement acceptés et refusés...</p>
+      </div>`;
+    setTimeout(()=>{headers.forEach(h=>h.classList.remove('highlight'))},2000);
+  }
+}
+
+/* ---- EXP 3 : LABO OVERFITTING ---- */
+function renderExp3(zone){
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">📊 EXP. 03 — Le Labo Overfitting</h3>
+      <p style="margin-bottom:15px;line-height:1.6">Ajustez les 3 paramètres pour obtenir un modèle qui <strong>généralise bien</strong> : la précision de validation doit être élevée (>75%) ET l'écart avec la précision d'entraînement doit être faible (<15%).</p>
+
+      <div class="slider-group">
+        <label>Epochs (passes sur les données) : <span id="val-epochs">10</span></label>
+        <input type="range" min="1" max="100" value="10" oninput="$('val-epochs').textContent=this.value;updateOverfitCurves()"/>
+      </div>
+      <div class="slider-group">
+        <label>Complexité du modèle : <span id="val-complexity">3</span>/10</label>
+        <input type="range" min="1" max="10" value="3" oninput="$('val-complexity').textContent=this.value;updateOverfitCurves()"/>
+      </div>
+      <div class="slider-group">
+        <label>Taille du dataset : <span id="val-datasize">200</span></label>
+        <input type="range" min="50" max="2000" value="200" step="50" oninput="$('val-datasize').textContent=this.value;updateOverfitCurves()"/>
+      </div>
+
+      <div style="margin:20px 0">
+        <div style="display:flex;justify-content:space-between;font-size:0.85em;margin-bottom:6px">
+          <span style="color:var(--neon-green)">Précision Entraînement : <span id="train-acc">—</span></span>
+          <span style="color:var(--neon-pink)">Précision Validation : <span id="val-acc">—</span></span>
+        </div>
+        <div class="accuracy-bar"><div class="accuracy-fill" id="train-bar" style="width:0;background:var(--neon-green)"><span class="accuracy-label" id="train-lbl"></span></div></div>
+        <div class="accuracy-bar"><div class="accuracy-fill" id="val-bar" style="width:0;background:var(--neon-pink)"><span class="accuracy-label" id="val-lbl"></span></div></div>
+        <div style="font-size:0.85em;color:var(--muted);margin-top:8px">Écart : <span id="gap-val">—</span></div>
+      </div>
+
+      <div id="exp3-result"></div>
+    </div>`;
+  updateOverfitCurves();
+}
+
+function updateOverfitCurves(){
+  const sliders=document.querySelectorAll('.slider-group input[type=range]');
+  if(sliders.length<3)return;
+  const epochs=parseInt(sliders[0].value);
+  const complexity=parseInt(sliders[1].value);
+  const datasize=parseInt(sliders[2].value);
+
+  // Training accuracy: increases with epochs and complexity
+  const trainAcc=Math.min(99,40+Math.log(epochs+1)*12+complexity*4);
+  // Overfitting risk
+  const overfitRisk=(epochs*complexity*0.8)/(datasize*0.05+10);
+  // Validation accuracy: peaks then drops with overfitting
+  const valAcc=Math.max(25,Math.min(trainAcc-2,85+Math.min(datasize/500,8)-overfitRisk*3));
+  const gap=Math.abs(trainAcc-valAcc);
+  const isGood=valAcc>=75&&gap<15;
+
+  $('train-acc').textContent=Math.round(trainAcc)+'%';
+  $('val-acc').textContent=Math.round(valAcc)+'%';
+  $('train-bar').style.width=trainAcc+'%';
+  $('val-bar').style.width=Math.max(0,valAcc)+'%';
+  $('train-lbl').textContent=Math.round(trainAcc)+'%';
+  $('val-lbl').textContent=Math.round(valAcc)+'%';
+  $('gap-val').textContent=Math.round(gap)+'%';
+  $('gap-val').style.color=gap<15?'var(--neon-green)':gap<25?'var(--warn)':'var(--danger)';
+
+  $('exp3-result').innerHTML=isGood?`
+    <div class="callout ok" style="margin-top:15px">
+      <h4 style="color:var(--neon-green);margin-bottom:10px">Excellent ! Le modèle généralise bien.</h4>
+      <p style="line-height:1.6;font-size:0.9em">Précision de validation élevée (${Math.round(valAcc)}%) avec un écart faible (${Math.round(gap)}%). Vous avez trouvé le bon équilibre entre complexité, quantité de données et durée d'entraînement.</p>
+      <button class="btn green" onclick="completeExperiment(3)" style="margin-top:15px">Valider l'expérience ✓</button>
+    </div>`:
+    (gap>=15?`<div class="callout warn" style="margin-top:15px"><p>L'écart entre entraînement et validation est trop grand (${Math.round(gap)}%). Le modèle est en <strong>surapprentissage</strong>. Essayez : moins d'epochs, modèle moins complexe, ou plus de données.</p></div>`:
+    valAcc<75?`<div class="callout warn" style="margin-top:15px"><p>La précision de validation est trop basse (${Math.round(valAcc)}%). Le modèle est en <strong>sous-apprentissage</strong>. Essayez : plus d'epochs, modèle plus complexe, ou plus de données.</p></div>`:'');
+}
+
+/* ---- EXP 4 : DILEMME ÉTHIQUE ---- */
+let exp4Step=0;
+function renderExp4(zone){
+  exp4Step=0;
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">⚖️ EXP. 04 — Le Dilemme Éthique</h3>
+      <div class="callout ok" style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:15px;margin-bottom:12px">
+          <img src="images/module2-supervisor.png" alt="Dr. Nakamura" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--neon-green);object-fit:cover;background:rgba(0,255,136,.1)"/>
+          <strong style="color:var(--neon-green)">Dr. Nakamura — Message urgent</strong>
+        </div>
+        <p style="line-height:1.7">"Un client majeur, la banque MegaFinance, nous demande de développer un modèle de scoring crédit. Ils nous fournissent leur dataset historique. En l'analysant, vous découvrez que le code postal est fortement corrélé à l'ethnie des demandeurs, et que le modèle utilise cette variable pour discriminer certains quartiers."</p>
+      </div>
+
+      <h4 style="color:var(--neon-pink);margin-bottom:15px">Que décidez-vous ?</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px" id="exp4-choices">
+        <div class="exp-card" onclick="exp4Choose('accept')" style="border-color:rgba(255,0,128,.4)">
+          <div class="exp-icon">💰</div>
+          <div class="exp-name" style="color:var(--neon-pink)">Accepter tel quel</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">"Le client veut ce modèle, et le contrat vaut 2M€. Ce n'est pas notre faute si les données reflètent la réalité."</div>
+        </div>
+        <div class="exp-card" onclick="exp4Choose('refuse')" style="border-color:rgba(0,255,136,.4)">
+          <div class="exp-icon">🛡️</div>
+          <div class="exp-name" style="color:var(--neon-green)">Proposer une alternative</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">"Signaler le biais au client et proposer un modèle corrigé qui exclut les variables proxy discriminatoires."</div>
+        </div>
+      </div>
+
+      <div id="exp4-result" style="margin-top:20px"></div>
+    </div>`;
+}
+
+function exp4Choose(choice){
+  const result=$('exp4-result');
+  if(choice==='accept'){
+    result.innerHTML=`
+      <div class="callout pink">
+        <h4 style="color:var(--neon-pink);margin-bottom:10px">Conséquences de votre choix</h4>
+        <p style="line-height:1.7;margin-bottom:12px">Six mois plus tard, une enquête journalistique révèle que le modèle de MegaFinance refuse systématiquement les prêts aux habitants de certains quartiers à majorité ethnique. Le scandale fait la une. SYNAPTIK est mis en cause pour avoir fourni un outil discriminatoire.</p>
+        <ul style="line-height:1.8;margin:12px 0 12px 20px">
+          <li>Amende de 5M€ de l'autorité de régulation</li>
+          <li>Perte de réputation majeure pour SYNAPTIK</li>
+          <li>Des milliers de personnes injustement privées de crédit</li>
+        </ul>
+        <p style="line-height:1.7;font-size:0.9em;font-style:italic">Le gain à court terme (2M€) a coûté bien plus cher que la perte. Et surtout, des vies réelles ont été impactées par cette décision.</p>
+        <button class="btn" onclick="renderExp4($('exp-zone'))" style="margin-top:15px">Recommencer</button>
+      </div>`;
+  } else {
+    result.innerHTML=`
+      <div class="callout ok">
+        <h4 style="color:var(--neon-green);margin-bottom:10px">Conséquences de votre choix</h4>
+        <p style="line-height:1.7;margin-bottom:12px">Vous présentez votre analyse de biais au client avec des recommandations concrètes : retirer le code postal, auditer les corrélations proxy, rééquilibrer le dataset. MegaFinance est impressionnée par votre rigueur éthique.</p>
+        <ul style="line-height:1.8;margin:12px 0 12px 20px">
+          <li>Le client accepte un contrat élargi (3M€) incluant l'audit de biais</li>
+          <li>SYNAPTIK devient référence en IA éthique</li>
+          <li>Le modèle corrigé est plus équitable ET plus performant</li>
+        </ul>
+        <p style="line-height:1.7;font-size:0.9em;font-style:italic">"Un modèle éthique n'est pas un luxe, c'est un avantage compétitif." — Dr. Nakamura</p>
+        <button class="btn green" onclick="completeExperiment(4)" style="margin-top:15px">Valider l'expérience ✓</button>
+      </div>`;
+  }
+}
+
+/* =========================================================
+   QUIZ
+========================================================= */
+const quizQuestions=[
+  {q:"Que signifie \"apprendre\" pour une machine ?",opts:["Comprendre le monde comme un humain","Ajuster des paramètres numériques pour minimiser une erreur","Mémoriser toutes les données d'entraînement","Devenir consciente de son environnement"],correct:1,explain:"L'apprentissage machine est un processus d'optimisation mathématique : ajuster des poids pour réduire l'écart entre prédictions et réponses attendues."},
+  {q:"Quel principe résume l'importance de la qualité des données ?",opts:["More is better","Garbage In, Garbage Out","Data is the new oil","No data, no problem"],correct:1,explain:"Si les données d'entrée sont de mauvaise qualité (biaisées, incorrectes, non représentatives), le modèle produira des résultats de mauvaise qualité."},
+  {q:"Dans l'apprentissage supervisé, que fournit-on au modèle ?",opts:["Des données sans aucune indication","Des données avec les bonnes réponses (étiquettes)","Uniquement l'algorithme, pas de données","Des récompenses et des pénalités"],correct:1,explain:"L'apprentissage supervisé utilise des données étiquetées : chaque exemple est accompagné de la réponse correcte attendue."},
+  {q:"Qu'est-ce qu'un \"poids\" dans un réseau de neurones ?",opts:["La taille physique du serveur","Un nombre qui influence le traitement de l'information","Le coût financier de l'entraînement","La quantité de données nécessaire"],correct:1,explain:"Les poids sont des paramètres numériques (nombres décimaux) que le réseau ajuste pendant l'entraînement pour améliorer ses prédictions."},
+  {q:"Qu'est-ce que le surapprentissage (overfitting) ?",opts:["Le modèle n'a pas assez de données","Le modèle mémorise les données au lieu de généraliser","Le modèle est trop simple pour la tâche","Le modèle apprend trop lentement"],correct:1,explain:"Le surapprentissage se produit quand le modèle mémorise les exemples d'entraînement et échoue sur les données nouvelles."},
+  {q:"Quel scandale illustre le biais de genre dans l'IA de recrutement ?",opts:["Google Photos (2015)","COMPAS (2016)","Amazon Recruiting Tool (2018)","Tay Chatbot (2016)"],correct:2,explain:"En 2018, Amazon a découvert que son IA de recrutement, entraînée sur 10 ans de CV majoritairement masculins, pénalisait systématiquement les candidates féminines."},
+  {q:"Pourquoi la qualité des données est-elle souvent plus importante que la quantité ?",opts:["Parce que les ordinateurs ont une mémoire limitée","Parce que des données biaisées ou incorrectes produisent un modèle biaisé","Parce que plus de données coûte plus cher","Parce que les algorithmes ne peuvent pas traiter beaucoup de données"],correct:1,explain:"Le modèle Phi-2 de Microsoft montre qu'un dataset de haute qualité, même plus petit, peut produire de meilleurs résultats qu'un corpus massif de qualité médiocre."},
+  {q:"Qu'est-ce qu'un dataset \"équilibré\" ?",opts:["Un dataset qui contient exactement 1000 exemples","Un dataset où toutes les catégories sont représentées de manière proportionnée","Un dataset qui ne contient que des données numériques","Un dataset vérifié par un expert humain"],correct:1,explain:"Un dataset équilibré assure une représentation proportionnée de toutes les catégories et sous-groupes, évitant que le modèle favorise les groupes surreprésentés."},
+  {q:"Que proposent les \"Model Cards\" de Mitchell et al. ?",opts:["Un jeu de cartes pour apprendre l'IA","Un format de documentation des performances d'un modèle par sous-groupes","Une méthode d'entraînement plus rapide","Un outil de visualisation de réseaux de neurones"],correct:1,explain:"Les Model Cards documentent systématiquement les performances du modèle ventilées par genre, ethnie, âge, etc., pour détecter les disparités."},
+  {q:"Quelle est la meilleure approche face à un dataset biaisé ?",opts:["L'utiliser tel quel car il reflète la réalité","Supprimer toutes les données et recommencer","Auditer le biais, rééquilibrer et documenter les choix","Ignorer le problème car l'IA est objective"],correct:2,explain:"L'approche responsable consiste à identifier les biais, rééquilibrer le dataset, documenter les choix effectués, et tester le modèle contre les discriminations."},
+];
+
+function showQuiz(){
+  const zone=$('quiz-zone');
+  zone.style.display='block';
+  zone.innerHTML=`
+    <div class="divider" style="margin:30px 0"></div>
+    <h3 style="color:var(--neon-green);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 2</h3>
+    <p style="color:var(--muted);margin-bottom:20px">Répondez aux 10 questions pour obtenir votre attestation. Score minimum : 70%.</p>
+    <div id="quiz-questions">
+      ${quizQuestions.map((q,i)=>`
+        <div class="q-card" id="q-${i}">
+          <div class="q-head">
+            <span class="mono">Q${i+1}/${quizQuestions.length}</span>
+          </div>
+          <div class="q-text">${q.q}</div>
+          <div class="opts">
+            ${q.opts.map((o,j)=>`<div class="opt" data-q="${i}" data-o="${j}" onclick="answerQuiz(${i},${j})">${o}</div>`).join('')}
+          </div>
+          <div class="explain" id="explain-${i}">${q.explain}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:25px">
+      <button class="btn green" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px">Valider mes réponses</button>
+    </div>
+    <div id="quiz-result" style="margin-top:20px"></div>
+  `;
+  zone.scrollIntoView({behavior:'smooth'});
+}
+
+const quizAnswers={};
+function answerQuiz(qIdx,oIdx){
+  quizAnswers[qIdx]=oIdx;
+  document.querySelectorAll(`.opt[data-q="${qIdx}"]`).forEach(el=>{
+    el.classList.remove('selected');
+    if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
+  });
+}
+
+function submitQuiz(){
+  let score=0;
+  quizQuestions.forEach((q,i)=>{
+    const userAns=quizAnswers[i];
+    const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
+    opts.forEach(el=>{
+      const oIdx=parseInt(el.dataset.o);
+      el.style.pointerEvents='none';
+      if(oIdx===q.correct) el.classList.add('correct');
+      if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
+    });
+    if(userAns===q.correct) score++;
+    $('explain-'+i).classList.add('show');
+  });
+
+  const pct=Math.round(score/quizQuestions.length*100);
+  state.quizScore=score;state.quizTotal=quizQuestions.length;
+  finalScore=pct;
+
+  $('quiz-submit-btn').style.display='none';
+  $('quiz-result').innerHTML=`
+    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:30px">
+      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:15px">${pct>=70?'Félicitations !':'Score insuffisant'}</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">${pct>=70
+        ?'Vous avez démontré une solide compréhension de l\'apprentissage machine, des données et des biais. Votre attestation est débloquée !'
+        :'Il faut au moins 70% pour valider. Relisez les dossiers et réessayez.'
+      }</p>
+    </div>`;
+
+  if(pct>=70) unlockCertificate();
+}
+
+/* =========================================================
+   ATTESTATION
+========================================================= */
+function unlockCertificate(){
+  certificateUnlocked=true;
+  const navItem=$('certificate-nav-item');
+  if(navItem){
+    navItem.style.opacity='1';navItem.style.cursor='pointer';
+    navItem.style.background='';
+    const icon=navItem.querySelector('.nav-icon');if(icon)icon.textContent='🎓';
+    const num=navItem.querySelector('.nav-number');
+    if(num){num.style.background='rgba(0,255,136,0.2)';num.style.color='var(--neon-green)';num.textContent='✓';}
+  }
+  toast("🎓 Attestation débloquée ! Consultez l'onglet Attestation.",4000);
+}
+
+function showCertificateInFolder(){
+  if(!certificateUnlocked){
+    $('briefing-content').innerHTML=`
+      <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
+      <div class="module-kicker">Attestation verrouillée</div>
+      <div class="divider"></div>
+      <div class="callout warn" style="text-align:center;padding:40px 20px">
+        <div style="font-size:4em;margin-bottom:20px">🔒</div>
+        <h3 style="color:var(--neon-pink);margin-bottom:20px">Attestation verrouillée</h3>
+        <p style="margin-bottom:20px;line-height:1.8">Pour obtenir votre attestation, vous devez :</p>
+        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:500px;text-align:left">
+          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px"><span style="font-size:1.2em">1️⃣</span><span>Compléter les <strong>4 expériences</strong> SYNAPTIK</span></p>
+          <p style="display:flex;align-items:center;gap:10px"><span style="font-size:1.2em">2️⃣</span><span>Réussir le <strong>Quiz</strong> avec au moins <strong>70%</strong></span></p>
+        </div>
+        <button class="btn" onclick="showLesson(7)" style="margin-top:20px">🔬 Aller aux expériences</button>
+      </div>`;
+    return;
+  }
+
+  $('briefing-content').innerHTML=`
+    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
+    <div class="module-kicker">Module 2 — Données sous Influence</div>
+    <div class="divider"></div>
+    <div class="callout ok" style="text-align:center;padding:30px 20px">
+      <div style="font-size:3em;margin-bottom:15px">🎉</div>
+      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <p style="line-height:1.8;margin-bottom:15px">Vous avez terminé avec succès le <strong>Module 2 - Données sous Influence</strong>.</p>
+      <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:20px;margin:20px auto;max-width:400px">
+        <p style="margin-bottom:10px"><strong>Score certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span></p>
+        <p style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">Référence : IA-DATA-${String(Math.floor(Math.random()*90000)+10000)}</p>
+      </div>
+    </div>
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📜 Télécharger votre attestation</h3>
+    <div class="callout" style="padding:30px">
+      <p style="margin-bottom:20px;line-height:1.8">Renseignez votre nom pour générer votre attestation officielle.</p>
+      <div style="margin-bottom:15px">
+        <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue)">Nom sur l'attestation :</label>
+        <input id="certificate-name" type="text" placeholder="Prénom NOM" style="width:100%;max-width:500px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.2);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none"/>
+      </div>
+      <button class="btn green" onclick="downloadCertificate()" style="font-size:1.1em;padding:15px 40px;margin-top:15px">📥 Télécharger (HTML)</button>
+      <p style="margin-top:15px;color:#8899aa;font-size:0.9em">💡 Ouvrez le fichier HTML et utilisez Ctrl+P pour l'imprimer en PDF.</p>
+    </div>
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">✅ Compétences validées</h3>
+    <div class="callout"><ul style="line-height:2;margin-left:20px">
+      <li>Comprendre le processus d'apprentissage machine</li>
+      <li>Distinguer apprentissage supervisé, non supervisé et par renforcement</li>
+      <li>Identifier les biais dans un jeu de données</li>
+      <li>Détecter et corriger le surapprentissage</li>
+      <li>Construire un dataset équilibré</li>
+      <li>Appliquer les principes de l'IA responsable</li>
+    </ul></div>`;
+}
+
+function downloadCertificate(){
+  const name=($('certificate-name')?.value||'').trim()||'Participant';
+  const date=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Attestation - Module 2</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #00ff88;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(0,255,136,.3),inset 0 0 60px rgba(0,212,255,.1)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(0,212,255,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#00ff88,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#00d4ff;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(0,212,255,.3);border-bottom:1px solid rgba(0,212,255,.3)}
+.mod{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#00ff88;font-size:1.3em;font-weight:600;margin-bottom:10px}
+.sc{display:inline-block;background:linear-gradient(135deg,#00ff88,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:30px;border-top:1px solid rgba(0,212,255,.2)}
+.fi{text-align:center}.fl{color:#888;font-size:.85em;margin-bottom:5px}.fv{color:#00d4ff;font-weight:600}
+.sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px}
+.sk span{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:5px 15px;border-radius:15px;font-size:.85em;color:#00d4ff}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style></head><body><div class="cert"><div class="hd"><div class="logo">🧬🔬</div><div class="ttl">Attestation de Réussite</div><div class="sub">Formation IA Responsable</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 2 : Données sous Influence</div><p style="color:#b0b0b0;margin-top:10px">Apprentissage, Données & Biais — Laboratoires SYNAPTIK</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Apprentissage Machine</span><span>Données d'Entraînement</span><span>Biais & Équité</span><span>Surapprentissage</span><span>IA Responsable</span><span>Éthique des Données</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div></body></html>`;
+
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`Attestation_Module2_Donnees_sous_Influence_${name.replace(/\s+/g,'_')}.html`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast("✅ Attestation téléchargée !",4000);
+}
+
+</script>
+</body>
+</html>
