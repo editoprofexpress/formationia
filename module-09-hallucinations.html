@@ -579,51 +579,468 @@ function showLesson(idx){
    CONTENU DES LEÇONS — sera complété dans les phases suivantes
 ========================================================= */
 const lessons = [
-  /* Placeholder - Phase 2 ajoutera le contenu complet */
+  /* ---- LEÇON 1 ---- */
   {
     title:"01 — Qu'est-ce qu'une hallucination IA ?",
     kicker:"Quand l'intelligence artificielle invente des faits avec une assurance déconcertante.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <div class="pill">VERITAS NEWS</div><div class="pill">Module 9</div><div class="pill">Esprit Critique</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🧠 L'IA ne "sait" rien — elle prédit</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Quand vous posez une question à une IA comme ChatGPT, Claude ou Gemini, elle ne cherche pas la réponse dans une base de connaissances vérifiées. Elle <strong>génère une suite de mots probable</strong>, token par token, en se basant sur des patterns statistiques appris pendant son entraînement. C'est comme un autocomplete ultra-sophistiqué : elle prédit le mot suivant le plus vraisemblable, encore et encore, jusqu'à former une réponse complète.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff;margin-top:15px">
+        Le problème ? Ce processus peut produire du texte qui <strong>semble parfaitement vrai</strong> — grammaticalement correct, bien structuré, avec un ton expert — mais qui est <strong>factuellement faux</strong>. C'est ce qu'on appelle une <strong>hallucination</strong>.
+      </p>
+
+      <div class="callout ok">
+        <strong>Définition :</strong><br/>
+        <span style="font-family:'Space Mono',monospace;color:var(--neon-yellow)">Une hallucination IA est une réponse générée avec assurance qui contient des informations inventées, inexactes ou sans fondement, mais présentées comme des faits vérifiés.</span>
+      </div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🔬 Pourquoi le terme "hallucination" ?</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le terme est emprunté à la psychiatrie, où une hallucination désigne une perception sans objet réel. De la même façon, l'IA "perçoit" des faits qui n'existent pas et les présente comme réels. La métaphore est imparfaite — l'IA n'a ni perception ni conscience — mais elle capture bien l'idée d'une <strong>fabrication inconsciente de fausses informations</strong>.
+      </p>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">📊 Quelques chiffres qui donnent le vertige</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:15px 0">
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">📈</div>
+          <strong style="color:var(--neon-yellow)">3 à 27%</strong><br/>Taux d'hallucination moyen des LLM selon les études (varie selon le domaine et le modèle)
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">⚖️</div>
+          <strong style="color:var(--neon-yellow)">100%</strong><br/>d'assurance dans le ton — l'IA ne dit jamais "je ne suis pas sûr" spontanément
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">📚</div>
+          <strong style="color:var(--neon-yellow)">0</strong><br/>source réellement consultée au moment de la génération — l'IA n'accède pas à Internet en temps réel (sauf outils spécifiques)
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🏥</div>
+          <strong style="color:var(--neon-yellow)">Critique</strong><br/>En médecine, droit, finance — une hallucination peut avoir des conséquences graves
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>Attention :</strong> Le danger principal des hallucinations n'est pas qu'elles existent — c'est qu'elles sont <strong>indétectables sans vérification externe</strong>. Contrairement à un humain qui hésite, bafouille ou dit "je ne sais pas", l'IA affirme toujours avec la même assurance, qu'elle ait raison ou tort.
+      </div>
+    `
   },
+  /* ---- LEÇON 2 ---- */
   {
     title:"02 — Pourquoi l'IA hallucine",
     kicker:"Comprendre les mécanismes techniques derrière les erreurs de l'IA.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">⚙️ Le mécanisme fondamental : la prédiction probabiliste</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un modèle de langage (LLM) fonctionne en prédisant le prochain <strong>token</strong> (fragment de mot) le plus probable dans une séquence. Pour simplifier : il calcule, pour chaque mot possible, une probabilité d'apparition, puis en sélectionne un. Ce processus se répète des centaines ou des milliers de fois pour former une réponse.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff;margin-top:15px">
+        Le problème : la <strong>vraisemblance statistique</strong> n'est pas la <strong>vérité</strong>. Un enchaînement de mots peut être statistiquement probable sans être factuellement correct. "La Tour Eiffel mesure 412 mètres" est une phrase parfaitement plausible linguistiquement, mais fausse (elle mesure 330 m).
+      </p>
+
+      <div class="callout blue">
+        <strong>Analogie :</strong> Imaginez un perroquet extraordinairement doué qui aurait écouté toutes les conversations du monde. Il peut reformuler, synthétiser, combiner des idées avec éloquence. Mais il ne <strong>comprend</strong> pas ce qu'il dit. Il reproduit des patterns sonores convaincants, sans lien avec la réalité.
+      </div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🔧 Les 5 causes principales des hallucinations</h3>
+
+      <div class="callout">
+        <strong>1. Lacunes dans les données d'entraînement</strong><br/>
+        Le modèle n'a pas vu certaines informations pendant son entraînement, ou les a vues en quantité insuffisante. Quand on l'interroge sur un sujet mal couvert, il "comble les trous" avec des informations plausibles mais inventées. C'est particulièrement fréquent pour les événements récents, les personnalités peu connues ou les domaines spécialisés.
+      </div>
+
+      <div class="callout">
+        <strong>2. Conflits dans les sources</strong><br/>
+        Les données d'entraînement contiennent souvent des informations contradictoires (sources multiples avec des chiffres différents, controverses scientifiques, informations périmées). Le modèle peut fusionner ces sources incompatibles et produire un cocktail d'informations incohérent.
+      </div>
+
+      <div class="callout">
+        <strong>3. Pression à répondre (helpfulness bias)</strong><br/>
+        Les LLM sont entraînés pour être <strong>utiles</strong>. Ils sont récompensés quand ils fournissent une réponse complète et découragés de dire "je ne sais pas". Cette pression crée un biais systématique : le modèle préfère inventer une réponse plausible plutôt que d'admettre son ignorance.
+      </div>
+
+      <div class="callout">
+        <strong>4. Généralisation excessive</strong><br/>
+        Le modèle extrapole à partir de patterns partiels. S'il a appris que "les prix Nobel de physique sont souvent des professeurs d'université", il peut attribuer un prix Nobel fictif à un professeur réel qui n'en a jamais reçu.
+      </div>
+
+      <div class="callout">
+        <strong>5. Absence de mémoire factuelle structurée</strong><br/>
+        Un LLM n'a pas de base de données interne qu'il consulte. Ses "connaissances" sont encodées de façon diffuse dans des milliards de paramètres numériques. Il ne peut pas vérifier un fait comme on consulterait une encyclopédie — il ne fait que générer du texte statistiquement cohérent.
+      </div>
+
+      <div class="callout pink">
+        <strong>Le paradoxe de la compétence :</strong> Plus un modèle est performant et fluide, plus ses hallucinations sont dangereuses. Un texte bien écrit, bien structuré et argumenté est plus convaincant — même quand il est faux. Les progrès en qualité linguistique n'ont pas éliminé les hallucinations, ils les ont rendues plus difficiles à détecter.
+      </div>
+    `
   },
+  /* ---- LEÇON 3 ---- */
   {
     title:"03 — Les types d'hallucinations",
     kicker:"Factuelles, logiques, temporelles, sources inventées... un bestiaire des erreurs.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">📋 Taxonomie des hallucinations</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Toutes les hallucinations ne se ressemblent pas. Les chercheurs ont identifié plusieurs catégories distinctes, chacune avec ses propres mécanismes et dangers. Les reconnaître est la première étape pour s'en protéger.
+      </p>
+
+      <div class="callout" style="border-left:4px solid var(--neon-pink);padding-left:20px">
+        <h4 style="color:var(--neon-pink);margin-bottom:10px">🔴 Type 1 : Hallucination factuelle</h4>
+        <p style="margin-bottom:8px">L'IA énonce un fait précis qui est <strong>tout simplement faux</strong>, mais formulé avec assurance.</p>
+        <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin-top:8px;font-style:italic;color:#b0c4de">
+          Exemple : "La Grande Muraille de Chine est visible à l'œil nu depuis la Lune" → Faux, c'est un mythe populaire réfuté par les astronautes.
+        </div>
+      </div>
+
+      <div class="callout" style="border-left:4px solid var(--neon-purple);padding-left:20px">
+        <h4 style="color:var(--neon-purple);margin-bottom:10px">🟣 Type 2 : Source inventée</h4>
+        <p style="margin-bottom:8px">L'IA cite une étude, un article, un livre ou une personne qui <strong>n'existe pas</strong>, mais avec des détails très précis (auteurs, revue, année, numéro de page).</p>
+        <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin-top:8px;font-style:italic;color:#b0c4de">
+          Exemple : "Selon l'étude de Martinez et al. (2019) publiée dans Nature Neuroscience, vol. 42, pp. 1847-1856..." → Cette étude, ces auteurs et cette référence sont entièrement inventés.
+        </div>
+      </div>
+
+      <div class="callout" style="border-left:4px solid var(--neon-blue);padding-left:20px">
+        <h4 style="color:var(--neon-blue);margin-bottom:10px">🔵 Type 3 : Anachronisme</h4>
+        <p style="margin-bottom:8px">L'IA mélange les époques, attribue des événements à la mauvaise période, ou utilise des informations périmées comme si elles étaient actuelles.</p>
+        <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin-top:8px;font-style:italic;color:#b0c4de">
+          Exemple : "Steve Jobs a présenté l'iPhone 15 lors de la keynote de septembre 2023" → Steve Jobs est décédé en 2011.
+        </div>
+      </div>
+
+      <div class="callout" style="border-left:4px solid var(--neon-green);padding-left:20px">
+        <h4 style="color:var(--neon-green);margin-bottom:10px">🟢 Type 4 : Incohérence logique</h4>
+        <p style="margin-bottom:8px">L'IA produit un raisonnement qui <strong>se contredit</strong> lui-même ou qui viole les règles de la logique élémentaire.</p>
+        <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin-top:8px;font-style:italic;color:#b0c4de">
+          Exemple : "Ce matériau est à la fois 100% recyclable et impossible à recycler en raison de sa composition chimique."
+        </div>
+      </div>
+
+      <div class="callout" style="border-left:4px solid var(--neon-yellow);padding-left:20px">
+        <h4 style="color:var(--neon-yellow);margin-bottom:10px">🟡 Type 5 : Faux consensus</h4>
+        <p style="margin-bottom:8px">L'IA présente une opinion minoritaire, controversée ou discutée comme un <strong>fait établi et unanimement accepté</strong>.</p>
+        <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin-top:8px;font-style:italic;color:#b0c4de">
+          Exemple : "Les scientifiques s'accordent unanimement à dire que..." → alors que le sujet fait débat dans la communauté scientifique.
+        </div>
+      </div>
+
+      <div class="callout" style="border-left:4px solid var(--warn);padding-left:20px">
+        <h4 style="color:var(--warn);margin-bottom:10px">🟠 Type 6 : Contamination de contexte</h4>
+        <p style="margin-bottom:8px">L'IA mélange des informations provenant de <strong>sujets différents</strong>, créant un hybride faux mais cohérent en surface.</p>
+        <div style="background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;margin-top:8px;font-style:italic;color:#b0c4de">
+          Exemple : Attribuer les découvertes d'un scientifique à un autre, ou fusionner les biographies de deux personnes portant le même nom.
+        </div>
+      </div>
+
+      <div class="callout ok">
+        <strong>À retenir :</strong> Les hallucinations les plus dangereuses sont celles qui mélangent vrai et faux. Un texte contenant 90% d'informations correctes et 10% d'inventions est bien plus trompeur qu'un texte entièrement faux — car les faits vérifiables créent une <strong>illusion de fiabilité globale</strong>.
+      </div>
+    `
   },
+  /* ---- LEÇON 4 ---- */
   {
     title:"04 — Exemples célèbres",
     kicker:"Des tribunaux aux moteurs de recherche : quand les hallucinations font les gros titres.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">💥 Quand les hallucinations ont des conséquences réelles</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les hallucinations de l'IA ne sont pas qu'un problème théorique. Elles ont déjà causé des situations embarrassantes, coûteuses, voire dangereuses dans le monde réel. Voici les cas les plus marquants.
+      </p>
+
+      <div class="callout pink">
+        <strong>⚖️ Mata v. Avianca (2023) — L'avocat et les faux précédents</strong><br/><br/>
+        <p style="line-height:1.7">L'avocat new-yorkais Steven Schwartz a utilisé ChatGPT pour préparer un dossier juridique contre la compagnie aérienne Avianca. Il a soumis au tribunal un mémoire citant <strong>six décisions de justice comme précédents</strong>. Problème : ces six affaires étaient <strong>entièrement inventées</strong> par ChatGPT. Les noms des juges, les numéros de dossier, les citations — tout était faux, mais parfaitement formaté.</p>
+        <p style="line-height:1.7;margin-top:10px;color:var(--neon-pink)">Conséquence : L'avocat et son cabinet ont été sanctionnés par le juge, avec une amende de 5 000 $ et l'obligation de prévenir les juges et parties adverses de leur erreur.</p>
+      </div>
+
+      <div class="callout pink">
+        <strong>🔍 Google Bard / Gemini (2023) — L'erreur à 100 milliards</strong><br/><br/>
+        <p style="line-height:1.7">Lors de la présentation publique de Bard (devenu Gemini), l'IA de Google a affirmé que le télescope James Webb avait pris <strong>"les toutes premières images d'une exoplanète en dehors de notre système solaire"</strong>. Or, la première image directe d'une exoplanète date de 2004 (2M1207b). Cette hallucination, repérée par des astronomes sur les réseaux sociaux, a fait chuter l'action Alphabet de <strong>7,7%</strong>, soit une perte de capitalisation d'environ 100 milliards de dollars.</p>
+      </div>
+
+      <div class="callout pink">
+        <strong>📰 CNET (2023) — Le journalisme automatisé défaillant</strong><br/><br/>
+        <p style="line-height:1.7">Le média technologique CNET a utilisé une IA pour rédiger discrètement des articles financiers. Après enquête, il s'est avéré que sur 77 articles générés, <strong>41 contenaient des erreurs factuelles</strong> — dont des erreurs de calcul d'intérêts composés dans des articles censés expliquer la finance aux lecteurs. Le site a dû publier des corrections massives.</p>
+      </div>
+
+      <div class="callout pink">
+        <strong>🏥 Santé — Les diagnostics inventés</strong><br/><br/>
+        <p style="line-height:1.7">Des études ont montré que les chatbots IA utilisés pour le conseil médical peuvent inventer des <strong>noms de médicaments inexistants</strong>, recommander des <strong>dosages dangereux</strong>, ou fournir des diagnostics avec des <strong>références médicales fictives</strong>. En 2023, une étude publiée dans JAMA Internal Medicine a montré que les réponses médicales de ChatGPT contenaient des informations factuellement incorrectes dans <strong>environ 10-15% des cas</strong>.</p>
+      </div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🎓 Hallucinations dans l'éducation</h3>
+      <div class="callout warn">
+        <p style="line-height:1.7">Des étudiants ont soumis des travaux basés sur des sources inventées par l'IA. Des enseignants ont utilisé des IA pour corriger des copies et ont attribué des notes basées sur des critères "hallucinés". Des bibliographies entières de travaux académiques ont été générées avec des références fictives — titres d'articles inventés, faux numéros DOI, auteurs inexistants mais aux noms réalistes.</p>
+      </div>
+
+      <div class="callout ok">
+        <strong>Le point commun :</strong> Dans chaque cas, la personne a fait confiance à l'IA <strong>sans vérifier</strong>. Les hallucinations ne deviennent dangereuses que lorsqu'elles passent sans contrôle. La responsabilité est partagée entre l'outil (qui hallucine) et l'utilisateur (qui ne vérifie pas).
+      </div>
+    `
   },
+  /* ---- LEÇON 5 ---- */
   {
     title:"05 — Le piège de la confiance",
     kicker:"Pourquoi nous croyons si facilement ce que l'IA nous dit.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🎭 L'autorité artificielle</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Quand un médecin en blouse blanche vous donne un diagnostic, vous avez tendance à le croire. Quand un document officiel porte un tampon et un numéro de référence, vous le considérez comme fiable. Les IA bénéficient du même <strong>biais d'autorité</strong> : leur ton expert, leur réponse instantanée et leur apparente omniscience créent une impression de compétence qui inhibe notre esprit critique.
+      </p>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🧠 Les biais cognitifs en jeu</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="border-left:4px solid var(--neon-pink)">
+          <strong style="color:var(--neon-pink)">Biais d'autorité</strong><br/>
+          Nous attribuons plus de crédibilité à une source perçue comme experte. L'IA, par son langage technique et précis, est perçue comme une "super encyclopédie" infaillible.
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-purple)">
+          <strong style="color:var(--neon-purple)">Biais de confirmation</strong><br/>
+          Nous acceptons plus facilement les informations qui confirment nos croyances existantes. Si l'IA nous dit ce que nous voulions entendre, nous ne vérifions pas.
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-blue)">
+          <strong style="color:var(--neon-blue)">Biais d'automatisation</strong><br/>
+          Nous avons tendance à faire confiance aux systèmes automatisés, surtout quand ils sont complexes. "La machine sait mieux que moi" est un réflexe courant.
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-green)">
+          <strong style="color:var(--neon-green)">Effet de fluence</strong><br/>
+          Un texte bien écrit, fluide et bien structuré est perçu comme plus vrai qu'un texte maladroit. Les LLM excellent dans la production de texte fluide — même quand le contenu est faux.
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">📐 Les stratégies involontaires de l'IA qui renforcent la confiance</h3>
+      <div class="callout">
+        <strong>Précision trompeuse</strong><br/>
+        L'IA fournit des détails ultra-précis (dates, chiffres, noms complets, références) qui créent une illusion de rigueur. "Selon une étude de 2021 portant sur 3 847 participants..." — les chiffres précis sont plus convaincants, même inventés.
+      </div>
+      <div class="callout">
+        <strong>Structure argumentative</strong><br/>
+        L'IA organise ses réponses avec des titres, des listes numérotées, des paragraphes logiques. Cette structure imite les textes sérieux et académiques, renforçant la crédibilité perçue.
+      </div>
+      <div class="callout">
+        <strong>Ton neutre et assertif</strong><br/>
+        L'IA ne montre jamais de doute, d'hésitation ou d'émotion. Ce ton professionnel et détaché est celui qu'on associe à l'expertise et à l'objectivité.
+      </div>
+
+      <div class="callout warn">
+        <strong>Le piège ultime :</strong> Quand vous demandez à l'IA "Es-tu sûr de cette information ?", elle répondra presque toujours oui, parfois en ajoutant de <strong>faux détails supplémentaires</strong> pour renforcer sa réponse initiale. Demander confirmation à l'IA est inutile — c'est comme demander au suspect s'il est coupable.
+      </div>
+
+      <div class="callout ok">
+        <strong>La règle d'or :</strong> La qualité de la forme (style, structure, fluidité) n'est <strong>jamais</strong> un indicateur de la qualité du fond (exactitude, vérité, fiabilité). Un texte peut être magnifiquement écrit et totalement faux.
+      </div>
+    `
   },
+  /* ---- LEÇON 6 ---- */
   {
     title:"06 — Comment vérifier",
     kicker:"Techniques de fact-checking pour ne plus se faire piéger.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🔎 La méthode CRAAP — 5 critères de vérification</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Développée par les bibliothécaires de l'Université d'État de Californie, la méthode <strong>CRAAP</strong> fournit un cadre systématique pour évaluer la fiabilité d'une information. Appliquée aux réponses d'IA, elle devient un outil puissant de détection.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="border-left:4px solid var(--neon-yellow)">
+          <strong style="color:var(--neon-yellow)">C — Currency (Actualité)</strong><br/>
+          L'information est-elle à jour ? Les LLM ont une date de coupure de connaissances. Vérifiez si les faits, les chiffres et les événements cités sont actuels.
+          <div style="margin-top:8px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.9em;color:#b0c4de">🔍 Réflexe : "Cette information date-t-elle d'après la date de coupure du modèle ?"</div>
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-pink)">
+          <strong style="color:var(--neon-pink)">R — Relevance (Pertinence)</strong><br/>
+          L'information répond-elle vraiment à votre question ou l'IA a-t-elle dévié vers un sujet adjacent ?
+          <div style="margin-top:8px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.9em;color:#b0c4de">🔍 Réflexe : "L'IA répond-elle à MA question ou à une version simplifiée ?"</div>
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-blue)">
+          <strong style="color:var(--neon-blue)">A — Authority (Autorité)</strong><br/>
+          L'IA cite-t-elle des sources ? Ces sources existent-elles réellement ? Vérifiez les noms d'auteurs, les titres d'études, les noms de revues scientifiques.
+          <div style="margin-top:8px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.9em;color:#b0c4de">🔍 Réflexe : "Puis-je retrouver cette source avec une recherche indépendante ?"</div>
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-green)">
+          <strong style="color:var(--neon-green)">A — Accuracy (Exactitude)</strong><br/>
+          Les faits, chiffres et données sont-ils vérifiables ? Croisez avec au moins deux sources fiables indépendantes.
+          <div style="margin-top:8px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.9em;color:#b0c4de">🔍 Réflexe : "Puis-je vérifier chaque fait clé avec une source externe ?"</div>
+        </div>
+        <div class="callout" style="border-left:4px solid var(--neon-purple)">
+          <strong style="color:var(--neon-purple)">P — Purpose (Objectif)</strong><br/>
+          L'IA a-t-elle pu être influencée par un biais dans ses données d'entraînement ?
+          <div style="margin-top:8px;padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.9em;color:#b0c4de">🔍 Réflexe : "Cette réponse semble-t-elle orientée ou neutre ?"</div>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🛠️ Techniques pratiques de vérification</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout"><strong>Triangulation</strong><br/>Vérifiez avec au moins 2-3 sources indépendantes. Si vous ne trouvez l'information que dans la réponse de l'IA, c'est un signal d'alerte.</div>
+        <div class="callout"><strong>Recherche inverse</strong><br/>Prenez un fait spécifique et cherchez-le sur un moteur de recherche. Existe-t-il dans des sources fiables ?</div>
+        <div class="callout"><strong>Vérification des sources citées</strong><br/>Copiez le titre exact d'une étude citée. Cherchez-le sur Google Scholar, PubMed ou les bases de données appropriées.</div>
+        <div class="callout"><strong>Test de cohérence interne</strong><br/>Relisez la réponse complète. Y a-t-il des contradictions entre deux paragraphes ? Des chiffres qui ne s'additionnent pas ?</div>
+      </div>
+
+      <div class="callout ok">
+        <strong>Règle des 30 secondes :</strong> Pour chaque information importante générée par une IA, investissez 30 secondes dans une vérification rapide. C'est le meilleur rapport effort/sécurité.
+      </div>
+    `
   },
+  /* ---- LEÇON 7 ---- */
   {
     title:"07 — Bonnes pratiques face aux hallucinations",
     kicker:"Utiliser l'IA avec lucidité : les réflexes à adopter.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🌱 Utiliser l'IA en connaissance de cause</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les hallucinations ne doivent pas nous empêcher d'utiliser l'IA — mais elles doivent transformer notre façon de l'utiliser. Voici les pratiques recommandées par les experts en IA responsable.
+      </p>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">📋 Les 7 réflexes du vérificateur averti</h3>
+      <div class="callout" style="border-left:4px solid var(--neon-green)">
+        <strong style="color:var(--neon-green)">1. Ne jamais publier sans vérifier</strong><br/>
+        Toute information factuelle provenant d'une IA doit être vérifiée avant publication, transmission ou utilisation pour une décision. L'IA est un <strong>point de départ</strong>, jamais une source finale.
+      </div>
+      <div class="callout" style="border-left:4px solid var(--neon-blue)">
+        <strong style="color:var(--neon-blue)">2. Être particulièrement vigilant dans les domaines sensibles</strong><br/>
+        Médecine, droit, finance, éducation, sécurité — dans ces domaines, une erreur peut avoir des conséquences graves. Redoublez de vigilance.
+      </div>
+      <div class="callout" style="border-left:4px solid var(--neon-yellow)">
+        <strong style="color:var(--neon-yellow)">3. Demander des sources et les vérifier</strong><br/>
+        Demandez systématiquement à l'IA de citer ses sources. Puis vérifiez que ces sources existent réellement et disent bien ce que l'IA prétend.
+      </div>
+      <div class="callout" style="border-left:4px solid var(--neon-pink)">
+        <strong style="color:var(--neon-pink)">4. Se méfier de la précision excessive</strong><br/>
+        Des chiffres très précis (ex : "73,4% des experts...") sont souvent un signal d'hallucination. Les vraies statistiques sont généralement arrondies dans les communications courantes.
+      </div>
+      <div class="callout" style="border-left:4px solid var(--neon-purple)">
+        <strong style="color:var(--neon-purple)">5. Poser la même question différemment</strong><br/>
+        Reformulez votre question et comparez les réponses. Si l'IA donne des réponses contradictoires, c'est un signal fort d'hallucination.
+      </div>
+      <div class="callout" style="border-left:4px solid var(--neon-blue)">
+        <strong style="color:var(--neon-blue)">6. Connaître les limites du modèle</strong><br/>
+        Chaque modèle a une date de coupure de connaissances. De plus, certains domaines sont mieux couverts que d'autres dans les données d'entraînement.
+      </div>
+      <div class="callout" style="border-left:4px solid var(--warn)">
+        <strong style="color:var(--warn)">7. Utiliser l'IA pour ce qu'elle fait bien</strong><br/>
+        L'IA excelle en synthèse, reformulation, brainstorming, structuration d'idées. Elle est moins fiable pour les faits précis, les citations exactes et les données chiffrées.
+      </div>
+
+      <h3 style="color:var(--neon-yellow);margin:25px 0 15px">🏢 Ce que font les organisations responsables</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout"><strong>Processus de validation</strong><br/>Les rédactions imposent une relecture humaine systématique avant publication (human-in-the-loop).</div>
+        <div class="callout"><strong>Transparence</strong><br/>Les organisations responsables signalent quand un contenu a été généré ou assisté par l'IA.</div>
+        <div class="callout"><strong>Formation</strong><br/>Les entreprises investissent dans la formation de leurs employés à la détection des hallucinations.</div>
+        <div class="callout"><strong>Outils de vérification</strong><br/>Des outils spécialisés se développent : fact-checking automatisé, RAG, grounding.</div>
+      </div>
+
+      <div class="callout ok">
+        <strong>En résumé :</strong> L'IA est un outil extraordinairement puissant, mais c'est un <strong>assistant</strong>, pas un oracle. Traitez chaque réponse comme une hypothèse à vérifier, pas comme une vérité révélée. Votre esprit critique est votre meilleure protection.
+      </div>
+    `
   },
+  /* ---- LEÇON 8 (MISSION) ---- */
   {
     title:"📰 Enquête VERITAS NEWS — Mission",
     kicker:"Analysez 5 articles générés par l'IA SYNTHEX et traquez les hallucinations.",
-    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+    html:`
+      <div class="pill" style="border-color:var(--neon-yellow)">MISSION</div>
+      <div class="pill">5 ARTICLES</div>
+      <div class="pill">FACT-CHECKING</div>
+      <div class="divider"></div>
+
+      <div class="callout ok">
+        <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px">
+          <div style="width:60px;height:60px;border-radius:50%;border:2px solid var(--neon-yellow);display:flex;align-items:center;justify-content:center;font-size:1.8em;background:rgba(255,230,109,.1)">👩‍💼</div>
+          <div>
+            <strong style="color:var(--neon-yellow)">Zara Okafor</strong><br/>
+            <span style="color:var(--muted);font-size:0.9em">Rédactrice en chef — VERITAS NEWS</span>
+          </div>
+        </div>
+        <p style="line-height:1.7">
+          "Bienvenue dans l'équipe, recrue. Notre IA rédactionnelle SYNTHEX a généré 5 articles qui doivent être publiés dans l'édition de demain. Mais nos vérificateurs seniors ont repéré des anomalies dans les textes. Votre mission : analyser chaque article, identifier les passages hallucinés, et rédiger votre verdict. La crédibilité de notre agence est en jeu."
+        </p>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin:25px 0 15px">📋 Règles de l'enquête</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout blue">
+          <strong>Comment jouer</strong><br/>
+          <ul style="line-height:1.8;margin:8px 0 0 15px">
+            <li>Lisez chaque article attentivement</li>
+            <li>Cliquez sur les phrases que vous pensez être des hallucinations</li>
+            <li>Consultez les sources de référence fournies</li>
+            <li>Validez votre analyse pour chaque article</li>
+          </ul>
+        </div>
+        <div class="callout blue">
+          <strong>Scoring</strong><br/>
+          <ul style="line-height:1.8;margin:8px 0 0 15px">
+            <li><span style="color:var(--neon-green)">+2 pts</span> — Hallucination correctement détectée</li>
+            <li><span style="color:var(--neon-pink)">-1 pt</span> — Faux positif (phrase vraie signalée)</li>
+            <li>Analysez les 5 articles pour débloquer le quiz</li>
+            <li>Le quiz nécessite <strong>70%</strong> pour l'attestation</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin:25px 0 15px">Choisissez un article à vérifier :</h3>
+      <div class="article-grid" id="article-grid">
+        <div class="article-card" id="article-card-1" onclick="startArticle(1)">
+          <div class="article-icon">📜</div>
+          <div class="article-num">ARTICLE 01</div>
+          <div class="article-name">L'histoire de l'informatique</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Dates, personnages et inventions</div>
+        </div>
+        <div class="article-card" id="article-card-2" onclick="startArticle(2)">
+          <div class="article-icon">🔬</div>
+          <div class="article-num">ARTICLE 02</div>
+          <div class="article-name">Les océans et le climat</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Chiffres scientifiques et études</div>
+        </div>
+        <div class="article-card" id="article-card-3" onclick="startArticle(3)">
+          <div class="article-icon">⚖️</div>
+          <div class="article-num">ARTICLE 03</div>
+          <div class="article-name">Le droit du numérique</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Lois, dates et juridictions</div>
+        </div>
+        <div class="article-card" id="article-card-4" onclick="startArticle(4)">
+          <div class="article-icon">🌍</div>
+          <div class="article-num">ARTICLE 04</div>
+          <div class="article-name">Capitales et géographie</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Données géographiques et démographiques</div>
+        </div>
+        <div class="article-card" id="article-card-5" onclick="startArticle(5)">
+          <div class="article-icon">🤖</div>
+          <div class="article-num">ARTICLE 05</div>
+          <div class="article-name">L'IA dans la société</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Citations, entreprises et dates</div>
+        </div>
+      </div>
+
+      <div id="article-zone" style="margin-top:25px"></div>
+      <div id="quiz-zone" style="display:none;margin-top:25px"></div>
+    `,
+    init: function(){ updateArticleCards(); }
   }
 ];
 
 /* =========================================================
-   ATTESTATION — placeholder, Phase 5
+   ARTICLES — placeholder fonctions, Phase 3 complètera
+========================================================= */
+function updateArticleCards(){
+  [1,2,3,4,5].forEach(i=>{
+    const card=document.getElementById('article-card-'+i);
+    if(card && state.articlesDone.has(i)) card.classList.add('done');
+  });
+}
+
+function startArticle(id){
+  toast("Article "+id+" — Fonctionnalité en cours d'implémentation...");
+}
+
+/* =========================================================
+   ATTESTATION
 ========================================================= */
 function showCertificateInFolder(){
   if(!certificateUnlocked){
