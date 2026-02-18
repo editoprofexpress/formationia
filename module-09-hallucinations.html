@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L'Erreur qui Sonne Juste — Module 9 (Hallucinations de l'IA)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root{
+      --neon-green:#00ff88;
+      --neon-blue:#00d4ff;
+      --neon-pink:#ff0080;
+      --neon-purple:#a855f7;
+      --neon-yellow:#ffe66d;
+      --dark-bg:#0a0e17;
+      --panel-bg:rgba(10,20,40,0.95);
+      --text:#e0f0ff;
+      --muted:#8899aa;
+      --danger:#ff4d4d;
+      --warn:#ffcc00;
+      --ok:#00ff88;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+    body{
+      font-family:'Exo 2',sans-serif;
+      background:var(--dark-bg);
+      color:var(--text);
+      overflow:hidden;
+      height:100vh;
+    }
+
+    /* ==================== TITRE ==================== */
+    #title-screen{
+      position:fixed;inset:0;
+      background:url('images/module9-title-bg.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#1a0a2a 50%,#0a0e17 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:1000;
+      transition:opacity .5s, visibility .5s;
+    }
+    #title-screen::before{content:'';position:absolute;inset:0;background:rgba(10,14,23,0.7);z-index:-1}
+    #title-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .title-logo{font-size:4em;margin-bottom:20px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    .main-title{
+      font-family:'Space Mono',monospace;
+      font-size:2.8em;font-weight:700;text-transform:uppercase;letter-spacing:5px;
+      background:linear-gradient(90deg,var(--neon-yellow),var(--neon-blue),var(--neon-pink));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+      text-shadow:0 0 50px rgba(255,230,109,.5);
+      margin-bottom:10px;text-align:center;
+    }
+    .subtitle{font-size:1.3em;color:#8899aa;margin-bottom:50px;font-weight:300;text-align:center}
+    .intro-text{max-width:820px;text-align:center;line-height:1.8;margin:0 20px 35px;color:#aabbcc}
+    .start-btn{
+      font-family:'Space Mono',monospace;font-size:1.1em;
+      padding:18px 55px;background:transparent;
+      border:2px solid var(--neon-yellow);color:var(--neon-yellow);
+      cursor:pointer;text-transform:uppercase;letter-spacing:3px;
+      transition:all .3s;position:relative;overflow:hidden;
+    }
+    .start-btn::before{
+      content:'';position:absolute;top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,230,109,.3),transparent);
+      transition:left .5s;
+    }
+    .start-btn:hover::before{left:100%}
+    .start-btn:hover{
+      background:rgba(255,230,109,.08);
+      box-shadow:0 0 30px rgba(255,230,109,.5), inset 0 0 30px rgba(255,230,109,.08);
+      transform:scale(1.05);
+    }
+
+    /* ==================== LIENS RETOUR ==================== */
+    .back-link-title{
+      position:absolute;top:20px;left:20px;
+      display:flex;align-items:center;gap:8px;
+      padding:10px 16px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);
+      border-radius:6px;color:#8899aa;text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-title:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#aabbcc}
+
+    .back-link-sidebar{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 15px;margin:0 15px 20px;
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:8px;color:var(--neon-blue);text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-sidebar:hover{background:rgba(0,212,255,0.15);border-color:var(--neon-blue);transform:translateX(-3px)}
+    .back-link-sidebar .back-arrow{transition:transform .3s}
+    .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
+
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      z-index:999;display:none;flex-direction:column;overflow:hidden;
+    }
+    #briefing-screen.active{display:flex}
+
+    .briefing-header{
+      background:rgba(10,20,40,0.95);
+      border-bottom:1px solid rgba(255,230,109,0.3);
+      padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
+    }
+    .briefing-title{
+      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-yellow);
+      display:flex;align-items:center;gap:15px;
+    }
+    .briefing-title::before{content:'📰';font-size:1.5em}
+    .briefing-progress{display:flex;align-items:center;gap:10px;color:#8899aa;font-size:0.9em}
+    .briefing-progress-bar{width:200px;height:6px;background:rgba(255,230,109,0.1);border-radius:3px;overflow:hidden}
+    .briefing-progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-blue));transition:width .3s}
+
+    .briefing-body{display:flex;flex:1;overflow:hidden}
+
+    .briefing-nav{
+      width:280px;background:rgba(10,20,40,0.9);
+      border-right:1px solid rgba(255,230,109,0.2);
+      padding:20px 0;overflow-y:auto;
+    }
+    .briefing-nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:15px 20px;cursor:pointer;
+      border-left:3px solid transparent;transition:all .3s;color:#8899aa;
+    }
+    .briefing-nav-item:hover{background:rgba(255,230,109,0.05);color:var(--text)}
+    .briefing-nav-item.active{border-left-color:var(--neon-yellow);background:rgba(255,230,109,0.1);color:var(--neon-yellow)}
+    .briefing-nav-item.completed{color:var(--neon-blue)}
+    .briefing-nav-item.completed::after{content:'✓';margin-left:auto;color:var(--neon-green)}
+    .nav-icon{font-size:1.2em;width:30px;text-align:center}
+    .nav-number{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      background:rgba(255,230,109,0.2);padding:2px 8px;border-radius:3px;
+    }
+
+    .briefing-content{flex:1;overflow-y:auto;padding:40px 60px;max-width:900px;margin:0 auto}
+    .briefing-content::-webkit-scrollbar{width:8px}
+    .briefing-content::-webkit-scrollbar-track{background:rgba(255,230,109,0.05)}
+    .briefing-content::-webkit-scrollbar-thumb{background:rgba(255,230,109,0.3);border-radius:4px}
+
+    .briefing-footer{
+      background:rgba(10,20,40,0.95);border-top:1px solid rgba(255,230,109,0.3);
+      padding:20px 30px;display:flex;justify-content:space-between;align-items:center;
+    }
+    .briefing-btn{
+      font-family:'Space Mono',monospace;padding:12px 30px;
+      border:2px solid var(--neon-yellow);background:transparent;
+      color:var(--neon-yellow);cursor:pointer;font-size:1em;transition:all .3s;
+      display:flex;align-items:center;gap:10px;
+    }
+    .briefing-btn:hover{background:rgba(255,230,109,0.1);box-shadow:0 0 20px rgba(255,230,109,.3)}
+    .briefing-btn.primary{background:var(--neon-yellow);color:var(--dark-bg)}
+    .briefing-btn.primary:hover{background:var(--neon-blue);border-color:var(--neon-blue)}
+    .briefing-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+    /* ==================== CONTENU COURS ==================== */
+    .module-title{
+      font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-yellow);
+      margin-bottom:30px;padding-bottom:15px;border-bottom:1px solid rgba(255,230,109,0.3);
+    }
+    .module-kicker{color:var(--muted);margin-bottom:18px;line-height:1.5}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.5),transparent);margin:18px 0}
+    .pill{
+      display:inline-block;padding:6px 10px;
+      border:1px solid rgba(255,230,109,.5);border-radius:999px;
+      font-family:'Space Mono',monospace;font-size:.78em;
+      color:var(--neon-yellow);background:rgba(255,230,109,.05);
+      margin-right:8px;margin-bottom:8px;
+    }
+    .callout{
+      background:rgba(255,230,109,0.06);border:1px solid rgba(255,230,109,0.25);
+      padding:14px;border-radius:14px;box-shadow:0 0 22px rgba(255,230,109,0.12);
+      margin:12px 0;line-height:1.6;color:#cfe9ff;
+    }
+    .callout.warn{background:rgba(255,204,0,0.08);border-color:rgba(255,204,0,0.30);box-shadow:0 0 18px rgba(255,204,0,0.16)}
+    .callout.ok{background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.35);box-shadow:0 0 18px rgba(0,255,136,0.18)}
+    .callout.pink{background:rgba(255,0,128,0.10);border-color:rgba(255,0,128,0.30);box-shadow:0 0 18px rgba(255,0,128,0.16)}
+    .callout.purple{background:rgba(168,85,247,0.10);border-color:rgba(168,85,247,0.35);box-shadow:0 0 18px rgba(168,85,247,0.18)}
+    .callout.blue{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.30);box-shadow:0 0 18px rgba(0,212,255,0.16)}
+
+    /* ==================== BOUTONS JEU ==================== */
+    .btn{
+      font-family:'Space Mono',monospace;
+      border:1px solid rgba(0,212,255,.38);
+      background:linear-gradient(135deg,rgba(0,212,255,.18),rgba(168,85,247,.12));
+      color:var(--text);padding:12px 16px;border-radius:12px;cursor:pointer;
+      transition:transform .15s,box-shadow .15s,border-color .15s;
+      box-shadow:0 0 30px rgba(0,212,255,.18);
+      display:inline-flex;align-items:center;gap:10px;user-select:none;font-size:.85em;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(0,212,255,.35);border-color:rgba(0,212,255,.65)}
+    .btn:active{transform:translateY(0)}
+    .btn.green,.btn.primary{
+      border-color:rgba(0,255,136,.55);
+      background:linear-gradient(135deg,rgba(0,255,136,.22),rgba(0,212,255,.16));
+      box-shadow:0 0 22px rgba(0,255,136,.35);color:var(--neon-green);
+    }
+    .btn.yellow{
+      border-color:rgba(255,230,109,.55);
+      background:linear-gradient(135deg,rgba(255,230,109,.22),rgba(0,212,255,.12));
+      box-shadow:0 0 22px rgba(255,230,109,.35);color:var(--neon-yellow);
+    }
+    .btn.pink,.btn.danger{
+      border-color:rgba(255,0,128,.55);
+      background:linear-gradient(135deg,rgba(255,0,128,.20),rgba(0,212,255,.10));
+      box-shadow:0 0 22px rgba(255,0,128,.35);color:var(--neon-pink);
+    }
+    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* ==================== ARTICLES / ENQUÊTE ==================== */
+    .article-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
+    .article-card{
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:12px;padding:20px;cursor:pointer;transition:all .3s;text-align:center;
+    }
+    .article-card:hover{border-color:var(--neon-blue);background:rgba(0,212,255,0.12);transform:translateY(-3px);box-shadow:0 6px 25px rgba(0,212,255,.25)}
+    .article-card.done{border-color:rgba(0,255,136,.5);background:rgba(0,255,136,.08)}
+    .article-card.done::after{content:'✓ Vérifié';display:block;margin-top:8px;color:var(--neon-green);font-family:'Space Mono',monospace;font-size:0.8em}
+    .article-card .article-icon{font-size:2.5em;margin-bottom:10px}
+    .article-card .article-num{font-family:'Space Mono',monospace;color:var(--neon-blue);font-weight:700;font-size:0.9em;margin-bottom:8px}
+    .article-card .article-name{font-weight:600;font-size:1em}
+
+    /* Zone d'analyse d'article */
+    .analysis-zone{
+      background:rgba(10,20,40,0.6);border:1px solid rgba(255,230,109,0.2);
+      border-radius:16px;padding:25px;margin-top:20px;
+    }
+    .article-text{
+      background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;padding:20px 25px;margin:15px 0;
+      line-height:1.8;color:#d9e8f5;font-size:0.95em;
+      user-select:text;
+    }
+    .article-text .sentence{
+      cursor:pointer;padding:2px 4px;border-radius:4px;
+      transition:all .2s;border-bottom:2px solid transparent;
+    }
+    .article-text .sentence:hover{background:rgba(255,230,109,0.1);border-bottom-color:rgba(255,230,109,0.3)}
+    .article-text .sentence.flagged{
+      background:rgba(255,0,128,0.15);border-bottom-color:var(--neon-pink);
+      box-shadow:0 2px 8px rgba(255,0,128,0.2);
+    }
+    .article-text .sentence.flagged-correct{
+      background:rgba(0,255,136,0.15);border-bottom-color:var(--neon-green);
+      box-shadow:0 2px 8px rgba(0,255,136,0.2);
+    }
+    .article-text .sentence.flagged-wrong{
+      background:rgba(255,77,77,0.15);border-bottom-color:var(--danger);
+    }
+
+    /* Panneau de vérification latéral */
+    .source-panel{
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.25);
+      border-radius:12px;padding:15px;margin-top:15px;
+    }
+    .source-panel h4{
+      font-family:'Space Mono',monospace;color:var(--neon-blue);
+      margin-bottom:12px;font-size:0.95em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .source-item{
+      background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 12px;
+      margin:8px 0;font-size:0.85em;line-height:1.5;color:#b0c4de;
+      border-left:3px solid var(--neon-blue);
+    }
+
+    /* Barre de score détection */
+    .detection-bar{
+      display:flex;align-items:center;gap:15px;
+      padding:12px 15px;background:rgba(0,0,0,0.3);
+      border-radius:10px;margin:15px 0;
+    }
+    .detection-score{
+      font-family:'Space Mono',monospace;font-size:1.2em;
+      color:var(--neon-yellow);min-width:80px;
+    }
+    .detection-meter{
+      flex:1;height:10px;background:rgba(255,230,109,0.1);
+      border-radius:5px;overflow:hidden;
+    }
+    .detection-fill{
+      height:100%;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-green));
+      border-radius:5px;transition:width .5s;
+    }
+
+    /* Timer */
+    .game-timer{
+      display:flex;align-items:center;gap:10px;
+      padding:8px 15px;background:rgba(0,0,0,0.3);
+      border-radius:8px;border:1px solid rgba(0,212,255,0.2);
+    }
+    .game-timer .timer-icon{font-size:1.2em}
+    .game-timer .timer-value{
+      font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-blue);
+    }
+    .game-timer.warning .timer-value{color:var(--warn)}
+    .game-timer.critical .timer-value{color:var(--neon-pink);animation:blink-fast 0.5s infinite}
+    @keyframes blink-fast{0%,100%{opacity:1}50%{opacity:0.3}}
+
+    /* ==================== QUIZ ==================== */
+    .q-card{
+      border:1px solid rgba(0,212,255,.35);background:rgba(0,212,255,.03);
+      border-radius:14px;padding:16px;margin-top:12px;
+    }
+    .q-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .q-head .mono{font-family:'Space Mono',monospace;color:var(--neon-blue)}
+    .q-text{line-height:1.5;color:#d9f2ff}
+    .opts{display:grid;gap:8px;margin-top:12px}
+    .opt{
+      border:1px solid rgba(0,212,255,.25);background:rgba(0,212,255,.02);
+      border-radius:12px;padding:12px;cursor:pointer;transition:.2s;
+    }
+    .opt:hover{border-color:rgba(0,212,255,.65);background:rgba(0,212,255,.08)}
+    .opt.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.08)}
+    .opt.correct{border-color:var(--neon-green);background:rgba(0,255,136,.08)}
+    .opt.wrong{border-color:var(--danger);background:rgba(255,77,77,.08)}
+    .explain{
+      display:none;margin-top:10px;border-left:4px solid var(--neon-blue);
+      background:rgba(0,212,255,.06);padding:12px;border-radius:10px;line-height:1.55;color:#cfe9ff;
+    }
+    .explain.show{display:block}
+
+    /* ==================== MODAL ==================== */
+    .modal{
+      position:fixed;inset:0;display:none;
+      background:rgba(0,5,15,0.88);backdrop-filter:blur(8px);
+      z-index:2000;align-items:center;justify-content:center;padding:18px;
+    }
+    .modal.show{display:flex}
+    .modal-card{
+      max-width:680px;width:90vw;
+      background:linear-gradient(135deg,rgba(10,20,50,0.98),rgba(5,15,35,0.98));
+      border:1px solid rgba(0,212,255,0.4);border-radius:20px;padding:24px;
+      box-shadow:0 0 60px rgba(0,212,255,.25),0 0 120px rgba(0,212,255,.08),inset 0 1px 0 rgba(0,212,255,.15);
+      animation:modalIn .3s ease forwards;max-height:85vh;overflow-y:auto;
+    }
+    @keyframes modalIn{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+    .modal-card h3{font-family:'Space Mono',monospace;color:var(--neon-blue);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+    .modal-card p{line-height:1.65;color:#cfe9ff}
+    .modal-actions{margin-top:16px;display:flex;justify-content:flex-end}
+
+    /* ==================== TOAST ==================== */
+    #toast{
+      position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(0,212,255,0.28);background:rgba(0,10,25,0.85);
+      box-shadow:0 0 30px rgba(0,212,255,.18);z-index:2500;
+      max-width:92vw;display:none;font-size:0.9em;color:#d9f2ff;line-height:1.4;
+    }
+    #toast.show{display:block;animation:toastIn .18s ease}
+    @keyframes toastIn{from{transform:translateX(-50%) translateY(6px);opacity:.2}to{transform:translateX(-50%) translateY(0);opacity:1}}
+
+    /* ==================== ACCURACY BAR ==================== */
+    .accuracy-bar{
+      height:24px;border-radius:12px;overflow:hidden;
+      background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);
+      margin:8px 0;position:relative;
+    }
+    .accuracy-fill{height:100%;border-radius:12px;transition:width .5s;position:relative}
+    .accuracy-label{
+      position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      font-family:'Space Mono',monospace;font-size:0.75em;color:white;text-shadow:0 0 5px rgba(0,0,0,.8);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media(max-width:768px){
+      .main-title{font-size:1.8em;letter-spacing:2px}
+      .briefing-nav{display:none}
+      .briefing-content{padding:20px}
+      .module-title{font-size:1.3em}
+      .briefing-footer{flex-direction:column;gap:10px}
+      .briefing-btn{width:100%;justify-content:center}
+      .article-grid{grid-template-columns:1fr}
+      .intro-text{font-size:0.9em}
+      .briefing-header{padding:12px 15px;flex-wrap:wrap;gap:10px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== TITLE SCREEN ==================== -->
+  <section id="title-screen">
+    <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+      <span>←</span><span>Modules</span>
+    </a>
+    <div class="title-logo">🔍</div>
+    <h1 class="main-title">L'ERREUR QUI SONNE JUSTE</h1>
+    <p class="subtitle">Module 9 — Hallucinations de l'IA</p>
+    <p class="intro-text">
+      <strong>Rédaction VERITAS NEWS.</strong> Vous venez d'être recruté(e) comme vérificateur/vérificatrice au sein de l'agence de presse VERITAS NEWS.
+      L'IA rédactionnelle <strong>SYNTHEX</strong> a généré 5 articles pour publication imminente.
+      Problème : des sources internes vous alertent — SYNTHEX "hallucine" de plus en plus.
+      Votre mission : analyser chaque article, traquer les erreurs convaincantes, et publier votre rapport de vérification avant le deadline.
+    </p>
+    <button class="start-btn" onclick="startModule()">Entrer dans la rédaction</button>
+    <div style="margin-top:40px;opacity:0.7">
+      <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain">
+      </a>
+    </div>
+  </section>
+
+  <!-- ==================== BRIEFING SCREEN ==================== -->
+  <div id="briefing-screen">
+    <div class="briefing-header">
+      <div class="briefing-title">VERITAS NEWS // HALLUCINATIONS IA</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Dossier 1/9</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width:11%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="briefing-body">
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
+        <div class="briefing-nav-item active" onclick="showLesson(0)">
+          <span class="nav-icon">🧠</span><span class="nav-number">01</span>Qu'est-ce qu'une hallucination ?
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(1)">
+          <span class="nav-icon">⚙️</span><span class="nav-number">02</span>Pourquoi l'IA hallucine
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(2)">
+          <span class="nav-icon">📋</span><span class="nav-number">03</span>Types d'hallucinations
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(3)">
+          <span class="nav-icon">💥</span><span class="nav-number">04</span>Exemples célèbres
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(4)">
+          <span class="nav-icon">🎭</span><span class="nav-number">05</span>Le piège de la confiance
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(5)">
+          <span class="nav-icon">🔎</span><span class="nav-number">06</span>Comment vérifier
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(6)">
+          <span class="nav-icon">🌱</span><span class="nav-number">07</span>Bonnes pratiques
+        </div>
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" onclick="showLesson(7)">
+            <span class="nav-icon">📰</span>
+            <span class="nav-number" style="background:rgba(255,230,109,0.2);color:var(--neon-yellow)">▶</span>
+            Enquête VERITAS NEWS
+          </div>
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
+        </div>
+      </nav>
+      <div class="briefing-content" id="briefing-content"></div>
+    </div>
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>← Dossier précédent</button>
+      <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">Dossier suivant →</button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3 id="modal-title">Titre</h3>
+      <p id="modal-body">Contenu</p>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast"></div>
+
+<script>
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+const $ = (id) => document.getElementById(id);
+
+function toast(msg, ms=2200){
+  const el=$('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(window.__toastT);
+  window.__toastT=setTimeout(()=>el.classList.remove('show'),ms);
+}
+
+function openModal(title,body){
+  $('modal-title').innerHTML=title;
+  $('modal-body').innerHTML=body;
+  $('modal').classList.add('show');
+}
+function closeModal(){$('modal').classList.remove('show')}
+
+/* =========================================================
+   ÉTAT GLOBAL
+========================================================= */
+const state={
+  lessonSeen:new Set(),
+  articlesDone:new Set(),
+  quizScore:0,
+  quizTotal:0,
+  totalHalluFound:0,
+  totalFalsePositives:0,
+};
+
+let currentLesson=0;
+const totalLessons=9; // 7 lessons + 1 game + 1 attestation (certificate accessed separately)
+let certificateUnlocked=false;
+let finalScore=0;
+let gameTimerInterval=null;
+let gameSecondsLeft=720; // 12 minutes
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+function startModule(){
+  $('title-screen').classList.add('hidden');
+  $('briefing-screen').classList.add('active');
+  showLesson(0);
+  toast("Accès autorisé. Bienvenue à la rédaction VERITAS NEWS.");
+}
+
+function prevLesson(){if(currentLesson>0)showLesson(currentLesson-1)}
+function nextLesson(){if(currentLesson<totalLessons-1)showLesson(currentLesson+1)}
+
+function updateBriefingProgress(){
+  const pct=Math.round(((currentLesson+1)/totalLessons)*100);
+  $('progress-text').textContent=`Dossier ${currentLesson+1}/${totalLessons}`;
+  $('progress-fill').style.width=pct+'%';
+  const prevBtn=$('prev-btn'), nextBtn=$('next-btn');
+  if(prevBtn) prevBtn.disabled=(currentLesson===0);
+  if(nextBtn){
+    if(currentLesson>=totalLessons-1){
+      nextBtn.textContent='Terminé ✓';nextBtn.disabled=true;nextBtn.style.opacity='0.5';
+    } else {
+      nextBtn.innerHTML='Dossier suivant →';nextBtn.onclick=nextLesson;nextBtn.disabled=false;nextBtn.style.opacity='1';
+    }
+  }
+}
+
+function showLesson(idx){
+  if(idx===8){showCertificateInFolder();return;} // certificate
+  currentLesson=idx;
+  state.lessonSeen.add(idx);
+  const content=$('briefing-content');
+  const lesson=lessons[idx];
+  content.innerHTML=`
+    <div class="module-title">${lesson.title}</div>
+    <div class="module-kicker">${lesson.kicker}</div>
+    <div class="divider"></div>
+    ${lesson.html}
+  `;
+  content.scrollTop=0;
+  // Update nav
+  document.querySelectorAll('.briefing-nav-item').forEach((item,i)=>{
+    item.classList.remove('active');
+    if(i===idx) item.classList.add('active');
+    if(state.lessonSeen.has(i) && i!==idx) item.classList.add('completed');
+  });
+  updateBriefingProgress();
+  // Init interactives
+  if(lesson.init) setTimeout(lesson.init,100);
+}
+
+/* =========================================================
+   CONTENU DES LEÇONS — sera complété dans les phases suivantes
+========================================================= */
+const lessons = [
+  /* Placeholder - Phase 2 ajoutera le contenu complet */
+  {
+    title:"01 — Qu'est-ce qu'une hallucination IA ?",
+    kicker:"Quand l'intelligence artificielle invente des faits avec une assurance déconcertante.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"02 — Pourquoi l'IA hallucine",
+    kicker:"Comprendre les mécanismes techniques derrière les erreurs de l'IA.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"03 — Les types d'hallucinations",
+    kicker:"Factuelles, logiques, temporelles, sources inventées... un bestiaire des erreurs.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"04 — Exemples célèbres",
+    kicker:"Des tribunaux aux moteurs de recherche : quand les hallucinations font les gros titres.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"05 — Le piège de la confiance",
+    kicker:"Pourquoi nous croyons si facilement ce que l'IA nous dit.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"06 — Comment vérifier",
+    kicker:"Techniques de fact-checking pour ne plus se faire piéger.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"07 — Bonnes pratiques face aux hallucinations",
+    kicker:"Utiliser l'IA avec lucidité : les réflexes à adopter.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  },
+  {
+    title:"📰 Enquête VERITAS NEWS — Mission",
+    kicker:"Analysez 5 articles générés par l'IA SYNTHEX et traquez les hallucinations.",
+    html:`<p style="color:var(--muted);font-style:italic">Contenu en cours de chargement...</p>`
+  }
+];
+
+/* =========================================================
+   ATTESTATION — placeholder, Phase 5
+========================================================= */
+function showCertificateInFolder(){
+  if(!certificateUnlocked){
+    $('briefing-content').innerHTML=`
+      <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
+      <div class="module-kicker">Attestation verrouillée</div>
+      <div class="divider"></div>
+      <div class="callout warn" style="text-align:center;padding:40px 20px">
+        <div style="font-size:4em;margin-bottom:20px">🔒</div>
+        <h3 style="color:var(--neon-pink);margin-bottom:20px">Attestation verrouillée</h3>
+        <p style="margin-bottom:20px;line-height:1.8">Pour obtenir votre attestation, vous devez :</p>
+        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:500px;text-align:left">
+          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px"><span style="font-size:1.2em">1️⃣</span><span>Analyser les <strong>5 articles</strong> de SYNTHEX</span></p>
+          <p style="display:flex;align-items:center;gap:10px"><span style="font-size:1.2em">2️⃣</span><span>Réussir le <strong>Quiz</strong> avec au moins <strong>70%</strong></span></p>
+        </div>
+        <button class="btn yellow" onclick="showLesson(7)" style="margin-top:20px">📰 Aller à l'enquête</button>
+      </div>`;
+    return;
+  }
+  // Version débloquée — sera complétée en Phase 5
+  $('briefing-content').innerHTML=`
+    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
+    <div class="module-kicker">Module 9 — L'Erreur qui Sonne Juste</div>
+    <div class="divider"></div>
+    <div class="callout ok" style="text-align:center;padding:30px 20px">
+      <div style="font-size:3em;margin-bottom:15px">🎉</div>
+      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <p style="line-height:1.8;margin-bottom:15px">Vous avez terminé avec succès le <strong>Module 9 - L'Erreur qui Sonne Juste</strong>.</p>
+      <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:20px;margin:20px auto;max-width:400px">
+        <p style="margin-bottom:10px"><strong>Score certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span></p>
+        <p style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">Référence : IA-HALLU-${String(Math.floor(Math.random()*90000)+10000)}</p>
+      </div>
+    </div>
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📜 Télécharger votre attestation</h3>
+    <div class="callout" style="padding:30px">
+      <p style="margin-bottom:20px;line-height:1.8">Renseignez votre nom pour générer votre attestation officielle.</p>
+      <div style="margin-bottom:15px">
+        <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue)">Nom sur l'attestation :</label>
+        <input id="certificate-name" type="text" placeholder="Prénom NOM" style="width:100%;max-width:500px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.2);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none"/>
+      </div>
+      <button class="btn green" onclick="downloadCertificate()" style="font-size:1.1em;padding:15px 40px;margin-top:15px">📥 Télécharger (HTML)</button>
+      <p style="margin-top:15px;color:#8899aa;font-size:0.9em">Ouvrez le fichier HTML et utilisez Ctrl+P pour l'imprimer en PDF.</p>
+    </div>
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">✅ Compétences validées</h3>
+    <div class="callout"><ul style="line-height:2;margin-left:20px">
+      <li>Comprendre ce qu'est une hallucination IA et pourquoi elle se produit</li>
+      <li>Identifier les différents types d'hallucinations</li>
+      <li>Détecter les erreurs convaincantes dans un texte généré par IA</li>
+      <li>Appliquer des techniques de fact-checking</li>
+      <li>Adopter une posture critique face aux contenus générés</li>
+      <li>Connaître les bonnes pratiques d'utilisation responsable</li>
+    </ul></div>`;
+}
+
+function unlockCertificate(){
+  certificateUnlocked=true;
+  const navItem=$('certificate-nav-item');
+  if(navItem){
+    navItem.style.opacity='1';navItem.style.cursor='pointer';
+    navItem.style.background='';
+    const icon=navItem.querySelector('.nav-icon');if(icon)icon.textContent='🎓';
+    const num=navItem.querySelector('.nav-number');
+    if(num){num.style.background='rgba(0,255,136,0.2)';num.style.color='var(--neon-green)';num.textContent='✓';}
+  }
+  toast("🎓 Attestation débloquée ! Consultez l'onglet Attestation.",4000);
+}
+
+function downloadCertificate(){
+  const name=($('certificate-name')?.value||'').trim()||'Participant';
+  const date=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Attestation - Module 9</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #ffe66d;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(255,230,109,.3),inset 0 0 60px rgba(0,212,255,.1)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(0,212,255,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#ffe66d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#00d4ff;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(0,212,255,.3);border-bottom:1px solid rgba(0,212,255,.3)}
+.mod{background:rgba(255,230,109,.1);border:1px solid rgba(255,230,109,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#ffe66d;font-size:1.3em;font-weight:600;margin-bottom:10px}
+.sc{display:inline-block;background:linear-gradient(135deg,#ffe66d,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:30px;border-top:1px solid rgba(0,212,255,.2)}
+.fi{text-align:center}.fl{color:#888;font-size:.85em;margin-bottom:5px}.fv{color:#00d4ff;font-weight:600}
+.sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px}
+.sk span{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:5px 15px;border-radius:15px;font-size:.85em;color:#00d4ff}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style></head><body><div class="cert"><div class="hd"><div class="logo">🔍📰</div><div class="ttl">Attestation de Réussite</div><div class="sub">Formation IA Responsable</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 9 : L'Erreur qui Sonne Juste</div><p style="color:#b0b0b0;margin-top:10px">Hallucinations de l'IA — Rédaction VERITAS NEWS</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Hallucinations IA</span><span>Fact-checking</span><span>Esprit Critique</span><span>Détection d'Erreurs</span><span>Vérification de Sources</span><span>IA Responsable</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div></body></html>`;
+
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`Attestation_Module9_Hallucinations_IA_${name.replace(/\s+/g,'_')}.html`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast("✅ Attestation téléchargée !",4000);
+}
+
+</script>
+</body>
+</html>
