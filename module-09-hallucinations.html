@@ -1026,8 +1026,139 @@ const lessons = [
 ];
 
 /* =========================================================
-   ARTICLES — placeholder fonctions, Phase 3 complètera
+   ARTICLES — Données et mécaniques de jeu
 ========================================================= */
+/*
+  Chaque article contient des phrases (sentences).
+  Certaines sont des hallucinations (hallucination:true) avec un type et une explication.
+  Le joueur doit cliquer sur les phrases hallucinées.
+*/
+const articles = [
+  /* ---- ARTICLE 1 : Histoire de l'informatique ---- */
+  {
+    id:1,
+    title:"Les grandes étapes de l'informatique moderne",
+    theme:"📜 Histoire & Technologie",
+    intro:"Article rédigé par SYNTHEX sur l'histoire de l'informatique, de ses pionniers aux révolutions numériques.",
+    sources:[
+      "L'ENIAC a été développé en 1945 à l'Université de Pennsylvanie par J. Presper Eckert et John Mauchly.",
+      "Ada Lovelace (1815-1852) est considérée comme la première programmeuse pour ses travaux sur la machine analytique de Charles Babbage.",
+      "Le World Wide Web a été inventé par Tim Berners-Lee au CERN en 1989.",
+      "Alan Turing a publié son article fondateur 'On Computable Numbers' en 1936.",
+      "Le premier iPhone a été présenté par Steve Jobs le 9 janvier 2007."
+    ],
+    sentences:[
+      {text:"L'histoire de l'informatique moderne commence véritablement avec l'ENIAC, le premier ordinateur électronique, développé en 1945 à l'Université de Pennsylvanie.", hallucination:false},
+      {text:"Ce calculateur géant pesait 27 tonnes et occupait une surface de 167 m², une prouesse technologique pour l'époque.", hallucination:false},
+      {text:"Mais les racines de l'informatique remontent bien plus loin : Ada Lovelace, fille du poète Lord Byron, est considérée comme la première programmeuse de l'histoire grâce à ses travaux sur la machine analytique de Charles Babbage dans les années 1840.", hallucination:false},
+      {text:"Alan Turing, mathématicien britannique, a posé les bases théoriques de l'informatique avec son article fondateur 'On Computable Numbers' publié en 1938 dans la revue Nature.", hallucination:true, type:"Factuelle + Source", explain:"L'article de Turing a été publié en 1936 (pas 1938) dans les Proceedings of the London Mathematical Society (pas Nature)."},
+      {text:"Dans les années 1970, la révolution des micro-ordinateurs a démocratisé l'informatique avec des machines comme l'Apple II (1977) et l'IBM PC (1981).", hallucination:false},
+      {text:"Le World Wide Web a été inventé en 1989 par Tim Berners-Lee et Robert Cailliau au laboratoire du MIT à Boston, marquant le début de l'ère d'Internet telle que nous la connaissons.", hallucination:true, type:"Factuelle", explain:"Le Web a été inventé au CERN (Genève, Suisse), pas au MIT à Boston. Robert Cailliau a contribué au projet, mais l'invention est principalement attribuée à Berners-Lee seul."},
+      {text:"Le premier iPhone a été présenté par Steve Jobs le 9 janvier 2007, révolutionnant le marché de la téléphonie mobile.", hallucination:false},
+      {text:"Selon une étude de l'IEEE publiée en 2020, le nombre de transistors dans un processeur moderne dépasse désormais les 50 milliards, conformément à la loi de Moore formulée par Gordon Moore en 1965.", hallucination:true, type:"Factuelle", explain:"En 2020, les processeurs les plus avancés contenaient environ 50 milliards de transistors (Apple M1 Ultra en 2022 : 114 milliards), mais ce chiffre est présenté de manière trompeuse comme une norme. La loi de Moore est correctement datée de 1965."},
+    ]
+  },
+  /* ---- ARTICLE 2 : Océans et climat ---- */
+  {
+    id:2,
+    title:"L'océan, régulateur méconnu du climat mondial",
+    theme:"🔬 Science & Environnement",
+    intro:"Article rédigé par SYNTHEX sur le rôle des océans dans la régulation climatique.",
+    sources:[
+      "Les océans couvrent environ 71% de la surface terrestre.",
+      "Les océans absorbent environ 30% du CO₂ émis par les activités humaines (source : GIEC).",
+      "Les océans absorbent plus de 90% de la chaleur excédentaire due à l'effet de serre.",
+      "La Grande Barrière de corail (Australie) s'étend sur environ 2 300 km.",
+      "Le phytoplancton produit environ 50% de l'oxygène mondial."
+    ],
+    sentences:[
+      {text:"Les océans couvrent environ 71% de la surface de notre planète et jouent un rôle fondamental dans la régulation du climat mondial.", hallucination:false},
+      {text:"Ils absorbent environ 30% du dioxyde de carbone émis par les activités humaines, agissant comme un gigantesque puits de carbone naturel.", hallucination:false},
+      {text:"Selon le dernier rapport du GIEC, les océans ont absorbé plus de 90% de la chaleur excédentaire générée par l'effet de serre depuis les années 1970.", hallucination:false},
+      {text:"Le phytoplancton marin, ces micro-organismes végétaux en suspension dans l'eau, produit à lui seul environ 50% de l'oxygène que nous respirons.", hallucination:false},
+      {text:"Une étude récente du professeur Hans Wetterström de l'Université de Stockholm, publiée dans Ocean Research Letters en mars 2023, a démontré que les courants thermohalins se sont ralentis de 47% depuis 1950.", hallucination:true, type:"Source inventée", explain:"Le professeur Hans Wetterström et la revue 'Ocean Research Letters' n'existent pas. Le ralentissement de l'AMOC (circulation thermohaline) est un sujet de recherche réel, mais le chiffre de 47% et ces références sont entièrement inventés."},
+      {text:"La Grande Barrière de corail en Australie, qui s'étend sur environ 2 300 km, est le plus grand organisme vivant visible depuis l'espace.", hallucination:false},
+      {text:"L'acidification des océans, causée par l'absorption du CO₂, a augmenté de 26% depuis le début de l'ère industrielle, menaçant directement les organismes à coquille calcaire.", hallucination:false},
+      {text:"Le Programme des Nations Unies pour l'Environnement a déclaré en 2022 que 85% des zones humides côtières mondiales avaient disparu au cours des 300 dernières années, un chiffre qui a été unanimement confirmé par la communauté scientifique internationale.", hallucination:true, type:"Faux consensus + chiffre douteux", explain:"Le chiffre souvent cité est d'environ 35% des zones humides côtières perdues depuis 1970 (rapport Ramsar). Le chiffre de 85% sur 300 ans est exagéré, et la formulation 'unanimement confirmé' est un signal de faux consensus."},
+    ]
+  },
+  /* ---- ARTICLE 3 : Droit du numérique ---- */
+  {
+    id:3,
+    title:"Le cadre juridique européen du numérique",
+    theme:"⚖️ Droit & Régulation",
+    intro:"Article rédigé par SYNTHEX sur les grandes lois européennes encadrant le numérique.",
+    sources:[
+      "Le RGPD (Règlement Général sur la Protection des Données) est entré en application le 25 mai 2018.",
+      "L'AI Act européen a été adopté en 2024, avec une mise en application progressive à partir de 2025.",
+      "Le DSA (Digital Services Act) est entré en vigueur le 17 février 2024 pour toutes les plateformes.",
+      "Le DMA (Digital Markets Act) cible les 'gatekeepers' (contrôleurs d'accès) du numérique.",
+      "La CNIL est l'autorité française de protection des données, créée par la loi Informatique et Libertés de 1978."
+    ],
+    sentences:[
+      {text:"L'Union européenne s'est imposée comme pionnière mondiale en matière de régulation du numérique, avec une série de textes législatifs ambitieux adoptés ces dernières années.", hallucination:false},
+      {text:"Le RGPD, entré en application le 25 mai 2018, a révolutionné la protection des données personnelles en imposant des obligations strictes aux entreprises et en donnant de nouveaux droits aux citoyens européens.", hallucination:false},
+      {text:"Ce règlement prévoit des amendes pouvant aller jusqu'à 4% du chiffre d'affaires mondial annuel ou 20 millions d'euros, selon le montant le plus élevé.", hallucination:false},
+      {text:"Le Digital Services Act (DSA), rédigé sous la direction du commissaire européen Thierry Breton et de la juriste allemande Katarina Hoffmann, est entré en vigueur le 17 février 2024.", hallucination:true, type:"Personne inventée", explain:"Thierry Breton a effectivement porté le DSA, mais 'Katarina Hoffmann' n'existe pas comme juriste associée au DSA. Le texte a été porté par les commissaires Thierry Breton et Margrethe Vestager."},
+      {text:"L'AI Act, premier cadre législatif au monde dédié à l'intelligence artificielle, a été définitivement adopté par le Parlement européen en 2024.", hallucination:false},
+      {text:"Il classe les systèmes d'IA en quatre niveaux de risque : minimal, limité, élevé et inacceptable, avec des obligations croissantes pour chaque catégorie.", hallucination:false},
+      {text:"En France, la CNIL, créée par la loi Informatique et Libertés du 6 janvier 1978, veille à la protection des données personnelles et a prononcé en 2023 une amende record de 250 millions d'euros contre la société Clearview AI pour collecte illégale de données biométriques.", hallucination:true, type:"Factuelle", explain:"La CNIL a effectivement sanctionné Clearview AI, mais l'amende était de 20 millions d'euros (octobre 2022), pas 250 millions. Le montant est multiplié par plus de 12."},
+      {text:"Le DMA (Digital Markets Act) cible spécifiquement les grandes plateformes qualifiées de 'contrôleurs d'accès' ou gatekeepers, comme Google, Apple, Meta, Amazon et Microsoft.", hallucination:false},
+    ]
+  },
+  /* ---- ARTICLE 4 : Géographie ---- */
+  {
+    id:4,
+    title:"Tour du monde des capitales méconnues",
+    theme:"🌍 Géographie & Culture",
+    intro:"Article rédigé par SYNTHEX sur des capitales moins connues et leurs particularités.",
+    sources:[
+      "Canberra est la capitale de l'Australie (pas Sydney ni Melbourne).",
+      "Naypyidaw est la capitale du Myanmar (Birmanie) depuis 2006.",
+      "Brasília a été inaugurée comme capitale du Brésil le 21 avril 1960.",
+      "Berne est la capitale fédérale de la Suisse (de facto), pas Genève ni Zurich.",
+      "Le Kazakhstan a déplacé sa capitale d'Almaty à Astana (aujourd'hui Nur-Sultan puis à nouveau Astana) en 1997."
+    ],
+    sentences:[
+      {text:"Contrairement aux idées reçues, de nombreuses capitales nationales ne sont pas les villes les plus peuplées ou les plus célèbres de leur pays.", hallucination:false},
+      {text:"L'Australie, par exemple, a pour capitale Canberra, et non Sydney ou Melbourne, les deux villes les plus connues du pays.", hallucination:false},
+      {text:"Canberra a été choisie comme compromis en 1908, car Sydney et Melbourne se disputaient le titre de capitale.", hallucination:false},
+      {text:"Au Myanmar (Birmanie), la capitale n'est pas Rangoun mais Naypyidaw, une ville nouvelle inaugurée en 2006 et qui compte aujourd'hui environ 1,2 million d'habitants.", hallucination:false},
+      {text:"Le Brésil a déplacé sa capitale de Rio de Janeiro à Brasília en 1960, une ville entièrement planifiée et dessinée par l'architecte Oscar Niemeyer et l'urbaniste Lúcio Costa.", hallucination:false},
+      {text:"La Suisse a pour capitale fédérale la ville de Genève, centre diplomatique mondial abritant le siège européen des Nations Unies et du Comité international de la Croix-Rouge.", hallucination:true, type:"Factuelle", explain:"La capitale fédérale de la Suisse est Berne, pas Genève. Genève est bien un centre diplomatique, mais c'est Berne qui est le siège du gouvernement fédéral."},
+      {text:"Le Kazakhstan a transféré sa capitale d'Almaty à Astana en 1997, sur décision du président Noursoultan Nazarbaïev.", hallucination:false},
+      {text:"Enfin, la Turquie a pour capitale Istanbul, la plus grande ville du pays avec ses 15 millions d'habitants, qui chevauche deux continents entre Europe et Asie.", hallucination:true, type:"Factuelle", explain:"La capitale de la Turquie est Ankara, pas Istanbul. Istanbul est bien la plus grande ville du pays et chevauche deux continents, ce qui rend l'hallucination particulièrement trompeuse car les détails sur Istanbul sont vrais."},
+    ]
+  },
+  /* ---- ARTICLE 5 : L'IA dans la société ---- */
+  {
+    id:5,
+    title:"L'intelligence artificielle transforme notre quotidien",
+    theme:"🤖 Technologie & Société",
+    intro:"Article rédigé par SYNTHEX sur l'impact de l'IA dans différents secteurs de la société.",
+    sources:[
+      "ChatGPT a été lancé le 30 novembre 2022 par OpenAI.",
+      "OpenAI a été fondée en 2015. Sam Altman en est le CEO.",
+      "DeepMind (Google) a créé AlphaFold pour la prédiction de structures protéiques.",
+      "Le AI Act européen a été adopté en 2024.",
+      "GPT-4 a été annoncé par OpenAI en mars 2023."
+    ],
+    sentences:[
+      {text:"L'intelligence artificielle a connu une accélération sans précédent depuis le lancement de ChatGPT le 30 novembre 2022 par OpenAI, atteignant 100 millions d'utilisateurs en seulement deux mois.", hallucination:false},
+      {text:"OpenAI, fondée en 2015 par un groupe comprenant Sam Altman et Elon Musk, a été la première entreprise à développer un modèle de langage capable de réussir l'examen du barreau américain avec GPT-4, lancé en mars 2023.", hallucination:false},
+      {text:"Dans le domaine médical, l'IA DeepMind AlphaFold a révolutionné la biologie en prédisant la structure 3D de pratiquement toutes les protéines connues, un exploit salué par le prix Nobel de chimie 2024.", hallucination:false},
+      {text:"Selon le rapport annuel 2023 de l'Institut Stanford pour l'IA (HAI), rédigé sous la direction du professeur Andrew Ng, les investissements mondiaux dans l'IA ont atteint 189 milliards de dollars en 2023.", hallucination:true, type:"Contamination de contexte", explain:"Le AI Index Report de Stanford HAI existe, mais il n'est pas rédigé 'sous la direction d'Andrew Ng'. Andrew Ng est un chercheur éminent en IA (fondateur de Coursera, ex-Google Brain) mais n'est pas le directeur du rapport HAI. Le chiffre exact d'investissement est aussi douteux."},
+      {text:"En Europe, l'AI Act adopté en 2024 classe les systèmes d'IA selon leur niveau de risque et impose des obligations de transparence et de sécurité pour les systèmes à haut risque.", hallucination:false},
+      {text:"Le PDG de Google, Sundar Pichai, a déclaré lors du sommet de Davos en janvier 2024 : 'L'IA est la technologie la plus profonde sur laquelle l'humanité travaille, plus profonde que le feu ou l'électricité.'", hallucination:true, type:"Citation déformée + anachronisme", explain:"Sundar Pichai a bien comparé l'IA au feu et à l'électricité, mais dans une interview en 2018, pas au sommet de Davos 2024. La citation exacte et le contexte sont modifiés."},
+      {text:"Les systèmes de recommandation alimentés par l'IA sont désormais omniprésents : Netflix estime que 80% du contenu regardé par ses abonnés provient de ses recommandations algorithmiques.", hallucination:false},
+      {text:"Face à ces avancées, le défi majeur reste la régulation et l'éthique : garantir que l'IA serve l'humanité tout en minimisant les risques de biais, de désinformation et de perte d'emplois.", hallucination:false},
+    ]
+  }
+];
+
+/* État par article */
+const articleState = {};
+
 function updateArticleCards(){
   [1,2,3,4,5].forEach(i=>{
     const card=document.getElementById('article-card-'+i);
@@ -1036,7 +1167,271 @@ function updateArticleCards(){
 }
 
 function startArticle(id){
-  toast("Article "+id+" — Fonctionnalité en cours d'implémentation...");
+  const article = articles.find(a=>a.id===id);
+  if(!article) return;
+  // Init state for this article
+  if(!articleState[id]) articleState[id]={flagged:new Set(), submitted:false};
+  const as = articleState[id];
+
+  const zone=$('article-zone');
+  zone.innerHTML=`
+    <div class="analysis-zone">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <h3 style="color:var(--neon-yellow);font-family:'Space Mono',monospace;font-size:1.1em">${article.theme} — ${article.title}</h3>
+        <span style="color:var(--muted);font-size:0.85em">Article ${id}/5</span>
+      </div>
+      <p style="color:var(--muted);margin:10px 0 15px;line-height:1.5">${article.intro}</p>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;padding:10px;background:rgba(255,230,109,0.08);border-radius:8px;border:1px solid rgba(255,230,109,0.2)">
+        <span style="font-size:1.3em">💡</span>
+        <span style="font-size:0.9em;color:var(--neon-yellow)">Cliquez sur les phrases que vous suspectez d'être des hallucinations. Consultez les sources ci-dessous pour vous aider.</span>
+      </div>
+
+      <div class="article-text" id="article-text-${id}">
+        ${article.sentences.map((s,i)=>`<span class="sentence${as.flagged.has(i)?' flagged':''}" data-idx="${i}" onclick="toggleSentence(${id},${i})">${s.text}</span> `).join('')}
+      </div>
+
+      <div class="detection-bar">
+        <span style="font-size:1.2em">🎯</span>
+        <span style="font-family:'Space Mono',monospace;font-size:0.9em;color:var(--muted)">Signalées : <span id="flagged-count-${id}" style="color:var(--neon-yellow)">${as.flagged.size}</span></span>
+      </div>
+
+      <div class="source-panel">
+        <h4>📚 Sources de référence</h4>
+        ${article.sources.map(s=>`<div class="source-item">${s}</div>`).join('')}
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:center;margin:25px 0 10px;flex-wrap:wrap">
+        <button class="btn yellow" id="submit-article-${id}" onclick="submitArticle(${id})"${as.submitted?' disabled':''}>
+          ${as.submitted?'✓ Analyse soumise':'Soumettre mon analyse'}
+        </button>
+        <button class="btn" onclick="$('article-zone').innerHTML='';showLesson(7)">← Retour aux articles</button>
+      </div>
+
+      <div id="article-result-${id}"></div>
+    </div>`;
+  zone.scrollIntoView({behavior:'smooth'});
+}
+
+function toggleSentence(articleId, sentIdx){
+  const as = articleState[articleId];
+  if(!as || as.submitted) return;
+
+  if(as.flagged.has(sentIdx)){
+    as.flagged.delete(sentIdx);
+  } else {
+    as.flagged.add(sentIdx);
+  }
+
+  // Update visual
+  const sentEls = document.querySelectorAll(`#article-text-${articleId} .sentence`);
+  sentEls.forEach(el=>{
+    const idx=parseInt(el.dataset.idx);
+    el.classList.toggle('flagged', as.flagged.has(idx));
+  });
+
+  const countEl=document.getElementById('flagged-count-'+articleId);
+  if(countEl) countEl.textContent=as.flagged.size;
+}
+
+function submitArticle(articleId){
+  const article = articles.find(a=>a.id===articleId);
+  const as = articleState[articleId];
+  if(!article || !as || as.submitted) return;
+
+  as.submitted=true;
+  const btn=document.getElementById('submit-article-'+articleId);
+  if(btn){btn.disabled=true;btn.textContent='✓ Analyse soumise';}
+
+  let correct=0, missed=0, falsePos=0;
+  const sentEls = document.querySelectorAll(`#article-text-${articleId} .sentence`);
+
+  sentEls.forEach(el=>{
+    const idx=parseInt(el.dataset.idx);
+    const sent=article.sentences[idx];
+    const wasFlagged=as.flagged.has(idx);
+    el.style.pointerEvents='none';
+
+    if(sent.hallucination && wasFlagged){
+      // Correct detection
+      el.classList.remove('flagged');
+      el.classList.add('flagged-correct');
+      correct++;
+    } else if(sent.hallucination && !wasFlagged){
+      // Missed hallucination
+      el.classList.add('flagged-wrong');
+      el.style.borderBottomStyle='dashed';
+      missed++;
+    } else if(!sent.hallucination && wasFlagged){
+      // False positive
+      el.classList.remove('flagged');
+      el.classList.add('flagged-wrong');
+      falsePos++;
+    }
+  });
+
+  state.totalHalluFound += correct;
+  state.totalFalsePositives += falsePos;
+
+  // Count total hallucinations in this article
+  const totalHallu = article.sentences.filter(s=>s.hallucination).length;
+  const pts = correct*2 - falsePos;
+
+  // Build result with explanations
+  let explanations = '';
+  article.sentences.forEach((s,i)=>{
+    if(s.hallucination){
+      const found = as.flagged.has(i);
+      explanations += `
+        <div class="callout ${found?'ok':'pink'}" style="margin:10px 0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="font-size:1.2em">${found?'✅':'❌'}</span>
+            <strong style="color:${found?'var(--neon-green)':'var(--neon-pink)'}">${found?'Détectée':'Manquée'} — ${s.type}</strong>
+          </div>
+          <p style="font-style:italic;color:#8899aa;margin-bottom:8px;font-size:0.9em">"${s.text.substring(0,100)}..."</p>
+          <p style="line-height:1.6;font-size:0.9em">${s.explain}</p>
+        </div>`;
+    }
+  });
+
+  // False positives
+  article.sentences.forEach((s,i)=>{
+    if(!s.hallucination && as.flagged.has(i)){
+      explanations += `
+        <div class="callout warn" style="margin:10px 0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="font-size:1.2em">⚠️</span>
+            <strong style="color:var(--warn)">Faux positif — Cette phrase est correcte</strong>
+          </div>
+          <p style="font-style:italic;color:#8899aa;font-size:0.9em">"${s.text.substring(0,100)}..."</p>
+        </div>`;
+    }
+  });
+
+  const resultEl=document.getElementById('article-result-'+articleId);
+  resultEl.innerHTML=`
+    <div class="callout ${correct===totalHallu && falsePos===0?'ok':'blue'}" style="margin-top:20px;padding:20px">
+      <h4 style="color:var(--neon-blue);margin-bottom:15px">📊 Résultat de l'analyse — Article ${articleId}</h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:15px">
+        <div style="text-align:center;padding:12px;background:rgba(0,255,136,0.1);border-radius:8px">
+          <div style="font-size:1.5em;color:var(--neon-green)">${correct}/${totalHallu}</div>
+          <div style="font-size:0.8em;color:var(--muted)">Hallucinations détectées</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(255,0,128,0.1);border-radius:8px">
+          <div style="font-size:1.5em;color:var(--neon-pink)">${missed}</div>
+          <div style="font-size:0.8em;color:var(--muted)">Manquées</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(255,204,0,0.1);border-radius:8px">
+          <div style="font-size:1.5em;color:var(--warn)">${falsePos}</div>
+          <div style="font-size:0.8em;color:var(--muted)">Faux positifs</div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px">
+        <span style="font-family:'Space Mono',monospace;color:var(--neon-yellow)">Score : ${Math.max(0,pts)} pts</span>
+      </div>
+    </div>
+    <h4 style="color:var(--neon-yellow);margin:20px 0 10px">🔍 Explications détaillées</h4>
+    ${explanations}
+  `;
+
+  // Mark article as done
+  state.articlesDone.add(articleId);
+  updateArticleCards();
+
+  if(state.articlesDone.size===5){
+    setTimeout(()=>{
+      toast("Tous les articles sont analysés ! Passez au quiz ci-dessous.",3500);
+      showQuiz();
+    },1500);
+  }
+  resultEl.scrollIntoView({behavior:'smooth'});
+}
+
+/* =========================================================
+   QUIZ
+========================================================= */
+const quizQuestions=[
+  {q:"Qu'est-ce qu'une hallucination IA ?",opts:["Un bug technique qui fait planter le programme","Une réponse inventée mais présentée avec assurance comme un fait","Un virus informatique qui corrompt les données","Une fonctionnalité volontaire pour tester les utilisateurs"],correct:1,explain:"Une hallucination IA est une réponse générée qui contient des informations inventées, inexactes ou sans fondement, mais formulées avec assurance comme si elles étaient vérifiées."},
+  {q:"Pourquoi les LLM hallucinent-ils ?",opts:["Parce qu'ils sont mal programmés","Parce qu'ils prédisent des mots probables, pas des faits vérifiés","Parce qu'ils manquent de puissance de calcul","Parce qu'ils sont connectés à des sources peu fiables"],correct:1,explain:"Les LLM fonctionnent par prédiction probabiliste de tokens. Ils génèrent des suites de mots statistiquement vraisemblables, sans vérifier si le contenu est factuellement correct."},
+  {q:"Quel cas célèbre implique un avocat ayant soumis de fausses jurisprudences ?",opts:["Google v. Oracle (2021)","Mata v. Avianca (2023)","Apple v. Samsung (2012)","Microsoft v. EU (2004)"],correct:1,explain:"En 2023, l'avocat Steven Schwartz a soumis au tribunal six décisions de justice entièrement inventées par ChatGPT dans l'affaire Mata v. Avianca."},
+  {q:"Quel type d'hallucination consiste à citer une étude ou un auteur qui n'existe pas ?",opts:["Hallucination factuelle","Anachronisme","Source inventée","Faux consensus"],correct:2,explain:"L'hallucination de type 'source inventée' consiste à fabriquer des références bibliographiques, des noms d'auteurs, des titres de revues ou des numéros de pages qui n'existent pas."},
+  {q:"Pourquoi la 'précision' d'une réponse IA peut-elle être trompeuse ?",opts:["Parce que les chiffres précis sont toujours faux","Parce que des détails ultra-précis créent une illusion de rigueur, même inventés","Parce que l'IA arrondit toujours les chiffres","Parce que la précision ralentit le modèle"],correct:1,explain:"L'IA peut inventer des chiffres très précis (dates, pourcentages, numéros de page) qui créent une illusion de rigueur et de fiabilité, alors qu'ils sont entièrement fabriqués."},
+  {q:"Que recommande la méthode CRAAP pour vérifier une information ?",opts:["Faire confiance à l'IA si elle est récente","Évaluer l'Actualité, la Pertinence, l'Autorité, l'Exactitude et l'Objectif","Demander confirmation à une deuxième IA","Vérifier uniquement les chiffres, pas le texte"],correct:1,explain:"La méthode CRAAP (Currency, Relevance, Authority, Accuracy, Purpose) propose d'évaluer systématiquement cinq dimensions d'une information pour juger sa fiabilité."},
+  {q:"Quelle est la meilleure façon de vérifier une source citée par une IA ?",opts:["Demander à l'IA si la source est correcte","Rechercher le titre exact de la source sur des bases de données spécialisées","Se fier à la mise en forme (si c'est bien formaté, c'est vrai)","Vérifier uniquement que l'auteur existe"],correct:1,explain:"Il faut chercher le titre exact de l'étude ou de l'article sur Google Scholar, PubMed ou d'autres bases de données. Si aucune trace n'existe, c'est probablement une hallucination."},
+  {q:"Quel biais cognitif nous pousse à croire l'IA parce qu'elle s'exprime comme un expert ?",opts:["Biais de confirmation","Biais d'autorité","Biais de disponibilité","Biais d'ancrage"],correct:1,explain:"Le biais d'autorité nous fait attribuer plus de crédibilité à une source perçue comme experte. Le ton professionnel et précis de l'IA déclenche ce biais."},
+  {q:"Pourquoi est-il inutile de demander à l'IA 'Es-tu sûr de ta réponse ?' ?",opts:["Parce que l'IA ne comprend pas la question","Parce qu'elle répondra presque toujours oui, parfois en ajoutant de faux détails supplémentaires","Parce que cela fait planter le modèle","Parce que l'IA change toujours sa réponse"],correct:1,explain:"L'IA est entraînée pour être utile et confiante. Quand on lui demande confirmation, elle renforce généralement sa réponse initiale, parfois en ajoutant de nouveaux détails inventés."},
+  {q:"Quelle est la meilleure posture à adopter face aux réponses d'une IA ?",opts:["Rejeter systématiquement tout ce que dit l'IA","Faire confiance si la réponse est bien écrite","Traiter chaque réponse comme une hypothèse à vérifier","Ne jamais utiliser l'IA pour des tâches importantes"],correct:2,explain:"La posture idéale est de traiter chaque réponse comme une hypothèse à vérifier, pas comme une vérité révélée. L'IA est un point de départ, jamais une source finale."},
+];
+
+function showQuiz(){
+  const zone=$('quiz-zone');
+  zone.style.display='block';
+  zone.innerHTML=`
+    <div class="divider" style="margin:30px 0"></div>
+    <h3 style="color:var(--neon-yellow);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 9</h3>
+    <p style="color:var(--muted);margin-bottom:20px">Répondez aux 10 questions pour obtenir votre attestation. Score minimum : 70%.</p>
+    <div id="quiz-questions">
+      ${quizQuestions.map((q,i)=>`
+        <div class="q-card" id="q-${i}">
+          <div class="q-head">
+            <span class="mono">Q${i+1}/${quizQuestions.length}</span>
+          </div>
+          <div class="q-text">${q.q}</div>
+          <div class="opts">
+            ${q.opts.map((o,j)=>`<div class="opt" data-q="${i}" data-o="${j}" onclick="answerQuiz(${i},${j})">${o}</div>`).join('')}
+          </div>
+          <div class="explain" id="explain-${i}">${q.explain}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:25px">
+      <button class="btn yellow" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px">Valider mes réponses</button>
+    </div>
+    <div id="quiz-result" style="margin-top:20px"></div>
+  `;
+  zone.scrollIntoView({behavior:'smooth'});
+}
+
+const quizAnswers={};
+function answerQuiz(qIdx,oIdx){
+  quizAnswers[qIdx]=oIdx;
+  document.querySelectorAll(`.opt[data-q="${qIdx}"]`).forEach(el=>{
+    el.classList.remove('selected');
+    if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
+  });
+}
+
+function submitQuiz(){
+  let score=0;
+  quizQuestions.forEach((q,i)=>{
+    const userAns=quizAnswers[i];
+    const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
+    opts.forEach(el=>{
+      const oIdx=parseInt(el.dataset.o);
+      el.style.pointerEvents='none';
+      if(oIdx===q.correct) el.classList.add('correct');
+      if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
+    });
+    if(userAns===q.correct) score++;
+    $('explain-'+i).classList.add('show');
+  });
+
+  const pct=Math.round(score/quizQuestions.length*100);
+  state.quizScore=score;state.quizTotal=quizQuestions.length;
+  finalScore=pct;
+
+  $('quiz-submit-btn').style.display='none';
+  $('quiz-result').innerHTML=`
+    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:30px">
+      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:15px">${pct>=70?'Félicitations !':'Score insuffisant'}</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">${pct>=70
+        ?'Vous avez démontré une solide compréhension des hallucinations IA et des techniques de vérification. Votre attestation est débloquée !'
+        :'Il faut au moins 70% pour valider. Relisez les dossiers et réessayez.'
+      }</p>
+    </div>`;
+
+  if(pct>=70) unlockCertificate();
 }
 
 /* =========================================================
