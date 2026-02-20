@@ -381,18 +381,222 @@ const lessons = [
     html:`
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Fondamentaux</div>
       <div class="divider"></div>
-      <div class="callout ok"><p>Contenu de la leçon 1 — sera complété en Phase 2.</p></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Le mythe du prompt parfait</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Beaucoup de gens pensent qu'il existe un "prompt magique" qui donnera immédiatement le résultat parfait. C'est un mythe. En réalité, obtenir un résultat de qualité avec une IA générative est un <strong>processus itératif</strong> : on commence par une première tentative, on analyse le résultat, on ajuste sa demande, et on recommence jusqu'à obtenir ce qu'on veut.
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff;margin-top:12px">
+        C'est exactement comme écrire un texte : le premier jet n'est presque jamais le bon. Les écrivains professionnels réécrivent leurs textes 5, 10, parfois 20 fois. Le prompt engineering suit la même logique.
+      </p>
+
+      <div class="callout ok">
+        <strong>Le cycle d'itération :</strong><br/>
+        <span style="font-family:'Space Mono',monospace;color:var(--neon-green)">Prompt → Résultat → Analyse → Ajustement → Nouveau prompt → ...</span><br/><br/>
+        Chaque itération vous rapproche du résultat souhaité. L'important n'est pas de réussir du premier coup, mais de savoir <strong>comment améliorer</strong> sa demande.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Premier essai vs résultat itéré</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Voici un exemple concret de la puissance de l'itération :
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:15px 0">
+        <div class="callout pink">
+          <strong>Tentative 1 (vague)</strong><br/><br/>
+          <em style="color:var(--neon-pink)">"Parle-moi du réchauffement climatique"</em><br/><br/>
+          Résultat : Un texte générique de 500 mots qui survole le sujet sans profondeur, mélange tout.
+        </div>
+        <div class="callout ok">
+          <strong>Après 3 itérations (précis)</strong><br/><br/>
+          <em style="color:var(--neon-green)">"Explique en 5 points clés l'impact du réchauffement climatique sur l'agriculture méditerranéenne d'ici 2050. Utilise des données chiffrées. Public : lycéens de Terminale."</em><br/><br/>
+          Résultat : Un texte structuré, ciblé, avec des chiffres, adapté au public.
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Les 3 types d'itération</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🔧</div>
+          <strong>Affiner</strong><br/>Rendre plus précis ce qui est trop vague
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🔀</div>
+          <strong>Reformuler</strong><br/>Changer d'angle quand le résultat est hors-sujet
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">➕</div>
+          <strong>Enrichir</strong><br/>Ajouter du contexte, des contraintes, des exemples
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>Erreur fréquente :</strong> Beaucoup d'utilisateurs abandonnent après un premier résultat décevant en concluant que "l'IA ne comprend pas". En réalité, c'est souvent la demande qui manque de précision. Un prompt vague donne une réponse vague — ce n'est pas un défaut de l'IA, c'est un signal pour itérer.
+      </div>
     `
   },
   {
     title:"02 — Anatomie d'un prompt",
     kicker:"Comprendre la structure d'une requête pour mieux la formuler.",
-    html:`<div class="callout ok"><p>Contenu de la leçon 2 — sera complété en Phase 2.</p></div>`
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Structure</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Qu'est-ce qu'un prompt ?</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un <strong>prompt</strong> est le texte que vous envoyez à une IA générative pour obtenir une réponse. C'est votre seul moyen de communication avec le modèle. La qualité de votre prompt détermine directement la qualité de la réponse. C'est comme donner des instructions à quelqu'un : plus vos instructions sont claires et complètes, plus le résultat sera conforme à vos attentes.
+      </p>
+
+      <div class="callout">
+        <strong>Analogie :</strong> Imaginez que vous commandez un meuble sur mesure à un artisan. Si vous dites simplement "faites-moi une table", vous aurez une table... mais peut-être pas celle que vous vouliez. Si vous précisez les dimensions, le matériau, le style, la couleur et l'usage prévu, vous obtiendrez exactement ce que vous aviez en tête.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🧩 Les composants d'un prompt</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un prompt efficace peut contenir plusieurs éléments, même si tous ne sont pas toujours nécessaires :
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="border-color:rgba(0,255,136,.4)">
+          <strong style="color:var(--neon-green)">L'instruction</strong><br/>
+          Ce que vous demandez à l'IA de faire.<br/>
+          <em style="color:var(--muted)">"Résume ce texte", "Traduis en anglais", "Écris un poème"</em>
+        </div>
+        <div class="callout" style="border-color:rgba(0,212,255,.4)">
+          <strong style="color:var(--neon-blue)">Le contexte</strong><br/>
+          Les informations de fond nécessaires.<br/>
+          <em style="color:var(--muted)">"Je suis prof de maths en 3e", "C'est pour un blog tech"</em>
+        </div>
+        <div class="callout" style="border-color:rgba(255,0,128,.4)">
+          <strong style="color:var(--neon-pink)">Les données d'entrée</strong><br/>
+          Le contenu sur lequel travailler.<br/>
+          <em style="color:var(--muted)">Un texte à résumer, un code à corriger, une liste à trier</em>
+        </div>
+        <div class="callout" style="border-color:rgba(168,85,247,.4)">
+          <strong style="color:var(--neon-purple)">Le format de sortie</strong><br/>
+          Comment vous voulez la réponse.<br/>
+          <em style="color:var(--muted)">"En 3 bullet points", "En tableau", "Maximum 100 mots"</em>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📝 Exemple décortiqué</h3>
+      <div class="callout ok">
+        <p style="line-height:1.8;font-family:'Space Mono',monospace;font-size:0.9em">
+          <span style="color:var(--neon-blue)">[Contexte]</span> Tu es un nutritionniste spécialisé pour adolescents.<br/>
+          <span style="color:var(--neon-green)">[Instruction]</span> Propose un menu équilibré pour une journée.<br/>
+          <span style="color:var(--neon-pink)">[Données]</span> L'élève est végétarien et allergique aux noix.<br/>
+          <span style="color:var(--neon-purple)">[Format]</span> Présente le résultat en tableau avec les colonnes : repas, plat, calories estimées.
+        </p>
+      </div>
+      <p style="line-height:1.7;color:#cfe9ff;margin-top:12px">
+        Ce prompt contient les 4 composants et ne laisse aucune ambiguïté à l'IA. Le résultat sera structuré, pertinent et directement utilisable.
+      </p>
+
+      <div class="callout warn">
+        <strong>Piège courant :</strong> Mettre trop d'instructions contradictoires dans un même prompt. Par exemple : "Fais un résumé court mais détaillé avec des exemples". <em>Court</em> et <em>détaillé avec des exemples</em> sont contradictoires. L'IA fera un compromis bancal. Mieux vaut choisir : résumé court OU analyse détaillée.
+      </div>
+    `
   },
   {
     title:"03 — Les 5 piliers d'un bon prompt",
     kicker:"Rôle, contexte, tâche, format, contraintes : la recette universelle.",
-    html:`<div class="callout ok"><p>Contenu de la leçon 3 — sera complété en Phase 2.</p></div>`
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Méthode</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🏗️ La méthode RCTFC</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Au studio ITERATEK, nous utilisons un framework en 5 piliers pour construire des prompts efficaces. Chaque pilier ajoute une couche de précision qui rapproche le résultat de l'objectif. Ce n'est pas obligatoire d'utiliser les 5 à chaque fois, mais plus vous en utilisez, plus le résultat sera ciblé.
+      </p>
+
+      <div class="callout ok" style="padding:20px">
+        <div style="display:grid;grid-template-columns:60px 1fr;gap:15px;align-items:center;margin-bottom:15px">
+          <div style="font-size:2.5em;text-align:center">🎭</div>
+          <div><strong style="color:var(--neon-green);font-size:1.1em">R — Rôle</strong><br/>
+          Qui doit être l'IA ? Quel expert, quel personnage ?<br/>
+          <em style="color:var(--muted)">"Tu es un professeur d'histoire spécialisé dans la Révolution française"</em></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;gap:15px;align-items:center;margin-bottom:15px">
+          <div style="font-size:2.5em;text-align:center">📋</div>
+          <div><strong style="color:var(--neon-blue);font-size:1.1em">C — Contexte</strong><br/>
+          Quelle est la situation ? Pour qui ? Pourquoi ?<br/>
+          <em style="color:var(--muted)">"Je prépare un cours pour des élèves de 4e qui découvrent le sujet"</em></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;gap:15px;align-items:center;margin-bottom:15px">
+          <div style="font-size:2.5em;text-align:center">✅</div>
+          <div><strong style="color:var(--neon-pink);font-size:1.1em">T — Tâche</strong><br/>
+          Quelle action précise doit être réalisée ?<br/>
+          <em style="color:var(--muted)">"Crée une frise chronologique des événements clés de 1789 à 1799"</em></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;gap:15px;align-items:center;margin-bottom:15px">
+          <div style="font-size:2.5em;text-align:center">📐</div>
+          <div><strong style="color:var(--neon-purple);font-size:1.1em">F — Format</strong><br/>
+          Quelle forme doit prendre la réponse ?<br/>
+          <em style="color:var(--muted)">"Présente sous forme de tableau avec colonnes : date, événement, conséquence"</em></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:grid;grid-template-columns:60px 1fr;gap:15px;align-items:center">
+          <div style="font-size:2.5em;text-align:center">🚧</div>
+          <div><strong style="color:var(--warn);font-size:1.1em">C — Contraintes</strong><br/>
+          Quelles limites ou règles respecter ?<br/>
+          <em style="color:var(--muted)">"Maximum 10 événements. Vocabulaire simple. Pas de jargon académique."</em></div>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 L'impact de chaque pilier</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Chaque pilier ajouté améliore significativement la pertinence du résultat :
+      </p>
+      <div style="margin:15px 0">
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <span style="font-family:'Space Mono',monospace;color:var(--muted);width:120px">Tâche seule</span>
+          <div style="flex:1;height:24px;border-radius:12px;overflow:hidden;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">
+            <div style="height:100%;width:30%;background:var(--danger);border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px">
+              <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:white">30%</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <span style="font-family:'Space Mono',monospace;color:var(--muted);width:120px">+ Rôle</span>
+          <div style="flex:1;height:24px;border-radius:12px;overflow:hidden;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">
+            <div style="height:100%;width:50%;background:var(--warn);border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px">
+              <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:#333">50%</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <span style="font-family:'Space Mono',monospace;color:var(--muted);width:120px">+ Contexte</span>
+          <div style="flex:1;height:24px;border-radius:12px;overflow:hidden;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">
+            <div style="height:100%;width:70%;background:var(--neon-blue);border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px">
+              <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:white">70%</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <span style="font-family:'Space Mono',monospace;color:var(--muted);width:120px">+ Format</span>
+          <div style="flex:1;height:24px;border-radius:12px;overflow:hidden;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">
+            <div style="height:100%;width:85%;background:var(--neon-green);border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px">
+              <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:#333">85%</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px 0">
+          <span style="font-family:'Space Mono',monospace;color:var(--muted);width:120px">+ Contraintes</span>
+          <div style="flex:1;height:24px;border-radius:12px;overflow:hidden;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2)">
+            <div style="height:100%;width:95%;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px">
+              <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:white">95%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <strong>Astuce ITERATEK :</strong> Vous n'avez pas toujours besoin des 5 piliers. Pour une question simple ("Quelle est la capitale du Pérou ?"), la tâche seule suffit. Réservez les 5 piliers pour les demandes complexes où la marge d'interprétation est grande.
+      </div>
+    `
   },
   {
     title:"04 — L'art de la spécificité",
