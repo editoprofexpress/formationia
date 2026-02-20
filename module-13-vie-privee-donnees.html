@@ -1,0 +1,2681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Shadow - Jeu de Rôle IA & Vie Privée</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --neon-purple: #a855f7;
+            --dark-bg: #0a0e17;
+            --panel-bg: rgba(10, 20, 40, 0.95);
+            --text: #e0f0ff;
+            --muted: #8899aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ==================== ÉCRAN TITRE ==================== */
+        #title-screen {
+            position: fixed;
+            inset: 0;
+            background: url('images/module13-title-bg.png') center/cover no-repeat, linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        #title-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.7);
+            z-index: -1;
+        }
+
+        #title-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .title-logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .main-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 3em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #8899aa;
+            margin-bottom: 50px;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .start-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2em;
+            padding: 20px 60px;
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 30px rgba(0, 255, 136, 0.1);
+            transform: scale(1.05);
+        }
+
+        .intro-text {
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: #aabbcc;
+        }
+
+        /* ==================== LIENS RETOUR MODULES ==================== */
+        .back-link-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #8899aa;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link-title:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #aabbcc;
+        }
+
+        .back-link-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link-sidebar:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: var(--neon-blue);
+            transform: translateX(-3px);
+        }
+
+        .back-link-sidebar .back-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link-sidebar:hover .back-arrow {
+            transform: translateX(-3px);
+        }
+
+        .back-btn-game {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            margin-right: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 6px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn-game:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+
+        /* ==================== BRIEFING ==================== */
+        #briefing-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #briefing-screen.active {
+            display: flex;
+        }
+
+        .briefing-header {
+            background: rgba(10, 20, 40, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .briefing-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3em;
+            color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .briefing-title::before {
+            content: '🛡️';
+            font-size: 1.5em;
+        }
+
+        .briefing-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #8899aa;
+            font-size: 0.9em;
+        }
+
+        .briefing-progress-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .briefing-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            transition: width 0.3s;
+        }
+
+        .briefing-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .briefing-nav {
+            width: 280px;
+            background: rgba(10, 20, 40, 0.9);
+            border-right: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .briefing-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+            color: #8899aa;
+        }
+
+        .briefing-nav-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            color: var(--text);
+        }
+
+        .briefing-nav-item.active {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .briefing-nav-item.completed {
+            color: var(--neon-blue);
+        }
+
+        .briefing-nav-item.completed::after {
+            content: '✓';
+            margin-left: auto;
+            color: var(--neon-green);
+        }
+
+        .nav-icon {
+            font-size: 1.2em;
+            width: 30px;
+            text-align: center;
+        }
+
+        .nav-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            background: rgba(0, 255, 136, 0.2);
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        .briefing-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .briefing-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .briefing-content::-webkit-scrollbar-track {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .briefing-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+        }
+
+        .briefing-footer {
+            background: rgba(10, 20, 40, 0.95);
+            border-top: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .briefing-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 12px 30px;
+            border: 2px solid var(--neon-green);
+            background: transparent;
+            color: var(--neon-green);
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .briefing-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .briefing-btn.primary {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .briefing-btn.primary:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+
+        .briefing-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ==================== CONTENU COURS ==================== */
+        .module-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em;
+            color: var(--neon-green);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .module-kicker {
+            color: var(--muted);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .section-content h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-blue);
+            margin: 25px 0 15px;
+            font-size: 1.2em;
+        }
+
+        .section-content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #cfe9ff;
+        }
+
+        .section-content ul, .section-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .section-content li {
+            line-height: 1.7;
+            margin-bottom: 8px;
+            color: #cfe9ff;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+            margin: 18px 0;
+        }
+
+        .callout {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            padding: 14px;
+            border-radius: 14px;
+            box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+            margin: 12px 0;
+            line-height: 1.6;
+            color: #cfe9ff;
+        }
+
+        .callout.warn {
+            background: rgba(255, 204, 0, 0.08);
+            border-color: rgba(255, 204, 0, 0.30);
+            box-shadow: 0 0 18px rgba(255, 204, 0, 0.16);
+        }
+
+        .callout.pink {
+            background: rgba(255, 0, 128, 0.10);
+            border-color: rgba(255, 0, 128, 0.30);
+            box-shadow: 0 0 18px rgba(255, 0, 128, 0.16);
+        }
+
+        .callout.purple {
+            background: rgba(168, 85, 247, 0.10);
+            border-color: rgba(168, 85, 247, 0.35);
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.18);
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border: 1px solid rgba(0, 255, 136, .5);
+            border-radius: 999px;
+            font-family: 'Space Mono', monospace;
+            font-size: .78em;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, .05);
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .stat-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .stat-table th {
+            background: rgba(0, 255, 136, 0.15);
+            padding: 10px 15px;
+            text-align: left;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .stat-table td {
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            color: #cfe9ff;
+        }
+
+        .stat-table tr:nth-child(even) {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* ==================== GAME CONTAINER ==================== */
+        #game-container {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            overflow: hidden;
+        }
+
+        #game-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== TOP BAR DU JEU ==================== */
+        .game-top-bar {
+            background: linear-gradient(180deg, rgba(10, 14, 23, 0.95), rgba(10, 14, 23, 0.8));
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .game-top-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .scenario-indicator {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-green);
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-top-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3em;
+            color: var(--neon-blue);
+        }
+
+        .protection-gauge {
+            text-align: right;
+        }
+
+        .protection-label {
+            font-size: 0.7em;
+            color: #8899aa;
+            margin-bottom: 3px;
+        }
+
+        .protection-meter {
+            width: 150px;
+            height: 10px;
+            background: #1a2030;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #3a4a5a;
+        }
+
+        .protection-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-pink), #ffaa00, var(--neon-green));
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+
+        /* ==================== ZONE PRINCIPALE DU JEU ==================== */
+        .game-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Scène du scénario */
+        .scenario-scene {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .scenario-card {
+            background: var(--panel-bg);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-icon {
+            font-size: 2.5em;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .scenario-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5em;
+            color: var(--neon-green);
+        }
+
+        .scenario-subtitle {
+            color: var(--muted);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .scenario-narrative {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 3px solid var(--neon-blue);
+            padding: 15px 20px;
+            margin: 20px 0;
+            line-height: 1.7;
+            color: #cfe9ff;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .scenario-task {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            border-radius: 14px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .scenario-task h4 {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        /* ==================== CHOIX INTERACTIFS ==================== */
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .choice-btn {
+            padding: 15px 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.95em;
+            text-align: left;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.12);
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .choice-btn.correct {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .choice-btn.wrong {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 128, 0.15);
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+        }
+
+        .choice-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .choice-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        /* ==================== PUZZLES INTERACTIFS ==================== */
+        .puzzle-area {
+            margin: 20px 0;
+        }
+
+        /* Permissions app puzzle */
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .permission-item {
+            padding: 12px 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .permission-item:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .permission-item.flagged {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 128, 0.12);
+        }
+
+        .permission-item.safe {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.12);
+        }
+
+        .permission-icon {
+            font-size: 1.3em;
+        }
+
+        /* Drag & Drop profil */
+        .profile-builder {
+            display: flex;
+            gap: 25px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .data-pool {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .data-pool-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-blue);
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .data-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .data-chip {
+            padding: 8px 14px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .data-chip:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .data-chip.selected {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--neon-green);
+        }
+
+        .data-chip.wrong-select {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 128, 0.15);
+            color: var(--neon-pink);
+        }
+
+        /* Terminal de logs */
+        .log-terminal {
+            background: #0a1218;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+
+        .log-line {
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }
+
+        .log-line .timestamp {
+            color: var(--muted);
+        }
+
+        .log-line .level-info {
+            color: var(--neon-blue);
+        }
+
+        .log-line .level-warn {
+            color: #ffaa00;
+        }
+
+        .log-line .level-error {
+            color: var(--neon-pink);
+        }
+
+        .log-line .highlight {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* RGPD form builder */
+        .rgpd-form {
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 15px 0;
+            background: rgba(0, 212, 255, 0.03);
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-blue);
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(10, 20, 40, 0.9);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.9em;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Connection puzzle (CNIL verdict) */
+        .connection-puzzle {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .connection-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .connection-item {
+            padding: 12px 16px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .connection-item:hover {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .connection-item.selected {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .connection-item.matched {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            cursor: default;
+        }
+
+        /* ==================== FEEDBACK ==================== */
+        .feedback-box {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
+            display: none;
+        }
+
+        .feedback-box.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            color: var(--neon-green);
+            display: block;
+        }
+
+        .feedback-box.error {
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid rgba(255, 0, 128, 0.4);
+            color: var(--neon-pink);
+            display: block;
+        }
+
+        /* ==================== BOUTON VALIDER / CONTINUER ==================== */
+        .action-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 14px 35px;
+            border: 2px solid var(--neon-green);
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+            transform: scale(1.03);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--neon-green);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* ==================== INVENTAIRE PREUVES ==================== */
+        .evidence-bar {
+            background: rgba(10, 20, 40, 0.95);
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .evidence-label {
+            font-family: 'Space Mono', monospace;
+            color: var(--muted);
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .evidence-slots {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .evidence-slot {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s;
+        }
+
+        .evidence-slot.collected {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* ==================== SMS NOTIFICATION ==================== */
+        .sms-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 15px 20px;
+            max-width: 350px;
+            z-index: 200;
+            animation: slideInSMS 0.5s ease;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes slideInSMS {
+            from { transform: translateX(-120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .sms-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            color: var(--neon-blue);
+        }
+
+        .sms-body {
+            font-size: 0.9em;
+            line-height: 1.5;
+            color: #cfe9ff;
+        }
+
+        .sms-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        /* ==================== GAME OVER / RESULTS ==================== */
+        .results-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 600;
+            backdrop-filter: blur(8px);
+        }
+
+        .results-overlay.active {
+            display: flex;
+        }
+
+        .results-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .results-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em;
+            color: var(--neon-green);
+            margin-bottom: 15px;
+        }
+
+        .results-score {
+            font-size: 3em;
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0;
+        }
+
+        .results-detail {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8em;
+                letter-spacing: 2px;
+            }
+            .subtitle {
+                font-size: 1em;
+            }
+            .intro-text {
+                font-size: 0.9em;
+                padding: 0 20px;
+            }
+            .start-btn {
+                font-size: 1em;
+                padding: 15px 40px;
+            }
+            .briefing-nav {
+                display: none;
+            }
+            .briefing-content {
+                padding: 20px;
+            }
+            .briefing-title {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ÉCRAN TITRE -->
+    <div id="title-screen">
+        <!-- Lien retour discret -->
+        <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+            <span>←</span>
+            <span>Modules</span>
+        </a>
+        <div class="title-logo">🛡️</div>
+        <h1 class="main-title">Data Shadow</h1>
+        <p class="subtitle">Jeu de Rôle - Vie Privée & Données Personnelles à l'Ère de l'IA</p>
+
+        <p class="intro-text">
+            Vous êtes <strong>Alex Morin</strong>, consultant·e en cybersécurité recruté·e par l'agence <strong>SHIELD DATA</strong>.
+            Une IA de surveillance nommée <strong>PANOPTIKON</strong> collecte massivement les données personnelles des citoyens.
+            Votre mission : <strong>enquêter</strong>, <strong>protéger les victimes</strong> et <strong>constituer un dossier</strong> pour la CNIL.
+        </p>
+
+        <button class="start-btn" onclick="showBriefing()">
+            Accepter la mission
+        </button>
+
+        <div style="margin-top: 40px; opacity: 0.7;">
+            <p style="color: #8899aa; font-size: 0.85em; margin-bottom: 8px;">Une formation proposée par</p>
+            <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+                <img src="images/logo-profexpress.png" alt="Prof Express" style="height: 30px; object-fit: contain;">
+            </a>
+        </div>
+    </div>
+
+    <!-- SECTION BRIEFING / COURS -->
+    <div id="briefing-screen">
+        <div class="briefing-header">
+            <div class="briefing-title">DOSSIER SHIELD DATA - NIVEAU CONFIDENTIEL</div>
+            <div class="briefing-progress">
+                <span id="progress-text">Dossier 1/7</span>
+                <div class="briefing-progress-bar">
+                    <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="briefing-body">
+            <nav class="briefing-nav">
+                <!-- Lien retour vers modules -->
+                <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+                    <span class="back-arrow">←</span>
+                    <span>Tous les modules</span>
+                </a>
+
+                <div class="briefing-nav-item active" onclick="showLesson(0)">
+                    <span class="nav-icon">🎬</span>
+                    <span class="nav-number">01</span>
+                    Introduction
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(1)">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-number">02</span>
+                    Données personnelles
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(2)">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-number">03</span>
+                    IA & Collecte
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(3)">
+                    <span class="nav-icon">🇪🇺</span>
+                    <span class="nav-number">04</span>
+                    RGPD & Droits
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(4)">
+                    <span class="nav-icon">🍪</span>
+                    <span class="nav-number">05</span>
+                    Cookies & Trackers
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(5)">
+                    <span class="nav-icon">👁️</span>
+                    <span class="nav-number">06</span>
+                    Surveillance & IA
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(6)">
+                    <span class="nav-icon">🛡️</span>
+                    <span class="nav-number">07</span>
+                    Se Protéger
+                </div>
+                <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+                    <div class="briefing-nav-item" onclick="showLesson(7)">
+                        <span class="nav-icon">🎮</span>
+                        <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
+                        Mission
+                    </div>
+                </div>
+                <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+                    <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2);">
+                        <span class="nav-icon">🔒</span>
+                        <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
+                        Attestation de réussite
+                    </div>
+                </div>
+            </nav>
+
+            <div class="briefing-content" id="briefing-content">
+                <!-- Contenu des leçons chargé dynamiquement -->
+            </div>
+        </div>
+
+        <div class="briefing-footer">
+            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
+                ← Dossier précédent
+            </button>
+            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
+                Dossier suivant →
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTAINER PRINCIPAL DU JEU -->
+    <div id="game-container">
+        <!-- Barre supérieure -->
+        <div class="game-top-bar">
+            <div class="game-top-left">
+                <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                    <span>←</span>
+                    <span>Modules</span>
+                </a>
+                <div class="scenario-indicator">
+                    <span id="scenario-icon">🔓</span>
+                    <span id="scenario-name">Scénario 1/5</span>
+                </div>
+            </div>
+            <div class="game-top-right">
+                <div class="timer" id="timer">15:00</div>
+                <div class="protection-gauge">
+                    <div class="protection-label">PROTECTION</div>
+                    <div class="protection-meter">
+                        <div class="protection-fill" id="protection-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone principale du jeu -->
+        <div class="game-main">
+            <div class="scenario-scene" id="scenario-scene">
+                <!-- Contenu dynamique des scénarios -->
+            </div>
+        </div>
+
+        <!-- Barre d'inventaire de preuves -->
+        <div class="evidence-bar">
+            <span class="evidence-label">📋 PREUVES :</span>
+            <div class="evidence-slots">
+                <div class="evidence-slot" id="ev-0" title="Permissions abusives">🔓</div>
+                <div class="evidence-slot" id="ev-1" title="Profilage non consenti">👤</div>
+                <div class="evidence-slot" id="ev-2" title="Faille de sécurité">💻</div>
+                <div class="evidence-slot" id="ev-3" title="Refus de suppression">📝</div>
+                <div class="evidence-slot" id="ev-4" title="Dossier complet">⚖️</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY RÉSULTATS -->
+    <div class="results-overlay" id="results-overlay">
+        <div class="results-card" id="results-card">
+            <!-- Contenu dynamique -->
+        </div>
+    </div>
+
+    <script>
+        // ==================== ÉTAT DE L'APPLICATION ====================
+        let currentLesson = 0;
+        let completedLessons = new Set();
+
+        // ==================== ÉTAT DU JEU ====================
+        const gameState = {
+            currentScenario: 0,
+            protection: 100,
+            timeLeft: 900,
+            evidence: [false, false, false, false, false],
+            scenarioScores: [],
+            gameStarted: false,
+            gameEnded: false,
+            timerInterval: null
+        };
+
+        // ==================== NAVIGATION PRINCIPALE ====================
+        function showBriefing() {
+            document.getElementById('title-screen').classList.add('hidden');
+            document.getElementById('briefing-screen').classList.add('active');
+            showLesson(0);
+        }
+
+        // ==================== SYSTÈME DE BRIEFING ====================
+        const briefingLessons = [
+            // ==================== LEÇON 0 : INTRODUCTION ====================
+            {
+                title: "🎬 Introduction — Bienvenue chez SHIELD DATA",
+                content: `
+                    <h2 class="module-title">Bienvenue, Agent·e Morin</h2>
+                    <p class="module-kicker">Vous venez de rejoindre SHIELD DATA, l'agence de protection des données numériques. Votre première mission est critique.</p>
+
+                    <div class="callout">
+                        <strong>📋 Contexte de la mission :</strong><br>
+                        L'application <strong>PANOPTIKON</strong>, utilisée par 12 millions de personnes, est soupçonnée de collecter massivement
+                        les données personnelles de ses utilisateurs à leur insu. L'IA embarquée dans l'application analyse les comportements,
+                        prédit les habitudes et revend ces profils à des tiers.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🌐 L'ère des données personnelles</h3>
+                    <p>Chaque jour, un être humain génère en moyenne <strong>1,7 Mo de données</strong>. À l'échelle mondiale, cela représente
+                    <strong>2,5 quintillions d'octets</strong> créés quotidiennement. Mais qui contrôle ces données ?</p>
+
+                    <p>Avec l'essor de l'intelligence artificielle, la collecte et l'exploitation des données personnelles ont atteint
+                    un niveau sans précédent. Les IA modernes ont besoin de quantités massives de données pour s'entraîner et fonctionner.</p>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Le saviez-vous ?</strong><br>
+                        En 2024, <strong>92% des sites web</strong> utilisent des trackers qui collectent des informations sur leurs visiteurs.
+                        En moyenne, un utilisateur est traqué par <strong>6 entreprises différentes</strong> sur chaque site visité.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🎯 Vos objectifs</h3>
+                    <p>Au cours de cette formation, vous allez :</p>
+                    <ul>
+                        <li><strong>Comprendre</strong> ce que sont les données personnelles et pourquoi elles sont si précieuses</li>
+                        <li><strong>Découvrir</strong> comment l'IA collecte et exploite ces données</li>
+                        <li><strong>Maîtriser</strong> vos droits grâce au RGPD</li>
+                        <li><strong>Apprendre</strong> à protéger votre vie privée au quotidien</li>
+                        <li><strong>Résoudre</strong> 5 scénarios en tant qu'agent·e de SHIELD DATA</li>
+                    </ul>
+                `
+            },
+
+            // ==================== LEÇON 1 : DONNÉES PERSONNELLES ====================
+            {
+                title: "🔍 Qu'est-ce qu'une donnée personnelle ?",
+                content: `
+                    <h2 class="module-title">🔍 Données personnelles : le nouvel or noir</h2>
+                    <p class="module-kicker">Avant de mener l'enquête, vous devez comprendre ce que vous protégez exactement.</p>
+
+                    <h3>📌 Définition légale</h3>
+                    <p>Selon le RGPD (article 4), une <strong>donnée personnelle</strong> est toute information se rapportant à une
+                    <strong>personne physique identifiée ou identifiable</strong>. Cela va bien au-delà du simple nom et prénom.</p>
+
+                    <div class="divider"></div>
+
+                    <h3>🗂️ Les catégories de données personnelles</h3>
+                    <table class="stat-table">
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Exemples</th>
+                            <th>Sensibilité</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Identité</strong></td>
+                            <td>Nom, prénom, photo, date de naissance</td>
+                            <td><span class="pill">Standard</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Contact</strong></td>
+                            <td>Email, téléphone, adresse postale</td>
+                            <td><span class="pill">Standard</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Numérique</strong></td>
+                            <td>Adresse IP, cookies, historique de navigation</td>
+                            <td><span class="pill">Standard</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Biométrique</strong></td>
+                            <td>Empreintes, reconnaissance faciale, voix</td>
+                            <td><span class="pill" style="border-color:var(--neon-pink);color:var(--neon-pink);">Sensible</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Santé</strong></td>
+                            <td>Dossier médical, handicap, traitements</td>
+                            <td><span class="pill" style="border-color:var(--neon-pink);color:var(--neon-pink);">Sensible</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Opinions</strong></td>
+                            <td>Politique, religion, orientation sexuelle</td>
+                            <td><span class="pill" style="border-color:var(--neon-pink);color:var(--neon-pink);">Sensible</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Localisation</strong></td>
+                            <td>GPS, déplacements, lieux fréquentés</td>
+                            <td><span class="pill" style="border-color:var(--neon-purple);color:var(--neon-purple);">Élevée</span></td>
+                        </tr>
+                    </table>
+
+                    <div class="callout pink">
+                        <strong>🚨 Attention — Données sensibles :</strong><br>
+                        Les données biométriques, de santé et d'opinions sont classées <strong>"sensibles"</strong> par le RGPD.
+                        Leur collecte est <strong>interdite par défaut</strong>, sauf exceptions strictement encadrées (consentement explicite,
+                        intérêt vital, etc.).
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>💰 Pourquoi vos données valent-elles si cher ?</h3>
+                    <p>L'économie des données personnelles représente un marché colossal :</p>
+                    <ul>
+                        <li>Un profil utilisateur complet se vend entre <strong>0,50 € et 200 €</strong> selon sa richesse</li>
+                        <li>Les données médicales valent jusqu'à <strong>1 000 €</strong> par dossier sur le dark web</li>
+                        <li>Le marché mondial de la data est estimé à <strong>274 milliards de dollars</strong> en 2024</li>
+                        <li>Les GAFAM tirent <strong>80% de leurs revenus</strong> de l'exploitation des données</li>
+                    </ul>
+
+                    <div class="callout">
+                        <strong>💡 Retenez :</strong><br>
+                        Si un service est gratuit, c'est que <strong>vous êtes le produit</strong>. Vos données alimentent des modèles publicitaires
+                        et des IA de ciblage qui génèrent des milliards de revenus.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 2 : IA & COLLECTE ====================
+            {
+                title: "🤖 IA & Collecte de données",
+                content: `
+                    <h2 class="module-title">🤖 Comment l'IA collecte et exploite vos données</h2>
+                    <p class="module-kicker">L'intelligence artificielle a démultiplié la capacité de collecte et d'analyse des données personnelles.</p>
+
+                    <h3>🕸️ Les mécanismes de collecte par l'IA</h3>
+                    <p>Les systèmes d'IA collectent vos données de multiples façons, souvent invisibles :</p>
+
+                    <table class="stat-table">
+                        <tr>
+                            <th>Mécanisme</th>
+                            <th>Comment ça marche</th>
+                            <th>Données collectées</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Assistants vocaux</strong></td>
+                            <td>Écoute permanente pour détecter le mot d'activation</td>
+                            <td>Voix, conversations, habitudes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recommandations</strong></td>
+                            <td>Analyse de vos clics, temps passé, achats</td>
+                            <td>Préférences, comportements, goûts</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reconnaissance faciale</strong></td>
+                            <td>Détection et identification dans photos/vidéos</td>
+                            <td>Visage, émotions, localisation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chatbots IA</strong></td>
+                            <td>Analyse de vos conversations et questions</td>
+                            <td>Intentions, problèmes, opinions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Objets connectés</strong></td>
+                            <td>Capteurs dans montres, frigos, voitures</td>
+                            <td>Santé, alimentation, déplacements</td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>🧠 Le profilage algorithmique</h3>
+                    <p>Grâce au <strong>machine learning</strong>, les IA peuvent construire un profil incroyablement précis de vous à partir de données
+                    qui semblent anodines :</p>
+                    <ul>
+                        <li>Avec <strong>68 likes Facebook</strong>, une IA peut prédire votre couleur de peau (95%), votre orientation sexuelle (88%)
+                        et votre affiliation politique (85%)</li>
+                        <li>Votre <strong>historique de recherche</strong> de 3 mois suffit pour prédire vos futures requêtes avec 72% de précision</li>
+                        <li><strong>10 minutes de conversation</strong> avec un chatbot IA suffisent pour déterminer votre niveau de stress</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Le problème de l'inférence :</strong><br>
+                        Même si vous ne fournissez pas directement une information, l'IA peut la <strong>déduire</strong> à partir d'autres données.
+                        Par exemple, vos achats en supermarché peuvent révéler une grossesse avant même que vous l'annonciez
+                        (cas réel de Target aux États-Unis en 2012).
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>📊 Les IA génératives et vos données</h3>
+                    <p>Les chatbots comme ChatGPT, Claude ou Gemini posent de nouvelles questions :</p>
+                    <ul>
+                        <li><strong>Entraînement :</strong> Les modèles sont entraînés sur des milliards de textes du web, incluant potentiellement
+                        vos publications, commentaires et posts</li>
+                        <li><strong>Conversations :</strong> Ce que vous écrivez dans un chatbot peut être utilisé pour améliorer le modèle
+                        (sauf paramétrage contraire)</li>
+                        <li><strong>Mémorisation :</strong> Des chercheurs ont montré que les LLM peuvent "régurgiter" des données personnelles
+                        vues pendant l'entraînement</li>
+                    </ul>
+
+                    <div class="callout purple">
+                        <strong>🔬 Cas d'étude — Samsung, 2023 :</strong><br>
+                        Des employés de Samsung ont involontairement partagé du <strong>code source confidentiel</strong> et des
+                        <strong>notes de réunion internes</strong> en les collant dans ChatGPT. L'entreprise a ensuite
+                        <strong>interdit l'usage des IA génératives</strong> en interne.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 3 : RGPD & DROITS ====================
+            {
+                title: "🇪🇺 Le RGPD et vos droits",
+                content: `
+                    <h2 class="module-title">🇪🇺 Le RGPD : votre bouclier juridique</h2>
+                    <p class="module-kicker">Le Règlement Général sur la Protection des Données est l'arme légale la plus puissante pour protéger la vie privée des citoyens européens.</p>
+
+                    <h3>📜 Qu'est-ce que le RGPD ?</h3>
+                    <p>Le <strong>RGPD</strong> (Règlement Général sur la Protection des Données) est une loi européenne entrée en vigueur le
+                    <strong>25 mai 2018</strong>. Il s'applique à toute organisation qui traite des données de résidents européens,
+                    <strong>même si elle est basée hors de l'UE</strong>.</p>
+
+                    <div class="callout">
+                        <strong>🌍 Portée mondiale :</strong><br>
+                        Le RGPD a inspiré plus de <strong>120 pays</strong> à adopter des lois similaires.
+                        Des entreprises comme Google et Meta ont dû modifier leurs pratiques <strong>partout dans le monde</strong> à cause du RGPD.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>⚖️ Les 6 principes fondamentaux du RGPD</h3>
+                    <table class="stat-table">
+                        <tr><th>Principe</th><th>Signification</th></tr>
+                        <tr><td><strong>Licéité</strong></td><td>Le traitement doit avoir une base légale (consentement, contrat, intérêt légitime...)</td></tr>
+                        <tr><td><strong>Finalité</strong></td><td>Les données sont collectées pour un objectif précis et ne peuvent servir à autre chose</td></tr>
+                        <tr><td><strong>Minimisation</strong></td><td>Seules les données strictement nécessaires doivent être collectées</td></tr>
+                        <tr><td><strong>Exactitude</strong></td><td>Les données doivent être tenues à jour et corrigées si nécessaire</td></tr>
+                        <tr><td><strong>Limitation</strong></td><td>Les données ne doivent pas être conservées au-delà du nécessaire</td></tr>
+                        <tr><td><strong>Sécurité</strong></td><td>Des mesures techniques et organisationnelles doivent protéger les données</td></tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>🛡️ Vos 8 droits fondamentaux</h3>
+                    <ol>
+                        <li><strong>Droit d'accès</strong> — Savoir quelles données sont collectées sur vous</li>
+                        <li><strong>Droit de rectification</strong> — Corriger des données inexactes</li>
+                        <li><strong>Droit à l'effacement</strong> — Demander la suppression de vos données ("droit à l'oubli")</li>
+                        <li><strong>Droit à la portabilité</strong> — Récupérer vos données dans un format lisible</li>
+                        <li><strong>Droit d'opposition</strong> — Refuser le traitement de vos données</li>
+                        <li><strong>Droit à la limitation</strong> — Geler temporairement le traitement</li>
+                        <li><strong>Droit à l'information</strong> — Être informé de manière claire et transparente</li>
+                        <li><strong>Droit face aux décisions automatisées</strong> — Ne pas être soumis à une décision prise uniquement par une IA</li>
+                    </ol>
+
+                    <div class="callout pink">
+                        <strong>💰 Les sanctions :</strong><br>
+                        Les amendes peuvent atteindre <strong>20 millions d'euros</strong> ou <strong>4% du chiffre d'affaires mondial</strong>.
+                        Exemples marquants :
+                        <ul>
+                            <li>Meta : <strong>1,2 milliard €</strong> (2023) — transfert illégal de données vers les USA</li>
+                            <li>Amazon : <strong>746 millions €</strong> (2021) — ciblage publicitaire sans consentement</li>
+                            <li>Google : <strong>150 millions €</strong> (2022) — gestion des cookies en France</li>
+                        </ul>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🏛️ La CNIL : gardienne des données en France</h3>
+                    <p>La <strong>Commission Nationale de l'Informatique et des Libertés</strong> (CNIL) est l'autorité française chargée de veiller
+                    au respect du RGPD. Elle peut :</p>
+                    <ul>
+                        <li><strong>Contrôler</strong> les entreprises (sur place ou en ligne)</li>
+                        <li><strong>Sanctionner</strong> les violations (avertissement, mise en demeure, amendes)</li>
+                        <li><strong>Accompagner</strong> les citoyens dans leurs démarches de plainte</li>
+                        <li><strong>Conseiller</strong> les organisations sur la conformité</li>
+                    </ul>
+                `
+            },
+
+            // ==================== LEÇON 4 : COOKIES & TRACKERS ====================
+            {
+                title: "🍪 Cookies, trackers et empreinte numérique",
+                content: `
+                    <h2 class="module-title">🍪 Cookies, trackers & empreinte numérique</h2>
+                    <p class="module-kicker">Chaque clic, chaque page visitée laisse des traces. Comprendre ces mécanismes est essentiel pour se protéger.</p>
+
+                    <h3>🍪 Les cookies : définition et types</h3>
+                    <p>Un <strong>cookie</strong> est un petit fichier texte déposé sur votre appareil par un site web. Mais tous les cookies ne se valent pas :</p>
+
+                    <table class="stat-table">
+                        <tr><th>Type</th><th>Rôle</th><th>Durée</th><th>Risque</th></tr>
+                        <tr>
+                            <td><strong>Cookies essentiels</strong></td>
+                            <td>Faire fonctionner le site (session, panier)</td>
+                            <td>Session</td>
+                            <td>Aucun</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies de préférence</strong></td>
+                            <td>Mémoriser vos choix (langue, thème)</td>
+                            <td>Mois/années</td>
+                            <td>Faible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies analytiques</strong></td>
+                            <td>Mesurer l'audience, statistiques</td>
+                            <td>Mois</td>
+                            <td>Modéré</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies publicitaires</strong></td>
+                            <td>Suivre votre navigation pour cibler les pubs</td>
+                            <td>Mois/années</td>
+                            <td><strong style="color:var(--neon-pink);">Élevé</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies tiers</strong></td>
+                            <td>Déposés par des entreprises externes (Facebook, Google...)</td>
+                            <td>Mois/années</td>
+                            <td><strong style="color:var(--neon-pink);">Très élevé</strong></td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>👣 L'empreinte numérique (Browser Fingerprinting)</h3>
+                    <p>Même sans cookies, les sites peuvent vous identifier grâce à votre <strong>empreinte numérique</strong>, une combinaison unique de :</p>
+                    <ul>
+                        <li>Votre <strong>navigateur</strong> et sa version</li>
+                        <li>Votre <strong>système d'exploitation</strong></li>
+                        <li>La <strong>résolution</strong> de votre écran</li>
+                        <li>Les <strong>polices</strong> installées sur votre appareil</li>
+                        <li>Les <strong>plugins</strong> et extensions actifs</li>
+                        <li>Votre <strong>fuseau horaire</strong> et langue</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Fait troublant :</strong><br>
+                        La combinaison de ces paramètres rend votre navigateur <strong>unique parmi des millions</strong>.
+                        Selon l'EFF (Electronic Frontier Foundation), <strong>83,6%</strong> des navigateurs ont une empreinte unique.
+                        Même en navigation privée, vous êtes identifiable.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🔗 Les trackers invisibles</h3>
+                    <p>Au-delà des cookies, d'autres technologies vous pistent silencieusement :</p>
+                    <ul>
+                        <li><strong>Pixels espions</strong> — Images invisibles (1×1 pixel) dans les emails qui signalent quand et où vous les ouvrez</li>
+                        <li><strong>Scripts de tracking</strong> — Code JavaScript qui enregistre vos mouvements de souris, vos clics et votre scroll</li>
+                        <li><strong>Supercookies</strong> — Cookies quasi-impossibles à supprimer, stockés dans le cache du navigateur</li>
+                        <li><strong>CNAME cloaking</strong> — Technique qui déguise un tracker tiers en cookie "interne" pour contourner les blocages</li>
+                    </ul>
+
+                    <div class="callout">
+                        <strong>📊 En chiffres :</strong><br>
+                        En moyenne, un site d'actualités charge <strong>70 trackers</strong> à chaque visite. Un parcours e-commerce
+                        typique partage vos données avec <strong>30 à 50 entreprises tierces</strong>.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 5 : SURVEILLANCE & IA ====================
+            {
+                title: "👁️ Surveillance et IA",
+                content: `
+                    <h2 class="module-title">👁️ La surveillance à l'ère de l'IA</h2>
+                    <p class="module-kicker">L'IA a transformé la surveillance en une industrie mondiale, capable de traquer des milliards de personnes simultanément.</p>
+
+                    <h3>📹 La vidéosurveillance intelligente</h3>
+                    <p>Les caméras "classiques" cèdent la place à des systèmes dopés à l'IA :</p>
+                    <ul>
+                        <li><strong>Reconnaissance faciale</strong> — Identification en temps réel dans la foule (taux de précision : 99,7% dans des conditions optimales)</li>
+                        <li><strong>Analyse comportementale</strong> — Détection de "comportements suspects" (station prolongée, courses, regroupements)</li>
+                        <li><strong>Suivi multi-caméras</strong> — Reconstruction du trajet d'une personne à travers une ville entière</li>
+                    </ul>
+
+                    <div class="callout pink">
+                        <strong>🌏 Cas réels :</strong><br>
+                        <ul>
+                            <li><strong>Chine :</strong> Plus de <strong>700 millions</strong> de caméras de surveillance avec IA, système de "crédit social" lié à la reconnaissance faciale</li>
+                            <li><strong>Londres :</strong> Un habitant est filmé en moyenne <strong>300 fois par jour</strong></li>
+                            <li><strong>France :</strong> Expérimentation de la <strong>vidéosurveillance algorithmique</strong> autorisée pour les JO 2024 (sans reconnaissance faciale)</li>
+                        </ul>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>📱 La surveillance via les smartphones</h3>
+                    <p>Votre téléphone est le capteur de surveillance le plus intime :</p>
+                    <table class="stat-table">
+                        <tr><th>Capteur</th><th>Données collectables</th><th>Risque</th></tr>
+                        <tr><td><strong>GPS</strong></td><td>Localisation précise à 3m, historique des déplacements</td><td>Très élevé</td></tr>
+                        <tr><td><strong>Micro</strong></td><td>Conversations, ambiance sonore, mots-clés</td><td>Critique</td></tr>
+                        <tr><td><strong>Caméra</strong></td><td>Photos, vidéos, reconnaissance faciale</td><td>Critique</td></tr>
+                        <tr><td><strong>Accéléromètre</strong></td><td>Activité physique, moyens de transport</td><td>Modéré</td></tr>
+                        <tr><td><strong>WiFi/Bluetooth</strong></td><td>Lieux fréquentés, proximité d'autres appareils</td><td>Élevé</td></tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>🕵️ La surveillance commerciale</h3>
+                    <p>La surveillance n'est pas que gouvernementale. Les entreprises tech pratiquent une surveillance massive :</p>
+                    <ul>
+                        <li><strong>Google</strong> conserve votre historique de recherche, vos emails (Gmail), vos déplacements (Maps), vos vidéos regardées (YouTube)</li>
+                        <li><strong>Meta</strong> analyse vos photos, vos likes, vos messages et même le <strong>temps que vous passez</strong> à regarder chaque publication</li>
+                        <li><strong>Amazon</strong> utilise vos achats pour prédire vos besoins futurs avec une précision redoutable</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Le paradoxe de la vie privée :</strong><br>
+                        Des études montrent que <strong>87% des gens</strong> se disent préoccupés par la protection de leurs données,
+                        mais <strong>seulement 30%</strong> prennent des mesures concrètes pour se protéger.
+                        Ce décalage s'appelle le <strong>"privacy paradox"</strong>.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 6 : SE PROTÉGER ====================
+            {
+                title: "🛡️ Se protéger concrètement",
+                content: `
+                    <h2 class="module-title">🛡️ Se protéger : les bons réflexes</h2>
+                    <p class="module-kicker">Vous avez compris les menaces. Voici les armes pour vous défendre au quotidien.</p>
+
+                    <h3>🔐 Les gestes essentiels (niveau débutant)</h3>
+                    <ul>
+                        <li><strong>Mots de passe robustes</strong> — Minimum 12 caractères, différent pour chaque service, gestionnaire de mots de passe recommandé</li>
+                        <li><strong>Authentification à deux facteurs (2FA)</strong> — Activez-la sur tous vos comptes importants</li>
+                        <li><strong>Mises à jour</strong> — Installez les mises à jour de sécurité dès qu'elles sont disponibles</li>
+                        <li><strong>Cookies</strong> — Refusez les cookies non essentiels, utilisez le bouton "Tout refuser" systématiquement</li>
+                        <li><strong>Permissions des applications</strong> — Vérifiez et limitez les permissions (micro, caméra, GPS) application par application</li>
+                    </ul>
+
+                    <div class="divider"></div>
+
+                    <h3>🛡️ Les outils de protection (niveau intermédiaire)</h3>
+                    <table class="stat-table">
+                        <tr><th>Outil</th><th>Protection offerte</th><th>Exemples</th></tr>
+                        <tr><td><strong>VPN</strong></td><td>Chiffre votre connexion, masque votre IP</td><td>ProtonVPN, Mullvad</td></tr>
+                        <tr><td><strong>Navigateur privé</strong></td><td>Bloque trackers et fingerprinting</td><td>Firefox (durci), Brave, Tor</td></tr>
+                        <tr><td><strong>Bloqueur de pubs</strong></td><td>Bloque trackers publicitaires</td><td>uBlock Origin</td></tr>
+                        <tr><td><strong>Email chiffré</strong></td><td>Protège le contenu des emails</td><td>ProtonMail, Tutanota</td></tr>
+                        <tr><td><strong>Messagerie sécurisée</strong></td><td>Chiffrement de bout en bout</td><td>Signal, Element</td></tr>
+                        <tr><td><strong>Moteur de recherche</strong></td><td>Recherche sans tracking</td><td>DuckDuckGo, Qwant</td></tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>⚡ Avec les IA génératives (niveau avancé)</h3>
+                    <p>Quand vous utilisez ChatGPT, Claude ou d'autres chatbots IA :</p>
+                    <ul>
+                        <li><strong>Ne partagez jamais</strong> d'informations personnelles identifiantes (nom complet, adresse, numéro de sécu)</li>
+                        <li><strong>Désactivez l'historique</strong> et le training sur vos données si possible</li>
+                        <li><strong>Ne collez pas</strong> de documents confidentiels (professionnels ou personnels)</li>
+                        <li><strong>Utilisez des pseudonymes</strong> quand vous testez des scénarios personnels</li>
+                        <li><strong>Vérifiez les CGU</strong> — Lisez comment vos conversations sont utilisées</li>
+                    </ul>
+
+                    <div class="callout">
+                        <strong>💡 La règle d'or :</strong><br>
+                        Avant de partager une information en ligne ou avec une IA, posez-vous cette question :
+                        <strong>"Est-ce que j'accepterais de le crier dans la rue ?"</strong>
+                        Si la réponse est non, ne le partagez pas.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>📝 Exercer vos droits RGPD en pratique</h3>
+                    <p>Pour exercer vos droits auprès d'une entreprise :</p>
+                    <ol>
+                        <li><strong>Identifiez le DPO</strong> (Délégué à la Protection des Données) — souvent dans les CGU ou mentions légales</li>
+                        <li><strong>Envoyez un email</strong> en citant les articles du RGPD concernés</li>
+                        <li><strong>Délai de réponse :</strong> l'entreprise a <strong>1 mois</strong> pour répondre</li>
+                        <li><strong>En cas de refus :</strong> saisissez la CNIL en ligne (plainte gratuite)</li>
+                    </ol>
+                `
+            },
+
+            // ==================== LEÇON 7 : MISSION ====================
+            {
+                title: "🎮 Briefing de mission",
+                content: `
+                    <h2 class="module-title">🎮 Briefing de mission — Opération PANOPTIKON</h2>
+                    <p class="module-kicker">Vous avez étudié les dossiers. Il est temps de passer à l'action, Agent·e Morin.</p>
+
+                    <div class="callout">
+                        <strong>📋 Résumé de mission :</strong><br>
+                        L'application PANOPTIKON est accusée de <strong>5 violations majeures</strong> de la vie privée.
+                        Vous devez enquêter sur chaque violation, prendre les bonnes décisions et constituer un dossier
+                        solide pour la CNIL.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🎯 Les 5 scénarios à résoudre</h3>
+                    <table class="stat-table">
+                        <tr><th>#</th><th>Scénario</th><th>Type de violation</th><th>Compétence testée</th></tr>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td>🔓 L'application piège</td>
+                            <td>Permissions abusives</td>
+                            <td>Identifier les collectes excessives</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td>👤 Le profil fantôme</td>
+                            <td>Profilage non consenti</td>
+                            <td>Comprendre le profilage IA</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td>💻 La fuite de données</td>
+                            <td>Faille de sécurité</td>
+                            <td>Analyser une violation de données</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>📝 Le droit d'effacement</td>
+                            <td>Refus de suppression</td>
+                            <td>Exercer ses droits RGPD</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>⚖️ Le verdict CNIL</td>
+                            <td>Dossier complet</td>
+                            <td>Synthétiser et argumenter</td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>📏 Règles du jeu</h3>
+                    <ul>
+                        <li>Vous disposez de <strong>15 minutes</strong> pour résoudre les 5 scénarios</li>
+                        <li>Chaque scénario vous propose des <strong>choix à faire</strong> — les bonnes décisions rapportent des points de <strong>Protection</strong></li>
+                        <li>Les mauvaises décisions font baisser votre <strong>jauge de protection</strong></li>
+                        <li>Vous recevrez des <strong>SMS d'aide</strong> de votre contact à la CNIL</li>
+                        <li>Collectez les <strong>5 preuves</strong> nécessaires au dossier final</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Attention :</strong><br>
+                        Après le jeu de rôle, un <strong>quiz de certification</strong> vous attend.
+                        Vous devez obtenir au moins <strong>70% de bonnes réponses</strong> pour débloquer votre attestation de réussite.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <p style="text-align:center; font-size:1.2em; color:var(--neon-green); margin-top:30px;">
+                        <strong>Prêt·e à protéger les données des citoyens ?</strong><br>
+                        Cliquez sur <strong>"Lancer la mission"</strong> ci-dessous !
+                    </p>
+                `
+            }
+        ];
+
+        function showLesson(index) {
+            if (index < 0 || index >= briefingLessons.length) return;
+
+            currentLesson = index;
+            const lesson = briefingLessons[index];
+
+            document.getElementById('briefing-content').innerHTML = `
+                <div class="section-content">${lesson.content}</div>
+            `;
+
+            // Marquer comme complétée
+            completedLessons.add(index);
+
+            // Mettre à jour la navigation
+            const navItems = document.querySelectorAll('.briefing-nav-item');
+            navItems.forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === index) item.classList.add('active');
+                if (completedLessons.has(i) && i !== index) item.classList.add('completed');
+            });
+
+            // Mettre à jour la progression
+            const total = briefingLessons.length;
+            const progress = ((index + 1) / total * 100);
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Dossier ${index + 1}/${total}`;
+
+            // Boutons précédent/suivant
+            document.getElementById('prev-btn').disabled = (index === 0);
+            const nextBtn = document.getElementById('next-btn');
+            if (index === total - 1) {
+                nextBtn.textContent = '🎮 Lancer la mission →';
+                nextBtn.onclick = () => startGame();
+            } else {
+                nextBtn.textContent = 'Dossier suivant →';
+                nextBtn.onclick = () => nextLesson();
+            }
+
+            // Scroll en haut du contenu
+            document.getElementById('briefing-content').scrollTop = 0;
+        }
+
+        function nextLesson() {
+            if (currentLesson < briefingLessons.length - 1) {
+                showLesson(currentLesson + 1);
+            }
+        }
+
+        function prevLesson() {
+            if (currentLesson > 0) {
+                showLesson(currentLesson - 1);
+            }
+        }
+
+        // ==================== LANCEMENT DU JEU ====================
+        function startGame() {
+            document.getElementById('briefing-screen').classList.remove('active');
+            document.getElementById('game-container').classList.add('active');
+            gameState.gameStarted = true;
+            startTimer();
+            loadScenario(0);
+            showSMS("📱 Contact CNIL", "Agent·e Morin, c'est parti ! Analysez chaque situation avec attention. Je reste disponible si besoin. Bonne chance !");
+        }
+
+        // ==================== TIMER ====================
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                if (gameState.gameEnded) return;
+                gameState.timeLeft--;
+                const min = Math.floor(gameState.timeLeft / 60).toString().padStart(2, '0');
+                const sec = (gameState.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('timer').textContent = `${min}:${sec}`;
+                if (gameState.timeLeft <= 120) {
+                    document.getElementById('timer').style.color = '#ffaa00';
+                }
+                if (gameState.timeLeft <= 60) {
+                    document.getElementById('timer').style.color = 'var(--neon-pink)';
+                }
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    endGame(false);
+                }
+            }, 1000);
+        }
+
+        // ==================== JAUGE DE PROTECTION ====================
+        function updateProtection(delta) {
+            gameState.protection = Math.max(0, Math.min(100, gameState.protection + delta));
+            document.getElementById('protection-fill').style.width = gameState.protection + '%';
+            if (gameState.protection <= 0) {
+                endGame(false);
+            }
+        }
+
+        // ==================== COLLECTE DE PREUVE ====================
+        function collectEvidence(index) {
+            if (gameState.evidence[index]) return;
+            gameState.evidence[index] = true;
+            const slot = document.getElementById('ev-' + index);
+            slot.classList.add('collected');
+        }
+
+        // ==================== SMS ====================
+        function showSMS(sender, message) {
+            const existing = document.querySelector('.sms-notification');
+            if (existing) existing.remove();
+
+            const sms = document.createElement('div');
+            sms.className = 'sms-notification';
+            sms.innerHTML = `
+                <button class="sms-close" onclick="this.parentElement.remove()">✕</button>
+                <div class="sms-header">${sender}</div>
+                <div class="sms-body">${message}</div>
+            `;
+            document.body.appendChild(sms);
+            setTimeout(() => { if (sms.parentElement) sms.remove(); }, 10000);
+        }
+
+        // ==================== SCÉNARIOS ====================
+        const scenarios = [
+            // ==================== SCÉNARIO 1 : L'APPLICATION PIÈGE ====================
+            {
+                icon: "🔓",
+                title: "L'application piège",
+                subtitle: "Identifier les permissions abusives",
+                narrative: `L'application PANOPTIKON demande <strong>12 permissions</strong> lors de l'installation.
+                    En tant qu'agent·e SHIELD DATA, vous devez identifier celles qui sont <strong>abusives</strong>
+                    pour une simple application de météo.`,
+                task: "Cliquez sur les permissions qui vous semblent <strong>abusives</strong> (non nécessaires pour une app météo), puis validez.",
+                type: "permissions",
+                data: {
+                    permissions: [
+                        { name: "Accès à la localisation", icon: "📍", abusive: false, explanation: "Nécessaire pour la météo locale" },
+                        { name: "Accès à Internet", icon: "🌐", abusive: false, explanation: "Nécessaire pour télécharger les données météo" },
+                        { name: "Accès aux contacts", icon: "📇", abusive: true, explanation: "Une app météo n'a aucun besoin d'accéder à vos contacts" },
+                        { name: "Accès au microphone", icon: "🎙️", abusive: true, explanation: "Aucune raison pour une app météo d'écouter vos conversations" },
+                        { name: "Notifications", icon: "🔔", abusive: false, explanation: "Peut servir pour les alertes météo" },
+                        { name: "Accès aux SMS", icon: "✉️", abusive: true, explanation: "Une app météo n'a pas besoin de lire vos SMS" },
+                        { name: "Accès aux photos", icon: "📷", abusive: true, explanation: "Aucune raison d'accéder à votre galerie photo" },
+                        { name: "Stockage local", icon: "💾", abusive: false, explanation: "Nécessaire pour stocker les préférences" },
+                        { name: "Accès à l'historique de navigation", icon: "🔎", abusive: true, explanation: "Collecte abusive de vos habitudes de navigation" },
+                        { name: "Accès au journal d'appels", icon: "📞", abusive: true, explanation: "Aucun lien avec la météo — surveillance pure" }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 2 : LE PROFIL FANTÔME ====================
+            {
+                icon: "👤",
+                title: "Le profil fantôme",
+                subtitle: "Comprendre le profilage IA",
+                narrative: `PANOPTIKON a reconstitué un <strong>profil complet</strong> d'une citoyenne nommée Clara Martin,
+                    à partir de données apparemment anodines. Vous devez identifier quelles données ont permis
+                    à l'IA de <strong>déduire</strong> des informations sensibles.`,
+                task: "Parmi les données ci-dessous, sélectionnez celles qui sont des <strong>déductions abusives</strong> de l'IA (informations que Clara n'a jamais fournies directement).",
+                type: "profiling",
+                data: {
+                    dataPoints: [
+                        { text: "Nom : Clara Martin", deduced: false, explanation: "Fourni lors de l'inscription" },
+                        { text: "Email : clara.m@email.fr", deduced: false, explanation: "Fourni lors de l'inscription" },
+                        { text: "Enceinte (2e trimestre)", deduced: true, explanation: "Déduit des achats en pharmacie et recherches web — cas Target" },
+                        { text: "Tendance politique : gauche", deduced: true, explanation: "Déduit des pages likées et articles partagés" },
+                        { text: "Code postal : 75011", deduced: false, explanation: "Fourni pour la livraison" },
+                        { text: "Revenus estimés : 35-45k€/an", deduced: true, explanation: "Déduit du quartier, des achats et du type de smartphone" },
+                        { text: "Anxiété probable", deduced: true, explanation: "Déduit des recherches santé et horaires de connexion nocturne" },
+                        { text: "Recherche d'emploi active", deduced: true, explanation: "Déduit des visites sur LinkedIn et sites d'emploi" }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 3 : LA FUITE DE DONNÉES ====================
+            {
+                icon: "💻",
+                title: "La fuite de données",
+                subtitle: "Analyser une violation de sécurité",
+                narrative: `Le serveur de PANOPTIKON a subi une <strong>fuite de données</strong> massive.
+                    En analysant les logs du serveur, vous devez identifier <strong>la cause</strong> de la faille
+                    et <strong>les données exposées</strong>.`,
+                task: "Lisez les logs ci-dessous, puis répondez aux questions pour constituer votre rapport d'incident.",
+                type: "logs",
+                data: {
+                    logs: [
+                        { time: "03:12:01", level: "info", text: "Serveur PANOPTIKON-DB-03 : routine de sauvegarde démarrée" },
+                        { time: "03:12:15", level: "info", text: "Backup base utilisateurs : 12.4M entrées" },
+                        { time: "03:14:22", level: "warn", text: "Connexion entrante depuis IP 185.42.xxx.xxx (non autorisée)" },
+                        { time: "03:14:23", level: "warn", text: "Tentative d'authentification : admin / admin123" },
+                        { time: "03:14:23", level: "error", text: "ALERTE : Mot de passe par défaut accepté — compte admin compromis" },
+                        { time: "03:14:30", level: "error", text: "Requête SQL : SELECT * FROM users WHERE 1=1" },
+                        { time: "03:14:31", level: "error", text: "Export massif déclenché : noms, emails, mots de passe hashés, géolocalisation" },
+                        { time: "03:15:02", level: "error", text: "Transfert de 2.3 Go vers serveur externe 185.42.xxx.xxx" },
+                        { time: "03:17:45", level: "info", text: "Connexion terminée. Aucune alerte de sécurité déclenchée." },
+                        { time: "08:30:00", level: "warn", text: "Équipe IT : anomalie détectée dans les logs nocturnes" }
+                    ],
+                    questions: [
+                        {
+                            q: "Quelle est la cause principale de la fuite ?",
+                            options: ["Un virus dans le serveur", "Un mot de passe par défaut jamais changé", "Une panne électrique", "Un employé malveillant"],
+                            correct: 1
+                        },
+                        {
+                            q: "Combien de temps s'est écoulé entre l'intrusion et la détection ?",
+                            options: ["5 minutes", "2 heures", "Plus de 5 heures", "24 heures"],
+                            correct: 2
+                        },
+                        {
+                            q: "Quel article du RGPD impose de notifier la CNIL sous 72h en cas de fuite ?",
+                            options: ["Article 17", "Article 25", "Article 33", "Article 44"],
+                            correct: 2
+                        }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 4 : LE DROIT D'EFFACEMENT ====================
+            {
+                icon: "📝",
+                title: "Le droit d'effacement",
+                subtitle: "Exercer ses droits RGPD",
+                narrative: `Un citoyen, <strong>Marc Dubois</strong>, souhaite exercer son <strong>droit à l'effacement</strong>
+                    auprès de PANOPTIKON. L'entreprise a refusé sa première demande. Vous devez l'aider à
+                    rédiger une demande conforme et efficace.`,
+                task: "Construisez la demande RGPD en sélectionnant les bons éléments dans chaque champ.",
+                type: "rgpd_form",
+                data: {
+                    fields: [
+                        {
+                            label: "Base juridique invoquée",
+                            options: ["Droit d'accès (Art. 15)", "Droit d'effacement (Art. 17)", "Droit de portabilité (Art. 20)", "Droit d'opposition (Art. 21)"],
+                            correct: 1
+                        },
+                        {
+                            label: "Motif de la demande",
+                            options: [
+                                "Les données ne sont plus nécessaires",
+                                "Je retire mon consentement",
+                                "Traitement illicite des données",
+                                "Toutes ces raisons"
+                            ],
+                            correct: 3
+                        },
+                        {
+                            label: "Destinataire de la demande",
+                            options: ["Le service marketing", "Le DPO (Délégué à la Protection des Données)", "Le directeur général", "Le service technique"],
+                            correct: 1
+                        },
+                        {
+                            label: "Délai légal de réponse",
+                            options: ["48 heures", "1 semaine", "1 mois", "3 mois"],
+                            correct: 2
+                        },
+                        {
+                            label: "En cas de non-réponse, vous saisissez :",
+                            options: ["Un avocat obligatoirement", "La CNIL", "La police", "Le tribunal de commerce"],
+                            correct: 1
+                        }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 5 : LE VERDICT CNIL ====================
+            {
+                icon: "⚖️",
+                title: "Le verdict CNIL",
+                subtitle: "Constituer le dossier final",
+                narrative: `Vous disposez maintenant de toutes les preuves. Il est temps de <strong>constituer le dossier final</strong>
+                    pour la CNIL. Reliez chaque infraction constatée à l'article du RGPD correspondant.`,
+                task: "Associez chaque violation (à gauche) à l'article RGPD correct (à droite) en cliquant successivement sur les deux éléments.",
+                type: "matching",
+                data: {
+                    pairs: [
+                        { left: "Permissions abusives sans consentement", right: "Art. 7 — Consentement", id: 0 },
+                        { left: "Profilage automatisé non déclaré", right: "Art. 22 — Décision automatisée", id: 1 },
+                        { left: "Fuite non signalée sous 72h", right: "Art. 33 — Notification de violation", id: 2 },
+                        { left: "Refus du droit d'effacement", right: "Art. 17 — Droit à l'effacement", id: 3 },
+                        { left: "Collecte excessive de données", right: "Art. 5 — Minimisation des données", id: 4 }
+                    ]
+                }
+            }
+        ];
+
+        // ==================== CHARGEMENT D'UN SCÉNARIO ====================
+        function loadScenario(index) {
+            if (index >= scenarios.length) {
+                endGame(true);
+                return;
+            }
+            gameState.currentScenario = index;
+            const sc = scenarios[index];
+            document.getElementById('scenario-icon').textContent = sc.icon;
+            document.getElementById('scenario-name').textContent = `Scénario ${index + 1}/5 — ${sc.title}`;
+
+            const scene = document.getElementById('scenario-scene');
+
+            let puzzleHTML = '';
+            if (sc.type === 'permissions') {
+                puzzleHTML = buildPermissionsPuzzle(sc.data);
+            } else if (sc.type === 'profiling') {
+                puzzleHTML = buildProfilingPuzzle(sc.data);
+            } else if (sc.type === 'logs') {
+                puzzleHTML = buildLogsPuzzle(sc.data);
+            } else if (sc.type === 'rgpd_form') {
+                puzzleHTML = buildRGPDFormPuzzle(sc.data);
+            } else if (sc.type === 'matching') {
+                puzzleHTML = buildMatchingPuzzle(sc.data);
+            }
+
+            scene.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">${sc.icon}</div>
+                        <div>
+                            <div class="scenario-title">${sc.title}</div>
+                            <div class="scenario-subtitle">${sc.subtitle}</div>
+                        </div>
+                    </div>
+                    <div class="scenario-narrative">${sc.narrative}</div>
+                    <div class="scenario-task"><h4>🎯 Votre mission :</h4><p>${sc.task}</p></div>
+                    <div class="puzzle-area" id="puzzle-area">${puzzleHTML}</div>
+                    <div class="feedback-box" id="feedback-box"></div>
+                    <div style="text-align:center;">
+                        <button class="action-btn" id="validate-btn" onclick="validateScenario(${index})">Valider ✓</button>
+                    </div>
+                </div>
+            `;
+            scene.scrollTop = 0;
+
+            // SMS contextuel
+            const smsMessages = [
+                "Concentrez-vous sur les permissions qui n'ont rien à voir avec la météo. Une app de météo a-t-elle besoin de vos SMS ?",
+                "Le profilage IA peut déduire des informations très sensibles à partir de données anodines. Cherchez ce que Clara n'a jamais déclaré elle-même.",
+                "Analysez les timestamps et les niveaux d'erreur. La faille est évidente quand on regarde les logs de près.",
+                "Le droit à l'effacement est l'article 17 du RGPD. Le DPO est votre interlocuteur obligatoire.",
+                "C'est la dernière étape ! Reliez bien chaque infraction à l'article précis du RGPD."
+            ];
+            setTimeout(() => showSMS("📱 Contact CNIL", smsMessages[index]), 2000);
+        }
+
+        // ==================== PUZZLE 1 : PERMISSIONS ====================
+        function buildPermissionsPuzzle(data) {
+            let html = '<div class="permissions-grid">';
+            data.permissions.forEach((p, i) => {
+                html += `
+                    <div class="permission-item" id="perm-${i}" onclick="togglePermission(${i})">
+                        <span class="permission-icon">${p.icon}</span>
+                        <span>${p.name}</span>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const flaggedPermissions = new Set();
+        function togglePermission(index) {
+            const el = document.getElementById('perm-' + index);
+            if (flaggedPermissions.has(index)) {
+                flaggedPermissions.delete(index);
+                el.classList.remove('flagged');
+            } else {
+                flaggedPermissions.add(index);
+                el.classList.add('flagged');
+            }
+        }
+
+        // ==================== PUZZLE 2 : PROFILAGE ====================
+        function buildProfilingPuzzle(data) {
+            let html = '<div class="data-chips">';
+            data.dataPoints.forEach((dp, i) => {
+                html += `<div class="data-chip" id="dp-${i}" onclick="toggleDataPoint(${i})">${dp.text}</div>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const selectedDataPoints = new Set();
+        function toggleDataPoint(index) {
+            const el = document.getElementById('dp-' + index);
+            if (selectedDataPoints.has(index)) {
+                selectedDataPoints.delete(index);
+                el.classList.remove('selected');
+            } else {
+                selectedDataPoints.add(index);
+                el.classList.add('selected');
+            }
+        }
+
+        // ==================== PUZZLE 3 : LOGS ====================
+        function buildLogsPuzzle(data) {
+            let html = '<div class="log-terminal">';
+            data.logs.forEach(log => {
+                const levelClass = log.level === 'error' ? 'level-error' : log.level === 'warn' ? 'level-warn' : 'level-info';
+                html += `<div class="log-line"><span class="timestamp">[${log.time}]</span> <span class="${levelClass}">[${log.level.toUpperCase()}]</span> ${log.text}</div>`;
+            });
+            html += '</div>';
+
+            html += '<div class="choices-container" id="log-questions">';
+            data.questions.forEach((q, qi) => {
+                html += `<div style="margin-top:15px;"><p style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:0.9em;margin-bottom:10px;">${q.q}</p>`;
+                q.options.forEach((opt, oi) => {
+                    html += `<div class="choice-btn" id="logq-${qi}-${oi}" onclick="selectLogAnswer(${qi}, ${oi})" style="margin-bottom:6px;">
+                        <span class="choice-letter">${String.fromCharCode(65 + oi)}</span>
+                        <span>${opt}</span>
+                    </div>`;
+                });
+                html += '</div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const logAnswers = {};
+        function selectLogAnswer(qi, oi) {
+            // Déselectionner les autres
+            for (let i = 0; i < 4; i++) {
+                const el = document.getElementById(`logq-${qi}-${i}`);
+                if (el) el.classList.remove('correct', 'wrong');
+                if (el) el.style.borderColor = 'rgba(0, 212, 255, 0.3)';
+            }
+            const selected = document.getElementById(`logq-${qi}-${oi}`);
+            selected.style.borderColor = 'var(--neon-blue)';
+            logAnswers[qi] = oi;
+        }
+
+        // ==================== PUZZLE 4 : FORMULAIRE RGPD ====================
+        function buildRGPDFormPuzzle(data) {
+            let html = '<div class="rgpd-form">';
+            data.fields.forEach((field, fi) => {
+                html += `
+                    <div class="form-field">
+                        <label class="form-label">${field.label}</label>
+                        <select class="form-select" id="rgpd-field-${fi}">
+                            <option value="-1">— Sélectionnez —</option>
+                            ${field.options.map((opt, oi) => `<option value="${oi}">${opt}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        // ==================== PUZZLE 5 : ASSOCIATIONS ====================
+        function buildMatchingPuzzle(data) {
+            const shuffledRight = [...data.pairs].sort(() => Math.random() - 0.5);
+            let html = '<div class="connection-puzzle">';
+            html += '<div class="connection-column">';
+            data.pairs.forEach((p, i) => {
+                html += `<div class="connection-item" id="match-left-${p.id}" onclick="selectMatchItem('left', ${p.id})">${p.left}</div>`;
+            });
+            html += '</div><div class="connection-column">';
+            shuffledRight.forEach(p => {
+                html += `<div class="connection-item" id="match-right-${p.id}" onclick="selectMatchItem('right', ${p.id})">${p.right}</div>`;
+            });
+            html += '</div></div>';
+            return html;
+        }
+
+        let matchSelection = { left: null, right: null };
+        const matchedPairs = new Set();
+        function selectMatchItem(side, id) {
+            if (matchedPairs.has(id) && side === 'left') return;
+
+            // Déselectionner le précédent
+            if (matchSelection[side] !== null) {
+                const prev = document.getElementById(`match-${side}-${matchSelection[side]}`);
+                if (prev && !prev.classList.contains('matched')) prev.classList.remove('selected');
+            }
+
+            matchSelection[side] = id;
+            document.getElementById(`match-${side}-${id}`).classList.add('selected');
+
+            // Vérifier si une paire est formée
+            if (matchSelection.left !== null && matchSelection.right !== null) {
+                if (matchSelection.left === matchSelection.right) {
+                    // Correct !
+                    document.getElementById(`match-left-${matchSelection.left}`).classList.add('matched');
+                    document.getElementById(`match-left-${matchSelection.left}`).classList.remove('selected');
+                    document.getElementById(`match-right-${matchSelection.right}`).classList.add('matched');
+                    document.getElementById(`match-right-${matchSelection.right}`).classList.remove('selected');
+                    matchedPairs.add(matchSelection.left);
+                } else {
+                    // Faux
+                    const leftEl = document.getElementById(`match-left-${matchSelection.left}`);
+                    const rightEl = document.getElementById(`match-right-${matchSelection.right}`);
+                    leftEl.style.animation = 'shake 0.3s';
+                    rightEl.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        leftEl.style.animation = '';
+                        rightEl.style.animation = '';
+                        leftEl.classList.remove('selected');
+                        rightEl.classList.remove('selected');
+                    }, 400);
+                    updateProtection(-3);
+                }
+                matchSelection = { left: null, right: null };
+            }
+        }
+
+        // ==================== VALIDATION DES SCÉNARIOS ====================
+        function validateScenario(index) {
+            const sc = scenarios[index];
+            let score = 0;
+            let maxScore = 0;
+            let feedbackText = '';
+
+            if (sc.type === 'permissions') {
+                const perms = sc.data.permissions;
+                maxScore = perms.length;
+                perms.forEach((p, i) => {
+                    const el = document.getElementById('perm-' + i);
+                    const flagged = flaggedPermissions.has(i);
+                    if (p.abusive && flagged) {
+                        score += 1;
+                        el.classList.add('flagged');
+                    } else if (!p.abusive && !flagged) {
+                        score += 1;
+                        el.classList.add('safe');
+                    } else {
+                        if (p.abusive) el.classList.add('flagged');
+                        else el.classList.add('safe');
+                    }
+                    el.style.cursor = 'default';
+                    el.onclick = null;
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Excellent ! Vous avez identifié correctement ${score}/${maxScore} permissions (${pct}%). Les permissions abusives sont signalées en rose.`
+                    : `Score : ${score}/${maxScore} (${pct}%). Observez les permissions abusives en rose — une app météo n'a pas besoin de vos contacts ou SMS !`;
+
+            } else if (sc.type === 'profiling') {
+                const dps = sc.data.dataPoints;
+                maxScore = dps.length;
+                dps.forEach((dp, i) => {
+                    const el = document.getElementById('dp-' + i);
+                    const selected = selectedDataPoints.has(i);
+                    if (dp.deduced && selected) {
+                        score += 1;
+                        el.classList.add('selected');
+                    } else if (!dp.deduced && !selected) {
+                        score += 1;
+                    } else {
+                        if (dp.deduced) el.classList.add('wrong-select');
+                    }
+                    el.title = dp.explanation;
+                    el.style.cursor = 'default';
+                    el.onclick = null;
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Bravo ! ${score}/${maxScore} correct (${pct}%). Vous comprenez bien comment l'IA reconstruit des profils à partir de données éparses.`
+                    : `Score : ${score}/${maxScore} (${pct}%). Les données déduites par l'IA sont celles que Clara n'a jamais fournies directement.`;
+
+            } else if (sc.type === 'logs') {
+                const qs = sc.data.questions;
+                maxScore = qs.length;
+                qs.forEach((q, qi) => {
+                    const answer = logAnswers[qi];
+                    if (answer === q.correct) {
+                        score += 1;
+                        document.getElementById(`logq-${qi}-${answer}`).classList.add('correct');
+                    } else {
+                        if (answer !== undefined) document.getElementById(`logq-${qi}-${answer}`).classList.add('wrong');
+                        document.getElementById(`logq-${qi}-${q.correct}`).classList.add('correct');
+                    }
+                    // Désactiver les clics
+                    for (let i = 0; i < 4; i++) {
+                        const el = document.getElementById(`logq-${qi}-${i}`);
+                        if (el) { el.onclick = null; el.style.cursor = 'default'; }
+                    }
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Excellent travail d'analyse ! ${score}/${maxScore} réponses correctes. Vous savez décrypter les logs de sécurité.`
+                    : `Score : ${score}/${maxScore}. Relisez les logs : le mot de passe par défaut, les 5h avant détection et l'article 33 du RGPD sont les clés.`;
+
+            } else if (sc.type === 'rgpd_form') {
+                const fields = sc.data.fields;
+                maxScore = fields.length;
+                fields.forEach((field, fi) => {
+                    const select = document.getElementById(`rgpd-field-${fi}`);
+                    const value = parseInt(select.value);
+                    if (value === field.correct) {
+                        score += 1;
+                        select.style.borderColor = 'var(--neon-green)';
+                    } else {
+                        select.style.borderColor = 'var(--neon-pink)';
+                        select.value = field.correct;
+                    }
+                    select.disabled = true;
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Parfait ! ${score}/${maxScore} champs corrects. Vous maîtrisez la procédure RGPD pour exercer le droit à l'effacement.`
+                    : `Score : ${score}/${maxScore}. Les bonnes réponses sont maintenant affichées. Retenez : Article 17, DPO, 1 mois de délai, CNIL en recours.`;
+
+            } else if (sc.type === 'matching') {
+                maxScore = sc.data.pairs.length;
+                score = matchedPairs.size;
+                if (score < maxScore) {
+                    // Compléter automatiquement les paires manquantes
+                    sc.data.pairs.forEach(p => {
+                        if (!matchedPairs.has(p.id)) {
+                            document.getElementById(`match-left-${p.id}`).classList.add('matched');
+                            document.getElementById(`match-right-${p.id}`).classList.add('matched');
+                            matchedPairs.add(p.id);
+                        }
+                    });
+                }
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Dossier solide ! ${score}/${maxScore} associations correctes. La CNIL sera convaincue par votre travail.`
+                    : `Score : ${score}/${maxScore}. Les associations correctes sont affichées. Chaque violation a un article RGPD précis qui la sanctionne.`;
+            }
+
+            // Score et feedback
+            const pct = Math.round(score / maxScore * 100);
+            const isGood = pct >= 70;
+            gameState.scenarioScores.push({ score, maxScore, pct });
+
+            // Mise à jour protection
+            if (isGood) {
+                updateProtection(5);
+            } else {
+                updateProtection(-10);
+            }
+
+            // Collecter la preuve
+            collectEvidence(index);
+
+            // Afficher feedback
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.className = `feedback-box ${isGood ? 'success' : 'error'}`;
+            feedbackBox.innerHTML = `<strong>${isGood ? '✅ Preuve collectée !' : '⚠️ Preuve collectée, mais attention !'}</strong><br>${feedbackText}`;
+
+            // Remplacer le bouton par "Continuer"
+            const validateBtn = document.getElementById('validate-btn');
+            validateBtn.textContent = index < scenarios.length - 1 ? 'Scénario suivant →' : 'Voir les résultats →';
+            validateBtn.onclick = () => {
+                // Reset states pour le prochain scénario
+                flaggedPermissions.clear();
+                selectedDataPoints.clear();
+                Object.keys(logAnswers).forEach(k => delete logAnswers[k]);
+                matchSelection = { left: null, right: null };
+                matchedPairs.clear();
+                loadScenario(index + 1);
+            };
+        }
+
+        // ==================== FIN DU JEU ====================
+        function endGame(success) {
+            gameState.gameEnded = true;
+            clearInterval(gameState.timerInterval);
+
+            const totalScore = gameState.scenarioScores.reduce((a, s) => a + s.score, 0);
+            const totalMax = gameState.scenarioScores.reduce((a, s) => a + s.maxScore, 0);
+            const totalPct = totalMax > 0 ? Math.round(totalScore / totalMax * 100) : 0;
+            const evidenceCount = gameState.evidence.filter(Boolean).length;
+
+            const overlay = document.getElementById('results-overlay');
+            const card = document.getElementById('results-card');
+
+            if (success) {
+                card.innerHTML = `
+                    <div class="results-icon">🛡️</div>
+                    <div class="results-title">MISSION ACCOMPLIE</div>
+                    <div class="results-score">${totalPct}%</div>
+                    <div class="results-detail">
+                        Vous avez collecté <strong>${evidenceCount}/5 preuves</strong> et obtenu un score global de <strong>${totalScore}/${totalMax}</strong>.<br>
+                        Jauge de protection finale : <strong>${gameState.protection}%</strong><br><br>
+                        ${totalPct >= 70
+                            ? 'Le dossier est solide. La CNIL peut engager les poursuites contre PANOPTIKON !'
+                            : 'Le dossier contient quelques faiblesses, mais reste exploitable.'}
+                    </div>
+                    <button class="action-btn" onclick="showQuiz()">Passer le quiz de certification →</button>
+                `;
+            } else {
+                card.innerHTML = `
+                    <div class="results-icon">⏰</div>
+                    <div class="results-title">${gameState.protection <= 0 ? 'PROTECTION COMPROMISE' : 'TEMPS ÉCOULÉ'}</div>
+                    <div class="results-detail">
+                        ${gameState.protection <= 0
+                            ? 'Votre jauge de protection est tombée à zéro. Les données des citoyens sont en danger.'
+                            : 'Le temps imparti est écoulé. La mission n\'est pas terminée.'}
+                        <br><br>Preuves collectées : <strong>${evidenceCount}/5</strong>
+                    </div>
+                    <button class="action-btn" onclick="showQuiz()">Passer quand même le quiz →</button>
+                    <button class="action-btn secondary" onclick="location.reload()" style="margin-left:10px;">Recommencer</button>
+                `;
+            }
+            overlay.classList.add('active');
+        }
+
+        // ==================== PLACEHOLDER QUIZ & ATTESTATION (Phase 4) ====================
+        function showQuiz() {
+            document.getElementById('results-overlay').classList.remove('active');
+            document.getElementById('game-container').classList.remove('active');
+            // Le quiz sera implémenté dans la prochaine phase
+            document.getElementById('briefing-screen').classList.add('active');
+            showLesson(7);
+            alert('Le quiz de certification sera bientôt disponible !');
+        }
+
+        function showCertificateInFolder() {
+            // Sera implémenté après le quiz
+        }
+    </script>
+</body>
+</html>
