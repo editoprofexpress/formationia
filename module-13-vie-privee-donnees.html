@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Shadow - Jeu de Rôle IA & Vie Privée</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --neon-purple: #a855f7;
+            --dark-bg: #0a0e17;
+            --panel-bg: rgba(10, 20, 40, 0.95);
+            --text: #e0f0ff;
+            --muted: #8899aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ==================== ÉCRAN TITRE ==================== */
+        #title-screen {
+            position: fixed;
+            inset: 0;
+            background: url('images/module13-title-bg.png') center/cover no-repeat, linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        #title-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.7);
+            z-index: -1;
+        }
+
+        #title-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .title-logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .main-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 3em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #8899aa;
+            margin-bottom: 50px;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        .start-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2em;
+            padding: 20px 60px;
+            background: transparent;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 30px rgba(0, 255, 136, 0.1);
+            transform: scale(1.05);
+        }
+
+        .intro-text {
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: #aabbcc;
+        }
+
+        /* ==================== LIENS RETOUR MODULES ==================== */
+        .back-link-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #8899aa;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link-title:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #aabbcc;
+        }
+
+        .back-link-sidebar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link-sidebar:hover {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: var(--neon-blue);
+            transform: translateX(-3px);
+        }
+
+        .back-link-sidebar .back-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link-sidebar:hover .back-arrow {
+            transform: translateX(-3px);
+        }
+
+        .back-btn-game {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            margin-right: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            border-radius: 6px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn-game:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--neon-blue);
+        }
+
+        /* ==================== BRIEFING ==================== */
+        #briefing-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #briefing-screen.active {
+            display: flex;
+        }
+
+        .briefing-header {
+            background: rgba(10, 20, 40, 0.95);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .briefing-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3em;
+            color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .briefing-title::before {
+            content: '🛡️';
+            font-size: 1.5em;
+        }
+
+        .briefing-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #8899aa;
+            font-size: 0.9em;
+        }
+
+        .briefing-progress-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .briefing-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            transition: width 0.3s;
+        }
+
+        .briefing-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .briefing-nav {
+            width: 280px;
+            background: rgba(10, 20, 40, 0.9);
+            border-right: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .briefing-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+            color: #8899aa;
+        }
+
+        .briefing-nav-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            color: var(--text);
+        }
+
+        .briefing-nav-item.active {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+        }
+
+        .briefing-nav-item.completed {
+            color: var(--neon-blue);
+        }
+
+        .briefing-nav-item.completed::after {
+            content: '✓';
+            margin-left: auto;
+            color: var(--neon-green);
+        }
+
+        .nav-icon {
+            font-size: 1.2em;
+            width: 30px;
+            text-align: center;
+        }
+
+        .nav-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            background: rgba(0, 255, 136, 0.2);
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        .briefing-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .briefing-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .briefing-content::-webkit-scrollbar-track {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .briefing-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+        }
+
+        .briefing-footer {
+            background: rgba(10, 20, 40, 0.95);
+            border-top: 1px solid rgba(0, 255, 136, 0.3);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .briefing-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 12px 30px;
+            border: 2px solid var(--neon-green);
+            background: transparent;
+            color: var(--neon-green);
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .briefing-btn:hover {
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .briefing-btn.primary {
+            background: var(--neon-green);
+            color: var(--dark-bg);
+        }
+
+        .briefing-btn.primary:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+        }
+
+        .briefing-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ==================== CONTENU COURS ==================== */
+        .module-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em;
+            color: var(--neon-green);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .module-kicker {
+            color: var(--muted);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        .section-content h3 {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-blue);
+            margin: 25px 0 15px;
+            font-size: 1.2em;
+        }
+
+        .section-content p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #cfe9ff;
+        }
+
+        .section-content ul, .section-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .section-content li {
+            line-height: 1.7;
+            margin-bottom: 8px;
+            color: #cfe9ff;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+            margin: 18px 0;
+        }
+
+        .callout {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            padding: 14px;
+            border-radius: 14px;
+            box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+            margin: 12px 0;
+            line-height: 1.6;
+            color: #cfe9ff;
+        }
+
+        .callout.warn {
+            background: rgba(255, 204, 0, 0.08);
+            border-color: rgba(255, 204, 0, 0.30);
+            box-shadow: 0 0 18px rgba(255, 204, 0, 0.16);
+        }
+
+        .callout.pink {
+            background: rgba(255, 0, 128, 0.10);
+            border-color: rgba(255, 0, 128, 0.30);
+            box-shadow: 0 0 18px rgba(255, 0, 128, 0.16);
+        }
+
+        .callout.purple {
+            background: rgba(168, 85, 247, 0.10);
+            border-color: rgba(168, 85, 247, 0.35);
+            box-shadow: 0 0 18px rgba(168, 85, 247, 0.18);
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border: 1px solid rgba(0, 255, 136, .5);
+            border-radius: 999px;
+            font-family: 'Space Mono', monospace;
+            font-size: .78em;
+            color: var(--neon-green);
+            background: rgba(0, 255, 136, .05);
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .stat-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .stat-table th {
+            background: rgba(0, 255, 136, 0.15);
+            padding: 10px 15px;
+            text-align: left;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85em;
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .stat-table td {
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            color: #cfe9ff;
+        }
+
+        .stat-table tr:nth-child(even) {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* ==================== GAME CONTAINER ==================== */
+        #game-container {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #game-container.active {
+            display: block;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8em;
+                letter-spacing: 2px;
+            }
+            .subtitle {
+                font-size: 1em;
+            }
+            .intro-text {
+                font-size: 0.9em;
+                padding: 0 20px;
+            }
+            .start-btn {
+                font-size: 1em;
+                padding: 15px 40px;
+            }
+            .briefing-nav {
+                display: none;
+            }
+            .briefing-content {
+                padding: 20px;
+            }
+            .briefing-title {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ÉCRAN TITRE -->
+    <div id="title-screen">
+        <!-- Lien retour discret -->
+        <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+            <span>←</span>
+            <span>Modules</span>
+        </a>
+        <div class="title-logo">🛡️</div>
+        <h1 class="main-title">Data Shadow</h1>
+        <p class="subtitle">Jeu de Rôle - Vie Privée & Données Personnelles à l'Ère de l'IA</p>
+
+        <p class="intro-text">
+            Vous êtes <strong>Alex Morin</strong>, consultant·e en cybersécurité recruté·e par l'agence <strong>SHIELD DATA</strong>.
+            Une IA de surveillance nommée <strong>PANOPTIKON</strong> collecte massivement les données personnelles des citoyens.
+            Votre mission : <strong>enquêter</strong>, <strong>protéger les victimes</strong> et <strong>constituer un dossier</strong> pour la CNIL.
+        </p>
+
+        <button class="start-btn" onclick="showBriefing()">
+            Accepter la mission
+        </button>
+
+        <div style="margin-top: 40px; opacity: 0.7;">
+            <p style="color: #8899aa; font-size: 0.85em; margin-bottom: 8px;">Une formation proposée par</p>
+            <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+                <img src="images/logo-profexpress.png" alt="Prof Express" style="height: 30px; object-fit: contain;">
+            </a>
+        </div>
+    </div>
+
+    <!-- SECTION BRIEFING / COURS -->
+    <div id="briefing-screen">
+        <div class="briefing-header">
+            <div class="briefing-title">DOSSIER SHIELD DATA - NIVEAU CONFIDENTIEL</div>
+            <div class="briefing-progress">
+                <span id="progress-text">Dossier 1/7</span>
+                <div class="briefing-progress-bar">
+                    <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="briefing-body">
+            <nav class="briefing-nav">
+                <!-- Lien retour vers modules -->
+                <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+                    <span class="back-arrow">←</span>
+                    <span>Tous les modules</span>
+                </a>
+
+                <div class="briefing-nav-item active" onclick="showLesson(0)">
+                    <span class="nav-icon">🎬</span>
+                    <span class="nav-number">01</span>
+                    Introduction
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(1)">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-number">02</span>
+                    Données personnelles
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(2)">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-number">03</span>
+                    IA & Collecte
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(3)">
+                    <span class="nav-icon">🇪🇺</span>
+                    <span class="nav-number">04</span>
+                    RGPD & Droits
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(4)">
+                    <span class="nav-icon">🍪</span>
+                    <span class="nav-number">05</span>
+                    Cookies & Trackers
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(5)">
+                    <span class="nav-icon">👁️</span>
+                    <span class="nav-number">06</span>
+                    Surveillance & IA
+                </div>
+                <div class="briefing-nav-item" onclick="showLesson(6)">
+                    <span class="nav-icon">🛡️</span>
+                    <span class="nav-number">07</span>
+                    Se Protéger
+                </div>
+                <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+                    <div class="briefing-nav-item" onclick="showLesson(7)">
+                        <span class="nav-icon">🎮</span>
+                        <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
+                        Mission
+                    </div>
+                </div>
+                <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
+                    <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2);">
+                        <span class="nav-icon">🔒</span>
+                        <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
+                        Attestation de réussite
+                    </div>
+                </div>
+            </nav>
+
+            <div class="briefing-content" id="briefing-content">
+                <!-- Contenu des leçons chargé dynamiquement -->
+            </div>
+        </div>
+
+        <div class="briefing-footer">
+            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
+                ← Dossier précédent
+            </button>
+            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
+                Dossier suivant →
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTAINER PRINCIPAL DU JEU (sera rempli dans la phase 3) -->
+    <div id="game-container">
+    </div>
+
+    <script>
+        // ==================== ÉTAT DE L'APPLICATION ====================
+        let currentLesson = 0;
+        let completedLessons = new Set();
+
+        // ==================== NAVIGATION PRINCIPALE ====================
+        function showBriefing() {
+            document.getElementById('title-screen').classList.add('hidden');
+            document.getElementById('briefing-screen').classList.add('active');
+            showLesson(0);
+        }
+
+        // ==================== SYSTÈME DE BRIEFING ====================
+        const briefingLessons = [
+            {
+                title: "🎬 Introduction — Bienvenue chez SHIELD DATA",
+                content: `
+                    <h2 class="module-title">Bienvenue, Agent·e Morin</h2>
+                    <p class="module-kicker">Vous venez de rejoindre SHIELD DATA, l'agence de protection des données numériques. Votre première mission est critique.</p>
+
+                    <div class="callout">
+                        <strong>📋 Contexte de la mission :</strong><br>
+                        L'application <strong>PANOPTIKON</strong>, utilisée par 12 millions de personnes, est soupçonnée de collecter massivement
+                        les données personnelles de ses utilisateurs à leur insu. L'IA embarquée dans l'application analyse les comportements,
+                        prédit les habitudes et revend ces profils à des tiers.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🌐 L'ère des données personnelles</h3>
+                    <p>Chaque jour, un être humain génère en moyenne <strong>1,7 Mo de données</strong>. À l'échelle mondiale, cela représente
+                    <strong>2,5 quintillions d'octets</strong> créés quotidiennement. Mais qui contrôle ces données ?</p>
+
+                    <p>Avec l'essor de l'intelligence artificielle, la collecte et l'exploitation des données personnelles ont atteint
+                    un niveau sans précédent. Les IA modernes ont besoin de quantités massives de données pour s'entraîner et fonctionner.</p>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Le saviez-vous ?</strong><br>
+                        En 2024, <strong>92% des sites web</strong> utilisent des trackers qui collectent des informations sur leurs visiteurs.
+                        En moyenne, un utilisateur est traqué par <strong>6 entreprises différentes</strong> sur chaque site visité.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🎯 Vos objectifs</h3>
+                    <p>Au cours de cette formation, vous allez :</p>
+                    <ul>
+                        <li><strong>Comprendre</strong> ce que sont les données personnelles et pourquoi elles sont si précieuses</li>
+                        <li><strong>Découvrir</strong> comment l'IA collecte et exploite ces données</li>
+                        <li><strong>Maîtriser</strong> vos droits grâce au RGPD</li>
+                        <li><strong>Apprendre</strong> à protéger votre vie privée au quotidien</li>
+                        <li><strong>Résoudre</strong> 5 scénarios en tant qu'agent·e de SHIELD DATA</li>
+                    </ul>
+                `
+            }
+        ];
+
+        function showLesson(index) {
+            if (index < 0 || index >= briefingLessons.length) return;
+
+            currentLesson = index;
+            const lesson = briefingLessons[index];
+
+            document.getElementById('briefing-content').innerHTML = `
+                <div class="section-content">${lesson.content}</div>
+            `;
+
+            // Marquer comme complétée
+            completedLessons.add(index);
+
+            // Mettre à jour la navigation
+            const navItems = document.querySelectorAll('.briefing-nav-item');
+            navItems.forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === index) item.classList.add('active');
+                if (completedLessons.has(i) && i !== index) item.classList.add('completed');
+            });
+
+            // Mettre à jour la progression
+            const total = briefingLessons.length;
+            const progress = ((index + 1) / total * 100);
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `Dossier ${index + 1}/${total}`;
+
+            // Boutons précédent/suivant
+            document.getElementById('prev-btn').disabled = (index === 0);
+            const nextBtn = document.getElementById('next-btn');
+            if (index === total - 1) {
+                nextBtn.textContent = '🎮 Lancer la mission →';
+                nextBtn.onclick = () => startGame();
+            } else {
+                nextBtn.textContent = 'Dossier suivant →';
+                nextBtn.onclick = () => nextLesson();
+            }
+
+            // Scroll en haut du contenu
+            document.getElementById('briefing-content').scrollTop = 0;
+        }
+
+        function nextLesson() {
+            if (currentLesson < briefingLessons.length - 1) {
+                showLesson(currentLesson + 1);
+            }
+        }
+
+        function prevLesson() {
+            if (currentLesson > 0) {
+                showLesson(currentLesson - 1);
+            }
+        }
+
+        // ==================== PLACEHOLDER FONCTIONS (Phases suivantes) ====================
+        function startGame() {
+            alert('🎮 Le jeu de rôle sera disponible dans la prochaine mise à jour !');
+        }
+
+        function showCertificateInFolder() {
+            // Sera implémenté après le quiz
+        }
+    </script>
+</body>
+</html>
