@@ -197,6 +197,64 @@
     }
     .back-link-title:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3);color:#aabbcc}
 
+    /* ==================== EXPÉRIENCES / DÉFIS ==================== */
+    .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
+    .exp-card{
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:12px;padding:20px;cursor:pointer;transition:all .3s;text-align:center;
+    }
+    .exp-card:hover{border-color:var(--neon-blue);background:rgba(0,212,255,0.12);transform:translateY(-3px);box-shadow:0 6px 25px rgba(0,212,255,.25)}
+    .exp-card.done{border-color:rgba(0,255,136,.5);background:rgba(0,255,136,.08)}
+    .exp-card .exp-icon{font-size:2.5em;margin-bottom:10px}
+    .exp-card .exp-num{font-family:'Space Mono',monospace;color:var(--neon-blue);font-weight:700;font-size:0.9em;margin-bottom:8px}
+    .exp-card .exp-name{font-weight:600;font-size:1em}
+
+    .btn{
+      font-family:'Space Mono',monospace;
+      border:1px solid rgba(0,212,255,.38);
+      background:linear-gradient(135deg,rgba(0,212,255,.18),rgba(168,85,247,.12));
+      color:var(--text);padding:12px 16px;border-radius:12px;cursor:pointer;
+      transition:transform .15s,box-shadow .15s,border-color .15s;
+      box-shadow:0 0 30px rgba(0,212,255,.18);
+      display:inline-flex;align-items:center;gap:10px;user-select:none;font-size:.85em;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(0,212,255,.35);border-color:rgba(0,212,255,.65)}
+    .btn:active{transform:translateY(0)}
+    .btn.green,.btn.primary{
+      border-color:rgba(0,255,136,.55);
+      background:linear-gradient(135deg,rgba(0,255,136,.22),rgba(0,212,255,.16));
+      box-shadow:0 0 22px rgba(0,255,136,.35);color:var(--neon-green);
+    }
+    .btn.pink,.btn.danger{
+      border-color:rgba(255,0,128,.55);
+      background:linear-gradient(135deg,rgba(255,0,128,.20),rgba(0,212,255,.10));
+      box-shadow:0 0 22px rgba(255,0,128,.35);color:var(--neon-pink);
+    }
+    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* ==================== QUIZ ==================== */
+    .q-card{
+      border:1px solid rgba(0,212,255,.35);background:rgba(0,212,255,.03);
+      border-radius:14px;padding:16px;margin-top:12px;
+    }
+    .q-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .q-head .mono{font-family:'Space Mono',monospace;color:var(--neon-blue)}
+    .q-text{line-height:1.5;color:#d9f2ff}
+    .opts{display:grid;gap:8px;margin-top:12px}
+    .opt{
+      border:1px solid rgba(0,212,255,.25);background:rgba(0,212,255,.02);
+      border-radius:12px;padding:12px;cursor:pointer;transition:.2s;
+    }
+    .opt:hover{border-color:rgba(0,212,255,.65);background:rgba(0,212,255,.08)}
+    .opt.selected{border-color:var(--neon-purple);background:rgba(168,85,247,.08)}
+    .opt.correct{border-color:var(--neon-green);background:rgba(0,255,136,.08)}
+    .opt.wrong{border-color:var(--danger);background:rgba(255,77,77,.08)}
+    .explain{
+      display:none;margin-top:10px;border-left:4px solid var(--neon-blue);
+      background:rgba(0,212,255,.06);padding:12px;border-radius:10px;line-height:1.55;color:#cfe9ff;
+    }
+    .explain.show{display:block}
+
     /* ==================== RESPONSIVE ==================== */
     @media(max-width:768px){
       .main-title{font-size:1.8em}
@@ -897,11 +955,444 @@ const lessons = [
       <div class="pill" style="border-color:var(--neon-green)">MISSION</div>
       <div class="pill">5 DÉFIS</div>
       <div class="divider"></div>
-      <div class="callout ok"><p>Les 5 défis interactifs seront ajoutés en Phase 3.</p></div>
+
+      <div class="callout ok">
+        <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px">
+          <img src="images/module6-mentor.png" alt="Kaël Voss" style="width:60px;height:60px;border-radius:50%;border:2px solid var(--neon-green);object-fit:cover;background:rgba(0,255,136,.1)"/>
+          <div>
+            <strong style="color:var(--neon-green)">Kaël Voss</strong><br/>
+            <span style="color:var(--muted);font-size:0.9em">Directeur créatif — Studio ITERATEK</span>
+          </div>
+        </div>
+        <p style="line-height:1.7">
+          "Bienvenue dans l'atelier. Vous allez relever 5 défis qui mettent en pratique chaque technique de prompt engineering que vous avez apprise. Complétez les 5 défis, puis passez l'évaluation finale pour obtenir votre attestation."
+        </p>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin:25px 0 15px">Choisissez un défi :</h3>
+      <div class="exp-grid" id="exp-grid">
+        <div class="exp-card" id="exp-card-1" onclick="startExperiment(1)">
+          <div class="exp-icon">🔧</div>
+          <div class="exp-num">DÉFI 01</div>
+          <div class="exp-name">Du Vague au Précis</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Transformez un prompt vague en prompt optimisé</div>
+        </div>
+        <div class="exp-card" id="exp-card-2" onclick="startExperiment(2)">
+          <div class="exp-icon">🏗️</div>
+          <div class="exp-num">DÉFI 02</div>
+          <div class="exp-name">Détecteur de Piliers</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Identifiez les piliers RCTFC dans des prompts</div>
+        </div>
+        <div class="exp-card" id="exp-card-3" onclick="startExperiment(3)">
+          <div class="exp-icon">📐</div>
+          <div class="exp-num">DÉFI 03</div>
+          <div class="exp-name">Le Bon Format</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Choisissez le format de sortie optimal</div>
+        </div>
+        <div class="exp-card" id="exp-card-4" onclick="startExperiment(4)">
+          <div class="exp-icon">🎭</div>
+          <div class="exp-num">DÉFI 04</div>
+          <div class="exp-name">Le Persona Juste</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Associez le bon persona à chaque situation</div>
+        </div>
+        <div class="exp-card" id="exp-card-5" onclick="startExperiment(5)">
+          <div class="exp-icon">🔄</div>
+          <div class="exp-num">DÉFI 05</div>
+          <div class="exp-name">L'Atelier d'Itération</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Améliorez un prompt en 3 itérations successives</div>
+        </div>
+      </div>
+
+      <div id="exp-zone" style="margin-top:25px"></div>
+      <div id="quiz-zone" style="display:none;margin-top:25px"></div>
     `,
-    init: function(){}
+    init: function(){ updateExpCards(); }
   }
 ];
+
+/* =========================================================
+   DÉFIS INTERACTIFS
+========================================================= */
+function updateExpCards(){
+  [1,2,3,4,5].forEach(i=>{
+    const card=document.getElementById('exp-card-'+i);
+    if(card && state.expDone.has(i)) card.classList.add('done');
+  });
+}
+
+function startExperiment(id){
+  const zone=$('exp-zone');
+  if(id===1) renderExp1(zone);
+  else if(id===2) renderExp2(zone);
+  else if(id===3) renderExp3(zone);
+  else if(id===4) renderExp4(zone);
+  else if(id===5) renderExp5(zone);
+  zone.scrollIntoView({behavior:'smooth'});
+}
+
+function completeExperiment(id){
+  state.expDone.add(id);
+  updateExpCards();
+  toast("Défi "+id+" terminé !");
+  if(state.expDone.size===5){
+    setTimeout(()=>{
+      toast("Tous les défis sont terminés ! Passez au quiz ci-dessous.",3500);
+      showQuiz();
+    },1500);
+  }
+}
+
+/* ---- DÉFI 1 : DU VAGUE AU PRÉCIS ---- */
+const exp1Prompts=[
+  {vague:"Écris un texte sur les animaux",
+   keywords:["espèce","nombre","longueur","public","format","ton"],
+   idealCount:3,
+   feedback:{
+     good:"Excellent ! Votre prompt est maintenant spécifique : l'IA sait quoi écrire, pour qui, et dans quel format.",
+     bad:"Votre prompt manque encore de précision. Pensez à préciser : quel animal ? quel public ? quelle longueur ? quel format ?"}},
+  {vague:"Aide-moi pour mon exposé",
+   keywords:["sujet","matière","niveau","durée","structure","diapositive","plan"],
+   idealCount:3,
+   feedback:{
+     good:"Parfait ! Avec ces précisions, l'IA peut produire un contenu ciblé et utile pour votre exposé.",
+     bad:"Trop vague encore. Précisez : quel sujet ? quelle classe ? quelle durée ? quel format attendu ?"}},
+  {vague:"Fais-moi un programme de sport",
+   keywords:["objectif","durée","fréquence","niveau","équipement","semaine","exercice","muscle"],
+   idealCount:3,
+   feedback:{
+     good:"Le prompt est complet. L'IA peut créer un programme adapté à votre profil et vos objectifs.",
+     bad:"Il manque des informations essentielles. Précisez : objectif ? niveau ? fréquence ? équipement disponible ?"}}
+];
+let exp1Current=0;
+
+function renderExp1(zone){
+  exp1Current=Math.floor(Math.random()*exp1Prompts.length);
+  const p=exp1Prompts[exp1Current];
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🔧 DÉFI 01 — Du Vague au Précis</h3>
+      <p style="margin-bottom:15px;line-height:1.6">Voici un prompt vague. Réécrivez-le en le rendant <strong>spécifique et actionnable</strong>. Ajoutez des précisions sur le public, le format, la longueur, le ton, etc.</p>
+
+      <div class="callout pink" style="margin-bottom:15px">
+        <strong>Prompt vague :</strong><br/>
+        <em style="font-size:1.1em">"${p.vague}"</em>
+      </div>
+
+      <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">Votre version améliorée :</label>
+      <textarea id="exp1-input" style="width:100%;min-height:120px;padding:15px;border-radius:12px;border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.3);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;resize:vertical;outline:none;line-height:1.6" placeholder="Réécrivez le prompt ici en ajoutant des précisions..."></textarea>
+
+      <div style="display:flex;gap:12px;justify-content:center;margin:20px 0">
+        <button class="btn green" onclick="checkExp1()">Analyser mon prompt</button>
+        <button class="btn" onclick="renderExp1($('exp-zone'))">Nouveau prompt</button>
+      </div>
+      <div id="exp1-result"></div>
+    </div>`;
+}
+
+function checkExp1(){
+  const input=document.getElementById('exp1-input').value.toLowerCase();
+  if(input.length<30){toast("Votre prompt est trop court. Développez davantage !");return;}
+  const p=exp1Prompts[exp1Current];
+  let matches=0;
+  p.keywords.forEach(k=>{if(input.includes(k))matches++;});
+  const lengthBonus=input.length>100?1:0;
+  const questionBonus=(input.includes('?')||input.includes('combien')||input.includes('quel'))?1:0;
+  const score=Math.min(5,matches+lengthBonus+questionBonus);
+  const isGood=score>=p.idealCount;
+
+  $('exp1-result').innerHTML=`
+    <div class="callout ${isGood?'ok':'warn'}" style="margin-top:15px">
+      <h4 style="color:${isGood?'var(--neon-green)':'var(--warn)'};margin-bottom:10px">${isGood?'Bien joué !':'Peut mieux faire'}</h4>
+      <p style="margin-bottom:10px">Score de spécificité : <strong style="font-size:1.2em;color:${isGood?'var(--neon-green)':'var(--warn)'}">${score}/5</strong></p>
+      <p style="line-height:1.6;font-size:0.9em">${isGood?p.feedback.good:p.feedback.bad}</p>
+      ${isGood?'<button class="btn green" onclick="completeExperiment(1)" style="margin-top:15px">Valider le défi ✓</button>':'<button class="btn" onclick="renderExp1($(\'exp-zone\'))" style="margin-top:15px">Réessayer</button>'}
+    </div>`;
+}
+
+/* ---- DÉFI 2 : DÉTECTEUR DE PILIERS ---- */
+const exp2Prompts=[
+  {text:"Tu es un chef cuisinier français. Je prépare un dîner pour 6 personnes allergiques aux fruits de mer. Propose un menu 3 plats en format liste. Pas de dessert au chocolat.",
+   pillars:{R:true,C:true,T:true,F:true,K:true}},
+  {text:"Écris un poème sur la nature.",
+   pillars:{R:false,C:false,T:true,F:false,K:false}},
+  {text:"Tu es un coach sportif. Crée un programme de remise en forme pour un débutant de 40 ans. En tableau, semaine par semaine. Maximum 4 séances par semaine.",
+   pillars:{R:true,C:true,T:true,F:true,K:true}},
+  {text:"Résume ce texte en 3 bullet points. Public : collégiens de 5e.",
+   pillars:{R:false,C:true,T:true,F:true,K:false}},
+];
+let exp2Current=0;
+let exp2Answered=false;
+
+function renderExp2(zone){
+  exp2Current=Math.floor(Math.random()*exp2Prompts.length);
+  exp2Answered=false;
+  const p=exp2Prompts[exp2Current];
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🏗️ DÉFI 02 — Détecteur de Piliers</h3>
+      <p style="margin-bottom:15px;line-height:1.6">Analysez ce prompt et cochez les piliers RCTFC qui y sont présents.</p>
+
+      <div class="callout" style="margin-bottom:20px;border-color:rgba(168,85,247,.4)">
+        <em style="font-size:1.05em;line-height:1.7">"${p.text}"</em>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0" id="exp2-checks">
+        <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px solid rgba(0,212,255,.25);border-radius:10px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(0,212,255,.5)'" onmouseout="this.style.borderColor='rgba(0,212,255,.25)'">
+          <input type="checkbox" id="chk-R" style="width:18px;height:18px;accent-color:var(--neon-green)"/> <strong>R</strong> — Rôle
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px solid rgba(0,212,255,.25);border-radius:10px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(0,212,255,.5)'" onmouseout="this.style.borderColor='rgba(0,212,255,.25)'">
+          <input type="checkbox" id="chk-C" style="width:18px;height:18px;accent-color:var(--neon-green)"/> <strong>C</strong> — Contexte
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px solid rgba(0,212,255,.25);border-radius:10px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(0,212,255,.5)'" onmouseout="this.style.borderColor='rgba(0,212,255,.25)'">
+          <input type="checkbox" id="chk-T" style="width:18px;height:18px;accent-color:var(--neon-green)"/> <strong>T</strong> — Tâche
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px solid rgba(0,212,255,.25);border-radius:10px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='rgba(0,212,255,.5)'" onmouseout="this.style.borderColor='rgba(0,212,255,.25)'">
+          <input type="checkbox" id="chk-F" style="width:18px;height:18px;accent-color:var(--neon-green)"/> <strong>F</strong> — Format
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;padding:12px;border:1px solid rgba(0,212,255,.25);border-radius:10px;cursor:pointer;transition:all .2s;grid-column:span 2;justify-content:center" onmouseover="this.style.borderColor='rgba(0,212,255,.5)'" onmouseout="this.style.borderColor='rgba(0,212,255,.25)'">
+          <input type="checkbox" id="chk-K" style="width:18px;height:18px;accent-color:var(--neon-green)"/> <strong>C</strong> — Contraintes
+        </label>
+      </div>
+
+      <div style="display:flex;gap:12px;justify-content:center;margin:20px 0">
+        <button class="btn green" onclick="checkExp2()">Vérifier</button>
+        <button class="btn" onclick="renderExp2($('exp-zone'))">Autre prompt</button>
+      </div>
+      <div id="exp2-result"></div>
+    </div>`;
+}
+
+function checkExp2(){
+  if(exp2Answered)return;
+  exp2Answered=true;
+  const p=exp2Prompts[exp2Current];
+  const checks={R:document.getElementById('chk-R').checked,C:document.getElementById('chk-C').checked,T:document.getElementById('chk-T').checked,F:document.getElementById('chk-F').checked,K:document.getElementById('chk-K').checked};
+  let correct=0,total=5;
+  ['R','C','T','F','K'].forEach(k=>{if(checks[k]===p.pillars[k])correct++;});
+  const isGood=correct>=4;
+
+  const details=['R','C','T','F','K'].map(k=>{
+    const yours=checks[k]?'✅':'❌';
+    const real=p.pillars[k]?'✅':'❌';
+    const match=checks[k]===p.pillars[k];
+    const names={R:'Rôle',C:'Contexte',T:'Tâche',F:'Format',K:'Contraintes'};
+    return `<span style="color:${match?'var(--neon-green)':'var(--danger)'}">${names[k]}: vous ${yours} / réel ${real}</span>`;
+  }).join('<br/>');
+
+  $('exp2-result').innerHTML=`
+    <div class="callout ${isGood?'ok':'warn'}" style="margin-top:15px">
+      <h4 style="color:${isGood?'var(--neon-green)':'var(--warn)'};margin-bottom:10px">${isGood?'Excellente analyse !':'Pas tout à fait...'} (${correct}/${total})</h4>
+      <p style="line-height:1.8;font-size:0.9em;margin-bottom:12px">${details}</p>
+      ${isGood?'<button class="btn green" onclick="completeExperiment(2)" style="margin-top:10px">Valider le défi ✓</button>':'<button class="btn" onclick="renderExp2($(\'exp-zone\'))" style="margin-top:10px">Réessayer</button>'}
+    </div>`;
+}
+
+/* ---- DÉFI 3 : LE BON FORMAT ---- */
+const exp3Scenarios=[
+  {situation:"Vous voulez comparer les prix et caractéristiques de 4 smartphones.",
+   options:["Un paragraphe descriptif","Un tableau comparatif","Une liste à puces","Un dialogue"],
+   correct:1,explain:"Un tableau est idéal pour comparer des éléments sur plusieurs critères côte à côte."},
+  {situation:"Vous voulez expliquer à un enfant de 8 ans comment faire un gâteau au chocolat.",
+   options:["Un JSON structuré","Un email formel","Des étapes numérotées simples","Un tableau Excel"],
+   correct:2,explain:"Des étapes numérotées, simples et séquentielles, sont parfaites pour un tutoriel destiné à un enfant."},
+  {situation:"Vous devez présenter les avantages et inconvénients du télétravail dans une réunion.",
+   options:["Un tweet","Un tableau pour/contre","Un poème","Un code Python"],
+   correct:1,explain:"Un tableau pour/contre permet de visualiser clairement les deux côtés d'un argument."},
+  {situation:"Vous alimentez une application web avec des données de pays (nom, capitale, population).",
+   options:["Un texte littéraire","Un tableau Markdown","Un format JSON structuré","Un dialogue entre pays"],
+   correct:2,explain:"Le JSON est le format standard pour transmettre des données structurées à une application web."},
+];
+let exp3Current=0;
+let exp3Done=0;
+
+function renderExp3(zone){
+  exp3Current=0;exp3Done=0;
+  showExp3Question(zone);
+}
+
+function showExp3Question(zone){
+  if(exp3Current>=exp3Scenarios.length){
+    zone.innerHTML=`
+      <div class="callout ok" style="text-align:center;padding:25px">
+        <h4 style="color:var(--neon-green);margin-bottom:10px">Tous les scénarios complétés ! (${exp3Done}/${exp3Scenarios.length})</h4>
+        <p style="line-height:1.6">${exp3Done>=3?'Vous maîtrisez le choix du bon format de sortie.':'Révisez la leçon 5 sur les formats et réessayez.'}</p>
+        ${exp3Done>=3?'<button class="btn green" onclick="completeExperiment(3)" style="margin-top:15px">Valider le défi ✓</button>':'<button class="btn" onclick="renderExp3($(\'exp-zone\'))" style="margin-top:15px">Réessayer</button>'}
+      </div>`;
+    return;
+  }
+  const s=exp3Scenarios[exp3Current];
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">📐 DÉFI 03 — Le Bon Format (${exp3Current+1}/${exp3Scenarios.length})</h3>
+      <div class="callout purple" style="margin-bottom:20px">
+        <strong>Situation :</strong> ${s.situation}
+      </div>
+      <p style="margin-bottom:12px">Quel format de sortie est le plus adapté ?</p>
+      <div style="display:grid;gap:10px">
+        ${s.options.map((o,i)=>`
+          <div class="opt" onclick="answerExp3(${i})" id="exp3-opt-${i}" style="cursor:pointer">${o}</div>
+        `).join('')}
+      </div>
+      <div id="exp3-feedback" style="margin-top:15px"></div>
+    </div>`;
+}
+
+function answerExp3(idx){
+  const s=exp3Scenarios[exp3Current];
+  s.options.forEach((_,i)=>{
+    const el=document.getElementById('exp3-opt-'+i);
+    el.style.pointerEvents='none';
+    if(i===s.correct) el.classList.add('correct');
+    if(i===idx && idx!==s.correct) el.classList.add('wrong');
+  });
+  if(idx===s.correct) exp3Done++;
+  $('exp3-feedback').innerHTML=`
+    <div class="callout ${idx===s.correct?'ok':'pink'}">
+      <p style="line-height:1.6">${idx===s.correct?'✅ Correct ! ':'❌ Pas tout à fait. '}${s.explain}</p>
+    </div>
+    <button class="btn" onclick="exp3Current++;showExp3Question($('exp-zone'))" style="margin-top:12px">Suivant →</button>`;
+}
+
+/* ---- DÉFI 4 : LE PERSONA JUSTE ---- */
+const exp4Scenarios=[
+  {situation:"Un élève de 3e veut comprendre le théorème de Pythagore pour son contrôle de demain.",
+   options:["Un chercheur en mathématiques pures","Un prof de maths de collège patient et pédagogue","Un historien des sciences","Un coach de développement personnel"],
+   correct:1,explain:"Un prof de maths de collège saura adapter son vocabulaire et ses explications au niveau d'un élève de 3e, avec des exercices adaptés."},
+  {situation:"Une startup veut rédiger les conditions générales de vente de son application mobile.",
+   options:["Un journaliste d'investigation","Un humoriste","Un avocat spécialisé en droit du numérique","Un développeur web"],
+   correct:2,explain:"Un avocat spécialisé en droit du numérique connaît les obligations légales (RGPD, CGV, etc.) et le vocabulaire juridique nécessaire."},
+  {situation:"Vous voulez créer une histoire captivante pour endormir un enfant de 5 ans.",
+   options:["Un professeur de littérature comparée","Un conteur pour enfants, doux et imaginatif","Un critique littéraire du journal Le Monde","Un data scientist"],
+   correct:1,explain:"Un conteur pour enfants utilisera un vocabulaire simple, des personnages attachants et un rythme apaisant adapté à l'âge."},
+  {situation:"Un diabétique veut adapter son alimentation quotidienne.",
+   options:["Un chef étoilé Michelin","Un influenceur fitness Instagram","Un nutritionniste-diététicien spécialisé en diabétologie","Un critique gastronomique"],
+   correct:2,explain:"Seul un nutritionniste spécialisé en diabétologie peut donner des conseils alimentaires adaptés et médicalement fiables pour un diabétique."},
+];
+let exp4Current=0;
+let exp4Done=0;
+
+function renderExp4(zone){
+  exp4Current=0;exp4Done=0;
+  showExp4Question(zone);
+}
+
+function showExp4Question(zone){
+  if(exp4Current>=exp4Scenarios.length){
+    zone.innerHTML=`
+      <div class="callout ok" style="text-align:center;padding:25px">
+        <h4 style="color:var(--neon-green);margin-bottom:10px">Tous les scénarios complétés ! (${exp4Done}/${exp4Scenarios.length})</h4>
+        <p style="line-height:1.6">${exp4Done>=3?'Vous savez choisir le bon persona pour chaque situation.':'Révisez la leçon 6 sur les personas et réessayez.'}</p>
+        ${exp4Done>=3?'<button class="btn green" onclick="completeExperiment(4)" style="margin-top:15px">Valider le défi ✓</button>':'<button class="btn" onclick="renderExp4($(\'exp-zone\'))" style="margin-top:15px">Réessayer</button>'}
+      </div>`;
+    return;
+  }
+  const s=exp4Scenarios[exp4Current];
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🎭 DÉFI 04 — Le Persona Juste (${exp4Current+1}/${exp4Scenarios.length})</h3>
+      <div class="callout purple" style="margin-bottom:20px">
+        <strong>Situation :</strong> ${s.situation}
+      </div>
+      <p style="margin-bottom:12px">Quel persona serait le plus efficace ?</p>
+      <div style="display:grid;gap:10px">
+        ${s.options.map((o,i)=>`
+          <div class="opt" onclick="answerExp4(${i})" id="exp4-opt-${i}" style="cursor:pointer">${o}</div>
+        `).join('')}
+      </div>
+      <div id="exp4-feedback" style="margin-top:15px"></div>
+    </div>`;
+}
+
+function answerExp4(idx){
+  const s=exp4Scenarios[exp4Current];
+  s.options.forEach((_,i)=>{
+    const el=document.getElementById('exp4-opt-'+i);
+    el.style.pointerEvents='none';
+    if(i===s.correct) el.classList.add('correct');
+    if(i===idx && idx!==s.correct) el.classList.add('wrong');
+  });
+  if(idx===s.correct) exp4Done++;
+  $('exp4-feedback').innerHTML=`
+    <div class="callout ${idx===s.correct?'ok':'pink'}">
+      <p style="line-height:1.6">${idx===s.correct?'✅ Correct ! ':'❌ Pas tout à fait. '}${s.explain}</p>
+    </div>
+    <button class="btn" onclick="exp4Current++;showExp4Question($('exp-zone'))" style="margin-top:12px">Suivant →</button>`;
+}
+
+/* ---- DÉFI 5 : L'ATELIER D'ITÉRATION ---- */
+const exp5Scenario={
+  initial:"Fais-moi une lettre de motivation",
+  steps:[
+    {instruction:"Ce prompt est trop vague. <strong>Ajoutez le contexte</strong> : pour quel poste ? quelle entreprise ? quel profil avez-vous ?",
+     keywords:["poste","stage","entreprise","profil","expérience","compétence","étudiant","emploi"],
+     minLength:60},
+    {instruction:"Mieux ! Maintenant <strong>ajoutez le format et le ton</strong> : quelle longueur ? quel style ? des paragraphes spécifiques ?",
+     keywords:["paragraphe","ton","formel","professionnel","longueur","mot","structure","ligne"],
+     minLength:100},
+    {instruction:"Dernière itération : <strong>ajoutez des contraintes précises</strong> pour affiner le résultat : ce qu'il faut inclure, ce qu'il faut éviter, un élément distinctif.",
+     keywords:["inclure","éviter","pas de","sans","mentionner","important","spécifique","unique","passion"],
+     minLength:140}
+  ]
+};
+let exp5Step=0;
+
+function renderExp5(zone){
+  exp5Step=0;
+  showExp5Step(zone);
+}
+
+function showExp5Step(zone){
+  if(exp5Step>=exp5Scenario.steps.length){
+    zone.innerHTML=`
+      <div class="callout ok" style="text-align:center;padding:25px">
+        <h4 style="color:var(--neon-green);margin-bottom:10px">Bravo ! 3 itérations réussies !</h4>
+        <p style="line-height:1.6;margin-bottom:15px">Vous avez transformé un prompt vague en prompt complet et actionnable, étape par étape. C'est exactement le processus d'itération que vous utiliserez au quotidien.</p>
+        <button class="btn green" onclick="completeExperiment(5)">Valider le défi ✓</button>
+      </div>`;
+    return;
+  }
+  const step=exp5Scenario.steps[exp5Step];
+  zone.innerHTML=`
+    <div class="callout" style="border-color:rgba(0,212,255,.4)">
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🔄 DÉFI 05 — L'Atelier d'Itération (étape ${exp5Step+1}/3)</h3>
+
+      <div class="callout pink" style="margin-bottom:15px">
+        <strong>Prompt de départ :</strong><br/>
+        <em style="font-size:1.05em">"${exp5Scenario.initial}"</em>
+      </div>
+
+      <div class="callout warn" style="margin-bottom:15px">
+        <strong>Kaël Voss vous guide :</strong><br/>
+        <p style="line-height:1.7">${step.instruction}</p>
+      </div>
+
+      <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">Itération ${exp5Step+1} — Votre prompt amélioré :</label>
+      <textarea id="exp5-input" style="width:100%;min-height:100px;padding:15px;border-radius:12px;border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.3);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;resize:vertical;outline:none;line-height:1.6" placeholder="Réécrivez le prompt en intégrant les améliorations demandées..."></textarea>
+
+      <div style="text-align:center;margin:20px 0">
+        <button class="btn green" onclick="checkExp5()">Soumettre cette itération</button>
+      </div>
+      <div id="exp5-result"></div>
+    </div>`;
+}
+
+function checkExp5(){
+  const input=document.getElementById('exp5-input').value.toLowerCase();
+  const step=exp5Scenario.steps[exp5Step];
+  if(input.length<step.minLength*0.4){toast("Votre prompt est trop court. Développez davantage !");return;}
+  let matches=0;
+  step.keywords.forEach(k=>{if(input.includes(k))matches++;});
+  const isGood=matches>=2 && input.length>=step.minLength*0.5;
+
+  if(isGood){
+    $('exp5-result').innerHTML=`
+      <div class="callout ok"><p>✅ Bonne itération ! Votre prompt gagne en précision.</p></div>`;
+    setTimeout(()=>{exp5Step++;showExp5Step($('exp-zone'));},1500);
+  } else {
+    $('exp5-result').innerHTML=`
+      <div class="callout warn"><p>Le prompt manque encore des éléments demandés. Relisez la consigne et ajoutez plus de détails.</p></div>`;
+  }
+}
 
 /* =========================================================
    ATTESTATION (stub — complétée en Phase 4)
