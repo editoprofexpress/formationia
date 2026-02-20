@@ -1395,8 +1395,108 @@ function checkExp5(){
 }
 
 /* =========================================================
-   ATTESTATION (stub — complétée en Phase 4)
+   QUIZ
 ========================================================= */
+const quizQuestions=[
+  {q:"Quel est le principe fondamental de l'itération en prompt engineering ?",opts:["Écrire le prompt le plus long possible","Analyser le résultat et ajuster sa demande progressivement","Copier-coller des prompts trouvés en ligne","Utiliser toujours le même prompt"],correct:1,explain:"L'itération consiste à analyser le résultat obtenu, identifier ce qui manque ou ce qui ne va pas, puis ajuster le prompt pour s'approcher du résultat souhaité."},
+  {q:"Quels sont les 4 composants principaux d'un prompt ?",opts:["Titre, corps, conclusion, signature","Sujet, verbe, complément, ponctuation","Instruction, contexte, données d'entrée, format de sortie","Introduction, développement, conclusion, annexes"],correct:2,explain:"Un prompt efficace combine une instruction (ce qu'on demande), un contexte (la situation), des données d'entrée (le matériau) et un format de sortie (la forme attendue)."},
+  {q:"Dans la méthode RCTFC, que signifie le 'R' ?",opts:["Résultat","Rôle","Recherche","Réponse"],correct:1,explain:"Le R de RCTFC désigne le Rôle : le persona que l'on attribue à l'IA pour orienter ses connaissances et son ton (ex : 'Tu es un nutritionniste')."},
+  {q:"Pourquoi un prompt vague donne-t-il un résultat décevant ?",opts:["Parce que l'IA est défaillante","Parce que l'IA doit deviner ce que vous voulez et fait des choix arbitraires","Parce que les prompts courts ne fonctionnent jamais","Parce que l'IA refuse les demandes simples"],correct:1,explain:"Un prompt vague laisse trop de marge d'interprétation. L'IA fait des choix par défaut qui ne correspondent pas forcément à vos attentes. La spécificité réduit cette ambiguïté."},
+  {q:"Quel format est le plus adapté pour comparer 4 produits sur plusieurs critères ?",opts:["Un paragraphe narratif","Un poème","Un tableau comparatif","Un dialogue"],correct:2,explain:"Le tableau permet de visualiser clairement les différences entre plusieurs éléments sur plusieurs critères, côte à côte."},
+  {q:"Qu'est-ce que le 'few-shot learning' en prompt engineering ?",opts:["Apprendre avec très peu de données d'entraînement","Fournir quelques exemples du résultat attendu dans le prompt","Limiter le nombre de mots dans le prompt","Envoyer plusieurs prompts en même temps"],correct:1,explain:"Le few-shot learning consiste à donner 2 à 5 exemples du format/style attendu pour que l'IA comprenne le pattern et le reproduise."},
+  {q:"Quel est l'avantage d'attribuer un persona à l'IA ?",opts:["Ça rend la conversation plus amusante","Ça active un ensemble de connaissances et un ton adaptés à la situation","Ça permet de contourner les filtres de sécurité","Ça accélère le temps de réponse"],correct:1,explain:"Un persona oriente l'IA vers un domaine d'expertise, un vocabulaire et un angle d'approche spécifiques, ce qui produit des réponses beaucoup plus pertinentes et adaptées."},
+  {q:"Quelle est la meilleure réaction face à un premier résultat décevant ?",opts:["Abandonner et chercher une autre IA","Répéter le même prompt en espérant un meilleur résultat","Analyser ce qui manque et reformuler le prompt plus précisément","Écrire un prompt 10 fois plus long"],correct:2,explain:"La bonne réaction est d'analyser pourquoi le résultat ne correspond pas (trop vague ? mauvais format ? manque de contexte ?) puis d'itérer en ajustant le prompt."},
+  {q:"Quelle contrainte est la plus utile pour obtenir un résultat concis ?",opts:["'Fais de ton mieux'","'Sois créatif'","'Maximum 100 mots' ou 'En 3 bullet points'","'Réponds rapidement'"],correct:2,explain:"Les contraintes quantifiées (nombre de mots, nombre de points, nombre de paragraphes) sont les plus efficaces pour contrôler la longueur et la structure de la réponse."},
+  {q:"Dans quel cas le 'zero-shot' (sans exemple) est-il suffisant ?",opts:["Pour des tâches complexes avec un format spécifique","Pour des demandes simples et non ambiguës","Jamais, il faut toujours donner des exemples","Pour les textes créatifs uniquement"],correct:1,explain:"Pour des tâches simples et claires ('Traduis X en anglais', 'Quelle est la capitale du Pérou ?'), le zero-shot suffit. Le few-shot est utile quand le format ou le style est difficile à décrire avec des mots."},
+];
+
+function showQuiz(){
+  const zone=$('quiz-zone');
+  zone.style.display='block';
+  zone.innerHTML=`
+    <div class="divider" style="margin:30px 0"></div>
+    <h3 style="color:var(--neon-green);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 6</h3>
+    <p style="color:var(--muted);margin-bottom:20px">Répondez aux 10 questions pour obtenir votre attestation. Score minimum : 70%.</p>
+    <div id="quiz-questions">
+      ${quizQuestions.map((q,i)=>`
+        <div class="q-card" id="q-${i}">
+          <div class="q-head">
+            <span class="mono">Q${i+1}/${quizQuestions.length}</span>
+          </div>
+          <div class="q-text">${q.q}</div>
+          <div class="opts">
+            ${q.opts.map((o,j)=>`<div class="opt" data-q="${i}" data-o="${j}" onclick="answerQuiz(${i},${j})">${o}</div>`).join('')}
+          </div>
+          <div class="explain" id="explain-${i}">${q.explain}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="text-align:center;margin-top:25px">
+      <button class="btn green" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px">Valider mes réponses</button>
+    </div>
+    <div id="quiz-result" style="margin-top:20px"></div>
+  `;
+  zone.scrollIntoView({behavior:'smooth'});
+}
+
+const quizAnswers={};
+function answerQuiz(qIdx,oIdx){
+  quizAnswers[qIdx]=oIdx;
+  document.querySelectorAll(`.opt[data-q="${qIdx}"]`).forEach(el=>{
+    el.classList.remove('selected');
+    if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
+  });
+}
+
+function submitQuiz(){
+  let score=0;
+  quizQuestions.forEach((q,i)=>{
+    const userAns=quizAnswers[i];
+    const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
+    opts.forEach(el=>{
+      const oIdx=parseInt(el.dataset.o);
+      el.style.pointerEvents='none';
+      if(oIdx===q.correct) el.classList.add('correct');
+      if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
+    });
+    if(userAns===q.correct) score++;
+    $('explain-'+i).classList.add('show');
+  });
+
+  const pct=Math.round(score/quizQuestions.length*100);
+  state.quizScore=score;state.quizTotal=quizQuestions.length;
+  finalScore=pct;
+
+  $('quiz-submit-btn').style.display='none';
+  $('quiz-result').innerHTML=`
+    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:30px">
+      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:15px">${pct>=70?'Félicitations !':'Score insuffisant'}</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">${pct>=70
+        ?'Vous maîtrisez les techniques de prompt engineering et d\'itération. Votre attestation est débloquée !'
+        :'Il faut au moins 70% pour valider. Relisez les dossiers et réessayez.'
+      }</p>
+    </div>`;
+
+  if(pct>=70) unlockCertificate();
+}
+
+/* =========================================================
+   ATTESTATION
+========================================================= */
+function unlockCertificate(){
+  certificateUnlocked=true;
+  const navItem=$('certificate-nav-item');
+  if(navItem){
+    navItem.style.opacity='1';navItem.style.cursor='pointer';
+    navItem.style.background='';
+    const icon=navItem.querySelector('.nav-icon');if(icon)icon.textContent='🎓';
+    const num=navItem.querySelector('.nav-number');
+    if(num){num.style.background='rgba(0,255,136,0.2)';num.style.color='var(--neon-green)';num.textContent='✓';}
+  }
+  toast("🎓 Attestation débloquée ! Consultez l'onglet Attestation.",4000);
+}
+
 function showCertificateInFolder(){
   if(!certificateUnlocked){
     $('briefing-content').innerHTML=`
@@ -1415,8 +1515,74 @@ function showCertificateInFolder(){
       </div>`;
     return;
   }
-  toast("Attestation — sera complétée en Phase 4.");
+
+  $('briefing-content').innerHTML=`
+    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
+    <div class="module-kicker">Module 6 — Itération & Amélioration</div>
+    <div class="divider"></div>
+    <div class="callout ok" style="text-align:center;padding:30px 20px">
+      <div style="font-size:3em;margin-bottom:15px">🎉</div>
+      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <p style="line-height:1.8;margin-bottom:15px">Vous avez terminé avec succès le <strong>Module 6 - Itération & Amélioration</strong>.</p>
+      <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:20px;margin:20px auto;max-width:400px">
+        <p style="margin-bottom:10px"><strong>Score certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span></p>
+        <p style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">Référence : IA-ITER-${String(Math.floor(Math.random()*90000)+10000)}</p>
+      </div>
+    </div>
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📜 Télécharger votre attestation</h3>
+    <div class="callout" style="padding:30px">
+      <p style="margin-bottom:20px;line-height:1.8">Renseignez votre nom pour générer votre attestation officielle.</p>
+      <div style="margin-bottom:15px">
+        <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue)">Nom sur l'attestation :</label>
+        <input id="certificate-name" type="text" placeholder="Prénom NOM" style="width:100%;max-width:500px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.2);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none"/>
+      </div>
+      <button class="btn green" onclick="downloadCertificate()" style="font-size:1.1em;padding:15px 40px;margin-top:15px">📥 Télécharger (HTML)</button>
+      <p style="margin-top:15px;color:#8899aa;font-size:0.9em">💡 Ouvrez le fichier HTML et utilisez Ctrl+P pour l'imprimer en PDF.</p>
+    </div>
+    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">✅ Compétences validées</h3>
+    <div class="callout"><ul style="line-height:2;margin-left:20px">
+      <li>Comprendre le processus d'itération en prompt engineering</li>
+      <li>Structurer un prompt avec la méthode RCTFC</li>
+      <li>Formuler des demandes spécifiques et non ambiguës</li>
+      <li>Choisir le bon format de sortie</li>
+      <li>Utiliser les personas et le contexte efficacement</li>
+      <li>Appliquer le few-shot learning</li>
+    </ul></div>`;
 }
+
+function downloadCertificate(){
+  const name=($('certificate-name')?.value||'').trim()||'Participant';
+  const date=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const html=`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Attestation - Module 6</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #00ff88;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(0,255,136,.3),inset 0 0 60px rgba(0,212,255,.1)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(0,212,255,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#00ff88,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#00d4ff;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(0,212,255,.3);border-bottom:1px solid rgba(0,212,255,.3)}
+.mod{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#00ff88;font-size:1.3em;font-weight:600;margin-bottom:10px}
+.sc{display:inline-block;background:linear-gradient(135deg,#00ff88,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:30px;border-top:1px solid rgba(0,212,255,.2)}
+.fi{text-align:center}.fl{color:#888;font-size:.85em;margin-bottom:5px}.fv{color:#00d4ff;font-weight:600}
+.sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px}
+.sk span{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:5px 15px;border-radius:15px;font-size:.85em;color:#00d4ff}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style></head><body><div class="cert"><div class="hd"><div class="logo">🎯✨</div><div class="ttl">Attestation de Réussite</div><div class="sub">Formation IA Responsable</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 6 : Itération & Amélioration</div><p style="color:#b0b0b0;margin-top:10px">Prompt Engineering & Raffinement — Studio ITERATEK</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Prompt Engineering</span><span>Méthode RCTFC</span><span>Spécificité</span><span>Formats de sortie</span><span>Personas</span><span>Few-shot Learning</span><span>Itération</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div></body></html>`;
+
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`Attestation_Module6_Iteration_Amelioration_${name.replace(/\s+/g,'_')}.html`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast("✅ Attestation téléchargée !",4000);
+}
+
 </script>
 </body>
 </html>
