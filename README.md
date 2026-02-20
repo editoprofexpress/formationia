@@ -33,27 +33,27 @@ Former le grand public (notamment les jeunes et enseignants) aux enjeux de l'IA 
 ## Liste des 15 Modules
 
 ### Fondations IA (1-4)
-1. **Qu'est-ce que l'IA ?** - Définitions et types d'IA
-2. **Comment l'IA apprend** - Machine learning, données d'entraînement
-3. **IA générative** - LLM, génération de texte/images
-4. **Données et algorithmes** - Fonctionnement interne
+1. **Démystifier l'IA** *(Dossier Zéro)* - Mission d'enquête ✅ *Disponible*
+2. **Données sous influence** - Apprentissage & biais, jeu de simulation ✅ *Disponible*
+3. **Dans la tête d'un modèle** - Similarité et prédiction, exploration interactive ⏳ *Bientôt*
+4. **Générer sans comprendre** - Simulation d'un modèle génératif ⏳ *Bientôt*
 
 ### Interaction Raisonnée (5-8)
-5. **L'art du prompt** - Formuler des requêtes efficaces
-6. **Vérifier les réponses** - Fact-checking des outputs IA
-7. **Usages créatifs** - Co-création avec l'IA
-8. **Limites d'utilisation** - Quand ne pas utiliser l'IA
+5. **L'art de la consigne** - Escape room de prompts, rédiger des consignes efficaces ⏳ *Bientôt*
+6. **Itération et amélioration** - Prompt engineering, défi progressif ✅ *Disponible*
+7. **Co-créer avec l'IA** - Usages créatifs ⏳ *Bientôt*
+8. **Savoir quand s'arrêter** - Limites d'utilisation ⏳ *Bientôt*
 
 ### Limites et Esprit Critique (9-11)
-9. **Hallucinations** - Quand l'IA invente
-10. **Biais algorithmiques** - Discrimination et équité
-11. **Deepfakes** - Détection de contenus manipulés
+9. **Hallucinations** *(L'Erreur qui Sonne Juste)* - Quand l'IA invente ✅ *Disponible*
+10. **Biais algorithmiques** - Discrimination et équité ⏳ *Bientôt*
+11. **Deepfakes** - Détection de contenus manipulés ⏳ *Bientôt*
 
 ### Enjeux Citoyens (12-15)
-12. **Impact environnemental** - Empreinte carbone de l'IA ✅ *Disponible*
-13. **Vie privée et données** - Protection des informations personnelles
-14. **IA et emploi** - Transformation du travail
-15. **Régulation et éthique** - Cadre légal et moral
+12. **Impact environnemental** *(Green Infiltration)* - Empreinte carbone de l'IA, escape game ✅ *Disponible*
+13. **Vie privée et données** *(Data Shadow)* - Protection des informations personnelles, jeu de rôle ✅ *Disponible*
+14. **IA et emploi** - Transformation du travail ⏳ *Bientôt*
+15. **Le Tribunal de l'IA** - Responsabilité humaine et régulation ✅ *Disponible*
 
 ---
 
@@ -65,10 +65,16 @@ formationia/
 ├── index.html                              # Page d'accueil
 ├── modules.html                            # Catalogue des modules
 ├── certification.html                      # Page certification (future)
-├── module-12-impact-environnemental.html   # Module 12 (référence)
+├── module-01-demystifier-ia.html           # Module 1 - Mission d'enquête
+├── module-02-donnees-sous-influence.html   # Module 2 - Jeu de simulation
+├── module-06-iteration-amelioration.html   # Module 6 - Prompt engineering
+├── module-09-hallucinations.html           # Module 9 - Hallucinations IA
+├── module-12-impact-environnemental.html   # Module 12 - Escape game environnement
+├── module-13-vie-privee-donnees.html       # Module 13 - Jeu de rôle vie privée
+├── module15-le-tribunal-de-l-ia.html      # Module 15 - Régulation et éthique
 ├── images/
 │   ├── logo-profexpress.png
-│   ├── hero-ia.png
+│   ├── hero-banner.png
 │   ├── domain-*.png                        # Icônes des domaines
 │   ├── room-*.png                          # Arrière-plans escape game
 │   └── ...
@@ -242,22 +248,27 @@ Chaque module génère une attestation HTML téléchargeable avec :
 
 ## Versioning
 
-### V1.0.0 (actuelle)
-- Branche Git : `v1-stable`
-- Contenu :
-  - Page d'accueil (`index.html`)
-  - Catalogue des modules (`modules.html`)
-  - Module 12 complet (escape game environnement)
-  - Charte graphique établie
-  - Infrastructure de base
-  - UX améliorée (boutons retour, SMS d'aide, validations)
+### V1.0.0
+- Page d'accueil (`index.html`)
+- Catalogue des modules (`modules.html`)
+- Module 12 complet (escape game environnement)
+- Charte graphique établie
+- Infrastructure de base
+
+### V1.1.0 (actuelle)
+- Module 01 : Dossier Zéro — Mission d'enquête (Démystifier l'IA)
+- Module 02 : Données sous Influence — Jeu de simulation (Apprentissage & Biais)
+- Module 06 : Itération & Amélioration — Défi progressif (Prompt Engineering)
+- Module 09 : L'Erreur qui Sonne Juste — Hallucinations de l'IA
+- Module 13 : Data Shadow — Jeu de rôle (Vie Privée & Données)
+- Module 15 : Le Tribunal de l'IA — Responsabilité humaine
 
 ### Roadmap
-- V1.1 : Modules 1-4 (Fondations IA)
-- V1.2 : Modules 5-8 (Interaction Raisonnée)
-- V1.3 : Modules 9-11 (Limites et Esprit Critique)
-- V1.4 : Modules 13-15 (Enjeux Citoyens restants)
-- V2.0 : Page certification globale
+- Modules 3-4 (Fondations IA — suite)
+- Modules 5, 7-8 (Interaction Raisonnée — suite)
+- Modules 10-11 (Limites et Esprit Critique — suite)
+- Module 14 (Enjeux Citoyens — IA et emploi)
+- Page certification globale
 
 ---
 
