@@ -601,22 +601,294 @@ const lessons = [
   {
     title:"04 — L'art de la spécificité",
     kicker:"Plus votre demande est précise, plus la réponse est pertinente.",
-    html:`<div class="callout ok"><p>Contenu de la leçon 4 — sera complété en Phase 2.</p></div>`
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Précision</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 Vague vs Spécifique</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        La spécificité est la compétence n°1 en prompt engineering. Un prompt vague laisse l'IA deviner ce que vous voulez — et elle devinera souvent mal. Un prompt spécifique réduit l'espace des réponses possibles et guide l'IA vers exactement ce dont vous avez besoin.
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Avant / Après : 5 transformations</h3>
+
+      <div class="callout pink" style="margin-bottom:8px">
+        <strong>❌ Vague :</strong> <em>"Écris un email professionnel"</em>
+      </div>
+      <div class="callout ok" style="margin-bottom:18px">
+        <strong>✅ Spécifique :</strong> <em>"Écris un email à un client mécontent dont la commande a 5 jours de retard. Ton : empathique mais professionnel. Propose une remise de 10% et une nouvelle date de livraison. Maximum 150 mots."</em>
+      </div>
+
+      <div class="callout pink" style="margin-bottom:8px">
+        <strong>❌ Vague :</strong> <em>"Aide-moi en maths"</em>
+      </div>
+      <div class="callout ok" style="margin-bottom:18px">
+        <strong>✅ Spécifique :</strong> <em>"Explique-moi comment résoudre une équation du second degré ax²+bx+c=0 avec le discriminant. Donne un exemple avec 2x²-3x-5=0, étape par étape. Niveau : élève de Seconde."</em>
+      </div>
+
+      <div class="callout pink" style="margin-bottom:8px">
+        <strong>❌ Vague :</strong> <em>"Donne-moi des idées de business"</em>
+      </div>
+      <div class="callout ok" style="margin-bottom:18px">
+        <strong>✅ Spécifique :</strong> <em>"Propose 5 idées de micro-entreprises réalisables par un étudiant avec moins de 500€ de budget initial, dans le domaine du numérique. Pour chaque idée : description en 2 lignes, investissement requis, potentiel de revenus mensuels."</em>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Les 4 dimensions de la spécificité</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout">
+          <strong style="color:var(--neon-green)">Qui ?</strong><br/>
+          Précisez le public cible.<br/>
+          <em style="color:var(--muted)">"Pour un enfant de 8 ans" vs "Pour un doctorant en physique"</em>
+        </div>
+        <div class="callout">
+          <strong style="color:var(--neon-blue)">Quoi exactement ?</strong><br/>
+          Détaillez la tâche.<br/>
+          <em style="color:var(--muted)">"Un résumé en 3 points clés" vs "Un texte"</em>
+        </div>
+        <div class="callout">
+          <strong style="color:var(--neon-pink)">Combien ?</strong><br/>
+          Quantifiez quand c'est possible.<br/>
+          <em style="color:var(--muted)">"5 exemples", "200 mots maximum", "3 paragraphes"</em>
+        </div>
+        <div class="callout">
+          <strong style="color:var(--neon-purple)">Comment ?</strong><br/>
+          Précisez le ton, le style, le format.<br/>
+          <em style="color:var(--muted)">"Ton humoristique", "Style Wikipedia", "En bullet points"</em>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>Attention à l'excès :</strong> Un prompt trop long et trop contraint peut aussi poser problème. Si vous donnez 50 contraintes contradictoires, l'IA s'y perdra. Visez le <strong>juste milieu</strong> : assez de précision pour éliminer l'ambiguïté, pas trop pour ne pas surcharger.
+      </div>
+    `
   },
   {
     title:"05 — Format et contraintes",
     kicker:"Guider la forme de la réponse pour obtenir exactement ce que vous voulez.",
-    html:`<div class="callout ok"><p>Contenu de la leçon 5 — sera complété en Phase 2.</p></div>`
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Format</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📐 Pourquoi le format compte autant que le fond</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Vous pouvez obtenir la bonne information dans le mauvais format — et ça la rend inutilisable. Imaginez : vous demandez une comparaison entre 3 produits. L'IA vous répond en 5 paragraphes denses. La même information en tableau serait 10 fois plus lisible et utile. <strong>Spécifier le format de sortie</strong> est l'un des leviers les plus puissants du prompt engineering.
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Les formats courants</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">📝</div>
+          <strong>Liste à puces</strong><br/><span style="color:var(--muted);font-size:0.9em">Idéal pour des points clés, des étapes, des recommandations</span>
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">📊</div>
+          <strong>Tableau</strong><br/><span style="color:var(--muted);font-size:0.9em">Parfait pour comparer, catégoriser, organiser des données</span>
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🔢</div>
+          <strong>Étapes numérotées</strong><br/><span style="color:var(--muted);font-size:0.9em">Pour des tutoriels, des procédures, des recettes</span>
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">💬</div>
+          <strong>Dialogue</strong><br/><span style="color:var(--muted);font-size:0.9em">Pour des scripts, des simulations de conversation</span>
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">📧</div>
+          <strong>Email / Lettre</strong><br/><span style="color:var(--muted);font-size:0.9em">Avec objet, formule de politesse, signature</span>
+        </div>
+        <div class="callout" style="text-align:center">
+          <div style="font-size:2em;margin-bottom:8px">🧮</div>
+          <strong>JSON / Code</strong><br/><span style="color:var(--muted);font-size:0.9em">Pour des données structurées exploitables par un programme</span>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🚧 Les contraintes qui changent tout</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Les contraintes sont des règles que l'IA doit respecter. Elles canalisent la créativité du modèle et évitent les réponses trop longues, hors-sujet ou inadaptées.
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout">
+          <strong style="color:var(--warn)">Contraintes de longueur</strong><br/>
+          "Maximum 100 mots", "En 3 phrases", "Tiens sur un tweet (280 caractères)"
+        </div>
+        <div class="callout">
+          <strong style="color:var(--warn)">Contraintes de ton</strong><br/>
+          "Ton formel", "Humoristique", "Vulgarisation pour enfants", "Académique"
+        </div>
+        <div class="callout">
+          <strong style="color:var(--warn)">Contraintes d'exclusion</strong><br/>
+          "Sans jargon technique", "Ne mentionne pas X", "Pas de listes"
+        </div>
+        <div class="callout">
+          <strong style="color:var(--warn)">Contraintes de structure</strong><br/>
+          "Commence par une question", "Termine par un appel à l'action", "Utilise des sous-titres"
+        </div>
+      </div>
+
+      <div class="callout ok">
+        <strong>Exemple complet avec format + contraintes :</strong><br/><br/>
+        <span style="font-family:'Space Mono',monospace;font-size:0.9em;color:var(--neon-green)">
+        "Compare Python et JavaScript pour un débutant.<br/>
+        Format : tableau avec colonnes [Critère | Python | JavaScript].<br/>
+        Critères : facilité d'apprentissage, débouchés emploi, types de projets, communauté.<br/>
+        Contrainte : chaque cellule en 10 mots maximum. Ajoute une recommandation finale en 2 phrases."
+        </span>
+      </div>
+    `
   },
   {
     title:"06 — Personas et contexte",
     kicker:"Donner un rôle à l'IA transforme radicalement ses réponses.",
-    html:`<div class="callout ok"><p>Contenu de la leçon 6 — sera complété en Phase 2.</p></div>`
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Personas</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎭 Le pouvoir du rôle</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Quand vous dites à l'IA <strong>"Tu es un nutritionniste"</strong>, vous ne faites pas semblant. Vous activez un ensemble de connaissances, un vocabulaire spécifique et un angle d'approche qui transforment radicalement la réponse. Le même prompt avec des rôles différents produit des résultats complètement différents.
+      </p>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔬 Même question, 4 rôles différents</h3>
+      <p style="line-height:1.7;color:#cfe9ff;margin-bottom:15px">
+        Question : <strong><em>"Explique pourquoi le ciel est bleu."</em></strong>
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="border-color:rgba(0,255,136,.4)">
+          <strong style="color:var(--neon-green)">🧑‍🔬 Physicien</strong><br/>
+          "La diffusion de Rayleigh explique ce phénomène : les molécules d'azote et d'oxygène diffusent les courtes longueurs d'onde (bleu, 450-490 nm) plus efficacement que les grandes..."
+        </div>
+        <div class="callout" style="border-color:rgba(0,212,255,.4)">
+          <strong style="color:var(--neon-blue)">👩‍🏫 Instit' CE2</strong><br/>
+          "Imagine que la lumière du soleil est comme un arc-en-ciel caché ! Quand elle traverse l'air, les petites particules dans le ciel attrapent surtout la couleur bleue et la renvoient partout..."
+        </div>
+        <div class="callout" style="border-color:rgba(255,0,128,.4)">
+          <strong style="color:var(--neon-pink)">✍️ Poète</strong><br/>
+          "Le ciel porte le bleu comme un manteau de lumière, tissé par les doigts invisibles de l'atmosphère qui filtrent les rayons du soleil en une symphonie azurée..."
+        </div>
+        <div class="callout" style="border-color:rgba(168,85,247,.4)">
+          <strong style="color:var(--neon-purple)">😂 Humoriste</strong><br/>
+          "Le ciel est bleu parce qu'il a regardé l'océan trop longtemps et il s'est pris un reflet en pleine face. Non, sérieusement, c'est à cause de trucs minuscules dans l'air qui sont fans de bleu..."
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Construire un persona efficace</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Un bon persona va au-delà du simple titre. Plus vous le détaillez, plus l'IA s'y conformera :
+      </p>
+
+      <div class="callout ok">
+        <strong>Persona basique :</strong><br/>
+        <em style="color:var(--muted)">"Tu es un prof de français."</em><br/><br/>
+        <strong>Persona enrichi :</strong><br/>
+        <em style="color:var(--neon-green)">"Tu es un professeur de français au lycée, passionné de littérature contemporaine. Tu utilises souvent des références à la pop culture pour rendre tes cours vivants. Tu t'adresses à des élèves de Première. Tu es exigeant sur l'orthographe mais bienveillant dans tes corrections."</em>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🌍 Le contexte : le décor de la scène</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Le contexte donne à l'IA les informations de fond qu'elle ne peut pas deviner. Sans contexte, l'IA fait des suppositions qui peuvent être complètement fausses.
+      </p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout pink">
+          <strong>Sans contexte :</strong><br/>
+          <em>"Écris une lettre de motivation."</em><br/><br/>
+          L'IA invente un poste, un profil, une entreprise... le résultat est générique et inutilisable.
+        </div>
+        <div class="callout ok">
+          <strong>Avec contexte :</strong><br/>
+          <em>"J'ai 17 ans, je suis en Terminale S. Je postule pour un stage d'été de 2 semaines dans un laboratoire de biologie marine à Brest. J'ai fait un TPE sur les coraux."</em><br/><br/>
+          Le résultat est personnalisé, crédible et pertinent.
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>À retenir :</strong> Le persona et le contexte sont les deux faces d'une même pièce. Le persona définit <strong>qui parle</strong>, le contexte définit <strong>la situation</strong>. Ensemble, ils créent un cadre qui élimine l'ambiguïté et produit des réponses sur mesure.
+      </div>
+    `
   },
   {
     title:"07 — Exemples et few-shot learning",
     kicker:"Montrer plutôt qu'expliquer : la puissance de l'apprentissage par l'exemple.",
-    html:`<div class="callout ok"><p>Contenu de la leçon 7 — sera complété en Phase 2.</p></div>`
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Few-shot</div>
+      <div class="divider"></div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">💡 Montrer plutôt qu'expliquer</h3>
+      <p style="line-height:1.7;color:#cfe9ff">
+        Parfois, la meilleure façon de dire à l'IA ce que vous voulez n'est pas de l'expliquer avec des mots, mais de lui <strong>montrer un exemple</strong>. C'est le principe du <strong>few-shot learning</strong> : fournir quelques exemples du résultat attendu pour que l'IA comprenne le pattern et le reproduise.
+      </p>
+
+      <div class="callout">
+        <strong>Analogie :</strong> Imaginez que vous voulez apprendre à quelqu'un un jeu de cartes. Vous pouvez lire les 3 pages de règles... ou jouer 2-3 tours en montrant comment ça marche. La deuxième approche est souvent plus efficace. Le few-shot, c'est pareil.
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Zero-shot, One-shot, Few-shot</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout" style="text-align:center;border-color:rgba(255,0,128,.4)">
+          <div style="font-size:2em;margin-bottom:8px">0️⃣</div>
+          <strong style="color:var(--neon-pink)">Zero-shot</strong><br/>
+          Aucun exemple.<br/>
+          L'IA se débrouille seule.<br/>
+          <em style="color:var(--muted);font-size:0.85em">"Classe ce texte : positif ou négatif"</em>
+        </div>
+        <div class="callout" style="text-align:center;border-color:rgba(0,212,255,.4)">
+          <div style="font-size:2em;margin-bottom:8px">1️⃣</div>
+          <strong style="color:var(--neon-blue)">One-shot</strong><br/>
+          Un seul exemple.<br/>
+          L'IA comprend le format.<br/>
+          <em style="color:var(--muted);font-size:0.85em">"Ex : 'Super film !' → positif. Classe : 'Nul à chier'"</em>
+        </div>
+        <div class="callout" style="text-align:center;border-color:rgba(0,255,136,.4)">
+          <div style="font-size:2em;margin-bottom:8px">✌️</div>
+          <strong style="color:var(--neon-green)">Few-shot</strong><br/>
+          2 à 5 exemples.<br/>
+          L'IA maîtrise le pattern.<br/>
+          <em style="color:var(--muted);font-size:0.85em">Plusieurs exemples variés pour couvrir les cas</em>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">📝 Exemple concret : créer des flashcards</h3>
+      <div class="callout pink" style="margin-bottom:8px">
+        <strong>❌ Sans exemple (zero-shot) :</strong><br/>
+        <em>"Crée des flashcards sur la Révolution française."</em><br/>
+        <span style="color:var(--muted)">→ L'IA choisit un format aléatoire, peut-être trop long, trop court, mal structuré...</span>
+      </div>
+      <div class="callout ok">
+        <strong>✅ Avec exemples (few-shot) :</strong><br/><br/>
+        <span style="font-family:'Space Mono',monospace;font-size:0.88em;color:var(--neon-green)">
+        "Crée des flashcards sur la Révolution française en suivant ce modèle :<br/><br/>
+        Q : Quelle est la date de la prise de la Bastille ?<br/>
+        R : 14 juillet 1789. Événement symbolique du début de la Révolution, la Bastille représentait l'arbitraire royal.<br/><br/>
+        Q : Qu'est-ce que la DDHC ?<br/>
+        R : La Déclaration des Droits de l'Homme et du Citoyen (26 août 1789). Texte fondateur qui proclame les droits naturels et imprescriptibles de l'homme.<br/><br/>
+        Crée 5 autres flashcards sur le même modèle."
+        </span>
+      </div>
+
+      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Quand utiliser le few-shot ?</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+        <div class="callout ok">
+          <strong>Utilisez le few-shot quand :</strong><br/>
+          • Le format de sortie est très spécifique<br/>
+          • Le ton ou le style est difficile à décrire<br/>
+          • Vous voulez un pattern répétitif précis<br/>
+          • L'IA ne comprend pas vos instructions textuelles
+        </div>
+        <div class="callout warn">
+          <strong>Évitez le few-shot quand :</strong><br/>
+          • La tâche est simple et claire<br/>
+          • Vos exemples pourraient biaiser la réponse<br/>
+          • Vous voulez de la créativité libre<br/>
+          • Vous n'avez pas de bons exemples à donner
+        </div>
+      </div>
+
+      <div class="callout purple">
+        <strong>Astuce avancée — Le "chain of thought" :</strong> Vous pouvez aussi montrer à l'IA <strong>comment raisonner</strong> en lui donnant un exemple de raisonnement étape par étape. Par exemple : "Q : Si j'achète 3 pommes à 0.80€ et 2 bananes à 1.20€, combien je paie ? Raisonnement : 3×0.80 = 2.40€, 2×1.20 = 2.40€, total = 4.80€. R : 4.80€". L'IA reproduira ce processus de raisonnement pour les questions suivantes.
+      </div>
+    `
   },
   {
     title:"🔬 Défis ITERATEK — Mission",
