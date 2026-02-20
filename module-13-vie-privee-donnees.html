@@ -693,6 +693,7 @@
 
         // ==================== SYSTÈME DE BRIEFING ====================
         const briefingLessons = [
+            // ==================== LEÇON 0 : INTRODUCTION ====================
             {
                 title: "🎬 Introduction — Bienvenue chez SHIELD DATA",
                 content: `
@@ -732,6 +733,520 @@
                         <li><strong>Apprendre</strong> à protéger votre vie privée au quotidien</li>
                         <li><strong>Résoudre</strong> 5 scénarios en tant qu'agent·e de SHIELD DATA</li>
                     </ul>
+                `
+            },
+
+            // ==================== LEÇON 1 : DONNÉES PERSONNELLES ====================
+            {
+                title: "🔍 Qu'est-ce qu'une donnée personnelle ?",
+                content: `
+                    <h2 class="module-title">🔍 Données personnelles : le nouvel or noir</h2>
+                    <p class="module-kicker">Avant de mener l'enquête, vous devez comprendre ce que vous protégez exactement.</p>
+
+                    <h3>📌 Définition légale</h3>
+                    <p>Selon le RGPD (article 4), une <strong>donnée personnelle</strong> est toute information se rapportant à une
+                    <strong>personne physique identifiée ou identifiable</strong>. Cela va bien au-delà du simple nom et prénom.</p>
+
+                    <div class="divider"></div>
+
+                    <h3>🗂️ Les catégories de données personnelles</h3>
+                    <table class="stat-table">
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Exemples</th>
+                            <th>Sensibilité</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Identité</strong></td>
+                            <td>Nom, prénom, photo, date de naissance</td>
+                            <td><span class="pill">Standard</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Contact</strong></td>
+                            <td>Email, téléphone, adresse postale</td>
+                            <td><span class="pill">Standard</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Numérique</strong></td>
+                            <td>Adresse IP, cookies, historique de navigation</td>
+                            <td><span class="pill">Standard</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Biométrique</strong></td>
+                            <td>Empreintes, reconnaissance faciale, voix</td>
+                            <td><span class="pill" style="border-color:var(--neon-pink);color:var(--neon-pink);">Sensible</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Santé</strong></td>
+                            <td>Dossier médical, handicap, traitements</td>
+                            <td><span class="pill" style="border-color:var(--neon-pink);color:var(--neon-pink);">Sensible</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Opinions</strong></td>
+                            <td>Politique, religion, orientation sexuelle</td>
+                            <td><span class="pill" style="border-color:var(--neon-pink);color:var(--neon-pink);">Sensible</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Localisation</strong></td>
+                            <td>GPS, déplacements, lieux fréquentés</td>
+                            <td><span class="pill" style="border-color:var(--neon-purple);color:var(--neon-purple);">Élevée</span></td>
+                        </tr>
+                    </table>
+
+                    <div class="callout pink">
+                        <strong>🚨 Attention — Données sensibles :</strong><br>
+                        Les données biométriques, de santé et d'opinions sont classées <strong>"sensibles"</strong> par le RGPD.
+                        Leur collecte est <strong>interdite par défaut</strong>, sauf exceptions strictement encadrées (consentement explicite,
+                        intérêt vital, etc.).
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>💰 Pourquoi vos données valent-elles si cher ?</h3>
+                    <p>L'économie des données personnelles représente un marché colossal :</p>
+                    <ul>
+                        <li>Un profil utilisateur complet se vend entre <strong>0,50 € et 200 €</strong> selon sa richesse</li>
+                        <li>Les données médicales valent jusqu'à <strong>1 000 €</strong> par dossier sur le dark web</li>
+                        <li>Le marché mondial de la data est estimé à <strong>274 milliards de dollars</strong> en 2024</li>
+                        <li>Les GAFAM tirent <strong>80% de leurs revenus</strong> de l'exploitation des données</li>
+                    </ul>
+
+                    <div class="callout">
+                        <strong>💡 Retenez :</strong><br>
+                        Si un service est gratuit, c'est que <strong>vous êtes le produit</strong>. Vos données alimentent des modèles publicitaires
+                        et des IA de ciblage qui génèrent des milliards de revenus.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 2 : IA & COLLECTE ====================
+            {
+                title: "🤖 IA & Collecte de données",
+                content: `
+                    <h2 class="module-title">🤖 Comment l'IA collecte et exploite vos données</h2>
+                    <p class="module-kicker">L'intelligence artificielle a démultiplié la capacité de collecte et d'analyse des données personnelles.</p>
+
+                    <h3>🕸️ Les mécanismes de collecte par l'IA</h3>
+                    <p>Les systèmes d'IA collectent vos données de multiples façons, souvent invisibles :</p>
+
+                    <table class="stat-table">
+                        <tr>
+                            <th>Mécanisme</th>
+                            <th>Comment ça marche</th>
+                            <th>Données collectées</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Assistants vocaux</strong></td>
+                            <td>Écoute permanente pour détecter le mot d'activation</td>
+                            <td>Voix, conversations, habitudes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recommandations</strong></td>
+                            <td>Analyse de vos clics, temps passé, achats</td>
+                            <td>Préférences, comportements, goûts</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reconnaissance faciale</strong></td>
+                            <td>Détection et identification dans photos/vidéos</td>
+                            <td>Visage, émotions, localisation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chatbots IA</strong></td>
+                            <td>Analyse de vos conversations et questions</td>
+                            <td>Intentions, problèmes, opinions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Objets connectés</strong></td>
+                            <td>Capteurs dans montres, frigos, voitures</td>
+                            <td>Santé, alimentation, déplacements</td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>🧠 Le profilage algorithmique</h3>
+                    <p>Grâce au <strong>machine learning</strong>, les IA peuvent construire un profil incroyablement précis de vous à partir de données
+                    qui semblent anodines :</p>
+                    <ul>
+                        <li>Avec <strong>68 likes Facebook</strong>, une IA peut prédire votre couleur de peau (95%), votre orientation sexuelle (88%)
+                        et votre affiliation politique (85%)</li>
+                        <li>Votre <strong>historique de recherche</strong> de 3 mois suffit pour prédire vos futures requêtes avec 72% de précision</li>
+                        <li><strong>10 minutes de conversation</strong> avec un chatbot IA suffisent pour déterminer votre niveau de stress</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Le problème de l'inférence :</strong><br>
+                        Même si vous ne fournissez pas directement une information, l'IA peut la <strong>déduire</strong> à partir d'autres données.
+                        Par exemple, vos achats en supermarché peuvent révéler une grossesse avant même que vous l'annonciez
+                        (cas réel de Target aux États-Unis en 2012).
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>📊 Les IA génératives et vos données</h3>
+                    <p>Les chatbots comme ChatGPT, Claude ou Gemini posent de nouvelles questions :</p>
+                    <ul>
+                        <li><strong>Entraînement :</strong> Les modèles sont entraînés sur des milliards de textes du web, incluant potentiellement
+                        vos publications, commentaires et posts</li>
+                        <li><strong>Conversations :</strong> Ce que vous écrivez dans un chatbot peut être utilisé pour améliorer le modèle
+                        (sauf paramétrage contraire)</li>
+                        <li><strong>Mémorisation :</strong> Des chercheurs ont montré que les LLM peuvent "régurgiter" des données personnelles
+                        vues pendant l'entraînement</li>
+                    </ul>
+
+                    <div class="callout purple">
+                        <strong>🔬 Cas d'étude — Samsung, 2023 :</strong><br>
+                        Des employés de Samsung ont involontairement partagé du <strong>code source confidentiel</strong> et des
+                        <strong>notes de réunion internes</strong> en les collant dans ChatGPT. L'entreprise a ensuite
+                        <strong>interdit l'usage des IA génératives</strong> en interne.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 3 : RGPD & DROITS ====================
+            {
+                title: "🇪🇺 Le RGPD et vos droits",
+                content: `
+                    <h2 class="module-title">🇪🇺 Le RGPD : votre bouclier juridique</h2>
+                    <p class="module-kicker">Le Règlement Général sur la Protection des Données est l'arme légale la plus puissante pour protéger la vie privée des citoyens européens.</p>
+
+                    <h3>📜 Qu'est-ce que le RGPD ?</h3>
+                    <p>Le <strong>RGPD</strong> (Règlement Général sur la Protection des Données) est une loi européenne entrée en vigueur le
+                    <strong>25 mai 2018</strong>. Il s'applique à toute organisation qui traite des données de résidents européens,
+                    <strong>même si elle est basée hors de l'UE</strong>.</p>
+
+                    <div class="callout">
+                        <strong>🌍 Portée mondiale :</strong><br>
+                        Le RGPD a inspiré plus de <strong>120 pays</strong> à adopter des lois similaires.
+                        Des entreprises comme Google et Meta ont dû modifier leurs pratiques <strong>partout dans le monde</strong> à cause du RGPD.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>⚖️ Les 6 principes fondamentaux du RGPD</h3>
+                    <table class="stat-table">
+                        <tr><th>Principe</th><th>Signification</th></tr>
+                        <tr><td><strong>Licéité</strong></td><td>Le traitement doit avoir une base légale (consentement, contrat, intérêt légitime...)</td></tr>
+                        <tr><td><strong>Finalité</strong></td><td>Les données sont collectées pour un objectif précis et ne peuvent servir à autre chose</td></tr>
+                        <tr><td><strong>Minimisation</strong></td><td>Seules les données strictement nécessaires doivent être collectées</td></tr>
+                        <tr><td><strong>Exactitude</strong></td><td>Les données doivent être tenues à jour et corrigées si nécessaire</td></tr>
+                        <tr><td><strong>Limitation</strong></td><td>Les données ne doivent pas être conservées au-delà du nécessaire</td></tr>
+                        <tr><td><strong>Sécurité</strong></td><td>Des mesures techniques et organisationnelles doivent protéger les données</td></tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>🛡️ Vos 8 droits fondamentaux</h3>
+                    <ol>
+                        <li><strong>Droit d'accès</strong> — Savoir quelles données sont collectées sur vous</li>
+                        <li><strong>Droit de rectification</strong> — Corriger des données inexactes</li>
+                        <li><strong>Droit à l'effacement</strong> — Demander la suppression de vos données ("droit à l'oubli")</li>
+                        <li><strong>Droit à la portabilité</strong> — Récupérer vos données dans un format lisible</li>
+                        <li><strong>Droit d'opposition</strong> — Refuser le traitement de vos données</li>
+                        <li><strong>Droit à la limitation</strong> — Geler temporairement le traitement</li>
+                        <li><strong>Droit à l'information</strong> — Être informé de manière claire et transparente</li>
+                        <li><strong>Droit face aux décisions automatisées</strong> — Ne pas être soumis à une décision prise uniquement par une IA</li>
+                    </ol>
+
+                    <div class="callout pink">
+                        <strong>💰 Les sanctions :</strong><br>
+                        Les amendes peuvent atteindre <strong>20 millions d'euros</strong> ou <strong>4% du chiffre d'affaires mondial</strong>.
+                        Exemples marquants :
+                        <ul>
+                            <li>Meta : <strong>1,2 milliard €</strong> (2023) — transfert illégal de données vers les USA</li>
+                            <li>Amazon : <strong>746 millions €</strong> (2021) — ciblage publicitaire sans consentement</li>
+                            <li>Google : <strong>150 millions €</strong> (2022) — gestion des cookies en France</li>
+                        </ul>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🏛️ La CNIL : gardienne des données en France</h3>
+                    <p>La <strong>Commission Nationale de l'Informatique et des Libertés</strong> (CNIL) est l'autorité française chargée de veiller
+                    au respect du RGPD. Elle peut :</p>
+                    <ul>
+                        <li><strong>Contrôler</strong> les entreprises (sur place ou en ligne)</li>
+                        <li><strong>Sanctionner</strong> les violations (avertissement, mise en demeure, amendes)</li>
+                        <li><strong>Accompagner</strong> les citoyens dans leurs démarches de plainte</li>
+                        <li><strong>Conseiller</strong> les organisations sur la conformité</li>
+                    </ul>
+                `
+            },
+
+            // ==================== LEÇON 4 : COOKIES & TRACKERS ====================
+            {
+                title: "🍪 Cookies, trackers et empreinte numérique",
+                content: `
+                    <h2 class="module-title">🍪 Cookies, trackers & empreinte numérique</h2>
+                    <p class="module-kicker">Chaque clic, chaque page visitée laisse des traces. Comprendre ces mécanismes est essentiel pour se protéger.</p>
+
+                    <h3>🍪 Les cookies : définition et types</h3>
+                    <p>Un <strong>cookie</strong> est un petit fichier texte déposé sur votre appareil par un site web. Mais tous les cookies ne se valent pas :</p>
+
+                    <table class="stat-table">
+                        <tr><th>Type</th><th>Rôle</th><th>Durée</th><th>Risque</th></tr>
+                        <tr>
+                            <td><strong>Cookies essentiels</strong></td>
+                            <td>Faire fonctionner le site (session, panier)</td>
+                            <td>Session</td>
+                            <td>Aucun</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies de préférence</strong></td>
+                            <td>Mémoriser vos choix (langue, thème)</td>
+                            <td>Mois/années</td>
+                            <td>Faible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies analytiques</strong></td>
+                            <td>Mesurer l'audience, statistiques</td>
+                            <td>Mois</td>
+                            <td>Modéré</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies publicitaires</strong></td>
+                            <td>Suivre votre navigation pour cibler les pubs</td>
+                            <td>Mois/années</td>
+                            <td><strong style="color:var(--neon-pink);">Élevé</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cookies tiers</strong></td>
+                            <td>Déposés par des entreprises externes (Facebook, Google...)</td>
+                            <td>Mois/années</td>
+                            <td><strong style="color:var(--neon-pink);">Très élevé</strong></td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>👣 L'empreinte numérique (Browser Fingerprinting)</h3>
+                    <p>Même sans cookies, les sites peuvent vous identifier grâce à votre <strong>empreinte numérique</strong>, une combinaison unique de :</p>
+                    <ul>
+                        <li>Votre <strong>navigateur</strong> et sa version</li>
+                        <li>Votre <strong>système d'exploitation</strong></li>
+                        <li>La <strong>résolution</strong> de votre écran</li>
+                        <li>Les <strong>polices</strong> installées sur votre appareil</li>
+                        <li>Les <strong>plugins</strong> et extensions actifs</li>
+                        <li>Votre <strong>fuseau horaire</strong> et langue</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Fait troublant :</strong><br>
+                        La combinaison de ces paramètres rend votre navigateur <strong>unique parmi des millions</strong>.
+                        Selon l'EFF (Electronic Frontier Foundation), <strong>83,6%</strong> des navigateurs ont une empreinte unique.
+                        Même en navigation privée, vous êtes identifiable.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🔗 Les trackers invisibles</h3>
+                    <p>Au-delà des cookies, d'autres technologies vous pistent silencieusement :</p>
+                    <ul>
+                        <li><strong>Pixels espions</strong> — Images invisibles (1×1 pixel) dans les emails qui signalent quand et où vous les ouvrez</li>
+                        <li><strong>Scripts de tracking</strong> — Code JavaScript qui enregistre vos mouvements de souris, vos clics et votre scroll</li>
+                        <li><strong>Supercookies</strong> — Cookies quasi-impossibles à supprimer, stockés dans le cache du navigateur</li>
+                        <li><strong>CNAME cloaking</strong> — Technique qui déguise un tracker tiers en cookie "interne" pour contourner les blocages</li>
+                    </ul>
+
+                    <div class="callout">
+                        <strong>📊 En chiffres :</strong><br>
+                        En moyenne, un site d'actualités charge <strong>70 trackers</strong> à chaque visite. Un parcours e-commerce
+                        typique partage vos données avec <strong>30 à 50 entreprises tierces</strong>.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 5 : SURVEILLANCE & IA ====================
+            {
+                title: "👁️ Surveillance et IA",
+                content: `
+                    <h2 class="module-title">👁️ La surveillance à l'ère de l'IA</h2>
+                    <p class="module-kicker">L'IA a transformé la surveillance en une industrie mondiale, capable de traquer des milliards de personnes simultanément.</p>
+
+                    <h3>📹 La vidéosurveillance intelligente</h3>
+                    <p>Les caméras "classiques" cèdent la place à des systèmes dopés à l'IA :</p>
+                    <ul>
+                        <li><strong>Reconnaissance faciale</strong> — Identification en temps réel dans la foule (taux de précision : 99,7% dans des conditions optimales)</li>
+                        <li><strong>Analyse comportementale</strong> — Détection de "comportements suspects" (station prolongée, courses, regroupements)</li>
+                        <li><strong>Suivi multi-caméras</strong> — Reconstruction du trajet d'une personne à travers une ville entière</li>
+                    </ul>
+
+                    <div class="callout pink">
+                        <strong>🌏 Cas réels :</strong><br>
+                        <ul>
+                            <li><strong>Chine :</strong> Plus de <strong>700 millions</strong> de caméras de surveillance avec IA, système de "crédit social" lié à la reconnaissance faciale</li>
+                            <li><strong>Londres :</strong> Un habitant est filmé en moyenne <strong>300 fois par jour</strong></li>
+                            <li><strong>France :</strong> Expérimentation de la <strong>vidéosurveillance algorithmique</strong> autorisée pour les JO 2024 (sans reconnaissance faciale)</li>
+                        </ul>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>📱 La surveillance via les smartphones</h3>
+                    <p>Votre téléphone est le capteur de surveillance le plus intime :</p>
+                    <table class="stat-table">
+                        <tr><th>Capteur</th><th>Données collectables</th><th>Risque</th></tr>
+                        <tr><td><strong>GPS</strong></td><td>Localisation précise à 3m, historique des déplacements</td><td>Très élevé</td></tr>
+                        <tr><td><strong>Micro</strong></td><td>Conversations, ambiance sonore, mots-clés</td><td>Critique</td></tr>
+                        <tr><td><strong>Caméra</strong></td><td>Photos, vidéos, reconnaissance faciale</td><td>Critique</td></tr>
+                        <tr><td><strong>Accéléromètre</strong></td><td>Activité physique, moyens de transport</td><td>Modéré</td></tr>
+                        <tr><td><strong>WiFi/Bluetooth</strong></td><td>Lieux fréquentés, proximité d'autres appareils</td><td>Élevé</td></tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>🕵️ La surveillance commerciale</h3>
+                    <p>La surveillance n'est pas que gouvernementale. Les entreprises tech pratiquent une surveillance massive :</p>
+                    <ul>
+                        <li><strong>Google</strong> conserve votre historique de recherche, vos emails (Gmail), vos déplacements (Maps), vos vidéos regardées (YouTube)</li>
+                        <li><strong>Meta</strong> analyse vos photos, vos likes, vos messages et même le <strong>temps que vous passez</strong> à regarder chaque publication</li>
+                        <li><strong>Amazon</strong> utilise vos achats pour prédire vos besoins futurs avec une précision redoutable</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Le paradoxe de la vie privée :</strong><br>
+                        Des études montrent que <strong>87% des gens</strong> se disent préoccupés par la protection de leurs données,
+                        mais <strong>seulement 30%</strong> prennent des mesures concrètes pour se protéger.
+                        Ce décalage s'appelle le <strong>"privacy paradox"</strong>.
+                    </div>
+                `
+            },
+
+            // ==================== LEÇON 6 : SE PROTÉGER ====================
+            {
+                title: "🛡️ Se protéger concrètement",
+                content: `
+                    <h2 class="module-title">🛡️ Se protéger : les bons réflexes</h2>
+                    <p class="module-kicker">Vous avez compris les menaces. Voici les armes pour vous défendre au quotidien.</p>
+
+                    <h3>🔐 Les gestes essentiels (niveau débutant)</h3>
+                    <ul>
+                        <li><strong>Mots de passe robustes</strong> — Minimum 12 caractères, différent pour chaque service, gestionnaire de mots de passe recommandé</li>
+                        <li><strong>Authentification à deux facteurs (2FA)</strong> — Activez-la sur tous vos comptes importants</li>
+                        <li><strong>Mises à jour</strong> — Installez les mises à jour de sécurité dès qu'elles sont disponibles</li>
+                        <li><strong>Cookies</strong> — Refusez les cookies non essentiels, utilisez le bouton "Tout refuser" systématiquement</li>
+                        <li><strong>Permissions des applications</strong> — Vérifiez et limitez les permissions (micro, caméra, GPS) application par application</li>
+                    </ul>
+
+                    <div class="divider"></div>
+
+                    <h3>🛡️ Les outils de protection (niveau intermédiaire)</h3>
+                    <table class="stat-table">
+                        <tr><th>Outil</th><th>Protection offerte</th><th>Exemples</th></tr>
+                        <tr><td><strong>VPN</strong></td><td>Chiffre votre connexion, masque votre IP</td><td>ProtonVPN, Mullvad</td></tr>
+                        <tr><td><strong>Navigateur privé</strong></td><td>Bloque trackers et fingerprinting</td><td>Firefox (durci), Brave, Tor</td></tr>
+                        <tr><td><strong>Bloqueur de pubs</strong></td><td>Bloque trackers publicitaires</td><td>uBlock Origin</td></tr>
+                        <tr><td><strong>Email chiffré</strong></td><td>Protège le contenu des emails</td><td>ProtonMail, Tutanota</td></tr>
+                        <tr><td><strong>Messagerie sécurisée</strong></td><td>Chiffrement de bout en bout</td><td>Signal, Element</td></tr>
+                        <tr><td><strong>Moteur de recherche</strong></td><td>Recherche sans tracking</td><td>DuckDuckGo, Qwant</td></tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>⚡ Avec les IA génératives (niveau avancé)</h3>
+                    <p>Quand vous utilisez ChatGPT, Claude ou d'autres chatbots IA :</p>
+                    <ul>
+                        <li><strong>Ne partagez jamais</strong> d'informations personnelles identifiantes (nom complet, adresse, numéro de sécu)</li>
+                        <li><strong>Désactivez l'historique</strong> et le training sur vos données si possible</li>
+                        <li><strong>Ne collez pas</strong> de documents confidentiels (professionnels ou personnels)</li>
+                        <li><strong>Utilisez des pseudonymes</strong> quand vous testez des scénarios personnels</li>
+                        <li><strong>Vérifiez les CGU</strong> — Lisez comment vos conversations sont utilisées</li>
+                    </ul>
+
+                    <div class="callout">
+                        <strong>💡 La règle d'or :</strong><br>
+                        Avant de partager une information en ligne ou avec une IA, posez-vous cette question :
+                        <strong>"Est-ce que j'accepterais de le crier dans la rue ?"</strong>
+                        Si la réponse est non, ne le partagez pas.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>📝 Exercer vos droits RGPD en pratique</h3>
+                    <p>Pour exercer vos droits auprès d'une entreprise :</p>
+                    <ol>
+                        <li><strong>Identifiez le DPO</strong> (Délégué à la Protection des Données) — souvent dans les CGU ou mentions légales</li>
+                        <li><strong>Envoyez un email</strong> en citant les articles du RGPD concernés</li>
+                        <li><strong>Délai de réponse :</strong> l'entreprise a <strong>1 mois</strong> pour répondre</li>
+                        <li><strong>En cas de refus :</strong> saisissez la CNIL en ligne (plainte gratuite)</li>
+                    </ol>
+                `
+            },
+
+            // ==================== LEÇON 7 : MISSION ====================
+            {
+                title: "🎮 Briefing de mission",
+                content: `
+                    <h2 class="module-title">🎮 Briefing de mission — Opération PANOPTIKON</h2>
+                    <p class="module-kicker">Vous avez étudié les dossiers. Il est temps de passer à l'action, Agent·e Morin.</p>
+
+                    <div class="callout">
+                        <strong>📋 Résumé de mission :</strong><br>
+                        L'application PANOPTIKON est accusée de <strong>5 violations majeures</strong> de la vie privée.
+                        Vous devez enquêter sur chaque violation, prendre les bonnes décisions et constituer un dossier
+                        solide pour la CNIL.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <h3>🎯 Les 5 scénarios à résoudre</h3>
+                    <table class="stat-table">
+                        <tr><th>#</th><th>Scénario</th><th>Type de violation</th><th>Compétence testée</th></tr>
+                        <tr>
+                            <td><strong>1</strong></td>
+                            <td>🔓 L'application piège</td>
+                            <td>Permissions abusives</td>
+                            <td>Identifier les collectes excessives</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2</strong></td>
+                            <td>👤 Le profil fantôme</td>
+                            <td>Profilage non consenti</td>
+                            <td>Comprendre le profilage IA</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3</strong></td>
+                            <td>💻 La fuite de données</td>
+                            <td>Faille de sécurité</td>
+                            <td>Analyser une violation de données</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>📝 Le droit d'effacement</td>
+                            <td>Refus de suppression</td>
+                            <td>Exercer ses droits RGPD</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>⚖️ Le verdict CNIL</td>
+                            <td>Dossier complet</td>
+                            <td>Synthétiser et argumenter</td>
+                        </tr>
+                    </table>
+
+                    <div class="divider"></div>
+
+                    <h3>📏 Règles du jeu</h3>
+                    <ul>
+                        <li>Vous disposez de <strong>15 minutes</strong> pour résoudre les 5 scénarios</li>
+                        <li>Chaque scénario vous propose des <strong>choix à faire</strong> — les bonnes décisions rapportent des points de <strong>Protection</strong></li>
+                        <li>Les mauvaises décisions font baisser votre <strong>jauge de protection</strong></li>
+                        <li>Vous recevrez des <strong>SMS d'aide</strong> de votre contact à la CNIL</li>
+                        <li>Collectez les <strong>5 preuves</strong> nécessaires au dossier final</li>
+                    </ul>
+
+                    <div class="callout warn">
+                        <strong>⚠️ Attention :</strong><br>
+                        Après le jeu de rôle, un <strong>quiz de certification</strong> vous attend.
+                        Vous devez obtenir au moins <strong>70% de bonnes réponses</strong> pour débloquer votre attestation de réussite.
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <p style="text-align:center; font-size:1.2em; color:var(--neon-green); margin-top:30px;">
+                        <strong>Prêt·e à protéger les données des citoyens ?</strong><br>
+                        Cliquez sur <strong>"Lancer la mission"</strong> ci-dessous !
+                    </p>
                 `
             }
         ];
