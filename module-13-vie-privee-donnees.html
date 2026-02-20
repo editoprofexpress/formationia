@@ -615,7 +615,32 @@
             justify-content: center;
             padding: 30px;
             overflow-y: auto;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s ease;
         }
+
+        .scenario-scene::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.75);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .scenario-scene > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Fonds de scénarios */
+        .scene-bg-app { background-image: url('images/room-app-analysis.png'); }
+        .scene-bg-profile { background-image: url('images/room-data-profile.png'); }
+        .scene-bg-breach { background-image: url('images/room-server-breach.png'); }
+        .scene-bg-legal { background-image: url('images/room-legal-office.png'); }
+        .scene-bg-tribunal { background-image: url('images/room-cnil-tribunal.png'); }
 
         .scenario-card {
             background: var(--panel-bg);
@@ -2096,6 +2121,7 @@
                 icon: "🔓",
                 title: "L'application piège",
                 subtitle: "Identifier les permissions abusives",
+                bgClass: "scene-bg-app",
                 narrative: `L'application PANOPTIKON demande <strong>12 permissions</strong> lors de l'installation.
                     En tant qu'agent·e SHIELD DATA, vous devez identifier celles qui sont <strong>abusives</strong>
                     pour une simple application de météo.`,
@@ -2122,6 +2148,7 @@
                 icon: "👤",
                 title: "Le profil fantôme",
                 subtitle: "Comprendre le profilage IA",
+                bgClass: "scene-bg-profile",
                 narrative: `PANOPTIKON a reconstitué un <strong>profil complet</strong> d'une citoyenne nommée Clara Martin,
                     à partir de données apparemment anodines. Vous devez identifier quelles données ont permis
                     à l'IA de <strong>déduire</strong> des informations sensibles.`,
@@ -2146,6 +2173,7 @@
                 icon: "💻",
                 title: "La fuite de données",
                 subtitle: "Analyser une violation de sécurité",
+                bgClass: "scene-bg-breach",
                 narrative: `Le serveur de PANOPTIKON a subi une <strong>fuite de données</strong> massive.
                     En analysant les logs du serveur, vous devez identifier <strong>la cause</strong> de la faille
                     et <strong>les données exposées</strong>.`,
@@ -2189,6 +2217,7 @@
                 icon: "📝",
                 title: "Le droit d'effacement",
                 subtitle: "Exercer ses droits RGPD",
+                bgClass: "scene-bg-legal",
                 narrative: `Un citoyen, <strong>Marc Dubois</strong>, souhaite exercer son <strong>droit à l'effacement</strong>
                     auprès de PANOPTIKON. L'entreprise a refusé sa première demande. Vous devez l'aider à
                     rédiger une demande conforme et efficace.`,
@@ -2235,6 +2264,7 @@
                 icon: "⚖️",
                 title: "Le verdict CNIL",
                 subtitle: "Constituer le dossier final",
+                bgClass: "scene-bg-tribunal",
                 narrative: `Vous disposez maintenant de toutes les preuves. Il est temps de <strong>constituer le dossier final</strong>
                     pour la CNIL. Reliez chaque infraction constatée à l'article du RGPD correspondant.`,
                 task: "Associez chaque violation (à gauche) à l'article RGPD correct (à droite) en cliquant successivement sur les deux éléments.",
@@ -2263,6 +2293,10 @@
             document.getElementById('scenario-name').textContent = `Scénario ${index + 1}/5 — ${sc.title}`;
 
             const scene = document.getElementById('scenario-scene');
+
+            // Appliquer le fond d'image du scénario
+            scene.className = 'scenario-scene';
+            if (sc.bgClass) scene.classList.add(sc.bgClass);
 
             let puzzleHTML = '';
             if (sc.type === 'permissions') {
