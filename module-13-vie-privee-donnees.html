@@ -2663,18 +2663,472 @@
             overlay.classList.add('active');
         }
 
-        // ==================== PLACEHOLDER QUIZ & ATTESTATION (Phase 4) ====================
+        // ==================== QUIZ DE CERTIFICATION ====================
+        const quizQuestions = [
+            {
+                question: "Selon le RGPD, qu'est-ce qu'une donnée personnelle ?",
+                options: [
+                    "Uniquement le nom et le prénom",
+                    "Toute information permettant d'identifier directement ou indirectement une personne",
+                    "Seulement les données stockées sur un ordinateur",
+                    "Les données publiées sur les réseaux sociaux"
+                ],
+                correct: 1
+            },
+            {
+                question: "Quel est le délai légal pour répondre à une demande d'exercice de droit RGPD ?",
+                options: ["48 heures", "1 semaine", "1 mois", "3 mois"],
+                correct: 2
+            },
+            {
+                question: "Avec combien de likes Facebook une IA peut-elle prédire votre orientation politique ?",
+                options: ["10 likes (50%)", "68 likes (85%)", "500 likes (95%)", "1000 likes (99%)"],
+                correct: 1
+            },
+            {
+                question: "Que signifie le principe de 'minimisation des données' du RGPD ?",
+                options: [
+                    "Collecter le maximum de données pour être précis",
+                    "Ne collecter que les données strictement nécessaires à la finalité",
+                    "Minimiser le coût du stockage",
+                    "Réduire la taille des fichiers"
+                ],
+                correct: 1
+            },
+            {
+                question: "Quelle amende maximale peut infliger le RGPD ?",
+                options: [
+                    "100 000 euros",
+                    "1 million d'euros",
+                    "20 millions d'euros ou 4% du CA mondial",
+                    "Pas de limite fixe"
+                ],
+                correct: 2
+            },
+            {
+                question: "Qu'est-ce que le 'browser fingerprinting' ?",
+                options: [
+                    "Un cookie spécial",
+                    "L'identification d'un navigateur par la combinaison unique de ses caractéristiques",
+                    "Un virus informatique",
+                    "Une technique de chiffrement"
+                ],
+                correct: 1
+            },
+            {
+                question: "En cas de fuite de données, sous quel délai l'entreprise doit-elle notifier la CNIL ?",
+                options: ["24 heures", "72 heures", "1 semaine", "1 mois"],
+                correct: 1
+            },
+            {
+                question: "Quelle est la meilleure pratique avec les IA génératives (ChatGPT, Claude...) ?",
+                options: [
+                    "Partager un maximum d'informations pour obtenir de meilleures réponses",
+                    "Ne jamais utiliser d'IA générative",
+                    "Ne jamais partager d'informations personnelles identifiantes",
+                    "Utiliser uniquement son vrai nom"
+                ],
+                correct: 2
+            },
+            {
+                question: "Qui est le DPO ?",
+                options: [
+                    "Le directeur de la protection des opérations",
+                    "Le délégué à la protection des données, interlocuteur obligatoire pour les demandes RGPD",
+                    "Le département des plaintes en ligne",
+                    "Le développeur principal de l'organisation"
+                ],
+                correct: 1
+            },
+            {
+                question: "Quel droit vous protège contre les décisions prises uniquement par une IA ?",
+                options: [
+                    "Le droit à l'oubli",
+                    "Le droit d'accès",
+                    "Le droit face aux décisions automatisées (Art. 22)",
+                    "Le droit de portabilité"
+                ],
+                correct: 2
+            }
+        ];
+
+        let quizState = { currentQuestion: 0, score: 0, answers: [] };
+        let certificateUnlocked = false;
+        let finalScore = 0;
+
         function showQuiz() {
             document.getElementById('results-overlay').classList.remove('active');
             document.getElementById('game-container').classList.remove('active');
-            // Le quiz sera implémenté dans la prochaine phase
+            quizState = { currentQuestion: 0, score: 0, answers: [] };
+            showQuizScreen();
+        }
+
+        function showQuizScreen() {
+            const q = quizQuestions[quizState.currentQuestion];
+            const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
+
             document.getElementById('briefing-screen').classList.add('active');
-            showLesson(7);
-            alert('Le quiz de certification sera bientôt disponible !');
+
+            document.getElementById('briefing-content').innerHTML = `
+                <div style="max-width:700px;margin:0 auto;">
+                    <h2 class="module-title">📜 Quiz de Certification</h2>
+                    <p style="color:var(--neon-blue);margin-bottom:20px;">Vie Privée & Données Personnelles</p>
+
+                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:25px;">
+                        <div style="background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));height:8px;border-radius:8px;width:${progress}%;transition:width 0.5s;"></div>
+                    </div>
+
+                    <p style="color:#888;margin-bottom:10px;">Question ${quizState.currentQuestion + 1} / ${quizQuestions.length}</p>
+
+                    <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:25px;margin-bottom:25px;">
+                        <p style="font-size:1.15em;line-height:1.6;">${q.question}</p>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:12px;" id="quiz-options">
+                        ${q.options.map((opt, i) => `
+                            <button onclick="selectQuizAnswer(${i})" style="
+                                background:rgba(20,40,60,0.8);
+                                border:2px solid rgba(0,212,255,0.3);
+                                border-radius:10px;
+                                padding:15px 20px;
+                                color:var(--text);
+                                font-size:1em;
+                                cursor:pointer;
+                                transition:all 0.3s;
+                                text-align:left;
+                                font-family:'Exo 2',sans-serif;
+                            " onmouseover="this.style.borderColor='var(--neon-blue)';this.style.background='rgba(0,100,150,0.4)'"
+                               onmouseout="this.style.borderColor='rgba(0,212,255,0.3)';this.style.background='rgba(20,40,60,0.8)'">
+                                <span style="color:var(--neon-blue);margin-right:10px;font-weight:bold;font-family:'Space Mono',monospace;">${String.fromCharCode(65 + i)}.</span>
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('prev-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+        }
+
+        function selectQuizAnswer(index) {
+            const q = quizQuestions[quizState.currentQuestion];
+            const isCorrect = index === q.correct;
+
+            if (isCorrect) quizState.score++;
+            quizState.answers.push({ question: quizState.currentQuestion, selected: index, correct: isCorrect });
+
+            const options = document.querySelectorAll('#quiz-options button');
+            options.forEach((btn, i) => {
+                btn.style.pointerEvents = 'none';
+                btn.onmouseover = null;
+                btn.onmouseout = null;
+                if (i === q.correct) {
+                    btn.style.borderColor = 'var(--neon-green)';
+                    btn.style.background = 'rgba(0,255,136,0.2)';
+                } else if (i === index && !isCorrect) {
+                    btn.style.borderColor = 'var(--neon-pink)';
+                    btn.style.background = 'rgba(255,0,128,0.2)';
+                }
+            });
+
+            setTimeout(() => {
+                quizState.currentQuestion++;
+                if (quizState.currentQuestion < quizQuestions.length) {
+                    showQuizScreen();
+                } else {
+                    showQuizResults();
+                }
+            }, 1200);
+        }
+
+        function showQuizResults() {
+            const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+            const passed = percentage >= 70;
+
+            if (passed) unlockCertificate(percentage);
+
+            document.getElementById('briefing-content').innerHTML = `
+                <div style="max-width:600px;margin:0 auto;text-align:center;">
+                    <h2 class="module-title" style="text-align:center;">
+                        ${passed ? '🎓 Attestation Obtenue !' : '📚 Continuez à apprendre'}
+                    </h2>
+
+                    <div style="display:flex;justify-content:center;gap:40px;margin:30px 0;">
+                        <div>
+                            <div style="font-size:2.5em;font-family:'Space Mono',monospace;color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${quizState.score}/${quizQuestions.length}</div>
+                            <div style="color:var(--muted);font-size:0.9em;">Bonnes réponses</div>
+                        </div>
+                        <div>
+                            <div style="font-size:2.5em;font-family:'Space Mono',monospace;color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${percentage}%</div>
+                            <div style="color:var(--muted);font-size:0.9em;">Score</div>
+                        </div>
+                    </div>
+
+                    ${passed ? `
+                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px 0;">
+                            <p style="font-size:1.1em;margin-bottom:15px;">Félicitations ! Vous avez validé le micro-module <strong>"Vie Privée & Données Personnelles"</strong>.</p>
+                            <p style="color:#aaa;">Votre attestation est maintenant disponible dans le dossier SHIELD DATA.</p>
+                        </div>
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            <button class="action-btn" onclick="goToFolderCertificate()">📂 Récupérer l'attestation</button>
+                            <button class="action-btn secondary" onclick="location.reload()">🔄 Rejouer</button>
+                        </div>
+                    ` : `
+                        <div style="background:rgba(255,0,128,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:25px 0;">
+                            <p style="font-size:1.1em;margin-bottom:15px;">Vous devez obtenir au moins <strong>70%</strong> pour valider.</p>
+                            <p style="color:#aaa;">Rejouez pour réviser et retentez le quiz !</p>
+                        </div>
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            <button class="action-btn" onclick="showQuiz()">🔄 Retenter le quiz</button>
+                            <button class="action-btn secondary" onclick="location.reload()">🎮 Rejouer la mission</button>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        // ==================== SYSTÈME D'ATTESTATION ====================
+        function unlockCertificate(score) {
+            certificateUnlocked = true;
+            finalScore = score;
+            const navItem = document.getElementById('certificate-nav-item');
+            if (navItem) {
+                navItem.style.opacity = '1';
+                navItem.style.cursor = 'pointer';
+                navItem.style.background = 'rgba(0,255,136,0.15)';
+                navItem.innerHTML = `
+                    <span class="nav-icon">🎓</span>
+                    <span class="nav-number" style="background:rgba(0,255,136,0.3);color:var(--neon-green);">✓</span>
+                    Attestation de réussite
+                `;
+            }
         }
 
         function showCertificateInFolder() {
-            // Sera implémenté après le quiz
+            if (!certificateUnlocked) {
+                document.getElementById('briefing-content').innerHTML = `
+                    <h2 class="module-title" style="color:var(--neon-pink);">🔒 Attestation de réussite</h2>
+                    <div style="text-align:center;padding:40px 20px;">
+                        <div style="font-size:4em;margin-bottom:20px;">🔒</div>
+                        <h3 style="color:var(--neon-pink);margin-bottom:20px;">Attestation verrouillée</h3>
+                        <p style="margin-bottom:20px;">Pour obtenir votre attestation, vous devez :</p>
+                        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:400px;text-align:left;">
+                            <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:1.2em;">1️⃣</span> Compléter les 5 scénarios de la mission
+                            </p>
+                            <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:1.2em;">2️⃣</span> Collecter les 5 preuves du dossier
+                            </p>
+                            <p style="display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:1.2em;">3️⃣</span> Réussir le quiz final (70% minimum)
+                            </p>
+                        </div>
+                        <p style="color:#888;font-size:0.9em;margin-top:30px;">
+                            Une fois le quiz réussi, revenez ici pour télécharger votre attestation.
+                        </p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('briefing-content').innerHTML = `
+                    <h2 class="module-title" style="color:var(--neon-green);">🎓 Attestation de réussite</h2>
+                    <div style="text-align:center;padding:40px 20px;">
+                        <div style="font-size:4em;margin-bottom:20px;">🎓</div>
+                        <h3 style="color:var(--neon-green);margin-bottom:20px;">Félicitations !</h3>
+                        <p style="margin-bottom:10px;">Vous avez validé le micro-module</p>
+                        <p style="font-size:1.2em;color:var(--neon-blue);margin-bottom:25px;"><strong>"Vie Privée & Données Personnelles"</strong></p>
+
+                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px auto;max-width:450px;">
+                            <p style="margin-bottom:15px;">Score obtenu : <strong style="color:var(--neon-green);font-size:1.3em;">${finalScore}%</strong></p>
+
+                            <div style="margin:20px 0;">
+                                <label style="display:block;margin-bottom:8px;color:var(--neon-blue);text-align:left;">Votre nom (pour l'attestation) :</label>
+                                <input type="text" id="certificate-name" placeholder="Prénom NOM" style="
+                                    width:100%;padding:12px 15px;
+                                    background:rgba(0,50,100,0.4);border:2px solid rgba(0,212,255,0.4);
+                                    border-radius:8px;color:white;font-size:1em;box-sizing:border-box;
+                                    font-family:'Exo 2',sans-serif;
+                                ">
+                            </div>
+
+                            <button class="action-btn" onclick="downloadCertificate()">📥 Télécharger l'attestation</button>
+                        </div>
+                    </div>
+                `;
+            }
+            document.getElementById('prev-btn').style.display = '';
+            document.getElementById('next-btn').style.display = '';
+        }
+
+        function goToFolderCertificate() {
+            document.getElementById('game-container').classList.remove('active');
+            document.getElementById('briefing-screen').classList.add('active');
+            showCertificateInFolder();
+        }
+
+        function downloadCertificate() {
+            const name = document.getElementById('certificate-name').value.trim() || 'Participant';
+            const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+            const score = finalScore;
+
+            const certificateHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Attestation - Vie Privée & Données Personnelles</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .certificate {
+            background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
+            border: 3px solid #00ff88;
+            border-radius: 20px;
+            padding: 50px 60px;
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+        }
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+        .header { text-align: center; margin-bottom: 40px; }
+        .logo { font-size: 3em; margin-bottom: 10px; }
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+        }
+        .subtitle-cert {
+            color: #00d4ff;
+            font-size: 1.1em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .content { text-align: center; color: #e0e0e0; line-height: 1.8; }
+        .certifies { font-size: 1.1em; margin: 30px 0 15px; }
+        .name-cert {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: #ffffff;
+            margin: 20px 0;
+            padding: 15px 0;
+            border-top: 1px solid rgba(0,212,255,0.3);
+            border-bottom: 1px solid rgba(0,212,255,0.3);
+        }
+        .module-cert {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .module-cert-title { color: #00ff88; font-size: 1.3em; font-weight: 600; margin-bottom: 10px; }
+        .score-cert {
+            display: inline-block;
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #0a1628;
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .footer-cert {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0,212,255,0.2);
+        }
+        .footer-cert-item { text-align: center; }
+        .footer-cert-label { color: #888; font-size: 0.85em; margin-bottom: 5px; }
+        .footer-cert-value { color: #00d4ff; font-weight: 600; }
+        .skills-cert { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 15px; }
+        .skill-cert {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.3);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #00d4ff;
+        }
+        @media print { body { background: white; } .certificate { box-shadow: none; border-width: 2px; } }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <div class="logo">🛡️🔐</div>
+            <div class="title">Attestation de Réussite</div>
+            <div class="subtitle-cert">Formation IA Responsable</div>
+        </div>
+        <div class="content">
+            <p class="certifies">Cette attestation certifie que</p>
+            <div class="name-cert">${name}</div>
+            <p>a complété avec succès le micro-module</p>
+            <div class="module-cert">
+                <div class="module-cert-title">🛡️ Vie Privée & Données Personnelles à l'Ère de l'IA</div>
+                <p>via le jeu de rôle immersif "Data Shadow"</p>
+                <div class="score-cert">Score : ${score}%</div>
+            </div>
+            <p>Compétences validées :</p>
+            <div class="skills-cert">
+                <span class="skill-cert">🔍 Données personnelles</span>
+                <span class="skill-cert">🤖 Profilage IA</span>
+                <span class="skill-cert">🇪🇺 Droits RGPD</span>
+                <span class="skill-cert">🍪 Cookies & trackers</span>
+                <span class="skill-cert">🛡️ Protection numérique</span>
+            </div>
+        </div>
+        <div class="footer-cert">
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Date d'obtention</div>
+                <div class="footer-cert-value">${date}</div>
+            </div>
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Référence</div>
+                <div class="footer-cert-value">IA-PRIV-${Date.now().toString(36).toUpperCase()}</div>
+            </div>
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Validité</div>
+                <div class="footer-cert-value">Permanente</div>
+            </div>
+        </div>
+        <div style="margin-top:30px;padding-top:20px;border-top:1px solid rgba(0,212,255,0.2);text-align:center;">
+            <p style="color:#8899aa;font-size:0.85em;margin-bottom:10px;">Une formation proposée par</p>
+            <p style="color:#00d4ff;font-weight:600;">Prof Express</p>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([certificateHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Attestation_IA_ViePrivee_' + name.replace(/\\s+/g, '_') + '.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
