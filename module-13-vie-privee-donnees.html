@@ -524,10 +524,670 @@
             width: 100vw;
             height: 100vh;
             position: relative;
+            background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+            overflow: hidden;
         }
 
         #game-container.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== TOP BAR DU JEU ==================== */
+        .game-top-bar {
+            background: linear-gradient(180deg, rgba(10, 14, 23, 0.95), rgba(10, 14, 23, 0.8));
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 0 20px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .game-top-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .scenario-indicator {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-green);
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-top-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .timer {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3em;
+            color: var(--neon-blue);
+        }
+
+        .protection-gauge {
+            text-align: right;
+        }
+
+        .protection-label {
+            font-size: 0.7em;
+            color: #8899aa;
+            margin-bottom: 3px;
+        }
+
+        .protection-meter {
+            width: 150px;
+            height: 10px;
+            background: #1a2030;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #3a4a5a;
+        }
+
+        .protection-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-pink), #ffaa00, var(--neon-green));
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+
+        /* ==================== ZONE PRINCIPALE DU JEU ==================== */
+        .game-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Scène du scénario */
+        .scenario-scene {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .scenario-card {
+            background: var(--panel-bg);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.15);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-icon {
+            font-size: 2.5em;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .scenario-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5em;
+            color: var(--neon-green);
+        }
+
+        .scenario-subtitle {
+            color: var(--muted);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .scenario-narrative {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 3px solid var(--neon-blue);
+            padding: 15px 20px;
+            margin: 20px 0;
+            line-height: 1.7;
+            color: #cfe9ff;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .scenario-task {
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.25);
+            border-radius: 14px;
+            padding: 15px 20px;
+            margin: 20px 0;
+        }
+
+        .scenario-task h4 {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        /* ==================== CHOIX INTERACTIFS ==================== */
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .choice-btn {
+            padding: 15px 20px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.95em;
+            text-align: left;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.12);
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .choice-btn.correct {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.15);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .choice-btn.wrong {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 128, 0.15);
+            box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+        }
+
+        .choice-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .choice-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        /* ==================== PUZZLES INTERACTIFS ==================== */
+        .puzzle-area {
+            margin: 20px 0;
+        }
+
+        /* Permissions app puzzle */
+        .permissions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .permission-item {
+            padding: 12px 16px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .permission-item:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .permission-item.flagged {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 128, 0.12);
+        }
+
+        .permission-item.safe {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.12);
+        }
+
+        .permission-icon {
+            font-size: 1.3em;
+        }
+
+        /* Drag & Drop profil */
+        .profile-builder {
+            display: flex;
+            gap: 25px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .data-pool {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .data-pool-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-blue);
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .data-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .data-chip {
+            padding: 8px 14px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .data-chip:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .data-chip.selected {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--neon-green);
+        }
+
+        .data-chip.wrong-select {
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 128, 0.15);
+            color: var(--neon-pink);
+        }
+
+        /* Terminal de logs */
+        .log-terminal {
+            background: #0a1218;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 15px 0;
+        }
+
+        .log-line {
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }
+
+        .log-line .timestamp {
+            color: var(--muted);
+        }
+
+        .log-line .level-info {
+            color: var(--neon-blue);
+        }
+
+        .log-line .level-warn {
+            color: #ffaa00;
+        }
+
+        .log-line .level-error {
+            color: var(--neon-pink);
+        }
+
+        .log-line .highlight {
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        /* RGPD form builder */
+        .rgpd-form {
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 15px 0;
+            background: rgba(0, 212, 255, 0.03);
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-blue);
+            font-size: 0.85em;
+            margin-bottom: 8px;
             display: block;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(10, 20, 40, 0.9);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.9em;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Connection puzzle (CNIL verdict) */
+        .connection-puzzle {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .connection-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .connection-item {
+            padding: 12px 16px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .connection-item:hover {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .connection-item.selected {
+            border-color: var(--neon-blue);
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .connection-item.matched {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            cursor: default;
+        }
+
+        /* ==================== FEEDBACK ==================== */
+        .feedback-box {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease;
+            display: none;
+        }
+
+        .feedback-box.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            color: var(--neon-green);
+            display: block;
+        }
+
+        .feedback-box.error {
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid rgba(255, 0, 128, 0.4);
+            color: var(--neon-pink);
+            display: block;
+        }
+
+        /* ==================== BOUTON VALIDER / CONTINUER ==================== */
+        .action-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 14px 35px;
+            border: 2px solid var(--neon-green);
+            background: var(--neon-green);
+            color: var(--dark-bg);
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn:hover {
+            background: var(--neon-blue);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+            transform: scale(1.03);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--neon-green);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* ==================== INVENTAIRE PREUVES ==================== */
+        .evidence-bar {
+            background: rgba(10, 20, 40, 0.95);
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+
+        .evidence-label {
+            font-family: 'Space Mono', monospace;
+            color: var(--muted);
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .evidence-slots {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .evidence-slot {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 2px solid rgba(0, 255, 136, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s;
+        }
+
+        .evidence-slot.collected {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        /* ==================== SMS NOTIFICATION ==================== */
+        .sms-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 15px 20px;
+            max-width: 350px;
+            z-index: 200;
+            animation: slideInSMS 0.5s ease;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes slideInSMS {
+            from { transform: translateX(-120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .sms-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            color: var(--neon-blue);
+        }
+
+        .sms-body {
+            font-size: 0.9em;
+            line-height: 1.5;
+            color: #cfe9ff;
+        }
+
+        .sms-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        /* ==================== GAME OVER / RESULTS ==================== */
+        .results-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 600;
+            backdrop-filter: blur(8px);
+        }
+
+        .results-overlay.active {
+            display: flex;
+        }
+
+        .results-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--neon-green);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .results-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .results-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em;
+            color: var(--neon-green);
+            margin-bottom: 15px;
+        }
+
+        .results-score {
+            font-size: 3em;
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 15px 0;
+        }
+
+        .results-detail {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         /* ==================== RESPONSIVE ==================== */
@@ -675,14 +1335,74 @@
         </div>
     </div>
 
-    <!-- CONTAINER PRINCIPAL DU JEU (sera rempli dans la phase 3) -->
+    <!-- CONTAINER PRINCIPAL DU JEU -->
     <div id="game-container">
+        <!-- Barre supérieure -->
+        <div class="game-top-bar">
+            <div class="game-top-left">
+                <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                    <span>←</span>
+                    <span>Modules</span>
+                </a>
+                <div class="scenario-indicator">
+                    <span id="scenario-icon">🔓</span>
+                    <span id="scenario-name">Scénario 1/5</span>
+                </div>
+            </div>
+            <div class="game-top-right">
+                <div class="timer" id="timer">15:00</div>
+                <div class="protection-gauge">
+                    <div class="protection-label">PROTECTION</div>
+                    <div class="protection-meter">
+                        <div class="protection-fill" id="protection-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone principale du jeu -->
+        <div class="game-main">
+            <div class="scenario-scene" id="scenario-scene">
+                <!-- Contenu dynamique des scénarios -->
+            </div>
+        </div>
+
+        <!-- Barre d'inventaire de preuves -->
+        <div class="evidence-bar">
+            <span class="evidence-label">📋 PREUVES :</span>
+            <div class="evidence-slots">
+                <div class="evidence-slot" id="ev-0" title="Permissions abusives">🔓</div>
+                <div class="evidence-slot" id="ev-1" title="Profilage non consenti">👤</div>
+                <div class="evidence-slot" id="ev-2" title="Faille de sécurité">💻</div>
+                <div class="evidence-slot" id="ev-3" title="Refus de suppression">📝</div>
+                <div class="evidence-slot" id="ev-4" title="Dossier complet">⚖️</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY RÉSULTATS -->
+    <div class="results-overlay" id="results-overlay">
+        <div class="results-card" id="results-card">
+            <!-- Contenu dynamique -->
+        </div>
     </div>
 
     <script>
         // ==================== ÉTAT DE L'APPLICATION ====================
         let currentLesson = 0;
         let completedLessons = new Set();
+
+        // ==================== ÉTAT DU JEU ====================
+        const gameState = {
+            currentScenario: 0,
+            protection: 100,
+            timeLeft: 900,
+            evidence: [false, false, false, false, false],
+            scenarioScores: [],
+            gameStarted: false,
+            gameEnded: false,
+            timerInterval: null
+        };
 
         // ==================== NAVIGATION PRINCIPALE ====================
         function showBriefing() {
@@ -1305,9 +2025,652 @@
             }
         }
 
-        // ==================== PLACEHOLDER FONCTIONS (Phases suivantes) ====================
+        // ==================== LANCEMENT DU JEU ====================
         function startGame() {
-            alert('🎮 Le jeu de rôle sera disponible dans la prochaine mise à jour !');
+            document.getElementById('briefing-screen').classList.remove('active');
+            document.getElementById('game-container').classList.add('active');
+            gameState.gameStarted = true;
+            startTimer();
+            loadScenario(0);
+            showSMS("📱 Contact CNIL", "Agent·e Morin, c'est parti ! Analysez chaque situation avec attention. Je reste disponible si besoin. Bonne chance !");
+        }
+
+        // ==================== TIMER ====================
+        function startTimer() {
+            gameState.timerInterval = setInterval(() => {
+                if (gameState.gameEnded) return;
+                gameState.timeLeft--;
+                const min = Math.floor(gameState.timeLeft / 60).toString().padStart(2, '0');
+                const sec = (gameState.timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('timer').textContent = `${min}:${sec}`;
+                if (gameState.timeLeft <= 120) {
+                    document.getElementById('timer').style.color = '#ffaa00';
+                }
+                if (gameState.timeLeft <= 60) {
+                    document.getElementById('timer').style.color = 'var(--neon-pink)';
+                }
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    endGame(false);
+                }
+            }, 1000);
+        }
+
+        // ==================== JAUGE DE PROTECTION ====================
+        function updateProtection(delta) {
+            gameState.protection = Math.max(0, Math.min(100, gameState.protection + delta));
+            document.getElementById('protection-fill').style.width = gameState.protection + '%';
+            if (gameState.protection <= 0) {
+                endGame(false);
+            }
+        }
+
+        // ==================== COLLECTE DE PREUVE ====================
+        function collectEvidence(index) {
+            if (gameState.evidence[index]) return;
+            gameState.evidence[index] = true;
+            const slot = document.getElementById('ev-' + index);
+            slot.classList.add('collected');
+        }
+
+        // ==================== SMS ====================
+        function showSMS(sender, message) {
+            const existing = document.querySelector('.sms-notification');
+            if (existing) existing.remove();
+
+            const sms = document.createElement('div');
+            sms.className = 'sms-notification';
+            sms.innerHTML = `
+                <button class="sms-close" onclick="this.parentElement.remove()">✕</button>
+                <div class="sms-header">${sender}</div>
+                <div class="sms-body">${message}</div>
+            `;
+            document.body.appendChild(sms);
+            setTimeout(() => { if (sms.parentElement) sms.remove(); }, 10000);
+        }
+
+        // ==================== SCÉNARIOS ====================
+        const scenarios = [
+            // ==================== SCÉNARIO 1 : L'APPLICATION PIÈGE ====================
+            {
+                icon: "🔓",
+                title: "L'application piège",
+                subtitle: "Identifier les permissions abusives",
+                narrative: `L'application PANOPTIKON demande <strong>12 permissions</strong> lors de l'installation.
+                    En tant qu'agent·e SHIELD DATA, vous devez identifier celles qui sont <strong>abusives</strong>
+                    pour une simple application de météo.`,
+                task: "Cliquez sur les permissions qui vous semblent <strong>abusives</strong> (non nécessaires pour une app météo), puis validez.",
+                type: "permissions",
+                data: {
+                    permissions: [
+                        { name: "Accès à la localisation", icon: "📍", abusive: false, explanation: "Nécessaire pour la météo locale" },
+                        { name: "Accès à Internet", icon: "🌐", abusive: false, explanation: "Nécessaire pour télécharger les données météo" },
+                        { name: "Accès aux contacts", icon: "📇", abusive: true, explanation: "Une app météo n'a aucun besoin d'accéder à vos contacts" },
+                        { name: "Accès au microphone", icon: "🎙️", abusive: true, explanation: "Aucune raison pour une app météo d'écouter vos conversations" },
+                        { name: "Notifications", icon: "🔔", abusive: false, explanation: "Peut servir pour les alertes météo" },
+                        { name: "Accès aux SMS", icon: "✉️", abusive: true, explanation: "Une app météo n'a pas besoin de lire vos SMS" },
+                        { name: "Accès aux photos", icon: "📷", abusive: true, explanation: "Aucune raison d'accéder à votre galerie photo" },
+                        { name: "Stockage local", icon: "💾", abusive: false, explanation: "Nécessaire pour stocker les préférences" },
+                        { name: "Accès à l'historique de navigation", icon: "🔎", abusive: true, explanation: "Collecte abusive de vos habitudes de navigation" },
+                        { name: "Accès au journal d'appels", icon: "📞", abusive: true, explanation: "Aucun lien avec la météo — surveillance pure" }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 2 : LE PROFIL FANTÔME ====================
+            {
+                icon: "👤",
+                title: "Le profil fantôme",
+                subtitle: "Comprendre le profilage IA",
+                narrative: `PANOPTIKON a reconstitué un <strong>profil complet</strong> d'une citoyenne nommée Clara Martin,
+                    à partir de données apparemment anodines. Vous devez identifier quelles données ont permis
+                    à l'IA de <strong>déduire</strong> des informations sensibles.`,
+                task: "Parmi les données ci-dessous, sélectionnez celles qui sont des <strong>déductions abusives</strong> de l'IA (informations que Clara n'a jamais fournies directement).",
+                type: "profiling",
+                data: {
+                    dataPoints: [
+                        { text: "Nom : Clara Martin", deduced: false, explanation: "Fourni lors de l'inscription" },
+                        { text: "Email : clara.m@email.fr", deduced: false, explanation: "Fourni lors de l'inscription" },
+                        { text: "Enceinte (2e trimestre)", deduced: true, explanation: "Déduit des achats en pharmacie et recherches web — cas Target" },
+                        { text: "Tendance politique : gauche", deduced: true, explanation: "Déduit des pages likées et articles partagés" },
+                        { text: "Code postal : 75011", deduced: false, explanation: "Fourni pour la livraison" },
+                        { text: "Revenus estimés : 35-45k€/an", deduced: true, explanation: "Déduit du quartier, des achats et du type de smartphone" },
+                        { text: "Anxiété probable", deduced: true, explanation: "Déduit des recherches santé et horaires de connexion nocturne" },
+                        { text: "Recherche d'emploi active", deduced: true, explanation: "Déduit des visites sur LinkedIn et sites d'emploi" }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 3 : LA FUITE DE DONNÉES ====================
+            {
+                icon: "💻",
+                title: "La fuite de données",
+                subtitle: "Analyser une violation de sécurité",
+                narrative: `Le serveur de PANOPTIKON a subi une <strong>fuite de données</strong> massive.
+                    En analysant les logs du serveur, vous devez identifier <strong>la cause</strong> de la faille
+                    et <strong>les données exposées</strong>.`,
+                task: "Lisez les logs ci-dessous, puis répondez aux questions pour constituer votre rapport d'incident.",
+                type: "logs",
+                data: {
+                    logs: [
+                        { time: "03:12:01", level: "info", text: "Serveur PANOPTIKON-DB-03 : routine de sauvegarde démarrée" },
+                        { time: "03:12:15", level: "info", text: "Backup base utilisateurs : 12.4M entrées" },
+                        { time: "03:14:22", level: "warn", text: "Connexion entrante depuis IP 185.42.xxx.xxx (non autorisée)" },
+                        { time: "03:14:23", level: "warn", text: "Tentative d'authentification : admin / admin123" },
+                        { time: "03:14:23", level: "error", text: "ALERTE : Mot de passe par défaut accepté — compte admin compromis" },
+                        { time: "03:14:30", level: "error", text: "Requête SQL : SELECT * FROM users WHERE 1=1" },
+                        { time: "03:14:31", level: "error", text: "Export massif déclenché : noms, emails, mots de passe hashés, géolocalisation" },
+                        { time: "03:15:02", level: "error", text: "Transfert de 2.3 Go vers serveur externe 185.42.xxx.xxx" },
+                        { time: "03:17:45", level: "info", text: "Connexion terminée. Aucune alerte de sécurité déclenchée." },
+                        { time: "08:30:00", level: "warn", text: "Équipe IT : anomalie détectée dans les logs nocturnes" }
+                    ],
+                    questions: [
+                        {
+                            q: "Quelle est la cause principale de la fuite ?",
+                            options: ["Un virus dans le serveur", "Un mot de passe par défaut jamais changé", "Une panne électrique", "Un employé malveillant"],
+                            correct: 1
+                        },
+                        {
+                            q: "Combien de temps s'est écoulé entre l'intrusion et la détection ?",
+                            options: ["5 minutes", "2 heures", "Plus de 5 heures", "24 heures"],
+                            correct: 2
+                        },
+                        {
+                            q: "Quel article du RGPD impose de notifier la CNIL sous 72h en cas de fuite ?",
+                            options: ["Article 17", "Article 25", "Article 33", "Article 44"],
+                            correct: 2
+                        }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 4 : LE DROIT D'EFFACEMENT ====================
+            {
+                icon: "📝",
+                title: "Le droit d'effacement",
+                subtitle: "Exercer ses droits RGPD",
+                narrative: `Un citoyen, <strong>Marc Dubois</strong>, souhaite exercer son <strong>droit à l'effacement</strong>
+                    auprès de PANOPTIKON. L'entreprise a refusé sa première demande. Vous devez l'aider à
+                    rédiger une demande conforme et efficace.`,
+                task: "Construisez la demande RGPD en sélectionnant les bons éléments dans chaque champ.",
+                type: "rgpd_form",
+                data: {
+                    fields: [
+                        {
+                            label: "Base juridique invoquée",
+                            options: ["Droit d'accès (Art. 15)", "Droit d'effacement (Art. 17)", "Droit de portabilité (Art. 20)", "Droit d'opposition (Art. 21)"],
+                            correct: 1
+                        },
+                        {
+                            label: "Motif de la demande",
+                            options: [
+                                "Les données ne sont plus nécessaires",
+                                "Je retire mon consentement",
+                                "Traitement illicite des données",
+                                "Toutes ces raisons"
+                            ],
+                            correct: 3
+                        },
+                        {
+                            label: "Destinataire de la demande",
+                            options: ["Le service marketing", "Le DPO (Délégué à la Protection des Données)", "Le directeur général", "Le service technique"],
+                            correct: 1
+                        },
+                        {
+                            label: "Délai légal de réponse",
+                            options: ["48 heures", "1 semaine", "1 mois", "3 mois"],
+                            correct: 2
+                        },
+                        {
+                            label: "En cas de non-réponse, vous saisissez :",
+                            options: ["Un avocat obligatoirement", "La CNIL", "La police", "Le tribunal de commerce"],
+                            correct: 1
+                        }
+                    ]
+                }
+            },
+
+            // ==================== SCÉNARIO 5 : LE VERDICT CNIL ====================
+            {
+                icon: "⚖️",
+                title: "Le verdict CNIL",
+                subtitle: "Constituer le dossier final",
+                narrative: `Vous disposez maintenant de toutes les preuves. Il est temps de <strong>constituer le dossier final</strong>
+                    pour la CNIL. Reliez chaque infraction constatée à l'article du RGPD correspondant.`,
+                task: "Associez chaque violation (à gauche) à l'article RGPD correct (à droite) en cliquant successivement sur les deux éléments.",
+                type: "matching",
+                data: {
+                    pairs: [
+                        { left: "Permissions abusives sans consentement", right: "Art. 7 — Consentement", id: 0 },
+                        { left: "Profilage automatisé non déclaré", right: "Art. 22 — Décision automatisée", id: 1 },
+                        { left: "Fuite non signalée sous 72h", right: "Art. 33 — Notification de violation", id: 2 },
+                        { left: "Refus du droit d'effacement", right: "Art. 17 — Droit à l'effacement", id: 3 },
+                        { left: "Collecte excessive de données", right: "Art. 5 — Minimisation des données", id: 4 }
+                    ]
+                }
+            }
+        ];
+
+        // ==================== CHARGEMENT D'UN SCÉNARIO ====================
+        function loadScenario(index) {
+            if (index >= scenarios.length) {
+                endGame(true);
+                return;
+            }
+            gameState.currentScenario = index;
+            const sc = scenarios[index];
+            document.getElementById('scenario-icon').textContent = sc.icon;
+            document.getElementById('scenario-name').textContent = `Scénario ${index + 1}/5 — ${sc.title}`;
+
+            const scene = document.getElementById('scenario-scene');
+
+            let puzzleHTML = '';
+            if (sc.type === 'permissions') {
+                puzzleHTML = buildPermissionsPuzzle(sc.data);
+            } else if (sc.type === 'profiling') {
+                puzzleHTML = buildProfilingPuzzle(sc.data);
+            } else if (sc.type === 'logs') {
+                puzzleHTML = buildLogsPuzzle(sc.data);
+            } else if (sc.type === 'rgpd_form') {
+                puzzleHTML = buildRGPDFormPuzzle(sc.data);
+            } else if (sc.type === 'matching') {
+                puzzleHTML = buildMatchingPuzzle(sc.data);
+            }
+
+            scene.innerHTML = `
+                <div class="scenario-card">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">${sc.icon}</div>
+                        <div>
+                            <div class="scenario-title">${sc.title}</div>
+                            <div class="scenario-subtitle">${sc.subtitle}</div>
+                        </div>
+                    </div>
+                    <div class="scenario-narrative">${sc.narrative}</div>
+                    <div class="scenario-task"><h4>🎯 Votre mission :</h4><p>${sc.task}</p></div>
+                    <div class="puzzle-area" id="puzzle-area">${puzzleHTML}</div>
+                    <div class="feedback-box" id="feedback-box"></div>
+                    <div style="text-align:center;">
+                        <button class="action-btn" id="validate-btn" onclick="validateScenario(${index})">Valider ✓</button>
+                    </div>
+                </div>
+            `;
+            scene.scrollTop = 0;
+
+            // SMS contextuel
+            const smsMessages = [
+                "Concentrez-vous sur les permissions qui n'ont rien à voir avec la météo. Une app de météo a-t-elle besoin de vos SMS ?",
+                "Le profilage IA peut déduire des informations très sensibles à partir de données anodines. Cherchez ce que Clara n'a jamais déclaré elle-même.",
+                "Analysez les timestamps et les niveaux d'erreur. La faille est évidente quand on regarde les logs de près.",
+                "Le droit à l'effacement est l'article 17 du RGPD. Le DPO est votre interlocuteur obligatoire.",
+                "C'est la dernière étape ! Reliez bien chaque infraction à l'article précis du RGPD."
+            ];
+            setTimeout(() => showSMS("📱 Contact CNIL", smsMessages[index]), 2000);
+        }
+
+        // ==================== PUZZLE 1 : PERMISSIONS ====================
+        function buildPermissionsPuzzle(data) {
+            let html = '<div class="permissions-grid">';
+            data.permissions.forEach((p, i) => {
+                html += `
+                    <div class="permission-item" id="perm-${i}" onclick="togglePermission(${i})">
+                        <span class="permission-icon">${p.icon}</span>
+                        <span>${p.name}</span>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const flaggedPermissions = new Set();
+        function togglePermission(index) {
+            const el = document.getElementById('perm-' + index);
+            if (flaggedPermissions.has(index)) {
+                flaggedPermissions.delete(index);
+                el.classList.remove('flagged');
+            } else {
+                flaggedPermissions.add(index);
+                el.classList.add('flagged');
+            }
+        }
+
+        // ==================== PUZZLE 2 : PROFILAGE ====================
+        function buildProfilingPuzzle(data) {
+            let html = '<div class="data-chips">';
+            data.dataPoints.forEach((dp, i) => {
+                html += `<div class="data-chip" id="dp-${i}" onclick="toggleDataPoint(${i})">${dp.text}</div>`;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const selectedDataPoints = new Set();
+        function toggleDataPoint(index) {
+            const el = document.getElementById('dp-' + index);
+            if (selectedDataPoints.has(index)) {
+                selectedDataPoints.delete(index);
+                el.classList.remove('selected');
+            } else {
+                selectedDataPoints.add(index);
+                el.classList.add('selected');
+            }
+        }
+
+        // ==================== PUZZLE 3 : LOGS ====================
+        function buildLogsPuzzle(data) {
+            let html = '<div class="log-terminal">';
+            data.logs.forEach(log => {
+                const levelClass = log.level === 'error' ? 'level-error' : log.level === 'warn' ? 'level-warn' : 'level-info';
+                html += `<div class="log-line"><span class="timestamp">[${log.time}]</span> <span class="${levelClass}">[${log.level.toUpperCase()}]</span> ${log.text}</div>`;
+            });
+            html += '</div>';
+
+            html += '<div class="choices-container" id="log-questions">';
+            data.questions.forEach((q, qi) => {
+                html += `<div style="margin-top:15px;"><p style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:0.9em;margin-bottom:10px;">${q.q}</p>`;
+                q.options.forEach((opt, oi) => {
+                    html += `<div class="choice-btn" id="logq-${qi}-${oi}" onclick="selectLogAnswer(${qi}, ${oi})" style="margin-bottom:6px;">
+                        <span class="choice-letter">${String.fromCharCode(65 + oi)}</span>
+                        <span>${opt}</span>
+                    </div>`;
+                });
+                html += '</div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
+        const logAnswers = {};
+        function selectLogAnswer(qi, oi) {
+            // Déselectionner les autres
+            for (let i = 0; i < 4; i++) {
+                const el = document.getElementById(`logq-${qi}-${i}`);
+                if (el) el.classList.remove('correct', 'wrong');
+                if (el) el.style.borderColor = 'rgba(0, 212, 255, 0.3)';
+            }
+            const selected = document.getElementById(`logq-${qi}-${oi}`);
+            selected.style.borderColor = 'var(--neon-blue)';
+            logAnswers[qi] = oi;
+        }
+
+        // ==================== PUZZLE 4 : FORMULAIRE RGPD ====================
+        function buildRGPDFormPuzzle(data) {
+            let html = '<div class="rgpd-form">';
+            data.fields.forEach((field, fi) => {
+                html += `
+                    <div class="form-field">
+                        <label class="form-label">${field.label}</label>
+                        <select class="form-select" id="rgpd-field-${fi}">
+                            <option value="-1">— Sélectionnez —</option>
+                            ${field.options.map((opt, oi) => `<option value="${oi}">${opt}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        // ==================== PUZZLE 5 : ASSOCIATIONS ====================
+        function buildMatchingPuzzle(data) {
+            const shuffledRight = [...data.pairs].sort(() => Math.random() - 0.5);
+            let html = '<div class="connection-puzzle">';
+            html += '<div class="connection-column">';
+            data.pairs.forEach((p, i) => {
+                html += `<div class="connection-item" id="match-left-${p.id}" onclick="selectMatchItem('left', ${p.id})">${p.left}</div>`;
+            });
+            html += '</div><div class="connection-column">';
+            shuffledRight.forEach(p => {
+                html += `<div class="connection-item" id="match-right-${p.id}" onclick="selectMatchItem('right', ${p.id})">${p.right}</div>`;
+            });
+            html += '</div></div>';
+            return html;
+        }
+
+        let matchSelection = { left: null, right: null };
+        const matchedPairs = new Set();
+        function selectMatchItem(side, id) {
+            if (matchedPairs.has(id) && side === 'left') return;
+
+            // Déselectionner le précédent
+            if (matchSelection[side] !== null) {
+                const prev = document.getElementById(`match-${side}-${matchSelection[side]}`);
+                if (prev && !prev.classList.contains('matched')) prev.classList.remove('selected');
+            }
+
+            matchSelection[side] = id;
+            document.getElementById(`match-${side}-${id}`).classList.add('selected');
+
+            // Vérifier si une paire est formée
+            if (matchSelection.left !== null && matchSelection.right !== null) {
+                if (matchSelection.left === matchSelection.right) {
+                    // Correct !
+                    document.getElementById(`match-left-${matchSelection.left}`).classList.add('matched');
+                    document.getElementById(`match-left-${matchSelection.left}`).classList.remove('selected');
+                    document.getElementById(`match-right-${matchSelection.right}`).classList.add('matched');
+                    document.getElementById(`match-right-${matchSelection.right}`).classList.remove('selected');
+                    matchedPairs.add(matchSelection.left);
+                } else {
+                    // Faux
+                    const leftEl = document.getElementById(`match-left-${matchSelection.left}`);
+                    const rightEl = document.getElementById(`match-right-${matchSelection.right}`);
+                    leftEl.style.animation = 'shake 0.3s';
+                    rightEl.style.animation = 'shake 0.3s';
+                    setTimeout(() => {
+                        leftEl.style.animation = '';
+                        rightEl.style.animation = '';
+                        leftEl.classList.remove('selected');
+                        rightEl.classList.remove('selected');
+                    }, 400);
+                    updateProtection(-3);
+                }
+                matchSelection = { left: null, right: null };
+            }
+        }
+
+        // ==================== VALIDATION DES SCÉNARIOS ====================
+        function validateScenario(index) {
+            const sc = scenarios[index];
+            let score = 0;
+            let maxScore = 0;
+            let feedbackText = '';
+
+            if (sc.type === 'permissions') {
+                const perms = sc.data.permissions;
+                maxScore = perms.length;
+                perms.forEach((p, i) => {
+                    const el = document.getElementById('perm-' + i);
+                    const flagged = flaggedPermissions.has(i);
+                    if (p.abusive && flagged) {
+                        score += 1;
+                        el.classList.add('flagged');
+                    } else if (!p.abusive && !flagged) {
+                        score += 1;
+                        el.classList.add('safe');
+                    } else {
+                        if (p.abusive) el.classList.add('flagged');
+                        else el.classList.add('safe');
+                    }
+                    el.style.cursor = 'default';
+                    el.onclick = null;
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Excellent ! Vous avez identifié correctement ${score}/${maxScore} permissions (${pct}%). Les permissions abusives sont signalées en rose.`
+                    : `Score : ${score}/${maxScore} (${pct}%). Observez les permissions abusives en rose — une app météo n'a pas besoin de vos contacts ou SMS !`;
+
+            } else if (sc.type === 'profiling') {
+                const dps = sc.data.dataPoints;
+                maxScore = dps.length;
+                dps.forEach((dp, i) => {
+                    const el = document.getElementById('dp-' + i);
+                    const selected = selectedDataPoints.has(i);
+                    if (dp.deduced && selected) {
+                        score += 1;
+                        el.classList.add('selected');
+                    } else if (!dp.deduced && !selected) {
+                        score += 1;
+                    } else {
+                        if (dp.deduced) el.classList.add('wrong-select');
+                    }
+                    el.title = dp.explanation;
+                    el.style.cursor = 'default';
+                    el.onclick = null;
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Bravo ! ${score}/${maxScore} correct (${pct}%). Vous comprenez bien comment l'IA reconstruit des profils à partir de données éparses.`
+                    : `Score : ${score}/${maxScore} (${pct}%). Les données déduites par l'IA sont celles que Clara n'a jamais fournies directement.`;
+
+            } else if (sc.type === 'logs') {
+                const qs = sc.data.questions;
+                maxScore = qs.length;
+                qs.forEach((q, qi) => {
+                    const answer = logAnswers[qi];
+                    if (answer === q.correct) {
+                        score += 1;
+                        document.getElementById(`logq-${qi}-${answer}`).classList.add('correct');
+                    } else {
+                        if (answer !== undefined) document.getElementById(`logq-${qi}-${answer}`).classList.add('wrong');
+                        document.getElementById(`logq-${qi}-${q.correct}`).classList.add('correct');
+                    }
+                    // Désactiver les clics
+                    for (let i = 0; i < 4; i++) {
+                        const el = document.getElementById(`logq-${qi}-${i}`);
+                        if (el) { el.onclick = null; el.style.cursor = 'default'; }
+                    }
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Excellent travail d'analyse ! ${score}/${maxScore} réponses correctes. Vous savez décrypter les logs de sécurité.`
+                    : `Score : ${score}/${maxScore}. Relisez les logs : le mot de passe par défaut, les 5h avant détection et l'article 33 du RGPD sont les clés.`;
+
+            } else if (sc.type === 'rgpd_form') {
+                const fields = sc.data.fields;
+                maxScore = fields.length;
+                fields.forEach((field, fi) => {
+                    const select = document.getElementById(`rgpd-field-${fi}`);
+                    const value = parseInt(select.value);
+                    if (value === field.correct) {
+                        score += 1;
+                        select.style.borderColor = 'var(--neon-green)';
+                    } else {
+                        select.style.borderColor = 'var(--neon-pink)';
+                        select.value = field.correct;
+                    }
+                    select.disabled = true;
+                });
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Parfait ! ${score}/${maxScore} champs corrects. Vous maîtrisez la procédure RGPD pour exercer le droit à l'effacement.`
+                    : `Score : ${score}/${maxScore}. Les bonnes réponses sont maintenant affichées. Retenez : Article 17, DPO, 1 mois de délai, CNIL en recours.`;
+
+            } else if (sc.type === 'matching') {
+                maxScore = sc.data.pairs.length;
+                score = matchedPairs.size;
+                if (score < maxScore) {
+                    // Compléter automatiquement les paires manquantes
+                    sc.data.pairs.forEach(p => {
+                        if (!matchedPairs.has(p.id)) {
+                            document.getElementById(`match-left-${p.id}`).classList.add('matched');
+                            document.getElementById(`match-right-${p.id}`).classList.add('matched');
+                            matchedPairs.add(p.id);
+                        }
+                    });
+                }
+                const pct = Math.round(score / maxScore * 100);
+                feedbackText = pct >= 70
+                    ? `Dossier solide ! ${score}/${maxScore} associations correctes. La CNIL sera convaincue par votre travail.`
+                    : `Score : ${score}/${maxScore}. Les associations correctes sont affichées. Chaque violation a un article RGPD précis qui la sanctionne.`;
+            }
+
+            // Score et feedback
+            const pct = Math.round(score / maxScore * 100);
+            const isGood = pct >= 70;
+            gameState.scenarioScores.push({ score, maxScore, pct });
+
+            // Mise à jour protection
+            if (isGood) {
+                updateProtection(5);
+            } else {
+                updateProtection(-10);
+            }
+
+            // Collecter la preuve
+            collectEvidence(index);
+
+            // Afficher feedback
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.className = `feedback-box ${isGood ? 'success' : 'error'}`;
+            feedbackBox.innerHTML = `<strong>${isGood ? '✅ Preuve collectée !' : '⚠️ Preuve collectée, mais attention !'}</strong><br>${feedbackText}`;
+
+            // Remplacer le bouton par "Continuer"
+            const validateBtn = document.getElementById('validate-btn');
+            validateBtn.textContent = index < scenarios.length - 1 ? 'Scénario suivant →' : 'Voir les résultats →';
+            validateBtn.onclick = () => {
+                // Reset states pour le prochain scénario
+                flaggedPermissions.clear();
+                selectedDataPoints.clear();
+                Object.keys(logAnswers).forEach(k => delete logAnswers[k]);
+                matchSelection = { left: null, right: null };
+                matchedPairs.clear();
+                loadScenario(index + 1);
+            };
+        }
+
+        // ==================== FIN DU JEU ====================
+        function endGame(success) {
+            gameState.gameEnded = true;
+            clearInterval(gameState.timerInterval);
+
+            const totalScore = gameState.scenarioScores.reduce((a, s) => a + s.score, 0);
+            const totalMax = gameState.scenarioScores.reduce((a, s) => a + s.maxScore, 0);
+            const totalPct = totalMax > 0 ? Math.round(totalScore / totalMax * 100) : 0;
+            const evidenceCount = gameState.evidence.filter(Boolean).length;
+
+            const overlay = document.getElementById('results-overlay');
+            const card = document.getElementById('results-card');
+
+            if (success) {
+                card.innerHTML = `
+                    <div class="results-icon">🛡️</div>
+                    <div class="results-title">MISSION ACCOMPLIE</div>
+                    <div class="results-score">${totalPct}%</div>
+                    <div class="results-detail">
+                        Vous avez collecté <strong>${evidenceCount}/5 preuves</strong> et obtenu un score global de <strong>${totalScore}/${totalMax}</strong>.<br>
+                        Jauge de protection finale : <strong>${gameState.protection}%</strong><br><br>
+                        ${totalPct >= 70
+                            ? 'Le dossier est solide. La CNIL peut engager les poursuites contre PANOPTIKON !'
+                            : 'Le dossier contient quelques faiblesses, mais reste exploitable.'}
+                    </div>
+                    <button class="action-btn" onclick="showQuiz()">Passer le quiz de certification →</button>
+                `;
+            } else {
+                card.innerHTML = `
+                    <div class="results-icon">⏰</div>
+                    <div class="results-title">${gameState.protection <= 0 ? 'PROTECTION COMPROMISE' : 'TEMPS ÉCOULÉ'}</div>
+                    <div class="results-detail">
+                        ${gameState.protection <= 0
+                            ? 'Votre jauge de protection est tombée à zéro. Les données des citoyens sont en danger.'
+                            : 'Le temps imparti est écoulé. La mission n\'est pas terminée.'}
+                        <br><br>Preuves collectées : <strong>${evidenceCount}/5</strong>
+                    </div>
+                    <button class="action-btn" onclick="showQuiz()">Passer quand même le quiz →</button>
+                    <button class="action-btn secondary" onclick="location.reload()" style="margin-left:10px;">Recommencer</button>
+                `;
+            }
+            overlay.classList.add('active');
+        }
+
+        // ==================== PLACEHOLDER QUIZ & ATTESTATION (Phase 4) ====================
+        function showQuiz() {
+            document.getElementById('results-overlay').classList.remove('active');
+            document.getElementById('game-container').classList.remove('active');
+            // Le quiz sera implémenté dans la prochaine phase
+            document.getElementById('briefing-screen').classList.add('active');
+            showLesson(7);
+            alert('Le quiz de certification sera bientôt disponible !');
         }
 
         function showCertificateInFolder() {
