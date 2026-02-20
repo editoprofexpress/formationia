@@ -74,6 +74,117 @@
       transform:scale(1.05);
     }
 
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      z-index:999;display:none;flex-direction:column;overflow:hidden;
+    }
+    #briefing-screen.active{display:flex}
+
+    .briefing-header{
+      background:rgba(10,20,40,0.95);
+      border-bottom:1px solid rgba(0,255,136,0.3);
+      padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
+    }
+    .briefing-title{
+      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-green);
+      display:flex;align-items:center;gap:15px;
+    }
+    .briefing-title::before{content:'🎯';font-size:1.5em}
+    .briefing-progress{display:flex;align-items:center;gap:10px;color:#8899aa;font-size:0.9em}
+    .briefing-progress-bar{width:200px;height:6px;background:rgba(0,255,136,0.1);border-radius:3px;overflow:hidden}
+    .briefing-progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));transition:width .3s}
+
+    .briefing-body{display:flex;flex:1;overflow:hidden}
+
+    .briefing-nav{
+      width:280px;background:rgba(10,20,40,0.9);
+      border-right:1px solid rgba(0,255,136,0.2);
+      padding:20px 0;overflow-y:auto;
+    }
+    .briefing-nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:15px 20px;cursor:pointer;
+      border-left:3px solid transparent;transition:all .3s;color:#8899aa;
+    }
+    .briefing-nav-item:hover{background:rgba(0,255,136,0.05);color:var(--text)}
+    .briefing-nav-item.active{border-left-color:var(--neon-green);background:rgba(0,255,136,0.1);color:var(--neon-green)}
+    .briefing-nav-item.completed{color:var(--neon-blue)}
+    .briefing-nav-item.completed::after{content:'✓';margin-left:auto;color:var(--neon-green)}
+    .nav-icon{font-size:1.2em;width:30px;text-align:center}
+    .nav-number{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      background:rgba(0,255,136,0.2);padding:2px 8px;border-radius:3px;
+    }
+
+    .briefing-content{flex:1;overflow-y:auto;padding:40px 60px;max-width:900px;margin:0 auto}
+    .briefing-content::-webkit-scrollbar{width:8px}
+    .briefing-content::-webkit-scrollbar-track{background:rgba(0,255,136,0.05)}
+    .briefing-content::-webkit-scrollbar-thumb{background:rgba(0,255,136,0.3);border-radius:4px}
+
+    .briefing-footer{
+      background:rgba(10,20,40,0.95);border-top:1px solid rgba(0,255,136,0.3);
+      padding:20px 30px;display:flex;justify-content:space-between;align-items:center;
+    }
+    .briefing-btn{
+      font-family:'Space Mono',monospace;padding:12px 30px;
+      border:2px solid var(--neon-green);background:transparent;
+      color:var(--neon-green);cursor:pointer;font-size:1em;transition:all .3s;
+      display:flex;align-items:center;gap:10px;
+    }
+    .briefing-btn:hover{background:rgba(0,255,136,0.1);box-shadow:0 0 20px rgba(0,255,136,.3)}
+    .briefing-btn.primary{background:var(--neon-green);color:var(--dark-bg)}
+    .briefing-btn.primary:hover{background:var(--neon-blue);border-color:var(--neon-blue)}
+    .briefing-btn:disabled{opacity:0.5;cursor:not-allowed}
+
+    /* ==================== CONTENU COURS ==================== */
+    .module-title{
+      font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-green);
+      margin-bottom:30px;padding-bottom:15px;border-bottom:1px solid rgba(0,255,136,0.3);
+    }
+    .module-kicker{color:var(--muted);margin-bottom:18px;line-height:1.5}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,0.5),transparent);margin:18px 0}
+    .pill{
+      display:inline-block;padding:6px 10px;
+      border:1px solid rgba(0,255,136,.5);border-radius:999px;
+      font-family:'Space Mono',monospace;font-size:.78em;
+      color:var(--neon-green);background:rgba(0,255,136,.05);
+      margin-right:8px;margin-bottom:8px;
+    }
+    .callout{
+      background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);
+      padding:14px;border-radius:14px;box-shadow:0 0 22px rgba(0,255,136,0.18);
+      margin:12px 0;line-height:1.6;color:#cfe9ff;
+    }
+    .callout.warn{background:rgba(255,204,0,0.08);border-color:rgba(255,204,0,0.30);box-shadow:0 0 18px rgba(255,204,0,0.16)}
+    .callout.ok{background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.35);box-shadow:0 0 18px rgba(0,255,136,0.18)}
+    .callout.pink{background:rgba(255,0,128,0.10);border-color:rgba(255,0,128,0.30);box-shadow:0 0 18px rgba(255,0,128,0.16)}
+    .callout.purple{background:rgba(168,85,247,0.10);border-color:rgba(168,85,247,0.35);box-shadow:0 0 18px rgba(168,85,247,0.18)}
+
+    .back-link-sidebar{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 15px;margin:0 15px 20px;
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:8px;color:var(--neon-blue);text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-sidebar:hover{background:rgba(0,212,255,0.15);border-color:var(--neon-blue);transform:translateX(-3px)}
+    .back-link-sidebar .back-arrow{transition:transform .3s}
+    .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
+
+    /* ==================== TOAST ==================== */
+    #toast{
+      position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(0,212,255,0.28);background:rgba(0,10,25,0.85);
+      box-shadow:0 0 30px rgba(0,212,255,.18);z-index:2500;
+      max-width:92vw;display:none;font-size:0.9em;color:#d9f2ff;line-height:1.4;
+    }
+    #toast.show{display:block;animation:toastIn .18s ease}
+    @keyframes toastIn{from{transform:translateX(-50%) translateY(6px);opacity:.2}to{transform:translateX(-50%) translateY(0);opacity:1}}
+
     /* ==================== LIENS RETOUR ==================== */
     .back-link-title{
       position:absolute;top:20px;left:20px;
@@ -89,6 +200,11 @@
     /* ==================== RESPONSIVE ==================== */
     @media(max-width:768px){
       .main-title{font-size:1.8em}
+      .briefing-nav{display:none}
+      .briefing-content{padding:20px}
+      .module-title{font-size:1.3em}
+      .briefing-footer{flex-direction:column;gap:10px}
+      .briefing-btn{width:100%;justify-content:center}
     }
   </style>
 </head>
@@ -116,10 +232,223 @@
     </div>
   </section>
 
+  <!-- ==================== BRIEFING SCREEN ==================== -->
+  <div id="briefing-screen">
+    <div class="briefing-header">
+      <div class="briefing-title">ITERATEK // ITÉRATION & AMÉLIORATION</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Dossier 1/8</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width:12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="briefing-body">
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
+        <div class="briefing-nav-item active" onclick="showLesson(0)">
+          <span class="nav-icon">🎯</span><span class="nav-number">01</span>Pourquoi itérer ?
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(1)">
+          <span class="nav-icon">🔄</span><span class="nav-number">02</span>Anatomie d'un prompt
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(2)">
+          <span class="nav-icon">🏗️</span><span class="nav-number">03</span>Les 5 piliers du prompt
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(3)">
+          <span class="nav-icon">🔍</span><span class="nav-number">04</span>L'art de la spécificité
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(4)">
+          <span class="nav-icon">📐</span><span class="nav-number">05</span>Format et contraintes
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(5)">
+          <span class="nav-icon">🎭</span><span class="nav-number">06</span>Personas et contexte
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(6)">
+          <span class="nav-icon">💡</span><span class="nav-number">07</span>Exemples et few-shot
+        </div>
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" onclick="showLesson(7)">
+            <span class="nav-icon">🔬</span>
+            <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green)">▶</span>
+            Défis ITERATEK
+          </div>
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
+        </div>
+      </nav>
+      <div class="briefing-content" id="briefing-content"></div>
+    </div>
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>← Dossier précédent</button>
+      <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">Dossier suivant →</button>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST ==================== -->
+  <div id="toast"></div>
+
 <script>
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+const $ = (id) => document.getElementById(id);
+
+function toast(msg, ms=2200){
+  const el=$('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(window.__toastT);
+  window.__toastT=setTimeout(()=>el.classList.remove('show'),ms);
+}
+
+/* =========================================================
+   ÉTAT GLOBAL
+========================================================= */
+const state={
+  lessonSeen:new Set(),
+  expDone:new Set(),
+  quizScore:0,
+  quizTotal:0,
+};
+
+let currentLesson=0;
+const totalLessons=8;
+let certificateUnlocked=false;
+let finalScore=0;
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 function startModule(){
-  document.getElementById('title-screen').classList.add('hidden');
-  // Le briefing sera ajouté en Phase 2
+  $('title-screen').classList.add('hidden');
+  $('briefing-screen').classList.add('active');
+  showLesson(0);
+  toast("Accès autorisé. Bienvenue au studio ITERATEK.");
+}
+
+function prevLesson(){if(currentLesson>0)showLesson(currentLesson-1)}
+function nextLesson(){if(currentLesson<totalLessons-1)showLesson(currentLesson+1)}
+
+function updateBriefingProgress(){
+  const pct=Math.round(((currentLesson+1)/totalLessons)*100);
+  $('progress-text').textContent=`Dossier ${currentLesson+1}/${totalLessons}`;
+  $('progress-fill').style.width=pct+'%';
+  const prevBtn=$('prev-btn'), nextBtn=$('next-btn');
+  if(prevBtn) prevBtn.disabled=(currentLesson===0);
+  if(nextBtn){
+    if(currentLesson===totalLessons-1){
+      nextBtn.textContent='Terminé ✓';nextBtn.disabled=true;nextBtn.style.opacity='0.5';
+    } else {
+      nextBtn.innerHTML='Dossier suivant →';nextBtn.onclick=nextLesson;nextBtn.disabled=false;nextBtn.style.opacity='1';
+    }
+  }
+}
+
+function showLesson(idx){
+  currentLesson=idx;
+  state.lessonSeen.add(idx);
+  const content=$('briefing-content');
+  const lesson=lessons[idx];
+  content.innerHTML=`
+    <div class="module-title">${lesson.title}</div>
+    <div class="module-kicker">${lesson.kicker}</div>
+    <div class="divider"></div>
+    ${lesson.html}
+  `;
+  content.scrollTop=0;
+  document.querySelectorAll('.briefing-nav-item').forEach((item,i)=>{
+    item.classList.remove('active');
+    if(i===idx) item.classList.add('active');
+    if(state.lessonSeen.has(i) && i!==idx) item.classList.add('completed');
+  });
+  updateBriefingProgress();
+  if(lesson.init) setTimeout(lesson.init,100);
+}
+
+/* =========================================================
+   CONTENU DES LEÇONS (stubs — complétées en Phase 2)
+========================================================= */
+const lessons = [
+  {
+    title:"01 — Pourquoi itérer ?",
+    kicker:"Un bon résultat se construit rarement du premier coup.",
+    html:`
+      <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Fondamentaux</div>
+      <div class="divider"></div>
+      <div class="callout ok"><p>Contenu de la leçon 1 — sera complété en Phase 2.</p></div>
+    `
+  },
+  {
+    title:"02 — Anatomie d'un prompt",
+    kicker:"Comprendre la structure d'une requête pour mieux la formuler.",
+    html:`<div class="callout ok"><p>Contenu de la leçon 2 — sera complété en Phase 2.</p></div>`
+  },
+  {
+    title:"03 — Les 5 piliers d'un bon prompt",
+    kicker:"Rôle, contexte, tâche, format, contraintes : la recette universelle.",
+    html:`<div class="callout ok"><p>Contenu de la leçon 3 — sera complété en Phase 2.</p></div>`
+  },
+  {
+    title:"04 — L'art de la spécificité",
+    kicker:"Plus votre demande est précise, plus la réponse est pertinente.",
+    html:`<div class="callout ok"><p>Contenu de la leçon 4 — sera complété en Phase 2.</p></div>`
+  },
+  {
+    title:"05 — Format et contraintes",
+    kicker:"Guider la forme de la réponse pour obtenir exactement ce que vous voulez.",
+    html:`<div class="callout ok"><p>Contenu de la leçon 5 — sera complété en Phase 2.</p></div>`
+  },
+  {
+    title:"06 — Personas et contexte",
+    kicker:"Donner un rôle à l'IA transforme radicalement ses réponses.",
+    html:`<div class="callout ok"><p>Contenu de la leçon 6 — sera complété en Phase 2.</p></div>`
+  },
+  {
+    title:"07 — Exemples et few-shot learning",
+    kicker:"Montrer plutôt qu'expliquer : la puissance de l'apprentissage par l'exemple.",
+    html:`<div class="callout ok"><p>Contenu de la leçon 7 — sera complété en Phase 2.</p></div>`
+  },
+  {
+    title:"🔬 Défis ITERATEK — Mission",
+    kicker:"Mettez en pratique vos connaissances dans 5 défis de prompt engineering.",
+    html:`
+      <div class="pill" style="border-color:var(--neon-green)">MISSION</div>
+      <div class="pill">5 DÉFIS</div>
+      <div class="divider"></div>
+      <div class="callout ok"><p>Les 5 défis interactifs seront ajoutés en Phase 3.</p></div>
+    `,
+    init: function(){}
+  }
+];
+
+/* =========================================================
+   ATTESTATION (stub — complétée en Phase 4)
+========================================================= */
+function showCertificateInFolder(){
+  if(!certificateUnlocked){
+    $('briefing-content').innerHTML=`
+      <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
+      <div class="module-kicker">Attestation verrouillée</div>
+      <div class="divider"></div>
+      <div class="callout warn" style="text-align:center;padding:40px 20px">
+        <div style="font-size:4em;margin-bottom:20px">🔒</div>
+        <h3 style="color:var(--neon-pink);margin-bottom:20px">Attestation verrouillée</h3>
+        <p style="margin-bottom:20px;line-height:1.8">Pour obtenir votre attestation, vous devez :</p>
+        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:500px;text-align:left">
+          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px"><span style="font-size:1.2em">1️⃣</span><span>Compléter les <strong>5 défis</strong> ITERATEK</span></p>
+          <p style="display:flex;align-items:center;gap:10px"><span style="font-size:1.2em">2️⃣</span><span>Réussir le <strong>Quiz</strong> avec au moins <strong>70%</strong></span></p>
+        </div>
+        <button class="briefing-btn primary" onclick="showLesson(7)" style="margin:20px auto 0;display:inline-flex">🔬 Aller aux défis</button>
+      </div>`;
+    return;
+  }
+  toast("Attestation — sera complétée en Phase 4.");
 }
 </script>
 </body>
