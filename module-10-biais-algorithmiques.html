@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biais Invisibles — Module 10 (Biais Algorithmiques)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root{
+      --neon-green:#00ff88;
+      --neon-blue:#00d4ff;
+      --neon-pink:#ff0080;
+      --neon-purple:#a855f7;
+      --neon-yellow:#ffe66d;
+      --neon-orange:#ff9500;
+      --dark-bg:#0a0e17;
+      --panel-bg:rgba(10,20,40,0.95);
+      --text:#e0f0ff;
+      --muted:#8899aa;
+      --danger:#ff4d4d;
+      --warn:#ffcc00;
+      --ok:#00ff88;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+    body{
+      font-family:'Exo 2',sans-serif;
+      background:var(--dark-bg);
+      color:var(--text);
+      overflow:hidden;
+      height:100vh;
+    }
+
+    /* ==================== TITRE ==================== */
+    #title-screen{
+      position:fixed;inset:0;
+      background:url('images/module10-title-bg.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#1a1205 30%,#0d0e17 70%,#0a0e17 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:1000;
+      transition:opacity .5s, visibility .5s;
+      overflow:hidden;
+    }
+    #title-screen::before{
+      content:'';position:absolute;inset:0;
+      background:rgba(10,14,23,0.72);
+      z-index:-1;
+    }
+    #title-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+
+    /* Scan lines overlay */
+    .scan-lines{
+      position:absolute;inset:0;z-index:0;
+      background-image:repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255,230,109,0.012) 3px,
+        rgba(255,230,109,0.012) 4px
+      );
+      pointer-events:none;
+    }
+
+    /* Grid cyberpunk bg */
+    .cyber-grid{
+      position:absolute;inset:0;z-index:0;
+      background-image:
+        linear-gradient(rgba(255,230,109,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,230,109,0.04) 1px, transparent 1px);
+      background-size:60px 60px;
+      pointer-events:none;
+    }
+
+    /* Glowing orb ambiance */
+    .orb{
+      position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;
+    }
+    .orb-1{width:400px;height:400px;background:rgba(255,149,0,0.12);top:-100px;right:-100px;}
+    .orb-2{width:300px;height:300px;background:rgba(255,230,109,0.08);bottom:-50px;left:-50px;}
+    .orb-3{width:200px;height:200px;background:rgba(255,0,128,0.06);top:50%;left:20%;}
+
+    /* Content above overlays */
+    .title-content{
+      position:relative;z-index:1;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      width:100%;
+    }
+
+    .title-logo{font-size:4em;margin-bottom:15px;animation:float 3s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+
+    .module-badge{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      padding:5px 18px;
+      border:1px solid rgba(255,230,109,0.4);
+      color:var(--neon-yellow);background:rgba(255,230,109,0.08);
+      border-radius:999px;letter-spacing:2px;margin-bottom:20px;
+      text-transform:uppercase;
+    }
+
+    .main-title{
+      font-family:'Space Mono',monospace;
+      font-size:3em;font-weight:700;text-transform:uppercase;letter-spacing:6px;
+      background:linear-gradient(90deg,var(--neon-yellow),var(--neon-orange),var(--neon-pink));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:10px;text-align:center;
+      text-shadow:0 0 60px rgba(255,230,109,0.3);
+    }
+
+    .subtitle{
+      font-size:1.15em;color:#8899aa;margin-bottom:30px;
+      font-weight:300;text-align:center;letter-spacing:1px;
+    }
+
+    /* Stats line */
+    .title-stats{
+      display:flex;gap:40px;margin-bottom:30px;
+      padding:12px 30px;
+      background:rgba(255,230,109,0.04);
+      border:1px solid rgba(255,230,109,0.15);
+      border-radius:8px;
+    }
+    .title-stat{text-align:center}
+    .title-stat-value{
+      font-family:'Space Mono',monospace;
+      font-size:1.5em;font-weight:700;
+      color:var(--neon-yellow);display:block;
+    }
+    .title-stat-label{
+      font-size:0.75em;color:var(--muted);
+      text-transform:uppercase;letter-spacing:1px;
+    }
+    .stat-sep{width:1px;background:rgba(255,230,109,0.2);margin:4px 0;}
+
+    /* Mission card */
+    .mission-card{
+      max-width:680px;
+      background:rgba(255,149,0,0.04);
+      border:1px solid rgba(255,230,109,0.2);
+      border-left:3px solid var(--neon-yellow);
+      border-radius:10px;
+      padding:22px 30px;
+      margin:0 20px 35px;
+      text-align:left;
+      line-height:1.8;
+      color:#cfe9ff;
+      font-size:0.95em;
+    }
+    .mission-label{
+      font-family:'Space Mono',monospace;
+      font-size:0.72em;
+      color:var(--neon-yellow);
+      text-transform:uppercase;
+      letter-spacing:3px;
+      margin-bottom:12px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .mission-label::after{
+      content:'';flex:1;
+      height:1px;background:rgba(255,230,109,0.2);
+    }
+
+    /* Start button */
+    .start-btn{
+      font-family:'Space Mono',monospace;font-size:1.1em;
+      padding:18px 60px;background:transparent;
+      border:2px solid var(--neon-yellow);color:var(--neon-yellow);
+      cursor:pointer;text-transform:uppercase;letter-spacing:3px;
+      transition:all .3s;position:relative;overflow:hidden;
+      border-radius:2px;
+    }
+    .start-btn::before{
+      content:'';position:absolute;top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,230,109,.25),transparent);
+      transition:left .5s;
+    }
+    .start-btn:hover::before{left:100%}
+    .start-btn:hover{
+      background:rgba(255,230,109,.08);
+      box-shadow:0 0 35px rgba(255,230,109,.5), inset 0 0 35px rgba(255,230,109,.05);
+      transform:scale(1.04);
+    }
+    .start-btn:active{transform:scale(1.01)}
+
+    /* Back link */
+    .back-link-title{
+      position:absolute;top:20px;left:20px;z-index:10;
+      display:flex;align-items:center;gap:8px;
+      padding:10px 16px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);
+      border-radius:6px;color:#8899aa;text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-title:hover{
+      background:rgba(255,255,255,0.1);
+      border-color:rgba(255,255,255,0.3);color:#aabbcc;
+    }
+
+    /* Ticker at bottom */
+    .ticker-wrap{
+      position:absolute;bottom:0;left:0;right:0;z-index:2;
+      background:rgba(255,230,109,0.06);
+      border-top:1px solid rgba(255,230,109,0.2);
+      overflow:hidden;height:36px;
+      display:flex;align-items:center;
+    }
+    .ticker{
+      display:flex;gap:60px;
+      animation:ticker-scroll 30s linear infinite;
+      white-space:nowrap;
+    }
+    @keyframes ticker-scroll{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-50%)}
+    }
+    .ticker-item{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      color:var(--neon-yellow);opacity:0.7;
+      text-transform:uppercase;letter-spacing:1px;
+    }
+    .ticker-dot{color:var(--neon-orange);margin:0 10px;}
+
+    /* Pulse animation for badge */
+    @keyframes pulse-glow{
+      0%,100%{box-shadow:0 0 0 rgba(255,230,109,0)}
+      50%{box-shadow:0 0 15px rgba(255,230,109,0.3)}
+    }
+    .module-badge{animation:pulse-glow 3s ease-in-out infinite}
+
+  </style>
+</head>
+<body>
+
+<!-- ==================== ÉCRAN TITRE ==================== -->
+<div id="title-screen">
+
+  <div class="scan-lines"></div>
+  <div class="cyber-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <a href="modules.html" class="back-link-title">← Modules</a>
+
+  <div class="title-content">
+
+    <div class="title-logo">⚖️</div>
+
+    <div class="module-badge">Module 10 &nbsp;·&nbsp; Limites &amp; Esprit Critique</div>
+
+    <h1 class="main-title">BIAIS INVISIBLES</h1>
+    <p class="subtitle">Algorithmes sous surveillance &nbsp;—&nbsp; Opération Équité</p>
+
+    <div class="title-stats">
+      <div class="title-stat">
+        <span class="title-stat-value">7</span>
+        <span class="title-stat-label">Leçons</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="title-stat">
+        <span class="title-stat-value">4</span>
+        <span class="title-stat-label">Étapes d'audit</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="title-stat">
+        <span class="title-stat-value">~15<span style="font-size:0.55em;font-weight:400"> min</span></span>
+        <span class="title-stat-label">Durée</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="title-stat">
+        <span class="title-stat-value">10</span>
+        <span class="title-stat-label">Questions</span>
+      </div>
+    </div>
+
+    <div class="mission-card">
+      <div class="mission-label">🔒 Dossier confidentiel — EquityWatch</div>
+      Une alerte a été transmise à l'agence <strong style="color:var(--neon-yellow)">EquityWatch</strong>.
+      L'algorithme <strong style="color:var(--neon-orange)">NEXUS-RH</strong>, utilisé par TechCorp pour
+      filtrer automatiquement des milliers de candidatures, produit des résultats suspects.<br><br>
+      Des données internes suggèrent que l'algorithme <strong>écarte systématiquement</strong> certains
+      profils selon des critères qui ne devraient pas influencer une décision d'embauche.<br><br>
+      Vous êtes <strong style="color:var(--neon-yellow)">ARIA</strong>, auditrice spécialisée en IA
+      responsable. Votre mission : analyser les données, identifier les biais dissimulés, et rédiger le
+      rapport qui permettra de démanteler un algorithme discriminatoire.
+    </div>
+
+    <button class="start-btn" onclick="startModule()">⚡ Lancer l'audit</button>
+
+  </div><!-- end title-content -->
+
+  <!-- Ticker d'alerte -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item">🔴 Alerte biais détectée — Algorithme NEXUS-RH</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">Taux de rejet suspects — Groupes A et B comparés</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">EquityWatch — Audit ouvert dossier #10-2024-BIAIS</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">Auditrice ARIA — Niveau d'habilitation : MAXIMUM</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">🔴 Alerte biais détectée — Algorithme NEXUS-RH</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">Taux de rejet suspects — Groupes A et B comparés</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">EquityWatch — Audit ouvert dossier #10-2024-BIAIS</span>
+      <span class="ticker-dot">◆</span>
+      <span class="ticker-item">Auditrice ARIA — Niveau d'habilitation : MAXIMUM</span>
+    </div>
+  </div>
+
+</div><!-- end #title-screen -->
+
+<script>
+function startModule() {
+  // Phase 2 : le briefing sera ajouté ici
+  alert('Le briefing arrive dans la phase suivante !');
+}
+</script>
+
+</body>
+</html>
