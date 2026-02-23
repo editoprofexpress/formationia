@@ -93,20 +93,6 @@
     }
     .back-link-title:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.3); color: #aabbcc; }
 
-    /* badge module */
-    .module-badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.75em;
-      color: var(--neon-red);
-      border: 1px solid rgba(255,107,107,0.5);
-      padding: 4px 14px;
-      border-radius: 20px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-      background: rgba(255,107,107,0.08);
-    }
-
     .title-logo {
       margin-bottom: 18px;
       animation: float 3s ease-in-out infinite;
@@ -131,16 +117,6 @@
       text-align: center;
     }
 
-    .main-subtitle {
-      font-family: 'Space Mono', monospace;
-      font-size: 1em;
-      color: var(--neon-orange);
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      opacity: 0.85;
-    }
-
     .subtitle {
       font-size: 1.2em;
       color: #8899aa;
@@ -160,40 +136,6 @@
 
     .intro-text strong { color: var(--neon-red); }
 
-    /* stats rapides */
-    .quick-stats {
-      display: flex;
-      gap: 30px;
-      margin-bottom: 42px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .stat-value {
-      font-family: 'Space Mono', monospace;
-      font-size: 1.5em;
-      color: var(--neon-red);
-      font-weight: 700;
-    }
-    .stat-label {
-      font-size: 0.75em;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    /* séparateur */
-    .stat-sep {
-      width: 1px;
-      height: 40px;
-      background: rgba(255,107,107,0.3);
-      align-self: center;
-    }
 
     /* bouton démarrer */
     .start-btn {
@@ -224,25 +166,6 @@
       background: rgba(255,107,107,0.1);
       box-shadow: 0 0 30px rgba(255,107,107,0.5), inset 0 0 30px rgba(255,107,107,0.08);
       transform: scale(1.05);
-    }
-
-    /* zones preview en bas */
-    .zones-preview {
-      position: absolute;
-      bottom: 30px;
-      display: flex;
-      gap: 20px;
-      opacity: 0.6;
-    }
-    .zone-chip {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7em;
-      padding: 6px 14px;
-      border: 1px solid rgba(255,107,107,0.3);
-      border-radius: 20px;
-      color: var(--neon-red);
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
     /* particules flottantes déco */
@@ -808,63 +731,29 @@
   <!-- ==================== ÉCRAN TITRE ==================== -->
   <div id="title-screen">
     <div class="scanline"></div>
-
     <a href="modules.html" class="back-link-title">
       <span>←</span> <span>Tous les modules</span>
     </a>
-
-    <!-- particules déco -->
     <div class="particles" id="particles"></div>
-
-    <div class="module-badge">Module 3 · Fondations IA</div>
-
     <div class="title-logo">
       <img src="images/module3-neuronaut.png" alt="Neuronaut"
            style="height:120px;filter:drop-shadow(0 0 20px rgba(255,107,107,0.7)) drop-shadow(0 0 40px rgba(0,212,255,0.4))">
     </div>
-
     <h1 class="main-title">NEURONAUT</h1>
-    <div class="main-subtitle">Voyage au Cœur du Modèle</div>
-    <p class="subtitle">Dans la tête d'un modèle — Similarité & Prédiction</p>
-
+    <p class="subtitle">Module 3 — Voyage au Cœur du Modèle</p>
     <p class="intro-text">
-      Une IA a-t-elle vraiment une <strong>intelligence</strong> ? Comment pense-t-elle ?
-      Comment lit-elle un texte, en comprend-elle le sens, et comment prédit-elle la suite ?<br><br>
-      Prépare-toi à te miniaturiser et à plonger <strong>à l'intérieur d'un modèle de langage</strong>.
-      En explorant ses trois couches essentielles, tu découvriras que l'IA ne "comprend" pas
-      le monde comme toi — mais que ce qu'elle fait est tout aussi fascinant.
+      Comment une IA lit-elle un texte, en comprend-elle le sens, et prédit-elle la suite ?
+      Plonge <strong>à l'intérieur d'un modèle de langage</strong> pour explorer ses trois couches essentielles :
+      tokenisation, embeddings et prédiction probabiliste.
     </p>
-
-    <div class="quick-stats">
-      <div class="stat-item">
-        <span class="stat-value">3</span>
-        <span class="stat-label">Zones à explorer</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="stat-item">
-        <span class="stat-value">~15</span>
-        <span class="stat-label">Minutes</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="stat-item">
-        <span class="stat-value">8</span>
-        <span class="stat-label">Questions quiz</span>
-      </div>
-    </div>
-
     <button class="start-btn" onclick="startModule()">
       ⚡ Initier le voyage
     </button>
-
-    <div style="margin-top:35px;opacity:0.65;text-align:center">
-      <p style="color:#8899aa;font-size:0.82em;margin-bottom:8px">Une formation proposée par</p>
-      <img src="images/logo-profexpress.png" alt="Prof Express" style="height:28px;object-fit:contain">
-    </div>
-
-    <div class="zones-preview">
-      <span class="zone-chip">⚙️ Zone 1 · Tokens</span>
-      <span class="zone-chip">🌌 Zone 2 · Vecteurs</span>
-      <span class="zone-chip">🔮 Zone 3 · Prédiction</span>
+    <div style="margin-top:40px;opacity:0.7;text-align:center">
+      <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain">
+      </a>
     </div>
   </div>
 
