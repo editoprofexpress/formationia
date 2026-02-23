@@ -683,6 +683,145 @@
 
     .game-hint{font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)}
 
+    /* ==================== QUIZ SCREEN ==================== */
+    #quiz-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      z-index:997;display:none;flex-direction:column;overflow:hidden;
+    }
+    #quiz-screen.active{display:flex}
+    .quiz-header{
+      background:rgba(10,20,40,0.97);
+      border-bottom:2px solid rgba(0,255,136,0.4);
+      padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+    }
+    .quiz-title-bar{font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1em;letter-spacing:2px;text-transform:uppercase}
+    .quiz-progress-info{font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)}
+    .quiz-body{flex:1;overflow-y:auto;padding:30px 60px;max-width:900px;margin:0 auto;width:100%}
+    .quiz-body::-webkit-scrollbar{width:6px}
+    .quiz-body::-webkit-scrollbar-thumb{background:rgba(0,255,136,0.3);border-radius:3px}
+    .quiz-intro{
+      background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);
+      border-radius:10px;padding:20px 24px;margin-bottom:28px;color:#cfe9ff;line-height:1.7;
+    }
+    .quiz-intro h3{color:var(--neon-green);font-family:'Space Mono',monospace;margin-bottom:10px}
+    .q-card{
+      background:rgba(10,20,40,0.7);border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;padding:22px 24px;margin-bottom:14px;transition:border-color .3s;
+    }
+    .q-card.answered{border-color:rgba(0,255,136,0.2)}
+    .q-head{font-family:'Space Mono',monospace;font-size:0.78em;color:var(--neon-green);letter-spacing:1px;margin-bottom:10px}
+    .q-text{color:#e0f0ff;font-size:1em;line-height:1.6;margin-bottom:14px;font-weight:500;user-select:text}
+    .opts{display:flex;flex-direction:column;gap:8px}
+    .opt{
+      padding:11px 16px;border-radius:8px;cursor:pointer;
+      border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);
+      color:#cfe9ff;font-size:0.9em;transition:all .2s;display:flex;align-items:center;gap:10px;
+    }
+    .opt::before{content:'○';color:rgba(255,255,255,0.2);flex-shrink:0;font-size:1em;transition:all .2s}
+    .opt:hover{border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.05)}
+    .opt.selected{border-color:rgba(0,212,255,0.5);background:rgba(0,212,255,0.08);color:var(--neon-blue)}
+    .opt.selected::before{content:'●';color:var(--neon-blue)}
+    .opt.correct{border-color:rgba(0,255,136,0.6);background:rgba(0,255,136,0.1);color:var(--neon-green);pointer-events:none}
+    .opt.correct::before{content:'✓';color:var(--neon-green)}
+    .opt.wrong{border-color:rgba(255,0,128,0.5);background:rgba(255,0,128,0.08);color:var(--neon-pink);pointer-events:none}
+    .opt.wrong::before{content:'✗';color:var(--neon-pink)}
+    .explain{
+      margin-top:12px;padding:12px 14px;
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);
+      border-radius:8px;font-size:0.88em;color:#cfe9ff;line-height:1.6;display:none;
+    }
+    .explain.show{display:block}
+    .quiz-submit-wrap{text-align:center;margin:28px 0}
+    .quiz-submit-btn{
+      font-family:'Space Mono',monospace;font-size:1.1em;
+      padding:16px 50px;background:transparent;
+      border:2px solid var(--neon-green);color:var(--neon-green);
+      cursor:pointer;text-transform:uppercase;letter-spacing:3px;
+      transition:all .3s;position:relative;overflow:hidden;border-radius:2px;
+    }
+    .quiz-submit-btn:hover{background:rgba(0,255,136,0.08);box-shadow:0 0 30px rgba(0,255,136,.4)}
+    .quiz-result{margin-top:20px}
+    .quiz-footer{
+      background:rgba(10,20,40,0.97);border-top:1px solid rgba(0,255,136,0.3);
+      padding:16px 30px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+    }
+    .quiz-footer-btn{
+      font-family:'Space Mono',monospace;padding:12px 28px;
+      border:2px solid var(--neon-green);background:transparent;
+      color:var(--neon-green);cursor:pointer;font-size:0.95em;transition:all .3s;
+      display:flex;align-items:center;gap:8px;border-radius:2px;
+    }
+    .quiz-footer-btn:hover{background:rgba(0,255,136,0.1);box-shadow:0 0 20px rgba(0,255,136,.3)}
+    .quiz-footer-btn.primary{background:var(--neon-green);color:var(--dark-bg);font-weight:700}
+    .quiz-footer-btn.primary:hover{background:var(--neon-blue);border-color:var(--neon-blue)}
+
+    /* ==================== CERTIFICATE SCREEN ==================== */
+    #cert-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      z-index:996;display:none;flex-direction:column;overflow:hidden;
+    }
+    #cert-screen.active{display:flex}
+    .cert-header-bar{
+      background:rgba(10,20,40,0.97);border-bottom:1px solid rgba(0,255,136,0.3);
+      padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+    }
+    .cert-header-title{font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1em;letter-spacing:2px;text-transform:uppercase}
+    .cert-body{flex:1;overflow-y:auto;padding:40px 60px;max-width:900px;margin:0 auto;width:100%}
+    .cert-body::-webkit-scrollbar{width:6px}
+    .cert-body::-webkit-scrollbar-thumb{background:rgba(0,255,136,0.3);border-radius:3px}
+    .cert-panel{
+      background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.25);
+      border-radius:12px;padding:35px 40px;text-align:center;margin-bottom:28px;
+    }
+    .cert-emoji{font-size:4em;margin-bottom:15px;animation:float 3s ease-in-out infinite}
+    .cert-congrats{font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-green);margin-bottom:10px}
+    .cert-module{color:var(--neon-yellow);font-size:1.1em;margin-bottom:6px}
+    .cert-score-display{font-family:'Space Mono',monospace;font-size:2.5em;color:var(--neon-green);margin:20px 0}
+    .cert-ref{font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)}
+    .cert-download-zone{
+      background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.2);
+      border-radius:10px;padding:25px 30px;margin-bottom:25px;
+    }
+    .cert-download-zone h3{font-family:'Space Mono',monospace;color:var(--neon-blue);margin-bottom:15px;font-size:1em}
+    .cert-name-input{
+      width:100%;max-width:500px;padding:12px 16px;border-radius:8px;
+      border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.2);
+      color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;
+      outline:none;margin-bottom:16px;display:block;transition:border-color .3s;user-select:text;
+    }
+    .cert-name-input:focus{border-color:var(--neon-blue);box-shadow:0 0 15px rgba(0,212,255,0.2)}
+    .cert-dl-btn{
+      font-family:'Space Mono',monospace;font-size:1em;
+      padding:14px 40px;background:linear-gradient(135deg,var(--neon-green),var(--neon-blue));
+      border:none;color:var(--dark-bg);cursor:pointer;text-transform:uppercase;
+      letter-spacing:2px;transition:all .3s;border-radius:4px;font-weight:700;
+    }
+    .cert-dl-btn:hover{transform:scale(1.03);box-shadow:0 0 25px rgba(0,255,136,.4)}
+    .cert-dl-note{margin-top:12px;font-size:0.85em;color:var(--muted)}
+    .skills-list{
+      background:rgba(10,20,40,0.6);border:1px solid rgba(255,255,255,0.08);
+      border-radius:10px;padding:20px 24px;margin-bottom:25px;
+    }
+    .skills-list h3{font-family:'Space Mono',monospace;color:var(--neon-yellow);margin-bottom:15px;font-size:1em}
+    .skills-list ul{list-style:none;padding:0}
+    .skills-list li{
+      padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+      color:#cfe9ff;font-size:0.9em;display:flex;align-items:center;gap:10px;
+    }
+    .skills-list li:last-child{border-bottom:none}
+    .skills-list li::before{content:'✅';flex-shrink:0}
+    .cert-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .cert-action-btn{
+      font-family:'Space Mono',monospace;padding:12px 24px;
+      border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);
+      color:#8899aa;cursor:pointer;font-size:0.85em;
+      transition:all .3s;border-radius:4px;text-decoration:none;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .cert-action-btn:hover{border-color:rgba(0,212,255,0.4);color:var(--neon-blue);background:rgba(0,212,255,0.05)}
+
   </style>
 </head>
 <body>
@@ -822,6 +961,29 @@
   </div>
 
 </div><!-- end #game-screen -->
+
+<!-- ==================== QUIZ SCREEN ==================== -->
+<div id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-title-bar">📝 Quiz de certification — Module 10</div>
+    <div class="quiz-progress-info" id="quiz-progress">Score minimum requis : 70%</div>
+  </div>
+  <div class="quiz-body" id="quiz-body"></div>
+  <div class="quiz-footer">
+    <button class="quiz-footer-btn" onclick="backToGame()">← Retour à l'audit</button>
+    <span style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)" id="quiz-answered-count"></span>
+    <button class="quiz-footer-btn primary" id="quiz-submit-btn" onclick="submitQuiz()">Valider mes réponses ✓</button>
+  </div>
+</div><!-- end #quiz-screen -->
+
+<!-- ==================== CERTIFICATE SCREEN ==================== -->
+<div id="cert-screen">
+  <div class="cert-header-bar">
+    <div class="cert-header-title">🎓 Attestation de réussite — Biais Invisibles</div>
+    <a href="modules.html" class="cert-action-btn">← Retour aux modules</a>
+  </div>
+  <div class="cert-body" id="cert-body"></div>
+</div><!-- end #cert-screen -->
 
 <script>
 /* ===================== DONNÉES DES LEÇONS ===================== */
@@ -1918,9 +2080,355 @@ function gamePrev() {
   }
 }
 
+/* ===================== QUIZ DATA ===================== */
+const quizQuestions = [
+  {
+    q:"Qu'est-ce qu'un biais algorithmique ?",
+    opts:[
+      "Un bug technique qui fait planter le programme",
+      "Une erreur systématique qui avantage ou désavantage certains groupes de façon injuste",
+      "Un virus informatique qui corrompt les données de l'IA",
+      "Une fonction volontaire pour filtrer les mauvais résultats"
+    ],
+    correct:1,
+    explain:"Un biais algorithmique est une erreur systématique et reproductible dans les résultats d'une IA, qui avantage ou désavantage certains groupes de personnes de façon injuste — souvent parce que les données d'entraînement reflètent des inégalités réelles."
+  },
+  {
+    q:"Quelle affaire célèbre implique un algorithme de recrutement qui pénalisait les femmes ?",
+    opts:[
+      "Google Photos (2015)",
+      "COMPAS (2016)",
+      "Amazon Hiring Tool (2018)",
+      "Apple Card (2019)"
+    ],
+    correct:2,
+    explain:"En 2018, Amazon a découvert que son outil de recrutement IA, entraîné sur 10 ans de CV reçus (à majorité masculine), pénalisait automatiquement les CV mentionnant le mot 'femmes'. L'outil a été abandonné."
+  },
+  {
+    q:"Qu'est-ce qu'une variable proxy dans un algorithme ?",
+    opts:[
+      "Une variable de secours si les données principales manquent",
+      "Une variable neutre utilisée pour accélérer les calculs",
+      "Une variable qui, sans être discriminatoire en elle-même, est corrélée à une caractéristique protégée",
+      "Un paramètre de sécurité pour protéger les données personnelles"
+    ],
+    correct:2,
+    explain:"Une variable proxy est une variable qui n'est pas elle-même une caractéristique protégée (genre, origine, âge) mais qui y est fortement corrélée. Par exemple, le code postal peut être un proxy de l'origine ethnique ou sociale."
+  },
+  {
+    q:"Que mesure l'indice 'Disparate Impact' (DI) ?",
+    opts:[
+      "La vitesse de traitement de l'algorithme selon les groupes",
+      "Le rapport entre les taux de résultats positifs de deux groupes",
+      "Le nombre d'erreurs faites par l'algorithme au total",
+      "La différence de prix entre deux produits recommandés"
+    ],
+    correct:1,
+    explain:"Le Disparate Impact compare le taux de résultats positifs (ex : embauche, crédit accordé) entre un groupe défavorisé et un groupe favorisé. Un DI inférieur à 0.80 (règle des 4/5e) indique une discrimination potentielle."
+  },
+  {
+    q:"Quel est le seuil légal du Disparate Impact selon la règle des 4/5e ?",
+    opts:[
+      "DI < 0.50 (moins de 50% du taux du groupe favorisé)",
+      "DI < 0.90 (moins de 90% du taux du groupe favorisé)",
+      "DI < 0.80 (moins de 80% du taux du groupe favorisé)",
+      "DI < 0.60 (moins de 60% du taux du groupe favorisé)"
+    ],
+    correct:2,
+    explain:"La règle des 4/5e stipule qu'un impact disparate est présumé discriminatoire si le taux du groupe défavorisé est inférieur à 80% du taux du groupe le plus favorisé. C'est le seuil utilisé aux États-Unis et repris dans le cadre européen."
+  },
+  {
+    q:"Qu'est-ce qu'une boucle de rétroaction (feedback loop) dans le contexte des biais IA ?",
+    opts:[
+      "Un mécanisme de correction automatique qui réduit les biais au fil du temps",
+      "Un phénomène où les décisions biaisées génèrent de nouvelles données biaisées qui renforcent le biais initial",
+      "Un test de sécurité pour détecter les anomalies dans les algorithmes",
+      "Un algorithme qui apprend des erreurs passées pour ne plus les reproduire"
+    ],
+    correct:1,
+    explain:"Une boucle de rétroaction survient quand les décisions biaisées d'un algorithme produisent des données biaisées qui servent à ré-entraîner l'algorithme, amplifiant le biais à chaque itération. Ex : moins de femmes recrutées → moins de données de 'succès' pour les femmes → algorithme encore plus biaisé."
+  },
+  {
+    q:"Lequel de ces éléments N'EST PAS une variable proxy potentiellement discriminatoire ?",
+    opts:[
+      "Le code postal du candidat",
+      "Le prénom du candidat",
+      "Le score obtenu à un test technique",
+      "Le nom de l'université fréquentée"
+    ],
+    correct:2,
+    explain:"Le score à un test technique, s'il est conçu de façon équitable et directement lié aux compétences requises pour le poste, est une variable légitime. En revanche, le code postal (proxy socio-économique/ethnique), le prénom (proxy genre/origine) et le nom d'université (proxy classe sociale) sont des variables proxies discriminatoires."
+  },
+  {
+    q:"Selon l'AI Act européen (2024), comment sont classifiés les systèmes d'IA utilisés dans le recrutement ?",
+    opts:[
+      "Systèmes à risque minimal — aucune obligation spécifique",
+      "Systèmes à haut risque — audit obligatoire, documentation, supervision humaine requise",
+      "Systèmes interdits — toute IA de recrutement est prohibée en Europe",
+      "Systèmes à risque limité — simple obligation de transparence"
+    ],
+    correct:1,
+    explain:"L'AI Act européen classe les systèmes d'IA de recrutement comme 'systèmes à haut risque'. Cela implique des obligations strictes : documentation technique complète, tests de biais obligatoires, supervision humaine des décisions, et droit à l'explication pour les personnes affectées."
+  },
+  {
+    q:"Quel cas illustre la discrimination par l'algorithme COMPAS dans la justice américaine ?",
+    opts:[
+      "L'algorithme refusait systématiquement les dossiers de crédit des minorités",
+      "L'algorithme classait 2 fois plus souvent les accusés noirs comme 'à haut risque' que les accusés blancs",
+      "L'algorithme recommandait des publicités racistes sur les réseaux sociaux",
+      "L'algorithme refusait les demandes d'emploi basées sur la localisation géographique"
+    ],
+    correct:1,
+    explain:"Analysé par ProPublica en 2016, COMPAS (utilisé par des tribunaux américains pour prédire le risque de récidive) classait les accusés noirs comme 'à haut risque' deux fois plus souvent que les accusés blancs, à niveau de risque réel comparable."
+  },
+  {
+    q:"Parmi ces recommandations, laquelle est LA PLUS efficace pour réduire les biais algorithmiques ?",
+    opts:[
+      "Interdire toute utilisation de l'IA dans des domaines sensibles",
+      "Augmenter la puissance de calcul des algorithmes",
+      "Auditer les données d'entraînement, diversifier les équipes, implémenter des métriques d'équité dès la conception",
+      "Demander aux utilisateurs de signaler eux-mêmes les biais qu'ils détectent"
+    ],
+    correct:2,
+    explain:"La réduction des biais algorithmiques nécessite une approche multi-niveaux : auditer les données d'entraînement (provenance, représentativité), diversifier les équipes de développement, définir et tester des métriques d'équité avant et pendant le déploiement, et effectuer des audits indépendants réguliers."
+  }
+];
+
+const quizAnswers = {};
+let quizScore = 0;
+let quizSubmitted = false;
+
 function launchQuiz() {
-  // Phase 4 : le quiz sera ajouté ici
-  alert('Le quiz de validation arrive dans la prochaine étape !');
+  document.getElementById('game-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  renderQuiz();
+}
+
+function backToGame() {
+  if(quizSubmitted) return;
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('game-screen').classList.add('active');
+}
+
+function renderQuiz() {
+  const body = document.getElementById('quiz-body');
+  body.innerHTML = `
+    <div class="quiz-intro">
+      <h3>📝 Quiz de certification — Biais Algorithmiques</h3>
+      Vous avez terminé l'audit de l'algorithme NEXUS-RH. Ce quiz valide vos connaissances sur les biais algorithmiques.
+      Répondez aux 10 questions pour obtenir votre attestation.<br><br>
+      <strong style="color:var(--neon-green)">Score minimum requis : 70% (7/10 bonnes réponses)</strong>
+    </div>
+    ${quizQuestions.map((q,i) => `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-head">Q${i+1} / ${quizQuestions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="opts">
+          ${q.opts.map((o,j) => `
+            <div class="opt" data-q="${i}" data-o="${j}" onclick="answerQuiz(${i},${j})">${o}</div>
+          `).join('')}
+        </div>
+        <div class="explain" id="explain-${i}">💡 ${q.explain}</div>
+      </div>
+    `).join('')}
+    <div class="quiz-submit-wrap">
+      <button class="quiz-submit-btn" id="quiz-submit-inner-btn" onclick="submitQuiz()">✅ Valider mes réponses</button>
+    </div>
+    <div class="quiz-result" id="quiz-result"></div>
+  `;
+  updateAnsweredCount();
+}
+
+function answerQuiz(qIdx, oIdx) {
+  if(quizSubmitted) return;
+  quizAnswers[qIdx] = oIdx;
+  document.querySelectorAll(`.opt[data-q="${qIdx}"]`).forEach(el => {
+    el.classList.remove('selected');
+    if(parseInt(el.dataset.o) === oIdx) el.classList.add('selected');
+  });
+  document.getElementById('qcard-'+qIdx).classList.add('answered');
+  updateAnsweredCount();
+}
+
+function updateAnsweredCount() {
+  const count = Object.keys(quizAnswers).length;
+  document.getElementById('quiz-answered-count').textContent = `${count}/${quizQuestions.length} répondu(es)`;
+}
+
+function submitQuiz() {
+  const answered = Object.keys(quizAnswers).length;
+  if(answered < quizQuestions.length) {
+    alert(`Veuillez répondre à toutes les questions ! (${quizQuestions.length - answered} restante(s))`);
+    return;
+  }
+  quizSubmitted = true;
+  quizScore = 0;
+  quizQuestions.forEach((q,i) => {
+    const userAns = quizAnswers[i];
+    const opts = document.querySelectorAll(`.opt[data-q="${i}"]`);
+    opts.forEach(el => {
+      const oIdx = parseInt(el.dataset.o);
+      el.style.pointerEvents = 'none';
+      if(oIdx === q.correct) el.classList.add('correct');
+      else if(oIdx === userAns && userAns !== q.correct) el.classList.add('wrong');
+    });
+    document.getElementById('explain-'+i).classList.add('show');
+    if(userAns === q.correct) quizScore++;
+  });
+
+  const pct = Math.round((quizScore / quizQuestions.length) * 100);
+  const passed = pct >= 70;
+
+  document.getElementById('quiz-submit-inner-btn').style.display = 'none';
+  document.getElementById('quiz-submit-btn').style.display = 'none';
+  document.getElementById('quiz-answered-count').textContent = `Score : ${quizScore}/${quizQuestions.length} — ${pct}%`;
+
+  document.getElementById('quiz-result').innerHTML = `
+    <div class="callout ${passed ? 'ok' : 'warn'}" style="text-align:center;padding:30px;margin:20px 0">
+      <div style="font-size:2.5em;margin-bottom:12px">${passed ? '🎉' : '📚'}</div>
+      <h3 style="color:${passed ? 'var(--neon-green)' : 'var(--neon-orange)'};margin-bottom:12px;font-family:'Space Mono',monospace">
+        ${passed ? 'Félicitations !' : 'Score insuffisant'}
+      </h3>
+      <p style="font-size:1.3em;margin-bottom:10px">
+        <strong>${quizScore}/${quizQuestions.length}</strong> — <strong>${pct}%</strong>
+      </p>
+      <p style="line-height:1.7;color:#cfe9ff">
+        ${passed
+          ? 'Vous avez démontré une excellente compréhension des biais algorithmiques et des mécanismes de discrimination. Votre attestation est débloquée !'
+          : 'Il faut au moins 70% pour valider ce module. Relisez les dossiers de formation et retentez le quiz.'}
+      </p>
+      ${passed
+        ? `<button class="quiz-footer-btn primary" onclick="showCertificate(${pct})" style="margin-top:20px;cursor:pointer">🎓 Obtenir mon attestation →</button>`
+        : `<button class="quiz-footer-btn" onclick="retryQuiz()" style="margin-top:20px;border-color:var(--neon-orange);color:var(--neon-orange);cursor:pointer">🔄 Réessayer</button>`
+      }
+    </div>
+  `;
+  document.getElementById('quiz-result').scrollIntoView({behavior:'smooth'});
+}
+
+function retryQuiz() {
+  quizSubmitted = false;
+  Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+  quizScore = 0;
+  renderQuiz();
+  document.getElementById('quiz-body').scrollTop = 0;
+}
+
+/* ===================== CERTIFICATE ===================== */
+function showCertificate(pct) {
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('cert-screen').classList.add('active');
+  const certRef = 'IA-BIAIS-' + String(Math.floor(Math.random()*90000)+10000);
+  const date = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+
+  document.getElementById('cert-body').innerHTML = `
+    <div class="cert-panel">
+      <div class="cert-emoji">⚖️</div>
+      <div class="cert-congrats">Mission accomplie, ARIA !</div>
+      <div class="cert-module">Module 10 — Biais Invisibles</div>
+      <p style="color:#8899aa;margin-bottom:15px">Algorithmes sous surveillance — Opération Équité</p>
+      <div class="cert-score-display">${pct}%</div>
+      <p style="color:#cfe9ff;margin-bottom:10px">Score de certification</p>
+      <div class="cert-ref">Référence : ${certRef}</div>
+    </div>
+
+    <div class="cert-download-zone">
+      <h3>📥 Télécharger votre attestation officielle</h3>
+      <p style="color:#8899aa;margin-bottom:16px;font-size:0.9em">Renseignez votre nom pour personnaliser votre attestation.</p>
+      <input
+        class="cert-name-input"
+        id="cert-name-input"
+        type="text"
+        placeholder="Prénom NOM"
+        autocomplete="name"
+      />
+      <button class="cert-dl-btn" onclick="downloadCertificate(${pct}, '${certRef}', '${date}')">
+        📥 Télécharger (HTML → PDF)
+      </button>
+      <p class="cert-dl-note">Ouvrez le fichier HTML téléchargé et utilisez Ctrl+P pour l'imprimer en PDF.</p>
+    </div>
+
+    <div class="skills-list">
+      <h3>✅ Compétences validées</h3>
+      <ul>
+        <li>Identifier et définir les biais algorithmiques et leurs sources</li>
+        <li>Reconnaître les cas réels de discrimination algorithmique (Amazon, COMPAS, Apple Card)</li>
+        <li>Comprendre le mécanisme des variables proxies discriminatoires</li>
+        <li>Analyser des statistiques de sélection avec la métrique d'impact disparate (DI)</li>
+        <li>Comparer des profils pour détecter des décisions discriminatoires</li>
+        <li>Identifier les variables problématiques dans un algorithme</li>
+        <li>Connaître les métriques d'équité et les obligations légales (AI Act)</li>
+        <li>Proposer des recommandations pour une IA plus équitable</li>
+      </ul>
+    </div>
+
+    <div class="cert-actions">
+      <a href="modules.html" class="cert-action-btn">← Retour aux modules</a>
+      <button class="cert-action-btn" onclick="document.getElementById('cert-name-input').focus()">✏️ Modifier mon nom</button>
+    </div>
+  `;
+}
+
+function downloadCertificate(pct, certRef, date) {
+  const name = (document.getElementById('cert-name-input')?.value || '').trim() || 'Participant(e)';
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Attestation Module 10 — Biais Invisibles</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #ffe66d;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(255,230,109,.3),inset 0 0 60px rgba(0,212,255,.1)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(0,212,255,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#ffe66d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#00d4ff;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(0,212,255,.3);border-bottom:1px solid rgba(0,212,255,.3)}
+.mod{background:rgba(255,230,109,.1);border:1px solid rgba(255,230,109,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#ffe66d;font-size:1.3em;font-weight:600;margin-bottom:8px}
+.mod-sub{color:#b0b0b0;font-size:0.95em;margin-bottom:10px}
+.sc{display:inline-block;background:linear-gradient(135deg,#ffe66d,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:30px;border-top:1px solid rgba(0,212,255,.2)}
+.fi{text-align:center}.fl{color:#888;font-size:.85em;margin-bottom:5px}.fv{color:#00d4ff;font-weight:600}
+.sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+.sk span{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:5px 15px;border-radius:15px;font-size:.82em;color:#00d4ff}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style></head><body><div class="cert">
+<div class="hd"><div class="logo">⚖️</div>
+<div class="ttl">Attestation de Réussite</div>
+<div class="sub">Formation IA Responsable</div></div>
+<div class="cnt">
+<p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p>
+<div class="nm">${name}</div>
+<p>a complété avec succès le</p>
+<div class="mod">
+<div class="mod-t">Module 10 : Biais Invisibles</div>
+<div class="mod-sub">Algorithmes sous surveillance — Opération Équité<br>Biais algorithmiques &amp; discrimination</div>
+<div class="sc">Score : ${pct}%</div>
+</div>
+<p style="margin-bottom:18px">Compétences validées :</p>
+<div class="sk">
+<span>Biais Algorithmiques</span>
+<span>Variables Proxies</span>
+<span>Disparate Impact</span>
+<span>Audit IA</span>
+<span>Discrimination Indirecte</span>
+<span>AI Act Européen</span>
+<span>Métriques d'Équité</span>
+<span>IA Responsable</span>
+</div>
+<div class="ft">
+<div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div>
+<div class="fi"><div class="fl">Référence</div><div class="fv">${certRef}</div></div>
+<div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div>
+</div>
+</div></div></body></html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Attestation_Module10_BiaisAlgorithmiques_${name.replace(/\s+/g,'_')}.html`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 </script>
 
