@@ -760,6 +760,30 @@
     .zone-complete-banner h3 { color: var(--neon-green); font-family: 'Space Mono', monospace; margin-bottom: 10px; font-size: 1.2em; }
     .zone-complete-banner p { color: #aabbcc; line-height: 1.7; margin-bottom: 20px; }
 
+    /* Word cards Zone 2 */
+    .word-card {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      text-align: center;
+      padding: 16px 10px;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 10px;
+      color: var(--neon-blue);
+      cursor: pointer;
+      transition: all .25s;
+      user-select: none;
+    }
+    .word-card:hover:not(.paired) { background: rgba(0,212,255,0.12); border-color: rgba(0,212,255,0.5); transform: translateY(-2px); }
+    .word-card.selected-card { background: rgba(255,159,67,0.15); border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 15px rgba(255,159,67,0.3); transform: scale(1.05); }
+    .word-card.paired { cursor: default; }
+    .word-card.wrong-card { background: rgba(255,0,128,0.1); border-color: var(--neon-pink); color: var(--neon-pink); animation: shake .4s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX(6px); }
+    }
+
     /* Toast notification */
     #toast {
       position: fixed;
@@ -1486,7 +1510,7 @@
         renderZone1();
       } else if (n === 2) {
         document.getElementById('game-zone-name').textContent = '🌌 Zone 2 — La Galaxie Sémantique';
-        body.innerHTML = '<div style="text-align:center;padding:80px 20px"><div style="font-size:4em;margin-bottom:20px">⏳</div><p style="color:#8899aa;font-family:\'Space Mono\',monospace">Zone 2 à venir...</p></div>';
+        renderZone2();
       } else if (n === 3) {
         document.getElementById('game-zone-name').textContent = '🔮 Zone 3 — L\'Oracle Probabiliste';
         body.innerHTML = '<div style="text-align:center;padding:80px 20px"><div style="font-size:4em;margin-bottom:20px">⏳</div><p style="color:#8899aa;font-family:\'Space Mono\',monospace">Zone 3 à venir...</p></div>';
@@ -1649,8 +1673,240 @@
       toast('🎉 Zone 1 terminée ! Score : ' + correct + '/' + tokenChallenges.length, 4000);
     }
 
-    // ==================== PARTICULES DÉCO ====================
-    function createParticles() {
+    // ==================== ZONE 2 — LA GALAXIE SÉMANTIQUE ====================
+    // Partie A : Paires sémantiques (trouver les 4 paires parmi 8 mots)
+    const semanticPairs = [
+      { words: ['chat', 'chien'],    label: 'Animaux domestiques',  color: '#ff6b6b' },
+      { words: ['roi', 'reine'],     label: 'Royauté',              color: '#a855f7' },
+      { words: ['voiture', 'train'], label: 'Transport terrestre',  color: '#00d4ff' },
+      { words: ['médecin', 'infirmier'], label: 'Santé',             color: '#00ff88' }
+    ];
+    // Mélange des 8 mots
+    const allWords = semanticPairs.flatMap(p => p.words).sort(() => Math.random() - 0.5);
+
+    // Partie B : Analogies (3 questions)
+    const analogies = [
+      {
+        stem:    'Roi : Reine :: Homme :',
+        options: ['Fille', 'Femme', 'Monsieur', 'Dame'],
+        correct: 1,
+        explain: '💡 C\'est l\'analogie classique des embeddings : vec(Roi) − vec(Homme) + vec(Femme) ≈ vec(Reine). Le vecteur "royauté" est conservé, seul le genre change.'
+      },
+      {
+        stem:    'Paris : France :: Tokyo :',
+        options: ['Asie', 'Chine', 'Japon', 'Kyoto'],
+        correct: 2,
+        explain: '💡 La relation "capitale de" est encodée dans l\'espace vectoriel. L\'IA peut résoudre : vec(Paris) − vec(France) + vec(Japon) ≈ vec(Tokyo).'
+      },
+      {
+        stem:    'Chaud : Froid :: Jour :',
+        options: ['Soleil', 'Lumière', 'Soir', 'Nuit'],
+        correct: 3,
+        explain: '💡 Les opposés sont proches dans l\'espace vectoriel (direction inverse). La relation "antonyme" est capturée par les embeddings.'
+      }
+    ];
+
+    let z2State = {
+      selected: null,
+      foundPairs: [],
+      tries: 0,
+      analogueAnswers: {},
+      pairsDone: false,
+      analogsDone: false
+    };
+
+    function renderZone2() {
+      z2State = { selected: null, foundPairs: [], tries: 0, analogueAnswers: {}, pairsDone: false, analogsDone: false };
+      const wordsShuffled = semanticPairs.flatMap(p => p.words).sort(() => Math.random() - 0.5);
+
+      const body = document.getElementById('game-body');
+      body.innerHTML = `
+        <div class="zone-header">
+          <div class="zone-number">ZONE 02 · EMBEDDINGS</div>
+          <div class="zone-title">🌌 La Galaxie Sémantique</div>
+          <p class="zone-desc">
+            Dans l'espace des embeddings, les mots de <strong>sens proche</strong> sont
+            <strong>proches mathématiquement</strong>. À toi de retrouver les 4 paires de mots
+            qui partagent un espace sémantique, puis de compléter des analogies vectorielles.
+          </p>
+        </div>
+
+        <!-- Partie A : Paires -->
+        <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(0,212,255,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px">
+          <h3 style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE A · Paires Sémantiques</h3>
+          <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">Clique sur deux mots pour les associer. Trouve les 4 paires de mots sémantiquement proches.</p>
+          <div id="z2-pair-status" style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:0.85em;margin-bottom:15px">
+            Paires trouvées : 0/4
+          </div>
+          <div id="word-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+            ${wordsShuffled.map(w => `
+              <div class="word-card" id="wc-${w}" data-word="${w}" onclick="selectWord('${w}')">
+                ${w}
+              </div>
+            `).join('')}
+          </div>
+          <div id="z2-pairs-result"></div>
+        </div>
+
+        <!-- Partie B : Analogies -->
+        <div id="z2-analogies-section" style="background:rgba(10,20,40,0.8);border:1px solid rgba(168,85,247,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px;opacity:0.4;pointer-events:none">
+          <h3 style="color:#a855f7;font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE B · Analogies Vectorielles</h3>
+          <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">
+            🔒 Débloque la Partie B en complétant les paires sémantiques.
+          </p>
+          <div id="z2-analogies-content"></div>
+        </div>
+
+        <button class="zone-btn" id="z2-next-btn" onclick="completeZone2()" disabled>
+          Passer à la Zone 3 → L'Oracle Probabiliste 🔮
+        </button>
+      `;
+    }
+
+    function selectWord(word) {
+      // Déjà apparié ?
+      const pairIdx = z2State.foundPairs.findIndex(p => p.words.includes(word));
+      if (pairIdx !== -1) return;
+
+      const card = document.getElementById('wc-' + word);
+      if (!card || card.classList.contains('paired')) return;
+
+      if (z2State.selected === null) {
+        z2State.selected = word;
+        card.classList.add('selected-card');
+      } else if (z2State.selected === word) {
+        card.classList.remove('selected-card');
+        z2State.selected = null;
+      } else {
+        // Tentative de paire
+        z2State.tries++;
+        const w1 = z2State.selected;
+        const w2 = word;
+        const matchPair = semanticPairs.find(p => p.words.includes(w1) && p.words.includes(w2));
+
+        const card1 = document.getElementById('wc-' + w1);
+        card1.classList.remove('selected-card');
+
+        if (matchPair) {
+          // Succès
+          z2State.foundPairs.push(matchPair);
+          [w1, w2].forEach(w => {
+            const c = document.getElementById('wc-' + w);
+            c.classList.add('paired');
+            c.style.borderColor = matchPair.color;
+            c.style.color = matchPair.color;
+            c.style.background = matchPair.color + '18';
+            c.style.boxShadow = `0 0 12px ${matchPair.color}44`;
+          });
+          document.getElementById('z2-pair-status').textContent =
+            `Paires trouvées : ${z2State.foundPairs.length}/4 — ${matchPair.label} ✓`;
+          toast('✅ Paire trouvée : ' + matchPair.label + ' !');
+
+          if (z2State.foundPairs.length === 4) {
+            z2State.pairsDone = true;
+            document.getElementById('z2-pairs-result').innerHTML = `
+              <div style="text-align:center;color:var(--neon-green);font-family:'Space Mono',monospace;font-size:0.9em;padding:12px;border:1px solid rgba(0,255,136,0.3);border-radius:8px;background:rgba(0,255,136,0.06)">
+                🎉 4/4 paires trouvées en ${z2State.tries} tentatives !<br>
+                <span style="font-size:0.85em;color:#8899aa">Ces mots proches ont des <em>vecteurs proches</em> dans l'espace des embeddings.</span>
+              </div>`;
+            // Débloquer analogies
+            const anSection = document.getElementById('z2-analogies-section');
+            anSection.style.opacity = '1';
+            anSection.style.pointerEvents = 'auto';
+            anSection.innerHTML = anSection.innerHTML.replace('🔒 Débloque la Partie B en complétant les paires sémantiques.', 'Complete les 3 analogies vectorielles ci-dessous.');
+            renderAnalogies();
+          }
+        } else {
+          // Échec
+          [w1, w2].forEach(w => {
+            const c = document.getElementById('wc-' + w);
+            c.classList.add('wrong-card');
+            setTimeout(() => c.classList.remove('wrong-card'), 700);
+          });
+          toast('❌ Ces deux mots ne sont pas une paire sémantique.');
+        }
+
+        z2State.selected = null;
+      }
+    }
+
+    function renderAnalogies() {
+      let html = '';
+      analogies.forEach((an, i) => {
+        html += `
+          <div class="challenge-card" id="an-${i}" style="border-color:rgba(168,85,247,0.25);margin-bottom:16px">
+            <div class="challenge-num">ANALOGIE ${i+1}/3</div>
+            <div style="font-family:'Space Mono',monospace;font-size:1.1em;color:#a855f7;margin-bottom:16px;line-height:1.6">
+              ${an.stem} <span style="color:var(--neon-orange)">?</span>
+            </div>
+            <div class="token-options" style="gap:8px">
+              ${an.options.map((opt, j) => `
+                <div class="token-option" id="an-opt-${i}-${j}"
+                     style="border-color:rgba(168,85,247,0.25)"
+                     onclick="answerAnalogy(${i}, ${j})">
+                  <span class="option-label" style="color:#a855f7">${String.fromCharCode(65+j)}</span>
+                  <span style="font-family:'Space Mono',monospace;color:var(--text)">${opt}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="challenge-explain" id="an-explain-${i}">${an.explain}</div>
+          </div>
+        `;
+      });
+      document.getElementById('z2-analogies-content').innerHTML = html;
+    }
+
+    function answerAnalogy(idx, optIdx) {
+      if (z2State.analogueAnswers.hasOwnProperty(idx)) return;
+      const an = analogies[idx];
+      const isCorrect = optIdx === an.correct;
+      z2State.analogueAnswers[idx] = isCorrect;
+
+      an.options.forEach((_, j) => {
+        const el = document.getElementById(`an-opt-${idx}-${j}`);
+        el.classList.add('disabled');
+        if (j === an.correct) el.classList.add('correct');
+        else if (j === optIdx && !isCorrect) el.classList.add('wrong');
+      });
+
+      document.getElementById(`an-explain-${idx}`).classList.add('show');
+      if (isCorrect) toast('✅ Bonne analogie !');
+      else toast('❌ Pas tout à fait — les vecteurs pointent différemment !');
+
+      if (Object.keys(z2State.analogueAnswers).length === analogies.length) {
+        z2State.analogsDone = true;
+        document.getElementById('z2-next-btn').disabled = false;
+        toast('🎉 Zone 2 terminée ! Passe à l\'Oracle !', 4000);
+      }
+    }
+
+    function completeZone2() {
+      const anCorrect = Object.values(z2State.analogueAnswers).filter(v => v).length;
+      gameState.zone2Score = z2State.foundPairs.length + anCorrect;
+      gameState.zone2Total = 4 + analogies.length;
+      gameState.zonesCompleted[1] = true;
+
+      document.getElementById('dot-2').classList.remove('active');
+      document.getElementById('dot-2').classList.add('done');
+
+      const body = document.getElementById('game-body');
+      body.scrollTop = 0;
+      const banner = document.createElement('div');
+      banner.className = 'zone-complete-banner';
+      banner.style.marginBottom = '20px';
+      banner.innerHTML = `
+        <h3>🌌 Zone 2 complétée !</h3>
+        <p>Tu as exploré la galaxie sémantique : <strong>${z2State.foundPairs.length}/4</strong> paires
+        et <strong>${anCorrect}/${analogies.length}</strong> analogies réussies.<br>
+        Tu comprends maintenant pourquoi l'IA peut "raisonner" par analogie — c'est du calcul vectoriel !<br>
+        Dernière zone : comment l'IA <em>génère</em> réellement du texte ?</p>
+        <button class="zone-btn" style="max-width:420px;margin:0 auto;" onclick="loadZone(3)">
+          🔮 Entrer dans l'Oracle Probabiliste →
+        </button>
+      `;
+      body.insertBefore(banner, body.firstChild);
+      toast('🎉 Zone 2 terminée !', 4000);
+    }
   </script>
 
 </body>
