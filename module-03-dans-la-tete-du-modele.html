@@ -1513,7 +1513,7 @@
         renderZone2();
       } else if (n === 3) {
         document.getElementById('game-zone-name').textContent = '🔮 Zone 3 — L\'Oracle Probabiliste';
-        body.innerHTML = '<div style="text-align:center;padding:80px 20px"><div style="font-size:4em;margin-bottom:20px">⏳</div><p style="color:#8899aa;font-family:\'Space Mono\',monospace">Zone 3 à venir...</p></div>';
+        renderZone3();
       }
     }
 
@@ -1906,6 +1906,214 @@
       `;
       body.insertBefore(banner, body.firstChild);
       toast('🎉 Zone 2 terminée !', 4000);
+    }
+
+    // ==================== ZONE 3 — L'ORACLE PROBABILISTE ====================
+    const predictionChallenges = [
+      {
+        prompt: 'La capitale de la France est',
+        insight: '📊 Haute confiance',
+        question: 'Quel token l\'IA va-t-elle choisir ?',
+        options: [
+          { word: 'Paris',   pct: 87, color: '#00ff88', correct: true },
+          { word: 'Lyon',    pct: 8,  color: '#00d4ff', correct: false },
+          { word: 'une',     pct: 3,  color: '#8899aa', correct: false },
+          { word: 'grande',  pct: 2,  color: '#8899aa', correct: false }
+        ],
+        explain: '💡 Question factuelle très claire → le modèle est très confiant : 87% pour "Paris". La connaissance est encodée dans les poids du modèle, pas dans une base de données.'
+      },
+      {
+        prompt: 'Il était une',
+        insight: '📖 Formule classique',
+        question: 'Début de conte typique — que prédit l\'IA ?',
+        options: [
+          { word: 'fois',   pct: 71, color: '#00ff88', correct: true },
+          { word: 'nuit',   pct: 16, color: '#00d4ff', correct: false },
+          { word: 'femme',  pct: 8,  color: '#8899aa', correct: false },
+          { word: 'belle',  pct: 5,  color: '#8899aa', correct: false }
+        ],
+        explain: '💡 "Il était une fois" est une formule tellement fréquente dans les textes d\'entraînement que l\'IA l\'a apprise comme un pattern fort. 71% pour "fois" !'
+      },
+      {
+        prompt: 'Pour résoudre ce problème, plusieurs approches',
+        insight: '🎲 Probabilités dispersées',
+        question: 'Quand les probabilités sont proches, que se passe-t-il ?',
+        options: [
+          { word: 'sont',      pct: 34, color: '#ff9f43', correct: true },
+          { word: 'peuvent',   pct: 28, color: '#ff9f43', correct: false },
+          { word: 'existent',  pct: 22, color: '#8899aa', correct: false },
+          { word: 'méritent',  pct: 16, color: '#8899aa', correct: false }
+        ],
+        explain: '💡 Quand les probabilités sont proches (34% vs 28%!), le choix final dépend de la <strong>température</strong>. Avec température haute, l\'IA peut choisir "méritent" et être créative. C\'est pourquoi deux générations du même prompt donnent des résultats différents !'
+      },
+      {
+        prompt: 'La Terre tourne autour du',
+        insight: '🌍 Fait scientifique',
+        question: 'L\'IA a-t-elle appris la science ?',
+        options: [
+          { word: 'soleil',  pct: 94, color: '#00ff88', correct: true },
+          { word: 'monde',   pct: 3,  color: '#8899aa', correct: false },
+          { word: 'ciel',    pct: 2,  color: '#8899aa', correct: false },
+          { word: 'nord',    pct: 1,  color: '#8899aa', correct: false }
+        ],
+        explain: '💡 94% — très haute confiance ! Ce fait est tellement présent dans les textes d\'entraînement que le modèle le "sait" avec quasi-certitude. Mais attention : ce n\'est pas une compréhension, c\'est un pattern très renforcé.'
+      },
+      {
+        prompt: 'Le chat regardait par la fenêtre, fasciné par',
+        insight: '✨ Contexte créatif',
+        question: 'Plusieurs fins sont plausibles — laquelle est la plus probable ?',
+        options: [
+          { word: 'les oiseaux',    pct: 41, color: '#00ff88', correct: true },
+          { word: 'la pluie',       pct: 27, color: '#00d4ff', correct: false },
+          { word: 'la rue animée',  pct: 19, color: '#8899aa', correct: false },
+          { word: 'son reflet',     pct: 13, color: '#8899aa', correct: false }
+        ],
+        explain: '💡 Dans un contexte narratif avec un chat, "les oiseaux" est la continuation la plus probable (41%) — les chats et les oiseaux cohabitent fréquemment dans les textes ! Mais "la pluie" (27%) ou "son reflet" (13%) sont tout à fait valides selon la température.'
+      }
+    ];
+
+    let z3Answers = {};
+
+    function renderZone3() {
+      z3Answers = {};
+      const body = document.getElementById('game-body');
+      let html = `
+        <div class="zone-header">
+          <div class="zone-number">ZONE 03 · PRÉDICTION</div>
+          <div class="zone-title">🔮 L'Oracle Probabiliste</div>
+          <p class="zone-desc">
+            L'IA ne "choisit" pas un mot — elle calcule une <strong>distribution de probabilités</strong>
+            sur tous les tokens possibles. Pour chaque phrase, identifie le token
+            que l'IA choisirait le plus probablement.
+          </p>
+        </div>
+        <div class="zone-score-bar">
+          <span class="zone-score-label">PROGRESSION</span>
+          <div class="zone-score-track"><div class="zone-score-fill" id="z3-fill"></div></div>
+          <span class="zone-score-num" id="z3-score">0/${predictionChallenges.length}</span>
+        </div>
+      `;
+
+      predictionChallenges.forEach((ch, i) => {
+        html += `
+          <div class="challenge-card" id="pchallenge-${i}" style="border-color:rgba(0,255,136,0.2)">
+            <div class="challenge-num" style="color:#00d4ff">PRÉDICTION ${i+1}/${predictionChallenges.length} · ${ch.insight}</div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:14px 18px;margin-bottom:10px;font-family:'Space Mono',monospace;color:var(--neon-red);font-size:0.95em;line-height:1.6">
+              "${ch.prompt} <span style='color:var(--neon-orange);animation:blink 1s infinite'>▌</span>"
+            </div>
+            <p style="color:#8899aa;font-size:0.85em;margin-bottom:14px">${ch.question}</p>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px">
+              ${ch.options.map((opt, j) => `
+                <div class="pred-option" id="pred-${i}-${j}" onclick="answerZ3(${i}, ${j})"
+                     style="display:flex;align-items:center;gap:12px;padding:12px 16px;
+                            background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.2);
+                            border-radius:8px;cursor:pointer;transition:all .25s">
+                  <span style="font-family:'Space Mono',monospace;font-size:0.95em;width:110px;flex-shrink:0;color:var(--text)">"${opt.word}"</span>
+                  <div style="flex:1;height:24px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;position:relative">
+                    <div id="pred-bar-${i}-${j}" style="height:100%;width:0%;background:linear-gradient(90deg,${opt.color}88,${opt.color});border-radius:4px;transition:width 0.8s ease"></div>
+                  </div>
+                  <span id="pred-pct-${i}-${j}" style="font-family:'Space Mono',monospace;font-size:0.8em;color:#8899aa;width:38px;text-align:right">?</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="challenge-explain" id="pexplain-${i}">${ch.explain}</div>
+          </div>
+        `;
+      });
+
+      html += `
+        <button class="zone-btn" id="z3-next-btn" onclick="completeZone3()" disabled
+                style="border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.1)">
+          📜 Accéder au Quiz de certification →
+        </button>
+      `;
+
+      body.innerHTML = html;
+
+      // Animer le curseur
+      const style = document.createElement('style');
+      style.textContent = '@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }';
+      document.head.appendChild(style);
+    }
+
+    function answerZ3(challengeIdx, optionIdx) {
+      if (z3Answers.hasOwnProperty(challengeIdx)) return;
+      const ch = predictionChallenges[challengeIdx];
+      const isCorrect = ch.options[optionIdx].correct;
+      z3Answers[challengeIdx] = isCorrect;
+
+      // Révéler toutes les probabilités avec animation
+      ch.options.forEach((opt, j) => {
+        setTimeout(() => {
+          document.getElementById(`pred-bar-${challengeIdx}-${j}`).style.width = opt.pct + '%';
+          document.getElementById(`pred-pct-${challengeIdx}-${j}`).textContent = opt.pct + '%';
+          document.getElementById(`pred-pct-${challengeIdx}-${j}`).style.color = opt.correct ? '#00ff88' : '#8899aa';
+        }, j * 150);
+
+        const el = document.getElementById(`pred-${challengeIdx}-${j}`);
+        el.style.cursor = 'default';
+        el.onclick = null;
+        if (opt.correct) {
+          el.style.borderColor = '#00ff88';
+          el.style.background = 'rgba(0,255,136,0.08)';
+        }
+        if (j === optionIdx && !opt.correct) {
+          el.style.borderColor = 'var(--neon-pink)';
+          el.style.background = 'rgba(255,0,128,0.06)';
+        }
+      });
+
+      document.getElementById(`pexplain-${challengeIdx}`).classList.add('show');
+
+      // Update score
+      const answered = Object.keys(z3Answers).length;
+      const correct = Object.values(z3Answers).filter(v => v).length;
+      document.getElementById('z3-fill').style.width = (answered / predictionChallenges.length * 100) + '%';
+      document.getElementById('z3-score').textContent = `${correct}/${answered} correct${correct > 1 ? 's' : ''}`;
+      if (answered >= 3) document.getElementById('z3-next-btn').disabled = false;
+
+      if (isCorrect) toast('✅ Bonne prédiction !');
+      else toast('❌ Pas tout à fait — les probabilités sont révélées !');
+    }
+
+    function completeZone3() {
+      const correct = Object.values(z3Answers).filter(v => v).length;
+      gameState.zone3Score = correct;
+      gameState.zonesCompleted[2] = true;
+
+      document.getElementById('dot-3').classList.remove('active');
+      document.getElementById('dot-3').classList.add('done');
+
+      const body = document.getElementById('game-body');
+      body.scrollTop = 0;
+      const banner = document.createElement('div');
+      banner.className = 'zone-complete-banner';
+      banner.style.marginBottom = '20px';
+      banner.innerHTML = `
+        <h3>🔮 Les 3 zones complétées !</h3>
+        <p>Tu as exploré les entrailles d'un LLM de l'intérieur.<br>
+        Tokens, vecteurs, probabilités — tu sais maintenant <em>vraiment</em> comment l'IA "pense".<br>
+        Prouve tes connaissances avec le <strong>Quiz de certification</strong> !</p>
+        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:5px">
+          <div style="text-align:center;padding:10px 20px;border:1px solid rgba(255,107,107,0.3);border-radius:8px">
+            <div style="font-family:'Space Mono',monospace;color:var(--neon-red);font-size:1.2em">${gameState.zone1Score}/5</div>
+            <div style="font-size:0.8em;color:#8899aa">Zone 1 · Tokens</div>
+          </div>
+          <div style="text-align:center;padding:10px 20px;border:1px solid rgba(0,212,255,0.3);border-radius:8px">
+            <div style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:1.2em">${gameState.zone2Score}/${gameState.zone2Total}</div>
+            <div style="font-size:0.8em;color:#8899aa">Zone 2 · Vecteurs</div>
+          </div>
+          <div style="text-align:center;padding:10px 20px;border:1px solid rgba(0,255,136,0.3);border-radius:8px">
+            <div style="font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1.2em">${correct}/5</div>
+            <div style="font-size:0.8em;color:#8899aa">Zone 3 · Prédiction</div>
+          </div>
+        </div>
+        <button class="zone-btn" style="max-width:420px;margin:20px auto 0;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="startQuiz()">
+          📜 Passer le Quiz de certification →
+        </button>
+      `;
+      body.insertBefore(banner, body.firstChild);
+      toast('🎉 Toutes les zones complétées !', 4000);
     }
   </script>
 
