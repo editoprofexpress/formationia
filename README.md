@@ -35,7 +35,7 @@ Former le grand public (notamment les jeunes et enseignants) aux enjeux de l'IA 
 ### Fondations IA (1-4)
 1. **Démystifier l'IA** *(Dossier Zéro)* - Mission d'enquête ✅ *Disponible*
 2. **Données sous influence** - Apprentissage & biais, jeu de simulation ✅ *Disponible*
-3. **Dans la tête d'un modèle** - Similarité et prédiction, exploration interactive ⏳ *Bientôt*
+3. **Dans la tête d'un modèle** *(NEURONAUT)* - Tokenisation, embeddings, attention, prédiction ✅ *Disponible*
 4. **Générer sans comprendre** - Simulation d'un modèle génératif ⏳ *Bientôt*
 
 ### Interaction Raisonnée (5-8)
@@ -67,6 +67,7 @@ formationia/
 ├── certification.html                      # Page certification (future)
 ├── module-01-demystifier-ia.html           # Module 1 - Mission d'enquête
 ├── module-02-donnees-sous-influence.html   # Module 2 - Jeu de simulation
+├── module-03-dans-la-tete-du-modele.html   # Module 3 - NEURONAUT (tokenisation, embeddings…)
 ├── module-06-iteration-amelioration.html   # Module 6 - Prompt engineering
 ├── module-09-hallucinations.html           # Module 9 - Hallucinations IA
 ├── module-12-impact-environnemental.html   # Module 12 - Escape game environnement
@@ -255,7 +256,7 @@ Chaque module génère une attestation HTML téléchargeable avec :
 - Charte graphique établie
 - Infrastructure de base
 
-### V1.1.0 (actuelle)
+### V1.1.0
 - Module 01 : Dossier Zéro — Mission d'enquête (Démystifier l'IA)
 - Module 02 : Données sous Influence — Jeu de simulation (Apprentissage & Biais)
 - Module 06 : Itération & Amélioration — Défi progressif (Prompt Engineering)
@@ -263,8 +264,11 @@ Chaque module génère une attestation HTML téléchargeable avec :
 - Module 13 : Data Shadow — Jeu de rôle (Vie Privée & Données)
 - Module 15 : Le Tribunal de l'IA — Responsabilité humaine
 
+### V1.2.0 (actuelle)
+- Module 03 : NEURONAUT — Voyage au Cœur du Modèle (Tokenisation, Embeddings, Attention, Prédiction)
+
 ### Roadmap
-- Modules 3-4 (Fondations IA — suite)
+- Module 4 (Fondations IA — suite)
 - Modules 5, 7-8 (Interaction Raisonnée — suite)
 - Modules 10-11 (Limites et Esprit Critique — suite)
 - Module 14 (Enjeux Citoyens — IA et emploi)
