@@ -396,6 +396,293 @@
     .metric-bar-fill.mid{background:linear-gradient(90deg,var(--neon-orange),rgba(255,149,0,0.6))}
     .metric-bar-val{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:0.75em;color:#fff}
 
+    /* ==================== GAME SCREEN ==================== */
+    #game-screen{
+      position:fixed;inset:0;
+      background:url('images/module10-dashboard.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#12100a 50%,#0a0e17 100%);
+      z-index:998;display:none;flex-direction:column;overflow:hidden;
+    }
+    #game-screen.active{display:flex}
+    #game-screen::before{
+      content:'';position:absolute;inset:0;
+      background:rgba(10,14,23,0.82);pointer-events:none;z-index:0;
+    }
+    #game-screen > *{position:relative;z-index:1}
+
+    .game-header{
+      background:rgba(10,20,40,0.97);
+      border-bottom:2px solid rgba(255,149,0,0.4);
+      padding:14px 30px;display:flex;align-items:center;justify-content:space-between;
+      flex-shrink:0;
+    }
+    .game-title-bar{
+      font-family:'Space Mono',monospace;color:var(--neon-orange);
+      font-size:1em;letter-spacing:2px;text-transform:uppercase;
+      display:flex;align-items:center;gap:12px;
+    }
+    .game-title-bar::before{content:'⚖️';font-size:1.2em}
+    .game-step-indicator{
+      display:flex;gap:8px;
+    }
+    .step-dot{
+      width:32px;height:32px;border-radius:50%;
+      border:2px solid rgba(255,149,0,0.3);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Space Mono',monospace;font-size:0.75em;color:#8899aa;
+      transition:all .3s;cursor:default;
+    }
+    .step-dot.active{border-color:var(--neon-orange);background:rgba(255,149,0,0.15);color:var(--neon-orange)}
+    .step-dot.done{border-color:var(--neon-green);background:rgba(0,255,136,0.1);color:var(--neon-green)}
+
+    .game-score-bar{
+      font-family:'Space Mono',monospace;font-size:0.85em;color:var(--neon-yellow);
+      display:flex;align-items:center;gap:8px;
+    }
+
+    .game-body{
+      flex:1;overflow-y:auto;padding:30px 40px;
+      display:flex;flex-direction:column;
+    }
+    .game-body::-webkit-scrollbar{width:6px}
+    .game-body::-webkit-scrollbar-thumb{background:rgba(255,149,0,0.3);border-radius:3px}
+
+    .step-header{margin-bottom:24px}
+    .step-title{
+      font-family:'Space Mono',monospace;font-size:1.4em;color:var(--neon-orange);
+      margin-bottom:6px;
+    }
+    .step-subtitle{color:var(--muted);font-size:0.95em;line-height:1.5}
+    .step-task{
+      background:rgba(255,149,0,0.06);
+      border:1px solid rgba(255,149,0,0.25);
+      border-left:3px solid var(--neon-orange);
+      border-radius:8px;padding:12px 18px;
+      margin-top:14px;color:#cfe9ff;font-size:0.9em;line-height:1.6;
+    }
+
+    /* STEP 1 — Bar charts */
+    .charts-grid{
+      display:grid;grid-template-columns:1fr 1fr 1fr;
+      gap:16px;margin-top:16px;
+    }
+    .chart-card{
+      background:rgba(10,20,40,0.7);
+      border:2px solid rgba(255,255,255,0.08);
+      border-radius:12px;padding:18px;cursor:pointer;
+      transition:all .3s;
+    }
+    .chart-card:hover{border-color:rgba(255,149,0,0.5);transform:translateY(-2px)}
+    .chart-card.selected{
+      border-color:var(--neon-orange);
+      background:rgba(255,149,0,0.08);
+      box-shadow:0 0 20px rgba(255,149,0,0.2);
+    }
+    .chart-card.correct{border-color:var(--neon-pink);background:rgba(255,0,128,0.08)}
+    .chart-card.miss{border-color:var(--neon-green);background:rgba(0,255,136,0.05);opacity:0.6}
+    .chart-title{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      color:var(--neon-yellow);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;
+    }
+    .chart-bars{display:flex;gap:12px;align-items:flex-end;height:90px;margin-bottom:10px}
+    .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .bar{
+      width:100%;border-radius:4px 4px 0 0;
+      min-height:4px;position:relative;
+      transition:height .5s ease;
+    }
+    .bar.a{background:linear-gradient(180deg,var(--neon-blue),rgba(0,212,255,0.4))}
+    .bar.b{background:linear-gradient(180deg,var(--neon-pink),rgba(255,0,128,0.4))}
+    .bar.b.low{background:linear-gradient(180deg,#ff4444,rgba(255,68,68,0.4))}
+    .bar-pct{
+      font-family:'Space Mono',monospace;font-size:0.7em;
+      color:#fff;position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+      white-space:nowrap;
+    }
+    .bar-label{font-size:0.72em;color:#8899aa;text-align:center;margin-top:4px;line-height:1.3}
+    .di-badge{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      padding:3px 8px;border-radius:4px;
+      display:inline-block;margin-top:8px;
+    }
+    .di-badge.bad{background:rgba(255,0,128,0.2);color:var(--neon-pink);border:1px solid rgba(255,0,128,0.3)}
+    .di-badge.ok{background:rgba(0,255,136,0.15);color:var(--neon-green);border:1px solid rgba(0,255,136,0.3)}
+    .di-badge.warn{background:rgba(255,149,0,0.15);color:var(--neon-orange);border:1px solid rgba(255,149,0,0.3)}
+    .chart-check{float:right;font-size:1.2em}
+    .chart-feedback{
+      font-size:0.8em;color:#8899aa;margin-top:8px;line-height:1.4;
+      display:none;
+    }
+    .chart-card.revealed .chart-feedback{display:block}
+
+    /* STEP 2 — Profile comparison */
+    .pair-counter{
+      font-family:'Space Mono',monospace;color:var(--neon-orange);
+      font-size:0.85em;margin-bottom:16px;
+    }
+    .profiles-compare{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;
+    }
+    .profile-card{
+      background:rgba(10,20,40,0.85);
+      border:1px solid rgba(255,255,255,0.1);
+      border-radius:12px;padding:20px;
+    }
+    .profile-card.accepted{border-color:rgba(0,255,136,0.4)}
+    .profile-card.rejected{border-color:rgba(255,0,128,0.4)}
+    .profile-verdict{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      padding:4px 12px;border-radius:4px;
+      margin-bottom:14px;display:inline-block;
+    }
+    .profile-verdict.accepted{background:rgba(0,255,136,0.15);color:var(--neon-green);border:1px solid rgba(0,255,136,0.3)}
+    .profile-verdict.rejected{background:rgba(255,0,128,0.12);color:var(--neon-pink);border:1px solid rgba(255,0,128,0.3)}
+    .profile-name{
+      font-family:'Space Mono',monospace;font-size:1.05em;
+      color:var(--text);margin-bottom:12px;
+    }
+    .profile-field{
+      display:flex;gap:8px;margin-bottom:6px;font-size:0.88em;
+      align-items:flex-start;
+    }
+    .profile-field .field-label{
+      color:var(--muted);min-width:100px;flex-shrink:0;font-size:0.9em;
+    }
+    .profile-field .field-val{color:#cfe9ff}
+    .profile-field .field-val.highlight{
+      color:var(--neon-orange);
+      background:rgba(255,149,0,0.1);
+      padding:1px 6px;border-radius:3px;
+      border:1px solid rgba(255,149,0,0.3);
+    }
+
+    .pair-question{
+      background:rgba(255,230,109,0.05);
+      border:1px solid rgba(255,230,109,0.2);
+      border-radius:10px;padding:16px 20px;
+    }
+    .pair-q-text{
+      font-family:'Space Mono',monospace;font-size:0.9em;
+      color:var(--neon-yellow);margin-bottom:12px;
+    }
+    .pair-options{display:flex;flex-direction:column;gap:8px}
+    .pair-option{
+      padding:10px 16px;border-radius:8px;cursor:pointer;
+      border:1px solid rgba(255,255,255,0.1);
+      background:rgba(255,255,255,0.03);
+      color:#cfe9ff;font-size:0.9em;
+      transition:all .2s;display:flex;align-items:center;gap:10px;
+    }
+    .pair-option:hover{border-color:rgba(255,149,0,0.4);background:rgba(255,149,0,0.05)}
+    .pair-option.selected-correct{border-color:var(--neon-green);background:rgba(0,255,136,0.08);color:var(--neon-green)}
+    .pair-option.selected-wrong{border-color:var(--neon-pink);background:rgba(255,0,128,0.08);color:var(--neon-pink)}
+    .pair-option.show-correct{border-color:rgba(0,255,136,0.5);background:rgba(0,255,136,0.05)}
+
+    /* STEP 3 — Variable tags */
+    .variables-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;
+    }
+    .var-chip{
+      padding:14px 12px;border-radius:10px;cursor:pointer;
+      border:2px solid rgba(255,255,255,0.1);
+      background:rgba(10,20,40,0.7);
+      text-align:center;transition:all .25s;
+      display:flex;flex-direction:column;align-items:center;gap:6px;
+    }
+    .var-chip:hover{border-color:rgba(255,149,0,0.5);transform:translateY(-2px)}
+    .var-chip-icon{font-size:1.5em}
+    .var-chip-name{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      color:var(--text);text-align:center;line-height:1.3;
+    }
+    .var-chip-status{
+      font-size:0.7em;font-family:'Space Mono',monospace;
+      padding:2px 8px;border-radius:3px;margin-top:2px;
+    }
+    .var-chip.tagged-proxy{
+      border-color:var(--neon-pink);background:rgba(255,0,128,0.1);
+    }
+    .var-chip.tagged-proxy .var-chip-name{color:var(--neon-pink)}
+    .var-chip.tagged-proxy .var-chip-status{background:rgba(255,0,128,0.2);color:var(--neon-pink)}
+    .var-chip.tagged-legit{
+      border-color:var(--neon-green);background:rgba(0,255,136,0.08);
+    }
+    .var-chip.tagged-legit .var-chip-name{color:var(--neon-green)}
+    .var-chip.tagged-legit .var-chip-status{background:rgba(0,255,136,0.15);color:var(--neon-green)}
+    .var-chip.correct-revealed{border-color:var(--neon-green)}
+    .var-chip.wrong-revealed{border-color:var(--neon-pink)}
+
+    /* STEP 4 — Rapport */
+    .report-form{
+      background:rgba(10,20,40,0.8);
+      border:1px solid rgba(255,149,0,0.25);
+      border-radius:12px;padding:25px;
+    }
+    .report-q{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .report-q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+    .report-q-label{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      color:var(--neon-orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;
+    }
+    .report-q-text{color:#cfe9ff;font-size:0.95em;line-height:1.6;margin-bottom:12px}
+    .report-options{display:flex;flex-direction:column;gap:6px}
+    .report-option{
+      padding:10px 16px;border-radius:8px;cursor:pointer;
+      border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);
+      color:#cfe9ff;font-size:0.88em;transition:all .2s;
+      display:flex;align-items:center;gap:10px;
+    }
+    .report-option:hover{border-color:rgba(255,149,0,0.4);background:rgba(255,149,0,0.05)}
+    .report-option.selected{border-color:var(--neon-orange);background:rgba(255,149,0,0.08);color:var(--neon-orange)}
+    .report-option.selected-correct{border-color:var(--neon-green);background:rgba(0,255,136,0.08);color:var(--neon-green)}
+    .report-option.selected-wrong{border-color:var(--neon-pink);background:rgba(255,0,128,0.08);color:var(--neon-pink)}
+    .report-option.show-correct{border-color:rgba(0,255,136,0.5)}
+    .option-radio{
+      width:16px;height:16px;border-radius:50%;
+      border:2px solid rgba(255,255,255,0.2);flex-shrink:0;
+      transition:all .2s;
+    }
+    .report-option.selected .option-radio,
+    .report-option.selected-correct .option-radio{
+      border-color:var(--neon-green);background:var(--neon-green);
+      box-shadow:0 0 8px rgba(0,255,136,0.5);
+    }
+    .report-option.selected-wrong .option-radio{border-color:var(--neon-pink)}
+
+    /* Feedback overlay */
+    .step-feedback{
+      background:rgba(10,20,40,0.95);
+      border:1px solid rgba(255,149,0,0.3);
+      border-radius:12px;padding:20px 24px;margin-top:16px;
+      display:none;
+    }
+    .step-feedback.visible{display:block}
+    .feedback-score{
+      font-family:'Space Mono',monospace;font-size:1.2em;
+      color:var(--neon-yellow);margin-bottom:8px;
+    }
+    .feedback-text{color:#cfe9ff;line-height:1.6;font-size:0.9em}
+
+    .game-footer{
+      background:rgba(10,20,40,0.97);border-top:1px solid rgba(255,149,0,0.3);
+      padding:16px 30px;display:flex;justify-content:space-between;align-items:center;
+      flex-shrink:0;
+    }
+    .game-btn{
+      font-family:'Space Mono',monospace;padding:12px 28px;
+      border:2px solid var(--neon-orange);background:transparent;
+      color:var(--neon-orange);cursor:pointer;font-size:0.95em;transition:all .3s;
+      display:flex;align-items:center;gap:8px;border-radius:2px;
+    }
+    .game-btn:hover{background:rgba(255,149,0,0.1);box-shadow:0 0 20px rgba(255,149,0,.3)}
+    .game-btn.primary{background:var(--neon-orange);color:var(--dark-bg);font-weight:700}
+    .game-btn.primary:hover{background:var(--neon-yellow);border-color:var(--neon-yellow)}
+    .game-btn:disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+    .game-btn.green{border-color:var(--neon-green);color:var(--neon-green)}
+    .game-btn.green:hover{background:rgba(0,255,136,0.1)}
+
+    .game-hint{font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)}
+
   </style>
 </head>
 <body>
@@ -516,6 +803,25 @@
   </div>
 
 </div><!-- end #briefing-screen -->
+
+<!-- ==================== GAME SCREEN ==================== -->
+<div id="game-screen">
+
+  <div class="game-header">
+    <div class="game-title-bar">Audit NEXUS-RH — EquityWatch</div>
+    <div class="game-step-indicator" id="step-dots"></div>
+    <div class="game-score-bar">Score ARIA : <span id="game-score">0</span> pts</div>
+  </div>
+
+  <div class="game-body" id="game-body"></div>
+
+  <div class="game-footer">
+    <button class="game-btn" id="game-btn-back" onclick="gamePrev()">← Retour</button>
+    <span class="game-hint" id="game-hint"></span>
+    <button class="game-btn primary" id="game-btn-next" onclick="gameNext()">Valider →</button>
+  </div>
+
+</div><!-- end #game-screen -->
 
 <script>
 /* ===================== DONNÉES DES LEÇONS ===================== */
@@ -944,8 +1250,677 @@ function startModule() {
 }
 
 function launchGame() {
-  // Phase 3 : la phase de jeu sera ajoutée ici
-  alert('La phase de jeu (audit interactif) arrive dans la prochaine étape !');
+  document.getElementById('briefing-screen').classList.remove('active');
+  document.getElementById('game-screen').classList.add('active');
+  gameState.currentStep = 0;
+  gameState.totalScore = 0;
+  gameState.stepValidated = [false,false,false,false];
+  gameState.step1Selections = new Set();
+  gameState.step2PairIdx = 0;
+  gameState.step2Answers = [null,null,null];
+  gameState.step3Tagged = {};
+  gameState.step4Answers = {};
+  renderGame();
+}
+
+/* ===================== GAME STATE ===================== */
+const gameState = {
+  currentStep: 0,
+  totalScore: 0,
+  stepValidated: [false,false,false,false],
+  step1Selections: new Set(),
+  step2PairIdx: 0,
+  step2Answers: [null,null,null],
+  step3Tagged: {},
+  step4Answers: {}
+};
+
+/* ===================== DATA ===================== */
+const charts = [
+  {
+    id:'genre', title:'Genre',
+    groupA:{label:'Hommes', pct:72}, groupB:{label:'Femmes', pct:38},
+    di:0.53, isProblematic:true,
+    feedback:'⚠️ DI = 0.53 — Le taux de sélection des femmes est 47% inférieur à celui des hommes. Très en dessous du seuil légal de 0.8.'
+  },
+  {
+    id:'prenom', title:'Origine du prénom',
+    groupA:{label:'Prénom local', pct:68}, groupB:{label:'Prénom étranger', pct:27},
+    di:0.40, isProblematic:true,
+    feedback:'⚠️ DI = 0.40 — Discrimination sévère. Le prénom est une variable proxy pour l\'origine culturelle, illégale à utiliser dans le recrutement.'
+  },
+  {
+    id:'age', title:'Tranche d\'âge',
+    groupA:{label:'25-40 ans', pct:65}, groupB:{label:'45-60 ans', pct:26},
+    di:0.40, isProblematic:true,
+    feedback:'⚠️ DI = 0.40 — Discrimination par l\'âge sévère. Illégal selon le droit français et européen (art. L1132-1 Code du travail).'
+  },
+  {
+    id:'diplome', title:'Niveau de diplôme',
+    groupA:{label:'Bac+5', pct:69}, groupB:{label:'Bac+3', pct:64},
+    di:0.93, isProblematic:false,
+    feedback:'✅ DI = 0.93 — Dans la norme. Un critère de diplôme est justifiable si directement lié au poste.'
+  },
+  {
+    id:'experience', title:'Expérience',
+    groupA:{label:'5+ ans', pct:71}, groupB:{label:'2-4 ans', pct:63},
+    di:0.89, isProblematic:false,
+    feedback:'✅ DI = 0.89 — Acceptable. L\'expérience est un critère légitime pour la plupart des postes.'
+  },
+  {
+    id:'postal', title:'Zone géographique',
+    groupA:{label:'Zone A (centre)', pct:66}, groupB:{label:'Zone B (banlieue)', pct:29},
+    di:0.44, isProblematic:true,
+    feedback:'⚠️ DI = 0.44 — Le code postal est un proxy de l\'origine sociale et ethnique. Fortement corrélé à la discrimination indirecte.'
+  }
+];
+
+const profilePairs = [
+  {
+    label:'Paire 1 / 3',
+    a:{
+      verdict:'accepted', label:'RETENU ✓',
+      name:'Sophie Martin',
+      fields:[
+        {k:'École', v:'École Polytechnique'},
+        {k:'Expérience', v:'7 ans (Ingénieure logicielle)'},
+        {k:'Compétences', v:'Python, Machine Learning, DevOps'},
+        {k:'Zone', v:'Paris 16e'},
+        {k:'Âge', v:'34 ans'},
+      ]
+    },
+    b:{
+      verdict:'rejected', label:'REJETÉ ✗',
+      name:'Fatima Benali',
+      fields:[
+        {k:'École', v:'École Polytechnique', highlight:false},
+        {k:'Expérience', v:'7 ans (Ingénieure logicielle)', highlight:false},
+        {k:'Compétences', v:'Python, Machine Learning, DevOps', highlight:false},
+        {k:'Zone', v:'Paris 16e', highlight:false},
+        {k:'Âge', v:'34 ans', highlight:false},
+      ]
+    },
+    highlight:'Prénom (origine culturelle)',
+    question:'Ces deux candidates sont identiques sur tous les critères objectifs. Qu\'est-ce qui a influencé la décision de l\'algorithme ?',
+    options:[
+      {text:'Le niveau de l\'école',correct:false},
+      {text:'Le prénom (corrélé à l\'origine culturelle)',correct:true},
+      {text:'Les compétences techniques',correct:false},
+    ]
+  },
+  {
+    label:'Paire 2 / 3',
+    a:{
+      verdict:'accepted', label:'RETENU ✓',
+      name:'Thomas Durand',
+      fields:[
+        {k:'Diplôme', v:'HEC Paris (Grande École)'},
+        {k:'Expérience', v:'5 ans (Chef de projet)'},
+        {k:'Compétences', v:'Management, Finance, Stratégie'},
+        {k:'Zone', v:'Paris 8e'},
+        {k:'Âge', v:'29 ans'},
+      ]
+    },
+    b:{
+      verdict:'rejected', label:'REJETÉ ✗',
+      name:'Thomas Durand',
+      fields:[
+        {k:'Diplôme', v:'HEC Paris (Grande École)'},
+        {k:'Expérience', v:'5 ans (Chef de projet)'},
+        {k:'Compétences', v:'Management, Finance, Stratégie'},
+        {k:'Zone', v:'Seine-Saint-Denis (93)', highlight:true},
+        {k:'Âge', v:'29 ans'},
+      ]
+    },
+    highlight:'Code postal / zone géographique',
+    question:'Les deux profils ont exactement le même nom, diplôme, expérience et âge. Seul un élément diffère. Lequel influence le rejet ?',
+    options:[
+      {text:'Le diplôme (pas reconnu selon la zone)',correct:false},
+      {text:'Le code postal (proxy socio-économique et ethnique)',correct:true},
+      {text:'L\'expérience insuffisante',correct:false},
+    ]
+  },
+  {
+    label:'Paire 3 / 3',
+    a:{
+      verdict:'accepted', label:'RETENU ✓',
+      name:'Julie Lambert',
+      fields:[
+        {k:'Diplôme', v:'Master Marketing Digital'},
+        {k:'Expérience', v:'4 ans (Responsable comm.)'},
+        {k:'Compétences', v:'SEO, Analytics, Réseaux sociaux'},
+        {k:'Âge', v:'29 ans'},
+        {k:'Zone', v:'Lyon 2e'},
+      ]
+    },
+    b:{
+      verdict:'rejected', label:'REJETÉ ✗',
+      name:'Marie Dupont',
+      fields:[
+        {k:'Diplôme', v:'Master Marketing Digital'},
+        {k:'Expérience', v:'4 ans (Responsable comm.)'},
+        {k:'Compétences', v:'SEO, Analytics, Réseaux sociaux'},
+        {k:'Âge', v:'48 ans', highlight:true},
+        {k:'Zone', v:'Lyon 2e'},
+      ]
+    },
+    highlight:'Âge',
+    question:'Profils identiques — même diplôme, même poste, même ville. Quel critère discriminatoire a causé le rejet ?',
+    options:[
+      {text:'Les compétences numériques perçues comme insuffisantes',correct:false},
+      {text:'L\'âge (discrimination par l\'âge — illégale)',correct:true},
+      {text:'La localisation géographique',correct:false},
+    ]
+  }
+];
+
+const variables = [
+  {id:'prenom',icon:'🏷️',name:'Prénom',isProxy:true},
+  {id:'postal',icon:'📍',name:'Code postal',isProxy:true},
+  {id:'universite',icon:'🎓',name:'Université (nom)',isProxy:true},
+  {id:'sport',icon:'⚽',name:'Loisirs / Hobbies',isProxy:true},
+  {id:'experience',icon:'📅',name:'Années d\'expérience',isProxy:false},
+  {id:'competences',icon:'💻',name:'Compétences techniques',isProxy:false},
+  {id:'diplome_niveau',icon:'📜',name:'Niveau de diplôme',isProxy:false},
+  {id:'tests',icon:'📊',name:'Score aux tests techniques',isProxy:false},
+];
+
+const reportQuestions = [
+  {
+    id:'q1',
+    label:'Constat 1',
+    text:'Le taux de sélection des candidats dont le prénom est à consonance étrangère est _____ inférieur à celui des candidats avec un prénom local.',
+    options:[
+      {text:'10 à 20%',correct:false},
+      {text:'60 à 70%',correct:true},
+      {text:'Identique (aucune différence significative)',correct:false},
+    ]
+  },
+  {
+    id:'q2',
+    label:'Constat 2',
+    text:'Les variables proxies identifiées dans l\'algorithme NEXUS-RH incluent :',
+    options:[
+      {text:'L\'expérience professionnelle et le niveau de diplôme',correct:false},
+      {text:'Le prénom, le code postal, l\'âge et le nom d\'université',correct:true},
+      {text:'Uniquement le score aux tests techniques',correct:false},
+    ]
+  },
+  {
+    id:'q3',
+    label:'Constat 3',
+    text:'Selon la règle des 4/5e (seuil DI = 0.80), l\'impact disparate mesuré est :',
+    options:[
+      {text:'Conforme — les algorithmes respectent le seuil légal',correct:false},
+      {text:'Non conforme — 4 critères sur 6 présentent un DI inférieur à 0.80',correct:true},
+      {text:'Impossible à mesurer faute de données suffisantes',correct:false},
+    ]
+  },
+  {
+    id:'q4',
+    label:'Recommandation',
+    text:'La recommandation principale pour corriger ces biais est :',
+    options:[
+      {text:'Désactiver l\'algorithme immédiatement sans le remplacer',correct:false},
+      {text:'Retirer les variables proxies, rééquilibrer les données d\'entraînement et effectuer des tests d\'équité réguliers',correct:true},
+      {text:'Former uniquement les recruteurs humains et laisser l\'algorithme en place',correct:false},
+    ]
+  },
+  {
+    id:'q5',
+    label:'Cadre légal',
+    text:'Selon l\'AI Act européen (2024), l\'algorithme NEXUS-RH est classé comme :',
+    options:[
+      {text:'Système à faible risque — aucune obligation spécifique',correct:false},
+      {text:'Système à haut risque — audit obligatoire, documentation requise, droit à l\'explication',correct:true},
+      {text:'Système interdit — toute IA de recrutement est prohibée',correct:false},
+    ]
+  }
+];
+
+/* ===================== RENDER GAME ===================== */
+function renderGame() {
+  updateStepDots();
+  updateGameFooter();
+
+  const body = document.getElementById('game-body');
+  switch(gameState.currentStep) {
+    case 0: body.innerHTML = renderStep1(); initStep1(); break;
+    case 1: body.innerHTML = renderStep2(); break;
+    case 2: body.innerHTML = renderStep3(); break;
+    case 3: body.innerHTML = renderStep4(); break;
+  }
+  body.scrollTop = 0;
+}
+
+function updateStepDots() {
+  const labels = ['1','2','3','4'];
+  document.getElementById('step-dots').innerHTML = labels.map((l,i) => {
+    let cls = '';
+    if(i < gameState.currentStep) cls = 'done';
+    else if(i === gameState.currentStep) cls = 'active';
+    return `<div class="step-dot ${cls}">${gameState.stepValidated[i] ? '✓' : l}</div>`;
+  }).join('');
+}
+
+function updateGameFooter() {
+  const s = gameState.currentStep;
+  const v = gameState.stepValidated[s];
+  const backBtn = document.getElementById('game-btn-back');
+  const nextBtn = document.getElementById('game-btn-next');
+  const hint = document.getElementById('game-hint');
+
+  backBtn.style.display = s === 0 ? 'none' : 'flex';
+
+  if(!v) {
+    nextBtn.textContent = 'Valider ✓';
+    nextBtn.className = 'game-btn primary';
+    nextBtn.onclick = validateCurrentStep;
+    const hints = [
+      'Cliquez sur les graphiques suspects',
+      'Répondez à la question',
+      'Taguez chaque variable',
+      'Complétez toutes les questions'
+    ];
+    hint.textContent = hints[s] || '';
+  } else if(s < 3) {
+    nextBtn.textContent = 'Étape suivante →';
+    nextBtn.className = 'game-btn green';
+    nextBtn.onclick = gameNext;
+    hint.textContent = `Score : ${gameState.totalScore} pts`;
+  } else {
+    nextBtn.textContent = '📋 Aller au quiz →';
+    nextBtn.className = 'game-btn green';
+    nextBtn.onclick = launchQuiz;
+    hint.textContent = `Score audit : ${gameState.totalScore} pts`;
+  }
+}
+
+/* ===================== STEP 1 — STATS ===================== */
+function renderStep1() {
+  return `
+    <div class="step-header">
+      <div class="step-title">ÉTAPE 1 / 4 — Analyse des taux de sélection</div>
+      <div class="step-subtitle">L'algorithme NEXUS-RH a traité 8 400 candidatures cette année. Voici les taux de sélection par critère.</div>
+      <div class="step-task">
+        🎯 <strong>Votre mission :</strong> Identifiez les graphiques qui révèlent une discrimination algorithmique (impact disparate inférieur au seuil légal de 80%). Cliquez sur les graphiques suspects.
+      </div>
+    </div>
+    <div class="charts-grid" id="charts-grid">
+      ${charts.map(c => renderChart(c)).join('')}
+    </div>
+    <div class="step-feedback" id="step1-feedback">
+      <div class="feedback-score" id="step1-score-text"></div>
+      <div class="feedback-text" id="step1-feedback-text"></div>
+    </div>
+  `;
+}
+
+function renderChart(c) {
+  const maxH = 80;
+  const hA = Math.round((c.groupA.pct / 100) * maxH);
+  const hB = Math.round((c.groupB.pct / 100) * maxH);
+  const diBadge = c.di >= 0.8
+    ? `<span class="di-badge ok">DI = ${c.di} ✅</span>`
+    : c.di >= 0.65
+      ? `<span class="di-badge warn">DI = ${c.di} ⚠️</span>`
+      : `<span class="di-badge bad">DI = ${c.di} ❌</span>`;
+
+  return `
+    <div class="chart-card" id="chart-${c.id}" onclick="toggleChart('${c.id}')">
+      <div class="chart-title">${c.isProblematic ? '⚠️' : '✅'}&nbsp; ${c.title}</div>
+      <div class="chart-bars">
+        <div class="bar-col">
+          <div class="bar a" style="height:${hA}px">
+            <span class="bar-pct">${c.groupA.pct}%</span>
+          </div>
+          <div class="bar-label">${c.groupA.label}</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar b ${c.groupB.pct < 40 ? 'low' : ''}" style="height:${hB}px">
+            <span class="bar-pct">${c.groupB.pct}%</span>
+          </div>
+          <div class="bar-label">${c.groupB.label}</div>
+        </div>
+      </div>
+      ${diBadge}
+      <span class="chart-check" id="check-${c.id}"></span>
+      <div class="chart-feedback" id="fb-${c.id}">${c.feedback}</div>
+    </div>
+  `;
+}
+
+function initStep1() {
+  // Bars animate in
+  setTimeout(() => {
+    charts.forEach(c => {
+      // Bars already set via style, just trigger re-render
+    });
+  }, 100);
+}
+
+function toggleChart(id) {
+  if(gameState.stepValidated[0]) return;
+  if(gameState.step1Selections.has(id)) {
+    gameState.step1Selections.delete(id);
+    document.getElementById('chart-'+id).classList.remove('selected');
+    document.getElementById('check-'+id).textContent = '';
+  } else {
+    gameState.step1Selections.add(id);
+    document.getElementById('chart-'+id).classList.add('selected');
+    document.getElementById('check-'+id).textContent = '☑';
+  }
+}
+
+function validateStep1() {
+  const correct = charts.filter(c => c.isProblematic).map(c => c.id);
+  let pts = 0;
+  charts.forEach(c => {
+    const selected = gameState.step1Selections.has(c.id);
+    const card = document.getElementById('chart-'+c.id);
+    card.onclick = null;
+    card.classList.add('revealed');
+    document.getElementById('fb-'+c.id).style.display = 'block';
+    if(c.isProblematic && selected) {
+      card.classList.add('correct'); pts += 15;
+    } else if(!c.isProblematic && selected) {
+      card.classList.add('wrong-revealed');
+    } else if(c.isProblematic && !selected) {
+      card.classList.add('miss');
+    }
+  });
+  gameState.totalScore += pts;
+  document.getElementById('game-score').textContent = gameState.totalScore;
+  const fb = document.getElementById('step1-feedback');
+  fb.classList.add('visible');
+  document.getElementById('step1-score-text').textContent = `+${pts} points — ${pts >= 45 ? 'Excellent !' : pts >= 30 ? 'Bon travail !' : 'Continuez à apprendre !'}`;
+  document.getElementById('step1-feedback-text').innerHTML = `Vous avez identifié ${gameState.step1Selections.size} graphique(s). <strong>${correct.length} graphiques étaient problématiques</strong> (Genre, Prénom, Âge, Zone géographique). Ces 4 critères présentent tous un impact disparate inférieur à 0.80 — le seuil légal.`;
+  gameState.stepValidated[0] = true;
+  updateGameFooter();
+  updateStepDots();
+}
+
+/* ===================== STEP 2 — PROFILES ===================== */
+function renderStep2() {
+  const pair = profilePairs[gameState.step2PairIdx];
+  return `
+    <div class="step-header">
+      <div class="step-title">ÉTAPE 2 / 4 — Comparaison de profils</div>
+      <div class="step-subtitle">Deux candidats passent devant l'algorithme NEXUS-RH. Leurs profils sont presque identiques. L'un est retenu, l'autre rejeté.</div>
+      <div class="step-task">
+        🎯 <strong>Mission :</strong> Identifiez le critère discriminatoire qui explique la décision différente.
+      </div>
+    </div>
+    <div class="pair-counter">📁 ${pair.label} — ${pair.a.name} vs ${pair.b.name}</div>
+    <div class="profiles-compare">
+      ${renderProfileCard(pair.a)}
+      ${renderProfileCard(pair.b)}
+    </div>
+    <div class="pair-question">
+      <div class="pair-q-text">❓ ${pair.question}</div>
+      <div class="pair-options" id="pair-options">
+        ${pair.options.map((o,i) => `
+          <div class="pair-option" id="pair-opt-${i}" onclick="selectPairOption(${i},${o.correct})">
+            <div style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);flex-shrink:0;transition:all .2s" id="radio-${i}"></div>
+            ${o.text}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="step-feedback" id="step2-feedback">
+      <div class="feedback-score" id="step2-score-text"></div>
+      <div class="feedback-text" id="step2-feedback-text"></div>
+    </div>
+  `;
+}
+
+function renderProfileCard(p) {
+  return `
+    <div class="profile-card ${p.verdict}">
+      <span class="profile-verdict ${p.verdict}">${p.label}</span>
+      <div class="profile-name">👤 ${p.name}</div>
+      ${(p.fields||[]).map(f => `
+        <div class="profile-field">
+          <span class="field-label">${f.k} :</span>
+          <span class="field-val ${f.highlight ? 'highlight' : ''}">${f.v}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function selectPairOption(idx, isCorrect) {
+  if(gameState.step2Answers[gameState.step2PairIdx] !== null) return;
+  gameState.step2Answers[gameState.step2PairIdx] = {idx, isCorrect};
+  const opts = document.querySelectorAll('.pair-option');
+  const pair = profilePairs[gameState.step2PairIdx];
+  opts.forEach((el, i) => {
+    el.onclick = null;
+    if(i === idx) {
+      el.className = 'pair-option ' + (isCorrect ? 'selected-correct' : 'selected-wrong');
+    } else if(pair.options[i].correct) {
+      el.className = 'pair-option show-correct';
+    }
+  });
+  const pts = isCorrect ? 20 : 0;
+  gameState.totalScore += pts;
+  document.getElementById('game-score').textContent = gameState.totalScore;
+  const fb = document.getElementById('step2-feedback');
+  fb.classList.add('visible');
+  document.getElementById('step2-score-text').textContent = isCorrect ? `+${pts} points — Correct !` : '+0 points — Pas tout à fait...';
+  document.getElementById('step2-feedback-text').innerHTML = `Le critère discriminatoire était : <strong>${pair.highlight}</strong>. ${isCorrect ? 'Bien vu ! Ce type de variable proxy est illégal dans le processus de recrutement.' : 'La bonne réponse était : ' + pair.highlight + '. L\'algorithme utilise ce critère comme proxy discriminatoire.'}`;
+  // Auto-proceed hint
+  if(gameState.step2PairIdx < 2) {
+    setTimeout(() => {
+      document.getElementById('game-hint').textContent = 'Cliquez sur "Paire suivante" pour continuer';
+    }, 500);
+  }
+}
+
+function validateStep2() {
+  if(gameState.step2Answers[gameState.step2PairIdx] === null) {
+    document.getElementById('game-hint').textContent = '⚠️ Sélectionnez une réponse d\'abord !';
+    return false;
+  }
+  if(gameState.step2PairIdx < 2) {
+    gameState.step2PairIdx++;
+    document.getElementById('game-body').innerHTML = renderStep2();
+    document.getElementById('game-body').scrollTop = 0;
+    document.getElementById('game-btn-next').textContent = gameState.step2PairIdx < 2 ? 'Paire suivante →' : 'Valider ✓';
+    return false; // Don't mark as validated yet
+  }
+  gameState.stepValidated[1] = true;
+  updateGameFooter();
+  updateStepDots();
+  return true;
+}
+
+/* ===================== STEP 3 — VARIABLES ===================== */
+function renderStep3() {
+  return `
+    <div class="step-header">
+      <div class="step-title">ÉTAPE 3 / 4 — Autopsie de l'algorithme</div>
+      <div class="step-subtitle">Voici les 8 variables utilisées par l'algorithme NEXUS-RH pour scorer les candidatures.</div>
+      <div class="step-task">
+        🎯 <strong>Mission :</strong> Cliquez sur chaque variable pour la taguer. <strong>Rouge = Proxy discriminatoire</strong> · <strong>Vert = Variable légitime</strong>.
+      </div>
+    </div>
+    <div class="variables-grid" id="vars-grid">
+      ${variables.map(v => `
+        <div class="var-chip" id="var-${v.id}" onclick="tagVariable('${v.id}')">
+          <div class="var-chip-icon">${v.icon}</div>
+          <div class="var-chip-name">${v.name}</div>
+          <div class="var-chip-status" id="varstatus-${v.id}">— non évalué</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="step-feedback" id="step3-feedback">
+      <div class="feedback-score" id="step3-score-text"></div>
+      <div class="feedback-text" id="step3-feedback-text"></div>
+    </div>
+  `;
+}
+
+function tagVariable(id) {
+  if(gameState.stepValidated[2]) return;
+  const v = variables.find(x => x.id === id);
+  const chip = document.getElementById('var-'+id);
+  const status = document.getElementById('varstatus-'+id);
+  const current = gameState.step3Tagged[id];
+  if(current === 'proxy') {
+    gameState.step3Tagged[id] = 'legit';
+    chip.className = 'var-chip tagged-legit';
+    status.textContent = '✅ Légitime';
+  } else if(current === 'legit') {
+    delete gameState.step3Tagged[id];
+    chip.className = 'var-chip';
+    status.textContent = '— non évalué';
+  } else {
+    gameState.step3Tagged[id] = 'proxy';
+    chip.className = 'var-chip tagged-proxy';
+    status.textContent = '❌ Proxy';
+  }
+}
+
+function validateStep3() {
+  let pts = 0;
+  variables.forEach(v => {
+    const tag = gameState.step3Tagged[v.id];
+    const chip = document.getElementById('var-'+v.id);
+    chip.onclick = null;
+    const status = document.getElementById('varstatus-'+v.id);
+    if(v.isProxy && tag === 'proxy') {
+      chip.classList.add('correct-revealed');
+      status.textContent = '✅ Correct — Proxy !';
+      pts += 10;
+    } else if(!v.isProxy && tag === 'legit') {
+      chip.classList.add('correct-revealed');
+      status.textContent = '✅ Correct — Légitime';
+      pts += 10;
+    } else if(v.isProxy && tag !== 'proxy') {
+      chip.classList.add('wrong-revealed');
+      status.textContent = '❌ Manqué — c\'était un proxy';
+    } else if(!v.isProxy && tag === 'proxy') {
+      chip.classList.add('wrong-revealed');
+      status.textContent = '❌ Erreur — variable légitime';
+    } else {
+      chip.style.opacity = '0.5';
+      status.textContent = '⚠️ Non évalué';
+    }
+  });
+  gameState.totalScore += pts;
+  document.getElementById('game-score').textContent = gameState.totalScore;
+  const fb = document.getElementById('step3-feedback');
+  fb.classList.add('visible');
+  document.getElementById('step3-score-text').textContent = `+${pts} points — ${pts >= 60 ? 'Excellent !' : pts >= 40 ? 'Bien joué !' : 'Continuez à apprendre !'}`;
+  document.getElementById('step3-feedback-text').innerHTML = `<strong>Les 4 variables proxies étaient :</strong> Prénom, Code postal, Université (nom), Loisirs/Hobbies. Ces critères sont corrélés à des caractéristiques protégées (origine, genre, classe sociale) et doivent être exclus des algorithmes de recrutement.`;
+  gameState.stepValidated[2] = true;
+  updateGameFooter();
+  updateStepDots();
+}
+
+/* ===================== STEP 4 — REPORT ===================== */
+function renderStep4() {
+  return `
+    <div class="step-header">
+      <div class="step-title">ÉTAPE 4 / 4 — Rédaction du rapport d'audit</div>
+      <div class="step-subtitle">Sur la base de votre enquête, complétez le rapport officiel EquityWatch.</div>
+      <div class="step-task">
+        🎯 <strong>Mission :</strong> Sélectionnez la formulation correcte pour chaque section du rapport.
+      </div>
+    </div>
+    <div class="report-form" id="report-form">
+      ${reportQuestions.map(q => `
+        <div class="report-q" id="rq-${q.id}">
+          <div class="report-q-label">📝 ${q.label}</div>
+          <div class="report-q-text">${q.text}</div>
+          <div class="report-options">
+            ${q.options.map((o,i) => `
+              <div class="report-option" id="ro-${q.id}-${i}" onclick="selectReportOption('${q.id}',${i},${o.correct})">
+                <div class="option-radio" id="rradio-${q.id}-${i}"></div>
+                ${o.text}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="step-feedback" id="step4-feedback">
+      <div class="feedback-score" id="step4-score-text"></div>
+      <div class="feedback-text" id="step4-feedback-text"></div>
+    </div>
+  `;
+}
+
+function selectReportOption(qid, idx, isCorrect) {
+  if(gameState.stepValidated[3]) return;
+  if(gameState.step4Answers[qid] !== undefined) {
+    // Deselect previous
+    const prev = gameState.step4Answers[qid].idx;
+    document.getElementById(`ro-${qid}-${prev}`).className = 'report-option';
+  }
+  gameState.step4Answers[qid] = {idx, isCorrect};
+  document.getElementById(`ro-${qid}-${idx}`).className = 'report-option selected';
+}
+
+function validateStep4() {
+  const answered = Object.keys(gameState.step4Answers).length;
+  if(answered < reportQuestions.length) {
+    document.getElementById('game-hint').textContent = `⚠️ Répondez à toutes les ${reportQuestions.length} questions !`;
+    return;
+  }
+  let pts = 0;
+  reportQuestions.forEach(q => {
+    const ans = gameState.step4Answers[q.id];
+    q.options.forEach((o,i) => {
+      const el = document.getElementById(`ro-${q.id}-${i}`);
+      el.onclick = null;
+      if(i === ans.idx) {
+        el.className = 'report-option ' + (ans.isCorrect ? 'selected-correct' : 'selected-wrong');
+      } else if(o.correct) {
+        el.className = 'report-option show-correct';
+      }
+    });
+    if(ans.isCorrect) pts += 20;
+  });
+  gameState.totalScore += pts;
+  document.getElementById('game-score').textContent = gameState.totalScore;
+  const fb = document.getElementById('step4-feedback');
+  fb.classList.add('visible');
+  document.getElementById('step4-score-text').textContent = `+${pts} points — Rapport complété !`;
+  document.getElementById('step4-feedback-text').innerHTML = `🎉 <strong>Audit terminé !</strong> Votre rapport identifie correctement les biais algorithmiques de NEXUS-RH. Sur la base de vos conclusions, EquityWatch va transmettre ce dossier à la CNIL et à la Direction du Travail. Score total de l'audit : <strong>${gameState.totalScore} points</strong>.`;
+  gameState.stepValidated[3] = true;
+  updateGameFooter();
+  updateStepDots();
+}
+
+/* ===================== GAME NAVIGATION ===================== */
+function validateCurrentStep() {
+  switch(gameState.currentStep) {
+    case 0: validateStep1(); break;
+    case 1: validateStep2(); break;
+    case 2: validateStep3(); break;
+    case 3: validateStep4(); break;
+  }
+}
+
+function gameNext() {
+  if(gameState.currentStep < 3) {
+    gameState.currentStep++;
+    renderGame();
+  }
+}
+
+function gamePrev() {
+  if(gameState.currentStep > 0) {
+    gameState.currentStep--;
+    renderGame();
+  }
+}
+
+function launchQuiz() {
+  // Phase 4 : le quiz sera ajouté ici
+  alert('Le quiz de validation arrive dans la prochaine étape !');
 }
 </script>
 
