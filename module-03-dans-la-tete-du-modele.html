@@ -279,6 +279,529 @@
       pointer-events: none;
       z-index: 1;
     }
+
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a0a0a 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #briefing-screen.active { display: flex; }
+
+    .briefing-header {
+      background: rgba(10,20,40,0.95);
+      border-bottom: 1px solid rgba(255,107,107,0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: var(--neon-red);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.9em; }
+    .briefing-progress-bar { width: 180px; height: 5px; background: rgba(255,107,107,0.15); border-radius: 3px; overflow: hidden; }
+    .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-red), var(--neon-orange)); transition: width .4s ease; }
+
+    .briefing-body { display: flex; flex: 1; overflow: hidden; }
+
+    .briefing-nav {
+      width: 270px;
+      background: rgba(10,14,23,0.9);
+      border-right: 1px solid rgba(255,107,107,0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .briefing-nav::-webkit-scrollbar { width: 4px; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 2px; }
+
+    .back-link-sidebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      margin: 0 15px 15px;
+      background: rgba(0,212,255,0.05);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 8px;
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all .3s;
+    }
+    .back-link-sidebar:hover { background: rgba(0,212,255,0.12); border-color: var(--neon-blue); transform: translateX(-3px); }
+
+    .briefing-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all .3s;
+      color: #8899aa;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05); color: var(--text); }
+    .briefing-nav-item.active { border-left-color: var(--neon-red); background: rgba(255,107,107,0.1); color: var(--neon-red); }
+    .briefing-nav-item.completed { color: var(--neon-orange); }
+    .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); }
+    .nav-icon { font-size: 1.2em; width: 28px; text-align: center; }
+    .nav-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      background: rgba(255,107,107,0.2);
+      color: var(--neon-red);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 880px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .briefing-content::-webkit-scrollbar { width: 6px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(255,107,107,0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 3px; }
+
+    .briefing-footer {
+      background: rgba(10,20,40,0.95);
+      border-top: 1px solid rgba(255,107,107,0.2);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 10px 25px;
+      background: transparent;
+      border: 1px solid rgba(255,107,107,0.4);
+      color: var(--neon-red);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all .3s;
+      border-radius: 3px;
+    }
+    .nav-btn:hover { background: rgba(255,107,107,0.1); border-color: var(--neon-red); }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .nav-btn.next { background: rgba(255,107,107,0.15); border-color: var(--neon-red); }
+    .nav-btn.next:hover { background: rgba(255,107,107,0.25); box-shadow: 0 0 15px rgba(255,107,107,0.3); }
+
+    /* Styles contenu briefing */
+    .lesson-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      color: var(--neon-red);
+      margin-bottom: 6px;
+    }
+    .lesson-kicker {
+      font-size: 0.9em;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--neon-red), transparent);
+      margin: 20px 0;
+      opacity: 0.4;
+    }
+    .callout {
+      background: rgba(255,107,107,0.06);
+      border: 1px solid rgba(255,107,107,0.25);
+      border-radius: 10px;
+      padding: 20px 25px;
+      margin: 20px 0;
+      line-height: 1.75;
+    }
+    .callout.blue { background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.25); }
+    .callout.green { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.25); }
+    .callout.orange { background: rgba(255,159,67,0.06); border-color: rgba(255,159,67,0.25); }
+    .callout h4 { margin-bottom: 10px; }
+    .highlight { color: var(--neon-red); font-weight: 600; }
+    .highlight-blue { color: var(--neon-blue); font-weight: 600; }
+    .highlight-orange { color: var(--neon-orange); font-weight: 600; }
+    .highlight-green { color: var(--neon-green); font-weight: 600; }
+
+    /* Schéma pipeline */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 25px 0;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .pipe-step {
+      flex: 1;
+      min-width: 100px;
+      text-align: center;
+      background: rgba(255,107,107,0.1);
+      border: 1px solid rgba(255,107,107,0.3);
+      border-radius: 8px;
+      padding: 12px 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-red);
+      position: relative;
+    }
+    .pipe-step.blue { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); color: var(--neon-blue); }
+    .pipe-step.orange { background: rgba(255,159,67,0.1); border-color: rgba(255,159,67,0.3); color: var(--neon-orange); }
+    .pipe-step.green { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.3); color: var(--neon-green); }
+    .pipe-step .pipe-icon { font-size: 1.6em; display: block; margin-bottom: 6px; }
+    .pipe-arrow { color: var(--muted); font-size: 1.4em; padding: 0 4px; flex-shrink: 0; align-self: center; }
+
+    /* Token examples */
+    .token-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+    .token {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,107,107,0.5);
+      color: var(--neon-red);
+      background: rgba(255,107,107,0.08);
+    }
+    .token.blue { border-color: rgba(0,212,255,0.5); color: var(--neon-blue); background: rgba(0,212,255,0.08); }
+    .token.orange { border-color: rgba(255,159,67,0.5); color: var(--neon-orange); background: rgba(255,159,67,0.08); }
+    .token.green { border-color: rgba(0,255,136,0.5); color: var(--neon-green); background: rgba(0,255,136,0.08); }
+    .token-label { color: var(--muted); font-size: 0.85em; }
+
+    /* Vecteur exemple */
+    .vector-box {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 8px;
+      padding: 15px 20px;
+      color: var(--neon-blue);
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
+    /* Barres de proba */
+    .proba-bar-wrap { margin: 8px 0; display: flex; align-items: center; gap: 12px; }
+    .proba-word { font-family: 'Space Mono', monospace; font-size: 0.85em; width: 100px; flex-shrink: 0; }
+    .proba-bar { flex: 1; height: 22px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; position: relative; }
+    .proba-fill { height: 100%; border-radius: 4px; transition: width .8s ease; }
+    .proba-pct { font-size: 0.8em; color: var(--muted); width: 45px; text-align: right; flex-shrink: 0; }
+
+    /* Info-card */
+    .info-card {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      background: rgba(10,20,40,0.6);
+      border: 1px solid rgba(255,107,107,0.2);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 12px 0;
+    }
+    .info-card-icon { font-size: 2em; flex-shrink: 0; }
+    .info-card-body h4 { color: var(--neon-red); margin-bottom: 6px; font-size: 1em; }
+    .info-card-body p { color: #aabbcc; line-height: 1.65; font-size: 0.95em; }
+
+    /* Bouton lancer jeu */
+    .launch-game-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 1.15em;
+      padding: 20px 50px;
+      background: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,159,67,0.2));
+      border: 2px solid var(--neon-red);
+      color: var(--neon-red);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      transition: all .3s;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+    .launch-game-btn:hover {
+      background: linear-gradient(135deg, rgba(255,107,107,0.3), rgba(255,159,67,0.3));
+      box-shadow: 0 0 30px rgba(255,107,107,0.4);
+      transform: scale(1.03);
+    }
+
+    /* ==================== ÉCRAN DE JEU ==================== */
+    #game-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--dark-bg);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #game-screen.active { display: flex; }
+
+    /* header jeu */
+    .game-header {
+      background: rgba(10,14,23,0.98);
+      border-bottom: 1px solid rgba(255,107,107,0.3);
+      padding: 12px 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-shrink: 0;
+    }
+    .game-zone-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 1em;
+      color: var(--neon-red);
+      flex: 1;
+    }
+    .zone-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .zone-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,107,107,0.4);
+      background: transparent;
+      transition: all .3s;
+    }
+    .zone-dot.done { background: var(--neon-green); border-color: var(--neon-green); box-shadow: 0 0 8px rgba(0,255,136,0.5); }
+    .zone-dot.active { background: var(--neon-red); border-color: var(--neon-red); box-shadow: 0 0 8px rgba(255,107,107,0.5); }
+
+    /* corps jeu */
+    .game-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .game-body::-webkit-scrollbar { width: 6px; }
+    .game-body::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 3px; }
+
+    /* Zone header */
+    .zone-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .zone-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .zone-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 2em;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    .zone-desc { color: #aabbcc; font-size: 1em; line-height: 1.7; }
+
+    /* Challenges tokens */
+    .challenge-card {
+      background: rgba(10,20,40,0.8);
+      border: 1px solid rgba(255,107,107,0.25);
+      border-radius: 14px;
+      padding: 25px 30px;
+      margin-bottom: 22px;
+      transition: border-color .3s;
+    }
+    .challenge-card.answered { border-color: rgba(255,107,107,0.1); }
+    .challenge-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--muted);
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+    .challenge-word {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      color: var(--neon-red);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+    .token-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .token-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: rgba(255,107,107,0.04);
+      border: 1px solid rgba(255,107,107,0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .25s;
+    }
+    .token-option:hover:not(.disabled) {
+      background: rgba(255,107,107,0.1);
+      border-color: rgba(255,107,107,0.5);
+      transform: translateX(4px);
+    }
+    .token-option.disabled { cursor: default; opacity: 0.7; }
+    .token-option.correct  { background: rgba(0,255,136,0.1)!important; border-color: var(--neon-green)!important; opacity:1!important; }
+    .token-option.wrong    { background: rgba(255,0,128,0.1)!important; border-color: var(--neon-pink)!important; }
+    .option-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: var(--muted);
+      width: 22px;
+      flex-shrink: 0;
+    }
+    .option-tokens { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+    .opt-token {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,107,107,0.4);
+      color: var(--neon-red);
+      background: rgba(255,107,107,0.08);
+    }
+    .token-option.correct .opt-token { border-color: rgba(0,255,136,0.5); color: var(--neon-green); background: rgba(0,255,136,0.08); }
+    .token-option.wrong   .opt-token { border-color: rgba(255,0,128,0.5); color: var(--neon-pink);  background: rgba(255,0,128,0.08); }
+    .opt-count { font-size: 0.75em; color: var(--muted); align-self: center; flex-shrink: 0; }
+
+    .challenge-explain {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(0,212,255,0.06);
+      border-left: 3px solid var(--neon-blue);
+      border-radius: 0 8px 8px 0;
+      color: #aabbcc;
+      font-size: 0.9em;
+      line-height: 1.65;
+    }
+    .challenge-explain.show { display: block; }
+
+    /* Barre de score zone */
+    .zone-score-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      background: rgba(10,20,40,0.6);
+      border: 1px solid rgba(255,107,107,0.2);
+      border-radius: 8px;
+      padding: 12px 18px;
+    }
+    .zone-score-label { font-family: 'Space Mono', monospace; font-size: 0.8em; color: var(--muted); }
+    .zone-score-track { flex: 1; height: 8px; background: rgba(255,107,107,0.1); border-radius: 4px; overflow: hidden; }
+    .zone-score-fill { height: 100%; background: linear-gradient(90deg, var(--neon-red), var(--neon-orange)); border-radius: 4px; transition: width .5s ease; width: 0%; }
+    .zone-score-num { font-family: 'Space Mono', monospace; font-size: 0.9em; color: var(--neon-red); }
+
+    /* Bouton valider / continuer zone */
+    .zone-btn {
+      display: block;
+      width: 100%;
+      font-family: 'Space Mono', monospace;
+      font-size: 1em;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,159,67,0.15));
+      border: 1px solid var(--neon-red);
+      color: var(--neon-red);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-radius: 8px;
+      transition: all .3s;
+      margin-top: 20px;
+    }
+    .zone-btn:hover { background: linear-gradient(135deg, rgba(255,107,107,0.25), rgba(255,159,67,0.25)); box-shadow: 0 0 20px rgba(255,107,107,0.3); }
+    .zone-btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+
+    /* Zone complétée */
+    .zone-complete-banner {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.08));
+      border: 1px solid rgba(0,255,136,0.3);
+      border-radius: 14px;
+      padding: 30px;
+      margin-top: 25px;
+    }
+    .zone-complete-banner h3 { color: var(--neon-green); font-family: 'Space Mono', monospace; margin-bottom: 10px; font-size: 1.2em; }
+    .zone-complete-banner p { color: #aabbcc; line-height: 1.7; margin-bottom: 20px; }
+
+    /* Word cards Zone 2 */
+    .word-card {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      text-align: center;
+      padding: 16px 10px;
+      background: rgba(0,212,255,0.06);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 10px;
+      color: var(--neon-blue);
+      cursor: pointer;
+      transition: all .25s;
+      user-select: none;
+    }
+    .word-card:hover:not(.paired) { background: rgba(0,212,255,0.12); border-color: rgba(0,212,255,0.5); transform: translateY(-2px); }
+    .word-card.selected-card { background: rgba(255,159,67,0.15); border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: 0 0 15px rgba(255,159,67,0.3); transform: scale(1.05); }
+    .word-card.paired { cursor: default; }
+    .word-card.wrong-card { background: rgba(255,0,128,0.1); border-color: var(--neon-pink); color: var(--neon-pink); animation: shake .4s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX(6px); }
+    }
+
+    /* Toast notification */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(10,20,40,0.95);
+      border: 1px solid rgba(0,255,136,0.4);
+      color: var(--neon-green);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 12px 25px;
+      border-radius: 8px;
+      z-index: 9999;
+      transition: transform .4s ease;
+      box-shadow: 0 0 20px rgba(0,255,136,0.2);
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
@@ -338,6 +861,131 @@
     </div>
   </div>
 
+  <!-- ==================== BRIEFING ==================== -->
+  <div id="briefing-screen">
+
+    <!-- Header -->
+    <div class="briefing-header">
+      <div class="briefing-title">🧠 NEURONAUT — Dossier de Préparation</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Section 1/6</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width:16%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="briefing-body">
+
+      <!-- Sidebar -->
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar">← Tous les modules</a>
+
+        <div class="briefing-nav-item active" onclick="showLesson(0)" id="nav-0">
+          <span class="nav-icon">🌐</span>
+          <span>Qu'est-ce qu'un LLM ?</span>
+          <span class="nav-number">1</span>
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(1)" id="nav-1">
+          <span class="nav-icon">⚙️</span>
+          <span>La Tokenisation</span>
+          <span class="nav-number">2</span>
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(2)" id="nav-2">
+          <span class="nav-icon">🌌</span>
+          <span>Les Embeddings</span>
+          <span class="nav-number">3</span>
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(3)" id="nav-3">
+          <span class="nav-icon">🔍</span>
+          <span>Le Mécanisme d'Attention</span>
+          <span class="nav-number">4</span>
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(4)" id="nav-4">
+          <span class="nav-icon">🎲</span>
+          <span>La Prédiction</span>
+          <span class="nav-number">5</span>
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(5)" id="nav-5">
+          <span class="nav-icon">🚀</span>
+          <span>Mission NEURONAUT</span>
+          <span class="nav-number">6</span>
+        </div>
+      </nav>
+
+      <!-- Contenu -->
+      <div class="briefing-content" id="briefing-content">
+        <!-- injecté par JS -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="briefing-footer">
+      <button class="nav-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
+      <span id="footer-hint" style="color:#8899aa;font-size:0.85em;font-family:'Space Mono',monospace"></span>
+      <button class="nav-btn next" id="btn-next" onclick="nextLesson()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- ==================== QUIZ SCREEN ==================== -->
+  <div id="quiz-screen" style="position:fixed;inset:0;background:var(--dark-bg);z-index:997;display:none;flex-direction:column;overflow:hidden">
+    <div style="background:rgba(10,14,23,0.98);border-bottom:1px solid rgba(255,107,107,0.3);padding:14px 25px;display:flex;align-items:center;gap:15px;flex-shrink:0">
+      <button onclick="document.getElementById('quiz-screen').classList.remove('active');document.getElementById('game-screen').classList.add('active');completeZone3();"
+              style="color:#8899aa;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:6px 12px;font-family:'Space Mono',monospace;font-size:0.8em;cursor:pointer;letter-spacing:1px">← Zones</button>
+      <div style="font-family:'Space Mono',monospace;color:var(--neon-red);font-size:1em;flex:1">📜 Quiz de Certification — NEURONAUT</div>
+      <div id="quiz-cert-nav" style="opacity:0.3;pointer-events:none">
+        <button onclick="showCertificate()"
+                style="color:var(--neon-green);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.4);border-radius:4px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:0.8em;cursor:pointer;letter-spacing:1px">
+          🎓 Mon attestation
+        </button>
+      </div>
+    </div>
+    <div id="quiz-content" style="flex:1;overflow-y:auto;padding:30px 40px;max-width:860px;margin:0 auto;width:100%">
+      <!-- injecté par renderQuiz() -->
+    </div>
+  </div>
+
+  <!-- ==================== CERT SCREEN ==================== -->
+  <div id="cert-screen" style="position:fixed;inset:0;background:var(--dark-bg);z-index:996;display:none;flex-direction:column;overflow:hidden">
+    <div style="background:rgba(10,14,23,0.98);border-bottom:1px solid rgba(0,255,136,0.3);padding:14px 25px;display:flex;align-items:center;gap:15px;flex-shrink:0">
+      <button onclick="document.getElementById('cert-screen').classList.remove('active');document.getElementById('quiz-screen').classList.add('active');"
+              style="color:#8899aa;background:transparent;border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:6px 12px;font-family:'Space Mono',monospace;font-size:0.8em;cursor:pointer;letter-spacing:1px">← Quiz</button>
+      <div style="font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1em;flex:1">🎓 Attestation de Réussite — Module 3</div>
+    </div>
+    <div id="cert-content" style="flex:1;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto;width:100%">
+      <!-- injecté par showCertificate() -->
+    </div>
+  </div>
+
+  <!-- Active style for quiz/cert screens -->
+  <style>
+    #quiz-screen.active { display: flex; }
+    #cert-screen.active { display: flex; }
+    #quiz-content::-webkit-scrollbar { width: 6px; }
+    #quiz-content::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 3px; }
+  </style>
+
+  <!-- ==================== GAME SCREEN ==================== -->
+  <div id="game-screen">
+    <div class="game-header">
+      <a href="modules.html" style="color:#8899aa;text-decoration:none;font-family:'Space Mono',monospace;font-size:0.8em;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;transition:all .3s" onmouseover="this.style.color='#aabbcc'" onmouseout="this.style.color='#8899aa'">← Modules</a>
+      <div class="game-zone-name" id="game-zone-name">⚙️ Zone 1 — La Forge des Tokens</div>
+      <div class="zone-dots">
+        <span style="color:#8899aa;font-size:0.75em;margin-right:5px;font-family:'Space Mono',monospace">ZONES</span>
+        <div class="zone-dot active" id="dot-1" title="Zone 1"></div>
+        <div class="zone-dot" id="dot-2" title="Zone 2"></div>
+        <div class="zone-dot" id="dot-3" title="Zone 3"></div>
+      </div>
+    </div>
+    <div class="game-body" id="game-body">
+      <!-- injecté par JS selon la zone active -->
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
   <script>
     // ==================== PARTICULES DÉCO ====================
     function createParticles() {
@@ -349,17 +997,1488 @@
         p.style.animationDuration = (8 + Math.random() * 12) + 's';
         p.style.animationDelay = (Math.random() * 10) + 's';
         p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
-        // Quelques particules bleues pour variation
         if (Math.random() > 0.6) p.style.background = '#00d4ff';
         container.appendChild(p);
       }
     }
     createParticles();
 
-    // ==================== DÉMARRAGE ====================
+    // ==================== NAVIGATION BRIEFING ====================
+    let currentLesson = 0;
+    const totalLessons = 6;
+    const visitedLessons = new Set();
+
+    const lessons = [
+      // ---- Section 0 : Qu'est-ce qu'un LLM ? ----
+      `<div class="lesson-title">🌐 Qu'est-ce qu'un modèle de langage ?</div>
+      <div class="lesson-kicker">Large Language Model (LLM) — Vue d'ensemble</div>
+      <div class="divider"></div>
+      <p style="line-height:1.8;margin-bottom:20px">
+        Tu as peut-être déjà utilisé ChatGPT, Claude ou Gemini. Mais sais-tu vraiment ce qui se passe
+        à l'intérieur ? Un <span class="highlight">modèle de langage</span> (LLM pour
+        <em>Large Language Model</em>) est un programme entraîné sur des centaines de milliards de mots
+        pour réaliser une seule tâche fondamentale :
+      </p>
+      <div class="callout" style="text-align:center;padding:25px">
+        <div style="font-size:2em;margin-bottom:10px">🎯</div>
+        <div style="font-family:'Space Mono',monospace;font-size:1.2em;color:var(--neon-red)">
+          Prédire le prochain token le plus probable
+        </div>
+        <p style="color:#8899aa;margin-top:10px">C'est tout. Tout le reste en découle.</p>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-orange)">Le pipeline complet</h3>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <span class="pipe-icon">📝</span>Texte brut
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-step orange">
+          <span class="pipe-icon">⚙️</span>Tokenisation
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-step blue">
+          <span class="pipe-icon">🌌</span>Embeddings
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-step" style="background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.3);color:#a855f7">
+          <span class="pipe-icon">🔍</span>Attention
+        </div>
+        <span class="pipe-arrow">→</span>
+        <div class="pipe-step green">
+          <span class="pipe-icon">🎲</span>Prédiction
+        </div>
+      </div>
+      <p style="color:#8899aa;font-size:0.85em;text-align:center;margin-bottom:25px">
+        Ces 4 étapes constituent le cœur de chaque modèle de langage moderne.
+        Tu vas explorer chacune d'elles.
+      </p>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-orange)">Ce qu'un LLM N'est PAS</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="info-card">
+          <span class="info-card-icon">❌</span>
+          <div class="info-card-body">
+            <h4>Pas une base de données</h4>
+            <p>Il ne "cherche" pas une réponse stockée. Il la génère statistiquement.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="info-card-icon">❌</span>
+          <div class="info-card-body">
+            <h4>Pas conscient</h4>
+            <p>Il n'a aucune compréhension, aucune intention, aucune émotion.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="info-card-icon">❌</span>
+          <div class="info-card-body">
+            <h4>Pas connecté à internet</h4>
+            <p>Sans plugin spécifique, il n'accède pas à des informations en temps réel.</p>
+          </div>
+        </div>
+        <div class="info-card">
+          <span class="info-card-icon">❌</span>
+          <div class="info-card-body">
+            <h4>Pas infaillible</h4>
+            <p>Il peut "inventer" des faits qui semblent vrais — c'est ce qu'on appelle halluciner.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout blue" style="margin-top:25px">
+        <strong style="color:var(--neon-blue)">🧠 Analogie</strong><br>
+        Imagine quelqu'un qui aurait lu l'intégralité d'internet. Il peut reproduire des patterns,
+        compléter des phrases, imiter des styles — mais il ne "sait" rien au sens humain du terme.
+        C'est exactement ce qu'est un LLM.
+      </div>`,
+
+      // ---- Section 1 : Tokenisation ----
+      `<div class="lesson-title">⚙️ La Tokenisation</div>
+      <div class="lesson-kicker">Comment l'IA "lit" vraiment le texte</div>
+      <div class="divider"></div>
+      <p style="line-height:1.8;margin-bottom:20px">
+        Avant de traiter du texte, le modèle doit le <span class="highlight">découper</span>.
+        Contrairement à nous qui lisons des mots, l'IA travaille avec des <strong>tokens</strong> —
+        des fragments qui peuvent être des mots entiers, des syllabes, des caractères,
+        ou même de la ponctuation.
+      </p>
+
+      <div class="callout orange">
+        <strong style="color:var(--neon-orange)">📏 Règle approximative</strong><br>
+        1 token ≈ 4 caractères en anglais, un peu plus en français.<br>
+        1 000 tokens ≈ 750 mots. GPT-4 peut traiter jusqu'à 128 000 tokens d'un coup.
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-orange)">Exemples de tokenisation</h3>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:10px;padding:20px;margin-bottom:20px">
+        <p style="color:#8899aa;margin-bottom:12px;font-size:0.85em;font-family:'Space Mono',monospace">TEXTE : "unforgettable"</p>
+        <div class="token-row">
+          <span class="token-label">Tokens →</span>
+          <span class="token orange">"un"</span>
+          <span class="token orange">"for"</span>
+          <span class="token orange">"get"</span>
+          <span class="token orange">"table"</span>
+        </div>
+        <p style="color:#8899aa;font-size:0.82em;margin-top:8px">🐻 L'IA "voit" le mot anglais pour ours dans "unforGETtable" !</p>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:10px;padding:20px;margin-bottom:20px">
+        <p style="color:#8899aa;margin-bottom:12px;font-size:0.85em;font-family:'Space Mono',monospace">TEXTE : "L'intelligence artificielle"</p>
+        <div class="token-row">
+          <span class="token-label">Tokens →</span>
+          <span class="token">"L'"</span>
+          <span class="token">"intelligence"</span>
+          <span class="token">"_artific"</span>
+          <span class="token">"ielle"</span>
+        </div>
+        <p style="color:#8899aa;font-size:0.82em;margin-top:8px">💡 Le "_" représente un espace. Les mots rares sont coupés en morceaux.</p>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:10px;padding:20px;margin-bottom:20px">
+        <p style="color:#8899aa;margin-bottom:12px;font-size:0.85em;font-family:'Space Mono',monospace">TEXTE : "2024 est une belle année !"</p>
+        <div class="token-row">
+          <span class="token-label">Tokens →</span>
+          <span class="token blue">"20"</span>
+          <span class="token blue">"24"</span>
+          <span class="token">"_est"</span>
+          <span class="token">"_une"</span>
+          <span class="token">"_belle"</span>
+          <span class="token">"_ann"</span>
+          <span class="token">"ée"</span>
+          <span class="token green">"_!"</span>
+        </div>
+        <p style="color:#8899aa;font-size:0.82em;margin-top:8px">🔢 Les nombres et la ponctuation aussi sont tokenisés.</p>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-orange)">Pourquoi ça compte ?</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="callout">
+          <strong style="color:var(--neon-red)">⚠️ Conséquence 1</strong><br>
+          L'IA ne "comprend" pas les mots — elle manipule des identifiants numériques (IDs).
+          "chat" et "Chat" peuvent être deux tokens différents.
+        </div>
+        <div class="callout">
+          <strong style="color:var(--neon-red)">⚠️ Conséquence 2</strong><br>
+          Compter les lettres est difficile pour l'IA. Demande-lui combien de "r" dans "strawberry"…
+          elle se trompe souvent !
+        </div>
+        <div class="callout">
+          <strong style="color:var(--neon-red)">⚠️ Conséquence 3</strong><br>
+          Les langues avec beaucoup de variantes morphologiques (arabe, turc, finnois)
+          nécessitent plus de tokens → coût plus élevé.
+        </div>
+        <div class="callout blue">
+          <strong style="color:var(--neon-blue)">✅ Avantage</strong><br>
+          La tokenisation permet de traiter n'importe quelle langue avec un vocabulaire
+          fini d'environ 50 000 à 100 000 tokens.
+        </div>
+      </div>`,
+
+      // ---- Section 2 : Embeddings ----
+      `<div class="lesson-title">🌌 Les Embeddings</div>
+      <div class="lesson-kicker">Comment l'IA représente le sens dans l'espace</div>
+      <div class="divider"></div>
+      <p style="line-height:1.8;margin-bottom:20px">
+        Une fois tokenisé, chaque token est transformé en un <span class="highlight">vecteur</span> —
+        une liste de centaines ou de milliers de nombres décimaux. C'est ce qu'on appelle un
+        <strong>embedding</strong> (plongement vectoriel).
+        Ces nombres capturent le <em>sens</em> du token dans un espace mathématique.
+      </p>
+
+      <div class="callout blue">
+        <strong style="color:var(--neon-blue)">📐 Le principe</strong><br>
+        Des tokens de sens proche ont des vecteurs <strong>proches</strong> dans cet espace.
+        Des tokens de sens éloigné ont des vecteurs <strong>distants</strong>.
+        La "distance" entre deux vecteurs mesure leur similarité sémantique.
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-blue)">À quoi ressemble un vecteur ?</h3>
+      <div class="vector-box">
+        "chat" → [0.231, -0.847, 0.093, 0.512, -0.334, 0.761, ..., 0.128]
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em style="color:#8899aa">// ~1536 dimensions</em>
+        "chien" → [0.229, -0.851, 0.087, 0.508, -0.341, 0.758, ..., 0.131]
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em style="color:#8899aa">// très proche de "chat" !</em>
+        "voiture" → [0.912, 0.234, -0.561, 0.087, 0.445, -0.122, ..., 0.677]
+                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em style="color:#8899aa">// très différent</em>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-blue)">L'arithmétique du sens</h3>
+      <p style="line-height:1.8;margin-bottom:15px">
+        La magie des embeddings : on peut faire des <strong>opérations mathématiques</strong> sur du sens !
+      </p>
+      <div class="callout blue" style="text-align:center;font-family:'Space Mono',monospace;font-size:1.1em;padding:25px">
+        <span style="color:var(--neon-blue)">Roi</span>
+        <span style="color:#8899aa"> − </span>
+        <span style="color:var(--neon-red)">Homme</span>
+        <span style="color:#8899aa"> + </span>
+        <span style="color:var(--neon-green)">Femme</span>
+        <span style="color:#8899aa"> ≈ </span>
+        <span style="color:var(--neon-orange)">Reine</span>
+        <p style="font-family:'Exo 2',sans-serif;font-size:0.75em;color:#8899aa;margin-top:15px;font-weight:400">
+          Les vecteurs encodent des relations : masculin/féminin, royauté, profession...
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px">
+        <div style="text-align:center;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:15px">
+          <div style="font-size:1.5em;margin-bottom:8px">🐱</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--neon-blue)">chat</div>
+          <div style="font-size:0.72em;color:#8899aa;margin-top:4px">Proche de : chien, animal, félin</div>
+        </div>
+        <div style="text-align:center;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:15px">
+          <div style="font-size:1.5em;margin-bottom:8px">👑</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--neon-blue)">roi</div>
+          <div style="font-size:0.72em;color:#8899aa;margin-top:4px">Proche de : reine, prince, monarque</div>
+        </div>
+        <div style="text-align:center;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:15px">
+          <div style="font-size:1.5em;margin-bottom:8px">🇫🇷</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--neon-blue)">Paris</div>
+          <div style="font-size:0.72em;color:#8899aa;margin-top:4px">Proche de : France, ville, capitale</div>
+        </div>
+      </div>
+
+      <div class="callout green" style="margin-top:20px">
+        <strong style="color:var(--neon-green)">💡 À retenir</strong><br>
+        Les embeddings permettent à l'IA de <strong>comparer des concepts</strong>,
+        de détecter la <strong>similarité sémantique</strong> et même de faire de
+        <strong>l'analogie</strong> — le tout avec de simples calculs de distance dans un espace vectoriel.
+      </div>`,
+
+      // ---- Section 3 : Attention ----
+      `<div class="lesson-title">🔍 Le Mécanisme d'Attention</div>
+      <div class="lesson-kicker">Comment l'IA contextualise chaque token</div>
+      <div class="divider"></div>
+      <p style="line-height:1.8;margin-bottom:20px">
+        Si les embeddings donnent un sens général à chaque token, le <span class="highlight">mécanisme d'attention</span>
+        — au cœur des Transformers — permet à l'IA d'interpréter chaque token
+        <em>en fonction de son contexte</em>. C'est ce qui rend les LLM si puissants.
+      </p>
+
+      <div class="callout" style="text-align:center;padding:25px">
+        <div style="font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-red);margin-bottom:15px">
+          "La banque était pleine."
+        </div>
+        <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap">
+          <div style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:8px;padding:12px 20px;text-align:center">
+            <div style="font-size:1.5em">🏦</div>
+            <div style="color:var(--neon-blue);font-size:0.85em;margin-top:6px">Banque d'argent</div>
+            <div style="color:#8899aa;font-size:0.75em">si contexte = finances</div>
+          </div>
+          <div style="color:var(--muted);align-self:center;font-size:1.5em">ou</div>
+          <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:8px;padding:12px 20px;text-align:center">
+            <div style="font-size:1.5em">🏞️</div>
+            <div style="color:var(--neon-green);font-size:0.85em;margin-top:6px">Rive de rivière</div>
+            <div style="color:#8899aa;font-size:0.75em">si contexte = nature</div>
+          </div>
+        </div>
+        <p style="color:#8899aa;font-size:0.85em;margin-top:15px">
+          L'attention regarde les autres tokens pour choisir la bonne interprétation.
+        </p>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-red)">Comment fonctionne l'attention ?</h3>
+
+      <div class="info-card">
+        <span class="info-card-icon">1️⃣</span>
+        <div class="info-card-body">
+          <h4>Calcul des poids d'attention</h4>
+          <p>Pour chaque token, le modèle calcule un score de pertinence avec <em>tous</em> les autres tokens.
+          "Banque" regarde "rivière", "poissons", "argent", "compte"... pour décider lequel est le plus pertinent.</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <span class="info-card-icon">2️⃣</span>
+        <div class="info-card-body">
+          <h4>Pondération des vecteurs</h4>
+          <p>Les tokens les plus pertinents ont plus d'influence sur la représentation finale.
+          C'est une <strong>moyenne pondérée</strong> des vecteurs contextuels.</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <span class="info-card-icon">3️⃣</span>
+        <div class="info-card-body">
+          <h4>Multi-head attention</h4>
+          <p>Le modèle fait ça en parallèle sur plusieurs "têtes" (heads).
+          Chaque tête peut se concentrer sur un aspect différent : syntaxe, sémantique, coreférence...</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="callout orange">
+        <strong style="color:var(--neon-orange)">📊 Les chiffres</strong><br>
+        GPT-4 possède <strong>96 couches</strong> de Transformer, chacune avec <strong>96 têtes d'attention</strong>.
+        À chaque token généré, des milliards de calculs sont effectués pour "pondérer" le contexte.
+        <br><br>
+        C'est pourquoi générer un texte long consomme autant d'énergie.
+      </div>
+
+      <div class="callout green" style="margin-top:15px">
+        <strong style="color:var(--neon-green)">💡 L'insight clé</strong><br>
+        L'attention est ce qui permet à l'IA de "se souvenir" du début d'une conversation longue,
+        de résoudre des pronoms ("il" dans "Pierre a dit à Paul qu'il viendrait" — qui est "il" ?),
+        et de maintenir la cohérence sur de longs textes.
+      </div>`,
+
+      // ---- Section 4 : Prédiction ----
+      `<div class="lesson-title">🎲 La Prédiction</div>
+      <div class="lesson-kicker">Comment l'IA génère — token par token</div>
+      <div class="divider"></div>
+      <p style="line-height:1.8;margin-bottom:20px">
+        Après la tokenisation, les embeddings et l'attention, le modèle arrive à l'étape finale :
+        <span class="highlight">prédire le prochain token</span>. Et voici la chose cruciale à comprendre :
+        l'IA ne choisit pas un mot — elle calcule une <strong>distribution de probabilités</strong>
+        sur tous les tokens possibles, puis en tire un au sort.
+      </p>
+
+      <h3 style="margin-bottom:15px;color:var(--neon-green)">Exemple concret</h3>
+      <div style="background:rgba(0,0,0,0.3);border-radius:10px;padding:20px;margin-bottom:20px">
+        <p style="font-family:'Space Mono',monospace;color:var(--neon-red);margin-bottom:15px">
+          Prompt : "La capitale de la France est"
+        </p>
+        <p style="color:#8899aa;font-size:0.85em;margin-bottom:12px">Distribution de probabilités calculée :</p>
+        <div class="proba-bar-wrap">
+          <span class="proba-word" style="color:var(--neon-green)">Paris</span>
+          <div class="proba-bar"><div class="proba-fill" style="width:87%;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue))"></div></div>
+          <span class="proba-pct">87%</span>
+        </div>
+        <div class="proba-bar-wrap">
+          <span class="proba-word" style="color:var(--muted)">Lyon</span>
+          <div class="proba-bar"><div class="proba-fill" style="width:5%;background:rgba(0,212,255,0.4)"></div></div>
+          <span class="proba-pct" style="color:var(--muted)">5%</span>
+        </div>
+        <div class="proba-bar-wrap">
+          <span class="proba-word" style="color:var(--muted)">une</span>
+          <div class="proba-bar"><div class="proba-fill" style="width:4%;background:rgba(0,212,255,0.3)"></div></div>
+          <span class="proba-pct" style="color:var(--muted)">4%</span>
+        </div>
+        <div class="proba-bar-wrap">
+          <span class="proba-word" style="color:var(--muted)">...</span>
+          <div class="proba-bar"><div class="proba-fill" style="width:4%;background:rgba(100,100,100,0.3)"></div></div>
+          <span class="proba-pct" style="color:var(--muted)">4%</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-green)">La Température : créativité vs. précision</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px">
+        <div class="callout">
+          <strong style="color:var(--neon-red)">🧊 Température basse (0.1)</strong><br>
+          L'IA choisit presque toujours le token le plus probable.
+          Résultat : précis, prévisible, parfois répétitif.
+          <br><em style="color:#8899aa;font-size:0.9em">Usage : questions factuelles, code</em>
+        </div>
+        <div class="callout orange">
+          <strong style="color:var(--neon-orange)">🔥 Température haute (1.5)</strong><br>
+          L'IA prend des risques, choisit des tokens moins probables.
+          Résultat : créatif, surprenant, parfois incohérent.
+          <br><em style="color:#8899aa;font-size:0.9em">Usage : poésie, brainstorming</em>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:15px;color:var(--neon-green)">Ce que ça implique</h3>
+      <div class="callout" style="border-left:3px solid var(--neon-red);border-radius:0 10px 10px 0">
+        <strong style="color:var(--neon-red)">⚠️ L'IA ne "sait" pas</strong><br>
+        Quand l'IA dit "Paris est la capitale de la France", elle ne le <em>sait</em> pas.
+        Elle a calculé que "Paris" avait 87% de probabilité d'être le bon token ici,
+        en se basant sur son entraînement. La différence est fondamentale.
+      </div>
+      <div class="callout green" style="border-left:3px solid var(--neon-green);border-radius:0 10px 10px 0;margin-top:12px">
+        <strong style="color:var(--neon-green)">✅ Mais c'est quand même impressionnant</strong><br>
+        Ces probabilités sont apprises sur des centaines de milliards de textes.
+        Elles capturent une quantité phénoménale de savoir humain — même si ce n'est pas de la "compréhension".
+      </div>`,
+
+      // ---- Section 5 : Mission ----
+      `<div class="lesson-title">🚀 Mission NEURONAUT</div>
+      <div class="lesson-kicker">Tu es prêt à plonger dans l'IA</div>
+      <div class="divider"></div>
+      <div class="callout" style="text-align:center;padding:30px">
+        <div style="font-size:3em;margin-bottom:15px">🧠⚡</div>
+        <h3 style="color:var(--neon-red);margin-bottom:15px;font-family:'Space Mono',monospace">BRIEFING TERMINÉ</h3>
+        <p style="line-height:1.8;max-width:550px;margin:0 auto;color:#aabbcc">
+          Tu connais maintenant les 4 étapes fondamentales qui font fonctionner un LLM.
+          Il est temps de les <strong>vivre de l'intérieur</strong>.
+        </p>
+      </div>
+
+      <div class="divider"></div>
+      <h3 style="margin-bottom:20px;color:var(--neon-orange)">Ton parcours NEURONAUT</h3>
+
+      <div class="info-card" style="border-color:rgba(255,107,107,0.4)">
+        <span class="info-card-icon">⚙️</span>
+        <div class="info-card-body">
+          <h4 style="color:var(--neon-red)">Zone 1 — La Forge des Tokens</h4>
+          <p>Découpe des phrases en tokens comme un vrai tokenizer.
+          Découvre comment l'IA "voit" vraiment le texte.</p>
+        </div>
+      </div>
+      <div class="info-card" style="border-color:rgba(0,212,255,0.4)">
+        <span class="info-card-icon">🌌</span>
+        <div class="info-card-body">
+          <h4 style="color:var(--neon-blue)">Zone 2 — La Galaxie Sémantique</h4>
+          <p>Navigue dans l'espace des embeddings. Place des mots selon leur sens
+          et découvre des relations cachées.</p>
+        </div>
+      </div>
+      <div class="info-card" style="border-color:rgba(0,255,136,0.4)">
+        <span class="info-card-icon">🔮</span>
+        <div class="info-card-body">
+          <h4 style="color:var(--neon-green)">Zone 3 — L'Oracle Probabiliste</h4>
+          <p>Complète des phrases à trous en choisissant parmi des tokens
+          avec leurs probabilités. Pense comme un LLM !</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div style="text-align:center;margin-top:30px">
+        <p style="color:#8899aa;margin-bottom:25px;line-height:1.8">
+          À l'issue des 3 zones, un <strong>quiz de certification</strong> validera tes connaissances.<br>
+          Score minimum : <strong style="color:var(--neon-red)">70%</strong> pour obtenir ton attestation.
+        </p>
+        <button class="launch-game-btn" onclick="launchGame()">
+          ⚡ Lancer l'exploration
+        </button>
+      </div>`
+    ];
+
+    function showLesson(idx) {
+      currentLesson = idx;
+      visitedLessons.add(idx);
+
+      // Contenu
+      document.getElementById('briefing-content').innerHTML = lessons[idx];
+      document.getElementById('briefing-content').scrollTop = 0;
+
+      // Nav items
+      document.querySelectorAll('.briefing-nav-item').forEach((el, i) => {
+        el.classList.remove('active');
+        if (i === idx) el.classList.add('active');
+        else if (visitedLessons.has(i) && i !== idx) el.classList.add('completed');
+      });
+
+      // Progress
+      const pct = Math.round(((idx + 1) / totalLessons) * 100);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = `Section ${idx + 1}/${totalLessons}`;
+
+      // Boutons nav
+      document.getElementById('btn-prev').disabled = idx === 0;
+      const btnNext = document.getElementById('btn-next');
+      if (idx === totalLessons - 1) {
+        btnNext.textContent = '🚀 Lancer l\'exploration →';
+        btnNext.onclick = launchGame;
+      } else {
+        btnNext.textContent = 'Suivant →';
+        btnNext.onclick = nextLesson;
+      }
+
+      // Hint
+      const hints = [
+        'LLM = Large Language Model',
+        '1 token ≈ 4 caractères',
+        'Roi − Homme + Femme ≈ Reine',
+        'L\'attention = pondération du contexte',
+        'L\'IA calcule des probabilités',
+        '3 zones interactives t\'attendent !'
+      ];
+      document.getElementById('footer-hint').textContent = hints[idx] || '';
+    }
+
+    function nextLesson() {
+      if (currentLesson < totalLessons - 1) showLesson(currentLesson + 1);
+    }
+    function prevLesson() {
+      if (currentLesson > 0) showLesson(currentLesson - 1);
+    }
+
+    // ==================== NAVIGATION SCREENS ====================
     function startModule() {
-      // Pour l'instant : placeholder — le briefing sera ajouté phase suivante
-      alert('Phase 1 validée ! Le briefing arrive dans la prochaine phase.');
+      document.getElementById('title-screen').classList.add('hidden');
+      document.getElementById('briefing-screen').classList.add('active');
+      showLesson(0);
+    }
+
+    function launchGame() {
+      document.getElementById('briefing-screen').classList.remove('active');
+      document.getElementById('game-screen').classList.add('active');
+      loadZone(1);
+    }
+
+    // ==================== TOAST ====================
+    function toast(msg, duration = 3000) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), duration);
+    }
+
+    // ==================== ÉTAT DU JEU ====================
+    const gameState = {
+      currentZone: 0,
+      zonesCompleted: [false, false, false],
+      zone1Score: 0, zone1Total: 5,
+      zone2Score: 0, zone2Total: 6,
+      zone3Score: 0, zone3Total: 5,
+    };
+
+    // ==================== NAVIGATION ZONES ====================
+    function loadZone(n) {
+      gameState.currentZone = n;
+      const body = document.getElementById('game-body');
+      body.scrollTop = 0;
+
+      document.querySelectorAll('.zone-dot').forEach((d, i) => {
+        d.classList.remove('active', 'done');
+        if (gameState.zonesCompleted[i]) d.classList.add('done');
+        if (i + 1 === n) d.classList.add('active');
+      });
+
+      if (n === 1) {
+        document.getElementById('game-zone-name').textContent = '⚙️ Zone 1 — La Forge des Tokens';
+        renderZone1();
+      } else if (n === 2) {
+        document.getElementById('game-zone-name').textContent = '🌌 Zone 2 — La Galaxie Sémantique';
+        renderZone2();
+      } else if (n === 3) {
+        document.getElementById('game-zone-name').textContent = '🔮 Zone 3 — L\'Oracle Probabiliste';
+        renderZone3();
+      }
+    }
+
+    // ==================== ZONE 1 — LA FORGE DES TOKENS ====================
+    const tokenChallenges = [
+      {
+        word: 'chat',
+        context: 'Un mot court et très fréquent',
+        options: [
+          { tokens: ['chat'], correct: true },
+          { tokens: ['ch', 'at'], correct: false },
+          { tokens: ['c', 'h', 'a', 't'], correct: false }
+        ],
+        explain: '💡 "chat" est un token unique — c\'est l\'un des mots les plus fréquents en français ET en anglais (to chat = bavarder). Les mots très fréquents restent souvent en un seul token.'
+      },
+      {
+        word: '2024',
+        context: 'Un nombre à 4 chiffres',
+        options: [
+          { tokens: ['2024'], correct: false },
+          { tokens: ['20', '24'], correct: true },
+          { tokens: ['2', '0', '2', '4'], correct: false }
+        ],
+        explain: '💡 La plupart des tokenizers découpent les nombres en groupes de 2 chiffres. "2024" → ["20", "24"]. Il y a trop de nombres possibles pour leur donner chacun un token unique !'
+      },
+      {
+        word: 'unforgettable',
+        context: 'Un long mot anglais composé',
+        options: [
+          { tokens: ['unforgettable'], correct: false },
+          { tokens: ['un', 'for', 'get', 'table'], correct: true },
+          { tokens: ['un', 'forget', 'table'], correct: false }
+        ],
+        explain: '💡 Les mots longs sont découpés en sous-unités fréquentes. "unforgettable" cache des mots entiers : "for", "get", "table" ! L\'IA voit des choses très différentes de nous.'
+      },
+      {
+        word: 'bonjour',
+        context: 'Un mot français courant',
+        options: [
+          { tokens: ['bonjour'], correct: false },
+          { tokens: ['bon', 'jour'], correct: true },
+          { tokens: ['b', 'onjour'], correct: false }
+        ],
+        explain: '💡 Même "bonjour" est souvent divisé en "bon" + "jour". Les tokenizers sont entraînés majoritairement sur l\'anglais, donc le français nécessite parfois plus de tokens pour la même idée.'
+      },
+      {
+        word: 'ChatGPT',
+        context: 'Un nom propre / acronyme',
+        options: [
+          { tokens: ['ChatGPT'], correct: false },
+          { tokens: ['Chat', 'G', 'PT'], correct: true },
+          { tokens: ['Chat', 'GPT'], correct: false }
+        ],
+        explain: '💡 Les acronymes et marques sont souvent fragmentés. "ChatGPT" → ["Chat", "G", "PT"]. Amusant : le modèle apprend à parler de lui-même en reconnaissant ses propres sous-tokens !'
+      }
+    ];
+
+    let z1Answers = {};
+
+    function renderZone1() {
+      const body = document.getElementById('game-body');
+      let html = `
+        <div class="zone-header">
+          <div class="zone-number">ZONE 01 · TOKENISATION</div>
+          <div class="zone-title">⚙️ La Forge des Tokens</div>
+          <p class="zone-desc">
+            Un tokenizer découpe chaque mot en fragments appelés <strong>tokens</strong>.
+            Pour chaque défi, identifie la <strong>tokenisation correcte</strong> parmi les 3 options.
+            Attention, certains résultats vont te surprendre !
+          </p>
+        </div>
+        <div class="zone-score-bar">
+          <span class="zone-score-label">PROGRESSION</span>
+          <div class="zone-score-track"><div class="zone-score-fill" id="z1-fill"></div></div>
+          <span class="zone-score-num" id="z1-score">0/${tokenChallenges.length}</span>
+        </div>
+      `;
+
+      tokenChallenges.forEach((ch, i) => {
+        html += `
+          <div class="challenge-card" id="challenge-${i}">
+            <div class="challenge-num">DÉFI ${i+1}/${tokenChallenges.length} · ${ch.context}</div>
+            <div class="challenge-word">"${ch.word}"</div>
+            <div class="token-options">
+              ${ch.options.map((opt, j) => `
+                <div class="token-option" id="opt-${i}-${j}" onclick="answerZ1(${i}, ${j})">
+                  <span class="option-label">${String.fromCharCode(65+j)}</span>
+                  <div class="option-tokens">
+                    ${opt.tokens.map(t => `<span class="opt-token">"${t}"</span>`).join('')}
+                  </div>
+                  <span class="opt-count">${opt.tokens.length} token${opt.tokens.length > 1 ? 's' : ''}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="challenge-explain" id="explain-${i}">${ch.explain}</div>
+          </div>
+        `;
+      });
+
+      html += `<button class="zone-btn" id="z1-next-btn" onclick="completeZone1()" disabled>
+        Passer à la Zone 2 → La Galaxie Sémantique 🌌
+      </button>`;
+
+      body.innerHTML = html;
+      z1Answers = {};
+    }
+
+    function answerZ1(challengeIdx, optionIdx) {
+      if (z1Answers.hasOwnProperty(challengeIdx)) return;
+      const ch = tokenChallenges[challengeIdx];
+      const isCorrect = ch.options[optionIdx].correct;
+      z1Answers[challengeIdx] = isCorrect;
+
+      ch.options.forEach((opt, j) => {
+        const el = document.getElementById(`opt-${challengeIdx}-${j}`);
+        el.classList.add('disabled');
+        if (opt.correct) el.classList.add('correct');
+        else if (j === optionIdx && !opt.correct) el.classList.add('wrong');
+      });
+
+      document.getElementById(`explain-${challengeIdx}`).classList.add('show');
+
+      const answered = Object.keys(z1Answers).length;
+      const correct = Object.values(z1Answers).filter(v => v).length;
+      const pct = (answered / tokenChallenges.length) * 100;
+      document.getElementById('z1-fill').style.width = pct + '%';
+      document.getElementById('z1-score').textContent = `${correct}/${answered} correct${correct > 1 ? 's' : ''}`;
+      if (answered >= 3) document.getElementById('z1-next-btn').disabled = false;
+
+      if (isCorrect) toast('✅ Bonne réponse !');
+      else toast('❌ Pas tout à fait — lis l\'explication !');
+    }
+
+    function completeZone1() {
+      const correct = Object.values(z1Answers).filter(v => v).length;
+      gameState.zone1Score = correct;
+      gameState.zonesCompleted[0] = true;
+
+      document.getElementById('dot-1').classList.remove('active');
+      document.getElementById('dot-1').classList.add('done');
+
+      const body = document.getElementById('game-body');
+      body.scrollTop = 0;
+      const banner = document.createElement('div');
+      banner.className = 'zone-complete-banner';
+      banner.style.marginBottom = '20px';
+      banner.innerHTML = `
+        <h3>⚙️ Zone 1 complétée !</h3>
+        <p>Tu as maîtrisé la tokenisation : <strong>${correct}/${tokenChallenges.length}</strong> réponses correctes.<br>
+        Tu sais maintenant comment l'IA découpe le texte avant de le traiter.<br>
+        Prochaine étape : comment l'IA représente le <em>sens</em> de ces tokens ?</p>
+        <button class="zone-btn" style="max-width:420px;margin:0 auto;" onclick="loadZone(2)">
+          🌌 Entrer dans la Galaxie Sémantique →
+        </button>
+      `;
+      body.insertBefore(banner, body.firstChild);
+      toast('🎉 Zone 1 terminée ! Score : ' + correct + '/' + tokenChallenges.length, 4000);
+    }
+
+    // ==================== ZONE 2 — LA GALAXIE SÉMANTIQUE ====================
+    // Partie A : Paires sémantiques (trouver les 4 paires parmi 8 mots)
+    const semanticPairs = [
+      { words: ['chat', 'chien'],    label: 'Animaux domestiques',  color: '#ff6b6b' },
+      { words: ['roi', 'reine'],     label: 'Royauté',              color: '#a855f7' },
+      { words: ['voiture', 'train'], label: 'Transport terrestre',  color: '#00d4ff' },
+      { words: ['médecin', 'infirmier'], label: 'Santé',             color: '#00ff88' }
+    ];
+    // Mélange des 8 mots
+    const allWords = semanticPairs.flatMap(p => p.words).sort(() => Math.random() - 0.5);
+
+    // Partie B : Analogies (3 questions)
+    const analogies = [
+      {
+        stem:    'Roi : Reine :: Homme :',
+        options: ['Fille', 'Femme', 'Monsieur', 'Dame'],
+        correct: 1,
+        explain: '💡 C\'est l\'analogie classique des embeddings : vec(Roi) − vec(Homme) + vec(Femme) ≈ vec(Reine). Le vecteur "royauté" est conservé, seul le genre change.'
+      },
+      {
+        stem:    'Paris : France :: Tokyo :',
+        options: ['Asie', 'Chine', 'Japon', 'Kyoto'],
+        correct: 2,
+        explain: '💡 La relation "capitale de" est encodée dans l\'espace vectoriel. L\'IA peut résoudre : vec(Paris) − vec(France) + vec(Japon) ≈ vec(Tokyo).'
+      },
+      {
+        stem:    'Chaud : Froid :: Jour :',
+        options: ['Soleil', 'Lumière', 'Soir', 'Nuit'],
+        correct: 3,
+        explain: '💡 Les opposés sont proches dans l\'espace vectoriel (direction inverse). La relation "antonyme" est capturée par les embeddings.'
+      }
+    ];
+
+    let z2State = {
+      selected: null,
+      foundPairs: [],
+      tries: 0,
+      analogueAnswers: {},
+      pairsDone: false,
+      analogsDone: false
+    };
+
+    function renderZone2() {
+      z2State = { selected: null, foundPairs: [], tries: 0, analogueAnswers: {}, pairsDone: false, analogsDone: false };
+      const wordsShuffled = semanticPairs.flatMap(p => p.words).sort(() => Math.random() - 0.5);
+
+      const body = document.getElementById('game-body');
+      body.innerHTML = `
+        <div class="zone-header">
+          <div class="zone-number">ZONE 02 · EMBEDDINGS</div>
+          <div class="zone-title">🌌 La Galaxie Sémantique</div>
+          <p class="zone-desc">
+            Dans l'espace des embeddings, les mots de <strong>sens proche</strong> sont
+            <strong>proches mathématiquement</strong>. À toi de retrouver les 4 paires de mots
+            qui partagent un espace sémantique, puis de compléter des analogies vectorielles.
+          </p>
+        </div>
+
+        <!-- Partie A : Paires -->
+        <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(0,212,255,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px">
+          <h3 style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE A · Paires Sémantiques</h3>
+          <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">Clique sur deux mots pour les associer. Trouve les 4 paires de mots sémantiquement proches.</p>
+          <div id="z2-pair-status" style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:0.85em;margin-bottom:15px">
+            Paires trouvées : 0/4
+          </div>
+          <div id="word-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+            ${wordsShuffled.map(w => `
+              <div class="word-card" id="wc-${w}" data-word="${w}" onclick="selectWord('${w}')">
+                ${w}
+              </div>
+            `).join('')}
+          </div>
+          <div id="z2-pairs-result"></div>
+        </div>
+
+        <!-- Partie B : Analogies -->
+        <div id="z2-analogies-section" style="background:rgba(10,20,40,0.8);border:1px solid rgba(168,85,247,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px;opacity:0.4;pointer-events:none">
+          <h3 style="color:#a855f7;font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE B · Analogies Vectorielles</h3>
+          <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">
+            🔒 Débloque la Partie B en complétant les paires sémantiques.
+          </p>
+          <div id="z2-analogies-content"></div>
+        </div>
+
+        <button class="zone-btn" id="z2-next-btn" onclick="completeZone2()" disabled>
+          Passer à la Zone 3 → L'Oracle Probabiliste 🔮
+        </button>
+      `;
+    }
+
+    function selectWord(word) {
+      // Déjà apparié ?
+      const pairIdx = z2State.foundPairs.findIndex(p => p.words.includes(word));
+      if (pairIdx !== -1) return;
+
+      const card = document.getElementById('wc-' + word);
+      if (!card || card.classList.contains('paired')) return;
+
+      if (z2State.selected === null) {
+        z2State.selected = word;
+        card.classList.add('selected-card');
+      } else if (z2State.selected === word) {
+        card.classList.remove('selected-card');
+        z2State.selected = null;
+      } else {
+        // Tentative de paire
+        z2State.tries++;
+        const w1 = z2State.selected;
+        const w2 = word;
+        const matchPair = semanticPairs.find(p => p.words.includes(w1) && p.words.includes(w2));
+
+        const card1 = document.getElementById('wc-' + w1);
+        card1.classList.remove('selected-card');
+
+        if (matchPair) {
+          // Succès
+          z2State.foundPairs.push(matchPair);
+          [w1, w2].forEach(w => {
+            const c = document.getElementById('wc-' + w);
+            c.classList.add('paired');
+            c.style.borderColor = matchPair.color;
+            c.style.color = matchPair.color;
+            c.style.background = matchPair.color + '18';
+            c.style.boxShadow = `0 0 12px ${matchPair.color}44`;
+          });
+          document.getElementById('z2-pair-status').textContent =
+            `Paires trouvées : ${z2State.foundPairs.length}/4 — ${matchPair.label} ✓`;
+          toast('✅ Paire trouvée : ' + matchPair.label + ' !');
+
+          if (z2State.foundPairs.length === 4) {
+            z2State.pairsDone = true;
+            document.getElementById('z2-pairs-result').innerHTML = `
+              <div style="text-align:center;color:var(--neon-green);font-family:'Space Mono',monospace;font-size:0.9em;padding:12px;border:1px solid rgba(0,255,136,0.3);border-radius:8px;background:rgba(0,255,136,0.06)">
+                🎉 4/4 paires trouvées en ${z2State.tries} tentatives !<br>
+                <span style="font-size:0.85em;color:#8899aa">Ces mots proches ont des <em>vecteurs proches</em> dans l'espace des embeddings.</span>
+              </div>`;
+            // Débloquer analogies
+            const anSection = document.getElementById('z2-analogies-section');
+            anSection.style.opacity = '1';
+            anSection.style.pointerEvents = 'auto';
+            anSection.innerHTML = anSection.innerHTML.replace('🔒 Débloque la Partie B en complétant les paires sémantiques.', 'Complete les 3 analogies vectorielles ci-dessous.');
+            renderAnalogies();
+          }
+        } else {
+          // Échec
+          [w1, w2].forEach(w => {
+            const c = document.getElementById('wc-' + w);
+            c.classList.add('wrong-card');
+            setTimeout(() => c.classList.remove('wrong-card'), 700);
+          });
+          toast('❌ Ces deux mots ne sont pas une paire sémantique.');
+        }
+
+        z2State.selected = null;
+      }
+    }
+
+    function renderAnalogies() {
+      let html = '';
+      analogies.forEach((an, i) => {
+        html += `
+          <div class="challenge-card" id="an-${i}" style="border-color:rgba(168,85,247,0.25);margin-bottom:16px">
+            <div class="challenge-num">ANALOGIE ${i+1}/3</div>
+            <div style="font-family:'Space Mono',monospace;font-size:1.1em;color:#a855f7;margin-bottom:16px;line-height:1.6">
+              ${an.stem} <span style="color:var(--neon-orange)">?</span>
+            </div>
+            <div class="token-options" style="gap:8px">
+              ${an.options.map((opt, j) => `
+                <div class="token-option" id="an-opt-${i}-${j}"
+                     style="border-color:rgba(168,85,247,0.25)"
+                     onclick="answerAnalogy(${i}, ${j})">
+                  <span class="option-label" style="color:#a855f7">${String.fromCharCode(65+j)}</span>
+                  <span style="font-family:'Space Mono',monospace;color:var(--text)">${opt}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="challenge-explain" id="an-explain-${i}">${an.explain}</div>
+          </div>
+        `;
+      });
+      document.getElementById('z2-analogies-content').innerHTML = html;
+    }
+
+    function answerAnalogy(idx, optIdx) {
+      if (z2State.analogueAnswers.hasOwnProperty(idx)) return;
+      const an = analogies[idx];
+      const isCorrect = optIdx === an.correct;
+      z2State.analogueAnswers[idx] = isCorrect;
+
+      an.options.forEach((_, j) => {
+        const el = document.getElementById(`an-opt-${idx}-${j}`);
+        el.classList.add('disabled');
+        if (j === an.correct) el.classList.add('correct');
+        else if (j === optIdx && !isCorrect) el.classList.add('wrong');
+      });
+
+      document.getElementById(`an-explain-${idx}`).classList.add('show');
+      if (isCorrect) toast('✅ Bonne analogie !');
+      else toast('❌ Pas tout à fait — les vecteurs pointent différemment !');
+
+      if (Object.keys(z2State.analogueAnswers).length === analogies.length) {
+        z2State.analogsDone = true;
+        document.getElementById('z2-next-btn').disabled = false;
+        toast('🎉 Zone 2 terminée ! Passe à l\'Oracle !', 4000);
+      }
+    }
+
+    function completeZone2() {
+      const anCorrect = Object.values(z2State.analogueAnswers).filter(v => v).length;
+      gameState.zone2Score = z2State.foundPairs.length + anCorrect;
+      gameState.zone2Total = 4 + analogies.length;
+      gameState.zonesCompleted[1] = true;
+
+      document.getElementById('dot-2').classList.remove('active');
+      document.getElementById('dot-2').classList.add('done');
+
+      const body = document.getElementById('game-body');
+      body.scrollTop = 0;
+      const banner = document.createElement('div');
+      banner.className = 'zone-complete-banner';
+      banner.style.marginBottom = '20px';
+      banner.innerHTML = `
+        <h3>🌌 Zone 2 complétée !</h3>
+        <p>Tu as exploré la galaxie sémantique : <strong>${z2State.foundPairs.length}/4</strong> paires
+        et <strong>${anCorrect}/${analogies.length}</strong> analogies réussies.<br>
+        Tu comprends maintenant pourquoi l'IA peut "raisonner" par analogie — c'est du calcul vectoriel !<br>
+        Dernière zone : comment l'IA <em>génère</em> réellement du texte ?</p>
+        <button class="zone-btn" style="max-width:420px;margin:0 auto;" onclick="loadZone(3)">
+          🔮 Entrer dans l'Oracle Probabiliste →
+        </button>
+      `;
+      body.insertBefore(banner, body.firstChild);
+      toast('🎉 Zone 2 terminée !', 4000);
+    }
+
+    // ==================== ZONE 3 — L'ORACLE PROBABILISTE ====================
+    const predictionChallenges = [
+      {
+        prompt: 'La capitale de la France est',
+        insight: '📊 Haute confiance',
+        question: 'Quel token l\'IA va-t-elle choisir ?',
+        options: [
+          { word: 'Paris',   pct: 87, color: '#00ff88', correct: true },
+          { word: 'Lyon',    pct: 8,  color: '#00d4ff', correct: false },
+          { word: 'une',     pct: 3,  color: '#8899aa', correct: false },
+          { word: 'grande',  pct: 2,  color: '#8899aa', correct: false }
+        ],
+        explain: '💡 Question factuelle très claire → le modèle est très confiant : 87% pour "Paris". La connaissance est encodée dans les poids du modèle, pas dans une base de données.'
+      },
+      {
+        prompt: 'Il était une',
+        insight: '📖 Formule classique',
+        question: 'Début de conte typique — que prédit l\'IA ?',
+        options: [
+          { word: 'fois',   pct: 71, color: '#00ff88', correct: true },
+          { word: 'nuit',   pct: 16, color: '#00d4ff', correct: false },
+          { word: 'femme',  pct: 8,  color: '#8899aa', correct: false },
+          { word: 'belle',  pct: 5,  color: '#8899aa', correct: false }
+        ],
+        explain: '💡 "Il était une fois" est une formule tellement fréquente dans les textes d\'entraînement que l\'IA l\'a apprise comme un pattern fort. 71% pour "fois" !'
+      },
+      {
+        prompt: 'Pour résoudre ce problème, plusieurs approches',
+        insight: '🎲 Probabilités dispersées',
+        question: 'Quand les probabilités sont proches, que se passe-t-il ?',
+        options: [
+          { word: 'sont',      pct: 34, color: '#ff9f43', correct: true },
+          { word: 'peuvent',   pct: 28, color: '#ff9f43', correct: false },
+          { word: 'existent',  pct: 22, color: '#8899aa', correct: false },
+          { word: 'méritent',  pct: 16, color: '#8899aa', correct: false }
+        ],
+        explain: '💡 Quand les probabilités sont proches (34% vs 28%!), le choix final dépend de la <strong>température</strong>. Avec température haute, l\'IA peut choisir "méritent" et être créative. C\'est pourquoi deux générations du même prompt donnent des résultats différents !'
+      },
+      {
+        prompt: 'La Terre tourne autour du',
+        insight: '🌍 Fait scientifique',
+        question: 'L\'IA a-t-elle appris la science ?',
+        options: [
+          { word: 'soleil',  pct: 94, color: '#00ff88', correct: true },
+          { word: 'monde',   pct: 3,  color: '#8899aa', correct: false },
+          { word: 'ciel',    pct: 2,  color: '#8899aa', correct: false },
+          { word: 'nord',    pct: 1,  color: '#8899aa', correct: false }
+        ],
+        explain: '💡 94% — très haute confiance ! Ce fait est tellement présent dans les textes d\'entraînement que le modèle le "sait" avec quasi-certitude. Mais attention : ce n\'est pas une compréhension, c\'est un pattern très renforcé.'
+      },
+      {
+        prompt: 'Le chat regardait par la fenêtre, fasciné par',
+        insight: '✨ Contexte créatif',
+        question: 'Plusieurs fins sont plausibles — laquelle est la plus probable ?',
+        options: [
+          { word: 'les oiseaux',    pct: 41, color: '#00ff88', correct: true },
+          { word: 'la pluie',       pct: 27, color: '#00d4ff', correct: false },
+          { word: 'la rue animée',  pct: 19, color: '#8899aa', correct: false },
+          { word: 'son reflet',     pct: 13, color: '#8899aa', correct: false }
+        ],
+        explain: '💡 Dans un contexte narratif avec un chat, "les oiseaux" est la continuation la plus probable (41%) — les chats et les oiseaux cohabitent fréquemment dans les textes ! Mais "la pluie" (27%) ou "son reflet" (13%) sont tout à fait valides selon la température.'
+      }
+    ];
+
+    let z3Answers = {};
+
+    function renderZone3() {
+      z3Answers = {};
+      const body = document.getElementById('game-body');
+      let html = `
+        <div class="zone-header">
+          <div class="zone-number">ZONE 03 · PRÉDICTION</div>
+          <div class="zone-title">🔮 L'Oracle Probabiliste</div>
+          <p class="zone-desc">
+            L'IA ne "choisit" pas un mot — elle calcule une <strong>distribution de probabilités</strong>
+            sur tous les tokens possibles. Pour chaque phrase, identifie le token
+            que l'IA choisirait le plus probablement.
+          </p>
+        </div>
+        <div class="zone-score-bar">
+          <span class="zone-score-label">PROGRESSION</span>
+          <div class="zone-score-track"><div class="zone-score-fill" id="z3-fill"></div></div>
+          <span class="zone-score-num" id="z3-score">0/${predictionChallenges.length}</span>
+        </div>
+      `;
+
+      predictionChallenges.forEach((ch, i) => {
+        html += `
+          <div class="challenge-card" id="pchallenge-${i}" style="border-color:rgba(0,255,136,0.2)">
+            <div class="challenge-num" style="color:#00d4ff">PRÉDICTION ${i+1}/${predictionChallenges.length} · ${ch.insight}</div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:14px 18px;margin-bottom:10px;font-family:'Space Mono',monospace;color:var(--neon-red);font-size:0.95em;line-height:1.6">
+              "${ch.prompt} <span style='color:var(--neon-orange);animation:blink 1s infinite'>▌</span>"
+            </div>
+            <p style="color:#8899aa;font-size:0.85em;margin-bottom:14px">${ch.question}</p>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px">
+              ${ch.options.map((opt, j) => `
+                <div class="pred-option" id="pred-${i}-${j}" onclick="answerZ3(${i}, ${j})"
+                     style="display:flex;align-items:center;gap:12px;padding:12px 16px;
+                            background:rgba(0,255,136,0.04);border:1px solid rgba(0,255,136,0.2);
+                            border-radius:8px;cursor:pointer;transition:all .25s">
+                  <span style="font-family:'Space Mono',monospace;font-size:0.95em;width:110px;flex-shrink:0;color:var(--text)">"${opt.word}"</span>
+                  <div style="flex:1;height:24px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;position:relative">
+                    <div id="pred-bar-${i}-${j}" style="height:100%;width:0%;background:linear-gradient(90deg,${opt.color}88,${opt.color});border-radius:4px;transition:width 0.8s ease"></div>
+                  </div>
+                  <span id="pred-pct-${i}-${j}" style="font-family:'Space Mono',monospace;font-size:0.8em;color:#8899aa;width:38px;text-align:right">?</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="challenge-explain" id="pexplain-${i}">${ch.explain}</div>
+          </div>
+        `;
+      });
+
+      html += `
+        <button class="zone-btn" id="z3-next-btn" onclick="completeZone3()" disabled
+                style="border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.1)">
+          📜 Accéder au Quiz de certification →
+        </button>
+      `;
+
+      body.innerHTML = html;
+
+      // Animer le curseur
+      const style = document.createElement('style');
+      style.textContent = '@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }';
+      document.head.appendChild(style);
+    }
+
+    function answerZ3(challengeIdx, optionIdx) {
+      if (z3Answers.hasOwnProperty(challengeIdx)) return;
+      const ch = predictionChallenges[challengeIdx];
+      const isCorrect = ch.options[optionIdx].correct;
+      z3Answers[challengeIdx] = isCorrect;
+
+      // Révéler toutes les probabilités avec animation
+      ch.options.forEach((opt, j) => {
+        setTimeout(() => {
+          document.getElementById(`pred-bar-${challengeIdx}-${j}`).style.width = opt.pct + '%';
+          document.getElementById(`pred-pct-${challengeIdx}-${j}`).textContent = opt.pct + '%';
+          document.getElementById(`pred-pct-${challengeIdx}-${j}`).style.color = opt.correct ? '#00ff88' : '#8899aa';
+        }, j * 150);
+
+        const el = document.getElementById(`pred-${challengeIdx}-${j}`);
+        el.style.cursor = 'default';
+        el.onclick = null;
+        if (opt.correct) {
+          el.style.borderColor = '#00ff88';
+          el.style.background = 'rgba(0,255,136,0.08)';
+        }
+        if (j === optionIdx && !opt.correct) {
+          el.style.borderColor = 'var(--neon-pink)';
+          el.style.background = 'rgba(255,0,128,0.06)';
+        }
+      });
+
+      document.getElementById(`pexplain-${challengeIdx}`).classList.add('show');
+
+      // Update score
+      const answered = Object.keys(z3Answers).length;
+      const correct = Object.values(z3Answers).filter(v => v).length;
+      document.getElementById('z3-fill').style.width = (answered / predictionChallenges.length * 100) + '%';
+      document.getElementById('z3-score').textContent = `${correct}/${answered} correct${correct > 1 ? 's' : ''}`;
+      if (answered >= 3) document.getElementById('z3-next-btn').disabled = false;
+
+      if (isCorrect) toast('✅ Bonne prédiction !');
+      else toast('❌ Pas tout à fait — les probabilités sont révélées !');
+    }
+
+    function completeZone3() {
+      const correct = Object.values(z3Answers).filter(v => v).length;
+      gameState.zone3Score = correct;
+      gameState.zonesCompleted[2] = true;
+
+      document.getElementById('dot-3').classList.remove('active');
+      document.getElementById('dot-3').classList.add('done');
+
+      const body = document.getElementById('game-body');
+      body.scrollTop = 0;
+      const banner = document.createElement('div');
+      banner.className = 'zone-complete-banner';
+      banner.style.marginBottom = '20px';
+      banner.innerHTML = `
+        <h3>🔮 Les 3 zones complétées !</h3>
+        <p>Tu as exploré les entrailles d'un LLM de l'intérieur.<br>
+        Tokens, vecteurs, probabilités — tu sais maintenant <em>vraiment</em> comment l'IA "pense".<br>
+        Prouve tes connaissances avec le <strong>Quiz de certification</strong> !</p>
+        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-top:5px">
+          <div style="text-align:center;padding:10px 20px;border:1px solid rgba(255,107,107,0.3);border-radius:8px">
+            <div style="font-family:'Space Mono',monospace;color:var(--neon-red);font-size:1.2em">${gameState.zone1Score}/5</div>
+            <div style="font-size:0.8em;color:#8899aa">Zone 1 · Tokens</div>
+          </div>
+          <div style="text-align:center;padding:10px 20px;border:1px solid rgba(0,212,255,0.3);border-radius:8px">
+            <div style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:1.2em">${gameState.zone2Score}/${gameState.zone2Total}</div>
+            <div style="font-size:0.8em;color:#8899aa">Zone 2 · Vecteurs</div>
+          </div>
+          <div style="text-align:center;padding:10px 20px;border:1px solid rgba(0,255,136,0.3);border-radius:8px">
+            <div style="font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1.2em">${correct}/5</div>
+            <div style="font-size:0.8em;color:#8899aa">Zone 3 · Prédiction</div>
+          </div>
+        </div>
+        <button class="zone-btn" style="max-width:420px;margin:20px auto 0;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="startQuiz()">
+          📜 Passer le Quiz de certification →
+        </button>
+      `;
+      body.insertBefore(banner, body.firstChild);
+      toast('🎉 Toutes les zones complétées !', 4000);
+    }
+
+    // ==================== QUIZ DE CERTIFICATION ====================
+    const quizQuestions = [
+      {
+        q: 'Qu\'est-ce qu\'un "token" dans un modèle de langage ?',
+        opts: ['Un mot entier uniquement', 'Un fragment de texte : mot, syllabe ou caractère', 'Un chiffre binaire (0 ou 1)', 'Un paramètre du réseau de neurones'],
+        correct: 1,
+        explain: 'Un token est l\'unité de base du texte pour l\'IA. Cela peut être un mot entier, une partie de mot, un caractère ou de la ponctuation. En moyenne, 1 token ≈ 4 caractères en anglais.'
+      },
+      {
+        q: 'Pourquoi l\'IA a-t-elle souvent du mal à compter les lettres dans un mot ?',
+        opts: ['Elle n\'a pas assez de mémoire', 'Elle travaille sur des tokens, pas sur des lettres individuelles', 'Elle n\'a pas accès à un dictionnaire', 'Les lettres ne font pas partie de son vocabulaire'],
+        correct: 1,
+        explain: 'L\'IA traite des tokens, pas des caractères un par un. "strawberry" peut être tokenisé en ["straw","berry"]. Compter les "r" nécessite de "voir" à l\'intérieur des tokens, ce que l\'IA fait mal.'
+      },
+      {
+        q: 'Qu\'est-ce qu\'un "embedding" (plongement vectoriel) ?',
+        opts: ['Un algorithme de compression', 'Un vecteur de nombres représentant le sens d\'un token', 'Une couche du réseau qui génère les tokens', 'Un hyper-paramètre contrôlant la créativité'],
+        correct: 1,
+        explain: 'Un embedding transforme chaque token en une liste de nombres (vecteur). Des tokens de sens proche ont des vecteurs proches dans cet espace mathématique. C\'est ainsi que l\'IA "comprend" les relations sémantiques.'
+      },
+      {
+        q: 'Quelle formule illustre l\'arithmétique des embeddings ?',
+        opts: ['chat + chien = animal', 'Roi − Homme + Femme ≈ Reine', 'Paris − France = Tokyo', 'soleil + lune = jour'],
+        correct: 1,
+        explain: 'L\'analogie "Roi − Homme + Femme ≈ Reine" montre que les embeddings encodent des relations : soustraire le vecteur "masculin" et ajouter le vecteur "féminin" préserve la relation de royauté.'
+      },
+      {
+        q: 'À quoi sert le mécanisme d\'attention dans un Transformer ?',
+        opts: ['Accélérer le calcul des embeddings', 'Pondérer l\'importance de chaque token selon le contexte', 'Choisir la température de génération', 'Compresser le texte en entrée'],
+        correct: 1,
+        explain: 'L\'attention permet à chaque token de "regarder" tous les autres pour interpréter son sens. "Banque" dans "La banque était pleine" regarde "rivière" ou "argent" dans le contexte pour choisir le bon sens.'
+      },
+      {
+        q: 'Comment un LLM génère-t-il du texte, token par token ?',
+        opts: ['Il cherche la réponse dans une base de données', 'Il copie des phrases mémorisées de l\'entraînement', 'Il calcule une distribution de probabilités et sélectionne un token', 'Il comprend la question et formule une réponse consciente'],
+        correct: 2,
+        explain: 'Le modèle calcule une probabilité pour chaque token possible, puis en "tire" un selon ces probabilités. Ce n\'est pas de la compréhension — c\'est de la statistique sophistiquée sur des milliards de textes.'
+      },
+      {
+        q: 'Que contrôle le paramètre "température" d\'un LLM ?',
+        opts: ['La chaleur physique des serveurs GPU', 'La créativité : à basse température → prévisible, haute → créatif', 'La vitesse de génération du texte', 'Le nombre de tokens maximum en entrée'],
+        correct: 1,
+        explain: 'La température modifie la distribution de probabilités. Basse (0.1) → l\'IA choisit presque toujours le token le plus probable : résultat précis et répétitif. Haute (1.5) → l\'IA prend des risques : résultat créatif mais parfois incohérent.'
+      },
+      {
+        q: 'Qu\'est-ce qu\'un LLM N\'est PAS ?',
+        opts: ['Un programme qui prédit des tokens', 'Une entité consciente qui comprend le monde', 'Un système entraîné sur des milliards de textes', 'Un outil qui calcule des probabilités'],
+        correct: 1,
+        explain: 'Un LLM n\'est pas conscient et ne "comprend" pas. Il n\'a aucune intention, aucune émotion, aucune expérience du monde. C\'est un très puissant système statistique de reconnaissance et de génération de patterns linguistiques.'
+      }
+    ];
+
+    let quizAnswers = {};
+    let finalQuizScore = 0;
+    let certificateUnlocked = false;
+
+    function startQuiz() {
+      document.getElementById('game-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      renderQuiz();
+    }
+
+    function renderQuiz() {
+      const content = document.getElementById('quiz-content');
+      let html = `
+        <div style="text-align:center;margin-bottom:35px">
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);letter-spacing:3px;margin-bottom:8px">CERTIFICATION NEURONAUT</div>
+          <h2 style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-red);margin-bottom:8px">Quiz de Certification</h2>
+          <p style="color:#8899aa;line-height:1.7">Réponds aux ${quizQuestions.length} questions pour valider ta mission.<br>Score minimum : <strong style="color:var(--neon-red)">70%</strong> pour obtenir ton attestation.</p>
+        </div>
+      `;
+
+      quizQuestions.forEach((q, i) => {
+        html += `
+          <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(255,107,107,0.2);border-radius:12px;padding:22px 26px;margin-bottom:18px" id="qq-${i}">
+            <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);margin-bottom:8px;letter-spacing:2px">Q${i+1}/${quizQuestions.length}</div>
+            <div style="font-size:1em;color:var(--text);margin-bottom:16px;line-height:1.6">${q.q}</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              ${q.opts.map((opt, j) => `
+                <div class="token-option" id="qq-opt-${i}-${j}" onclick="answerQuiz(${i},${j})">
+                  <span class="option-label">${String.fromCharCode(65+j)}</span>
+                  <span style="color:var(--text);font-size:0.95em">${opt}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div class="challenge-explain" id="qq-explain-${i}">${q.explain}</div>
+          </div>
+        `;
+      });
+
+      html += `
+        <div style="text-align:center;margin-top:30px;margin-bottom:10px">
+          <button class="zone-btn" id="quiz-submit-btn" onclick="submitQuiz()"
+                  style="max-width:400px;margin:0 auto;border-color:var(--neon-red);color:var(--neon-red)">
+            ✅ Valider mes réponses
+          </button>
+        </div>
+        <div id="quiz-result"></div>
+      `;
+      content.innerHTML = html;
+      quizAnswers = {};
+    }
+
+    function answerQuiz(qIdx, oIdx) {
+      if (quizAnswers.hasOwnProperty(qIdx)) return;
+      quizAnswers[qIdx] = oIdx;
+      document.querySelectorAll(`[id^="qq-opt-${qIdx}-"]`).forEach(el => {
+        el.classList.remove('selected');
+        if (parseInt(el.id.split('-').pop()) === oIdx) el.classList.add('selected');
+      });
+    }
+
+    function submitQuiz() {
+      if (Object.keys(quizAnswers).length < quizQuestions.length) {
+        toast('⚠️ Réponds à toutes les questions avant de valider !', 3000);
+        return;
+      }
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const userAns = quizAnswers[i];
+        document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
+          const oIdx = parseInt(el.id.split('-').pop());
+          el.style.pointerEvents = 'none';
+          if (oIdx === q.correct) el.classList.add('correct');
+          else if (oIdx === userAns && userAns !== q.correct) el.classList.add('wrong');
+        });
+        document.getElementById(`qq-explain-${i}`).classList.add('show');
+        if (userAns === q.correct) score++;
+      });
+
+      const pct = Math.round(score / quizQuestions.length * 100);
+      finalQuizScore = pct;
+      document.getElementById('quiz-submit-btn').style.display = 'none';
+
+      const success = pct >= 70;
+      document.getElementById('quiz-result').innerHTML = `
+        <div style="text-align:center;padding:30px;margin:20px 0;
+             background:${success ? 'rgba(0,255,136,0.08)' : 'rgba(255,204,0,0.08)'};
+             border:1px solid ${success ? 'rgba(0,255,136,0.3)' : 'rgba(255,204,0,0.3)'};
+             border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">${success ? '🎉' : '📚'}</div>
+          <h3 style="font-family:'Space Mono',monospace;color:${success ? 'var(--neon-green)' : '#ffcc00'};margin-bottom:10px">
+            ${success ? 'Mission accomplie !' : 'Score insuffisant'}
+          </h3>
+          <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
+            ${score}/${quizQuestions.length} — <span style="color:${success ? 'var(--neon-green)' : '#ffcc00'}">${pct}%</span>
+          </div>
+          <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
+            ${success
+              ? 'Tu maîtrises les fondamentaux du fonctionnement d\'un LLM. Ton attestation NEURONAUT est débloquée !'
+              : 'Il faut au moins 70% pour valider. Relis le briefing et les explications, puis réessaie.'}
+          </p>
+          ${success
+            ? `<button class="zone-btn" style="max-width:360px;margin:0 auto;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="showCertificate()">
+                🎓 Télécharger mon attestation →
+               </button>`
+            : `<button class="zone-btn" style="max-width:360px;margin:0 auto" onclick="retryQuiz()">
+                🔄 Réessayer le quiz
+               </button>`}
+        </div>
+      `;
+
+      if (success) {
+        certificateUnlocked = true;
+        document.getElementById('quiz-cert-nav').style.opacity = '1';
+        document.getElementById('quiz-cert-nav').style.pointerEvents = 'auto';
+      }
+
+      // Scroll vers résultat
+      document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function retryQuiz() {
+      quizAnswers = {};
+      renderQuiz();
+      document.getElementById('quiz-content').scrollTop = 0;
+    }
+
+    function showCertificate() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('cert-screen').classList.add('active');
+      renderCertificatePage();
+    }
+
+    function renderCertificatePage() {
+      document.getElementById('cert-content').innerHTML = `
+        <div style="text-align:center;margin-bottom:35px">
+          <div style="font-size:3em;margin-bottom:12px">🎓</div>
+          <h2 style="font-family:'Space Mono',monospace;color:var(--neon-green);margin-bottom:10px">Félicitations, Neuronaut !</h2>
+          <p style="color:#aabbcc;line-height:1.8;max-width:500px;margin:0 auto">
+            Tu as complété avec succès le <strong>Module 3 — NEURONAUT</strong>.<br>
+            Score certification : <strong style="color:var(--neon-green);font-size:1.2em">${finalQuizScore}%</strong>
+          </p>
+        </div>
+
+        <div style="background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);border-radius:12px;padding:25px 30px;margin-bottom:25px">
+          <h3 style="color:var(--neon-green);margin-bottom:15px;font-family:'Space Mono',monospace;font-size:0.95em">✅ Compétences validées</h3>
+          <ul style="line-height:2.2;margin-left:18px;color:#aabbcc">
+            <li>Comprendre le rôle et les limites d'un LLM</li>
+            <li>Expliquer le processus de tokenisation</li>
+            <li>Décrire les embeddings et la similarité vectorielle</li>
+            <li>Comprendre le mécanisme d'attention des Transformers</li>
+            <li>Analyser la génération probabiliste token par token</li>
+            <li>Distinguer traitement statistique et "compréhension" réelle</li>
+          </ul>
+        </div>
+
+        <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(0,212,255,0.25);border-radius:12px;padding:25px 30px;margin-bottom:25px">
+          <h3 style="color:var(--neon-blue);margin-bottom:15px;font-family:'Space Mono',monospace;font-size:0.95em">📥 Télécharger mon attestation</h3>
+          <p style="color:#8899aa;margin-bottom:18px;line-height:1.7">Entre ton prénom et nom pour générer ton attestation officielle.</p>
+          <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.85em">NOM SUR L'ATTESTATION :</label>
+          <input id="cert-name-input" type="text" placeholder="Prénom NOM"
+                 style="width:100%;max-width:450px;padding:13px 16px;border-radius:8px;
+                        border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.25);
+                        color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;
+                        outline:none;display:block;margin-bottom:18px"
+                 onfocus="this.style.borderColor='var(--neon-blue)'"
+                 onblur="this.style.borderColor='rgba(0,212,255,0.35)'"/>
+          <button onclick="downloadCertificate()"
+                  style="font-family:'Space Mono',monospace;font-size:0.9em;padding:14px 35px;
+                         background:rgba(0,255,136,0.12);border:2px solid var(--neon-green);
+                         color:var(--neon-green);cursor:pointer;border-radius:6px;
+                         text-transform:uppercase;letter-spacing:2px;transition:all .3s"
+                  onmouseover="this.style.background='rgba(0,255,136,0.22)'"
+                  onmouseout="this.style.background='rgba(0,255,136,0.12)'">
+            📥 Télécharger (HTML → PDF)
+          </button>
+          <p style="color:#8899aa;font-size:0.82em;margin-top:14px">
+            💡 Ouvre le fichier HTML puis utilise <strong>Ctrl+P → Enregistrer en PDF</strong>.
+          </p>
+        </div>
+
+        <div style="text-align:center">
+          <a href="modules.html"
+             style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--neon-blue);
+                    text-decoration:none;border:1px solid rgba(0,212,255,0.3);
+                    padding:10px 24px;border-radius:6px;display:inline-block">
+            → Retour à tous les modules
+          </a>
+        </div>
+      `;
+    }
+
+    function downloadCertificate() {
+      const name = (document.getElementById('cert-name-input')?.value || '').trim() || 'Participant';
+      const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const ref  = 'IA-LLM-' + (Math.floor(Math.random() * 90000) + 10000);
+
+      const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Attestation — Module 3 NEURONAUT</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+    .cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #ff6b6b;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(255,107,107,.25),inset 0 0 60px rgba(0,212,255,.08)}
+    .cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(0,212,255,.25);border-radius:15px;pointer-events:none}
+    .hd{text-align:center;margin-bottom:35px}
+    .logo{font-size:3em;margin-bottom:10px}
+    .ttl{font-family:'Playfair Display',serif;font-size:2.4em;background:linear-gradient(90deg,#ff6b6b,#ff9f43,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+    .sub{color:#00d4ff;font-size:1em;letter-spacing:3px;text-transform:uppercase}
+    .cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+    .nm{font-family:'Playfair Display',serif;font-size:2.1em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(255,107,107,.4);border-bottom:1px solid rgba(255,107,107,.4)}
+    .mod{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:20px;margin:28px 0}
+    .mod-t{color:#ff6b6b;font-size:1.2em;font-weight:600;margin-bottom:6px}
+    .mod-s{color:#ff9f43;font-size:0.85em;margin-bottom:12px}
+    .sc{display:inline-block;background:linear-gradient(135deg,#ff6b6b,#00d4ff);color:#0a1628;padding:7px 22px;border-radius:20px;font-weight:700;margin-top:8px}
+    .ft{display:flex;justify-content:space-between;margin-top:35px;padding-top:25px;border-top:1px solid rgba(0,212,255,.2)}
+    .fi{text-align:center}
+    .fl{color:#888;font-size:.82em;margin-bottom:4px}
+    .fv{color:#00d4ff;font-weight:600;font-size:.9em}
+    .sk{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
+    .sk span{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.25);padding:5px 13px;border-radius:14px;font-size:.8em;color:#00d4ff}
+    @media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+  </style>
+</head>
+<body>
+  <div class="cert">
+    <div class="hd">
+      <div class="logo">🧠⚡</div>
+      <div class="ttl">Attestation de Réussite</div>
+      <div class="sub">Formation IA Responsable</div>
+    </div>
+    <div class="cnt">
+      <p style="font-size:1.05em;margin:25px 0 12px">Cette attestation certifie que</p>
+      <div class="nm">${name}</div>
+      <p>a complété avec succès le</p>
+      <div class="mod">
+        <div class="mod-t">Module 3 : Dans la tête d'un modèle</div>
+        <div class="mod-s">NEURONAUT — Voyage au Cœur du Modèle</div>
+        <p style="color:#b0b0b0;font-size:.9em">Tokenisation · Embeddings · Attention · Prédiction Probabiliste</p>
+        <div class="sc">Score : ${finalQuizScore}%</div>
+      </div>
+      <p style="margin-bottom:12px">Compétences validées :</p>
+      <div class="sk">
+        <span>Tokenisation</span>
+        <span>Embeddings Vectoriels</span>
+        <span>Mécanisme d'Attention</span>
+        <span>Prédiction Probabiliste</span>
+        <span>LLM & Transformers</span>
+        <span>Pensée Critique IA</span>
+      </div>
+      <div class="ft">
+        <div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div>
+        <div class="fi"><div class="fl">Référence</div><div class="fv">${ref}</div></div>
+        <div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div>
+        <div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+
+      const blob = new Blob([html], { type: 'text/html' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = `Attestation_Module3_NEURONAUT_${name.replace(/\s+/g, '_')}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('✅ Attestation téléchargée !', 4000);
     }
   </script>
 
