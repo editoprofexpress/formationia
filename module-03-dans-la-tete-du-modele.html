@@ -1615,14 +1615,17 @@
     function renderZone1() {
       const body = document.getElementById('game-body');
       let html = `
-        <div class="zone-header">
-          <div class="zone-number">ZONE 01 · TOKENISATION</div>
-          <div class="zone-title">⚙️ La Forge des Tokens</div>
-          <p class="zone-desc">
-            Un tokenizer découpe chaque mot en fragments appelés <strong>tokens</strong>.
-            Pour chaque défi, identifie la <strong>tokenisation correcte</strong> parmi les 3 options.
-            Attention, certains résultats vont te surprendre !
-          </p>
+        <div style="position:relative;border-radius:14px;overflow:hidden;margin-bottom:25px;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end;background:url('images/room-tokens.png') center/cover no-repeat">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,23,0.96) 0%,rgba(10,14,23,0.6) 55%,rgba(10,14,23,0.25) 100%)"></div>
+          <div style="position:relative;z-index:1;padding:22px 28px;text-align:center">
+            <div class="zone-number">ZONE 01 · TOKENISATION</div>
+            <div class="zone-title">⚙️ La Forge des Tokens</div>
+            <p class="zone-desc">
+              Un tokenizer découpe chaque mot en fragments appelés <strong>tokens</strong>.
+              Pour chaque défi, identifie la <strong>tokenisation correcte</strong> parmi les 3 options.
+              Attention, certains résultats vont te surprendre !
+            </p>
+          </div>
         </div>
         <div class="zone-score-bar">
           <span class="zone-score-label">PROGRESSION</span>
@@ -1760,7 +1763,9 @@
 
       const body = document.getElementById('game-body');
       body.innerHTML = `
-        <div class="zone-header">
+        <div style="position:relative;border-radius:14px;overflow:hidden;margin-bottom:25px;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end;background:url('images/room-semantic.png') center/cover no-repeat">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,23,0.96) 0%,rgba(10,14,23,0.5) 55%,rgba(10,14,23,0.2) 100%)"></div>
+          <div style="position:relative;z-index:1;padding:22px 28px;text-align:center">
           <div class="zone-number">ZONE 02 · EMBEDDINGS</div>
           <div class="zone-title">🌌 La Galaxie Sémantique</div>
           <p class="zone-desc">
@@ -1768,6 +1773,7 @@
             <strong>proches mathématiquement</strong>. À toi de retrouver les 4 paires de mots
             qui partagent un espace sémantique, puis de compléter des analogies vectorielles.
           </p>
+          </div>
         </div>
 
         <!-- Partie A : Paires -->
@@ -2017,14 +2023,17 @@
       z3Answers = {};
       const body = document.getElementById('game-body');
       let html = `
-        <div class="zone-header">
-          <div class="zone-number">ZONE 03 · PRÉDICTION</div>
-          <div class="zone-title">🔮 L'Oracle Probabiliste</div>
-          <p class="zone-desc">
-            L'IA ne "choisit" pas un mot — elle calcule une <strong>distribution de probabilités</strong>
-            sur tous les tokens possibles. Pour chaque phrase, identifie le token
-            que l'IA choisirait le plus probablement.
-          </p>
+        <div style="position:relative;border-radius:14px;overflow:hidden;margin-bottom:25px;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end;background:url('images/room-prediction.png') center/cover no-repeat">
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,23,0.96) 0%,rgba(10,14,23,0.55) 55%,rgba(10,14,23,0.2) 100%)"></div>
+          <div style="position:relative;z-index:1;padding:22px 28px;text-align:center">
+            <div class="zone-number">ZONE 03 · PRÉDICTION</div>
+            <div class="zone-title">🔮 L'Oracle Probabiliste</div>
+            <p class="zone-desc">
+              L'IA ne "choisit" pas un mot — elle calcule une <strong>distribution de probabilités</strong>
+              sur tous les tokens possibles. Pour chaque phrase, identifie le token
+              que l'IA choisirait le plus probablement.
+            </p>
+          </div>
         </div>
         <div class="zone-score-bar">
           <span class="zone-score-label">PROGRESSION</span>
