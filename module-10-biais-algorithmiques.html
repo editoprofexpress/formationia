@@ -231,6 +231,171 @@
     }
     .module-badge{animation:pulse-glow 3s ease-in-out infinite}
 
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
+      z-index:999;display:none;flex-direction:column;overflow:hidden;
+    }
+    #briefing-screen.active{display:flex}
+
+    .briefing-header{
+      background:rgba(10,20,40,0.95);
+      border-bottom:1px solid rgba(255,230,109,0.3);
+      padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
+      flex-shrink:0;
+    }
+    .briefing-title{
+      font-family:'Space Mono',monospace;font-size:1.2em;color:var(--neon-yellow);
+      display:flex;align-items:center;gap:12px;
+    }
+    .briefing-title::before{content:'📋';font-size:1.3em}
+    .briefing-progress-wrap{display:flex;align-items:center;gap:10px;color:#8899aa;font-size:0.9em}
+    .briefing-progress-bar{width:200px;height:6px;background:rgba(255,230,109,0.1);border-radius:3px;overflow:hidden}
+    .briefing-progress-fill{height:100%;background:linear-gradient(90deg,var(--neon-yellow),var(--neon-orange));transition:width .4s ease}
+
+    .briefing-body{display:flex;flex:1;overflow:hidden}
+
+    .briefing-nav{
+      width:280px;background:rgba(10,20,40,0.9);
+      border-right:1px solid rgba(255,230,109,0.2);
+      padding:20px 0;overflow-y:auto;flex-shrink:0;
+    }
+    .briefing-nav::-webkit-scrollbar{width:4px}
+    .briefing-nav::-webkit-scrollbar-thumb{background:rgba(255,230,109,0.2);border-radius:2px}
+
+    .back-link-sidebar{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 15px;margin:0 15px 20px;
+      background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
+      border-radius:8px;color:var(--neon-blue);text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-sidebar:hover{background:rgba(0,212,255,0.15);border-color:var(--neon-blue);transform:translateX(-3px)}
+    .back-arrow{transition:transform .3s}
+    .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
+
+    .briefing-nav-item{
+      display:flex;align-items:center;gap:12px;
+      padding:14px 20px;cursor:pointer;
+      border-left:3px solid transparent;transition:all .3s;color:#8899aa;
+      font-size:0.9em;
+    }
+    .briefing-nav-item:hover{background:rgba(255,230,109,0.05);color:var(--text)}
+    .briefing-nav-item.active{border-left-color:var(--neon-yellow);background:rgba(255,230,109,0.1);color:var(--neon-yellow)}
+    .briefing-nav-item.completed{color:var(--neon-green)}
+    .briefing-nav-item.completed::after{content:'✓';margin-left:auto;color:var(--neon-green);font-family:'Space Mono',monospace;font-size:0.85em}
+    .nav-icon{font-size:1.1em;width:28px;text-align:center;flex-shrink:0}
+    .nav-number{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      background:rgba(255,230,109,0.15);padding:2px 7px;border-radius:3px;
+      flex-shrink:0;
+    }
+    .nav-text{flex:1;line-height:1.3}
+
+    .briefing-content{
+      flex:1;overflow-y:auto;padding:40px 60px;
+    }
+    .briefing-content::-webkit-scrollbar{width:8px}
+    .briefing-content::-webkit-scrollbar-track{background:rgba(255,230,109,0.03)}
+    .briefing-content::-webkit-scrollbar-thumb{background:rgba(255,230,109,0.25);border-radius:4px}
+
+    .briefing-footer{
+      background:rgba(10,20,40,0.95);border-top:1px solid rgba(255,230,109,0.3);
+      padding:20px 30px;display:flex;justify-content:space-between;align-items:center;
+      flex-shrink:0;
+    }
+    .briefing-btn{
+      font-family:'Space Mono',monospace;padding:12px 28px;
+      border:2px solid var(--neon-yellow);background:transparent;
+      color:var(--neon-yellow);cursor:pointer;font-size:0.95em;transition:all .3s;
+      display:flex;align-items:center;gap:8px;border-radius:2px;
+    }
+    .briefing-btn:hover{background:rgba(255,230,109,0.1);box-shadow:0 0 20px rgba(255,230,109,.3)}
+    .briefing-btn.primary{background:var(--neon-yellow);color:var(--dark-bg);font-weight:700}
+    .briefing-btn.primary:hover{background:var(--neon-orange);border-color:var(--neon-orange)}
+    .briefing-btn:disabled{opacity:0.4;cursor:not-allowed;pointer-events:none}
+
+    /* ==================== CONTENU LEÇONS ==================== */
+    .lesson-title{
+      font-family:'Space Mono',monospace;font-size:1.7em;color:var(--neon-yellow);
+      margin-bottom:8px;padding-bottom:15px;
+      border-bottom:1px solid rgba(255,230,109,0.25);
+    }
+    .lesson-kicker{color:var(--muted);margin-bottom:22px;line-height:1.6;font-size:1em}
+
+    .lesson-h3{color:var(--neon-yellow);margin:28px 0 14px;font-size:1.1em;font-family:'Space Mono',monospace}
+    .lesson-p{line-height:1.75;color:#cfe9ff;margin-bottom:14px}
+
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,230,109,0.4),transparent);margin:20px 0}
+
+    .pill{
+      display:inline-block;padding:5px 10px;
+      border:1px solid rgba(255,230,109,.45);border-radius:999px;
+      font-family:'Space Mono',monospace;font-size:.75em;
+      color:var(--neon-yellow);background:rgba(255,230,109,.06);
+      margin-right:8px;margin-bottom:8px;
+    }
+
+    .callout{
+      background:rgba(255,230,109,0.05);border:1px solid rgba(255,230,109,0.22);
+      padding:14px 18px;border-radius:12px;
+      box-shadow:0 0 18px rgba(255,230,109,0.08);
+      margin:10px 0;line-height:1.65;color:#cfe9ff;
+    }
+    .callout.warn{background:rgba(255,149,0,0.07);border-color:rgba(255,149,0,.3);box-shadow:0 0 18px rgba(255,149,0,0.1)}
+    .callout.ok{background:rgba(0,255,136,0.06);border-color:rgba(0,255,136,.3);box-shadow:0 0 18px rgba(0,255,136,0.12)}
+    .callout.pink{background:rgba(255,0,128,0.07);border-color:rgba(255,0,128,.28);box-shadow:0 0 18px rgba(255,0,128,0.1)}
+    .callout.purple{background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,.3);box-shadow:0 0 18px rgba(168,85,247,0.12)}
+    .callout.blue{background:rgba(0,212,255,0.06);border-color:rgba(0,212,255,.28);box-shadow:0 0 18px rgba(0,212,255,0.1)}
+    .callout.danger{background:rgba(255,77,77,0.08);border-color:rgba(255,77,77,.3);box-shadow:0 0 18px rgba(255,77,77,0.1)}
+
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0}
+
+    /* Case scandale */
+    .scandal-card{
+      background:rgba(255,0,128,0.05);
+      border:1px solid rgba(255,0,128,0.25);
+      border-left:4px solid var(--neon-pink);
+      border-radius:10px;padding:16px 20px;margin:12px 0;
+      line-height:1.7;color:#cfe9ff;
+    }
+    .scandal-tag{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      color:var(--neon-pink);text-transform:uppercase;letter-spacing:2px;
+      margin-bottom:8px;display:block;
+    }
+
+    /* Proxy demo table */
+    .proxy-table{
+      width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9em;
+    }
+    .proxy-table th{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      background:rgba(255,230,109,0.1);
+      border:1px solid rgba(255,230,109,0.2);
+      padding:10px 14px;color:var(--neon-yellow);text-align:left;
+    }
+    .proxy-table td{
+      border:1px solid rgba(255,255,255,0.08);
+      padding:10px 14px;color:#cfe9ff;
+    }
+    .proxy-table tr:hover td{background:rgba(255,255,255,0.03)}
+    .proxy-red{color:var(--neon-pink)}
+    .proxy-ok{color:var(--neon-green)}
+
+    /* Metric gauge visual */
+    .metric-bar-wrap{margin:8px 0 16px}
+    .metric-bar-label{font-size:0.85em;color:#8899aa;margin-bottom:4px;font-family:'Space Mono',monospace}
+    .metric-bar-bg{height:20px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;position:relative}
+    .metric-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;position:relative}
+    .metric-bar-fill.good{background:linear-gradient(90deg,var(--neon-green),rgba(0,255,136,0.6))}
+    .metric-bar-fill.bad{background:linear-gradient(90deg,var(--neon-pink),rgba(255,0,128,0.6))}
+    .metric-bar-fill.mid{background:linear-gradient(90deg,var(--neon-orange),rgba(255,149,0,0.6))}
+    .metric-bar-val{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-size:0.75em;color:#fff}
+
   </style>
 </head>
 <body>
@@ -316,10 +481,471 @@
 
 </div><!-- end #title-screen -->
 
+<!-- ==================== BRIEFING ==================== -->
+<div id="briefing-screen">
+
+  <div class="briefing-header">
+    <div class="briefing-title">Dossier de formation — Biais algorithmiques</div>
+    <div class="briefing-progress-wrap">
+      <span id="lesson-counter">Leçon 1/7</span>
+      <div class="briefing-progress-bar">
+        <div class="briefing-progress-fill" id="briefing-fill" style="width:14%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="briefing-body">
+
+    <!-- Sidebar nav -->
+    <nav class="briefing-nav">
+      <a href="modules.html" class="back-link-sidebar">
+        <span class="back-arrow">←</span> Modules
+      </a>
+      <div id="nav-items"></div>
+    </nav>
+
+    <!-- Content -->
+    <div class="briefing-content" id="lesson-content"></div>
+
+  </div>
+
+  <div class="briefing-footer">
+    <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
+    <span id="lesson-hint" style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)"></span>
+    <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
+  </div>
+
+</div><!-- end #briefing-screen -->
+
 <script>
+/* ===================== DONNÉES DES LEÇONS ===================== */
+const lessons = [
+  {
+    icon:'🔍',
+    title:'01 — Qu\'est-ce qu\'un biais algorithmique ?',
+    kicker:'Un algorithme apprend du monde tel qu\'il est — avec ses injustices.',
+    html:`
+      <h3 class="lesson-h3">🤖 L'IA reflète son monde</h3>
+      <p class="lesson-p">
+        Un biais algorithmique est une <strong>erreur systématique et reproductible</strong> dans les résultats produits par un algorithme d'IA — une erreur qui <em>avantage ou désavantage</em> certains groupes de personnes de façon injuste. Contrairement à un simple bug technique, le biais n'est pas un accident : il est souvent le reflet fidèle de données qui elles-mêmes reflètent des inégalités réelles.
+      </p>
+      <div class="callout">
+        <strong>Définition clé :</strong> Un biais algorithmique survient quand un système d'IA produit des résultats qui ne sont pas équitables à l'égard de certains groupes de personnes définis par des caractéristiques telles que le genre, la race, l'âge, la nationalité ou le statut socio-économique.
+      </div>
+      <h3 class="lesson-h3">⚠️ Pourquoi est-ce différent d'un biais humain ordinaire ?</h3>
+      <p class="lesson-p">
+        Les humains ont aussi des préjugés. Mais quand une IA discrimine, les effets sont radicalement amplifiés :
+      </p>
+      <div class="two-col">
+        <div class="callout">
+          <strong>Biais humain</strong><br/>Affecte quelques centaines de décisions par an. Peut être contesté, négocié, corrigé dans l'instant.
+        </div>
+        <div class="callout danger">
+          <strong>Biais algorithmique</strong><br/>Affecte des millions de décisions en temps réel. Opaque, automatisé, difficile à contester.
+        </div>
+      </div>
+      <div class="callout warn">
+        <strong>Le paradoxe de l'objectivité :</strong> Les algorithmes sont souvent perçus comme "neutres" et "objectifs" car ils sont basés sur des mathématiques. Cette perception crée un risque supplémentaire : les personnes affectées ont du mal à contester une décision prise par une machine. "L'ordinateur l'a dit" devient un argument d'autorité imparable.
+      </div>
+      <h3 class="lesson-h3">🧩 Trois grandes catégories</h3>
+      <div class="three-col">
+        <div class="callout">
+          <strong>Biais dans les données</strong><br/>Les données d'entraînement reflètent des inégalités historiques ou des groupes sous-représentés.
+        </div>
+        <div class="callout">
+          <strong>Biais dans le modèle</strong><br/>L'algorithme lui-même est conçu de façon à favoriser certains résultats (objectif mal défini).
+        </div>
+        <div class="callout">
+          <strong>Biais dans l'usage</strong><br/>Le contexte d'utilisation crée des discriminations même avec un algorithme techniquement "neutre".
+        </div>
+      </div>
+      <div class="callout ok">
+        <strong>Votre rôle d'auditrice :</strong> En tant qu'ARIA, votre mission est de détecter ces biais, de comprendre leur source, et de proposer des correctifs. Vous n'êtes pas là pour "désactiver" l'IA — mais pour la rendre plus équitable.
+      </div>
+    `
+  },
+  {
+    icon:'🗂️',
+    title:'02 — Les sources du biais dans les données',
+    kicker:'Les données ne sont jamais neutres — elles portent l\'empreinte du monde qui les a produites.',
+    html:`
+      <h3 class="lesson-h3">📥 Données d'entraînement : le miroir du passé</h3>
+      <p class="lesson-p">
+        Toute IA apprend à partir de données historiques. Si ces données reflètent des pratiques discriminatoires passées, l'algorithme va les reproduire — et souvent les amplifier. Il ne comprend pas l'injustice : il voit simplement des <strong>patterns statistiques</strong>.
+      </p>
+
+      <h3 class="lesson-h3">📋 Les 5 grandes sources de biais</h3>
+
+      <div class="callout pink">
+        <strong style="color:var(--neon-pink)">1. Biais historique</strong><br/>
+        Les données reflètent des discriminations passées maintenant reconnues comme injustes. Exemple : un algorithme de recrutement entraîné sur 10 ans de CV retenus dans une industrie à dominante masculine va apprendre que "être un homme" est un critère de succès.
+      </div>
+      <div class="callout">
+        <strong style="color:var(--neon-yellow)">2. Biais de représentation</strong><br/>
+        Certains groupes sont sous-représentés dans les données d'entraînement. Exemple : un système de reconnaissance faciale entraîné principalement sur des photos de personnes à peau claire sera moins précis pour les autres.
+      </div>
+      <div class="callout blue">
+        <strong style="color:var(--neon-blue)">3. Biais de mesure</strong><br/>
+        Les données sont collectées différemment selon les groupes. Exemple : dans la justice prédictive, les données de récidive sont biaisées car certaines communautés font l'objet de plus de contrôles policiers — produisant plus d'arrestations, donc plus de données.
+      </div>
+      <div class="callout purple">
+        <strong style="color:var(--neon-purple)">4. Biais d'étiquetage</strong><br/>
+        Les annotateurs humains qui classifient les données projettent leurs propres préjugés. Exemple : des modérateurs qui classifient des contenus "toxiques" peuvent inconsciemment pénaliser certains dialectes ou registres de langue.
+      </div>
+      <div class="callout warn">
+        <strong style="color:var(--neon-orange)">5. Biais de feedback</strong><br/>
+        L'algorithme génère des décisions qui alimentent de nouvelles données biaisées. Exemple : si un algo de crédit refuse plus souvent certains quartiers, les habitants de ces quartiers ont moins d'historique de crédit positif — ce qui renforce le refus à la prochaine itération.
+      </div>
+      <div class="callout ok">
+        <strong>À retenir :</strong> Le biais n'est pas un bug isolé qu'on peut "patcher". C'est un problème systémique qui nécessite d'interroger la <strong>provenance</strong> des données, leur <strong>représentativité</strong>, et les <strong>choix humains</strong> qui ont guidé leur collecte.
+      </div>
+    `
+  },
+  {
+    icon:'📰',
+    title:'03 — Scandales réels : quand les algorithmes discriminent',
+    kicker:'Des millions de vies affectées par des lignes de code. Les cas qui ont tout changé.',
+    html:`
+      <h3 class="lesson-h3">⚠️ Ce ne sont pas des cas théoriques</h3>
+      <p class="lesson-p">
+        Les biais algorithmiques ne sont pas des scénarios d'école. Voici des affaires documentées qui ont eu des conséquences réelles sur des millions de personnes.
+      </p>
+
+      <div class="scandal-card">
+        <span class="scandal-tag">📁 Amazon — Recrutement, 2018</span>
+        <strong>L'IA qui pénalisait les femmes</strong><br/>
+        Amazon a développé un outil de recrutement basé sur l'IA, entraîné sur 10 ans de CV reçus — en grande majorité soumis par des hommes. L'algorithme a appris à <strong>pénaliser systématiquement</strong> tout CV contenant le mot "femmes" (ex : "capitaine de l'équipe féminine de football") ou provenant d'universités à majorité féminine. Amazon a dû abandonner l'outil en 2018.
+      </div>
+
+      <div class="scandal-card">
+        <span class="scandal-tag">📁 COMPAS — Justice prédictive, 2016</span>
+        <strong>L'algorithme qui condamnait selon la couleur de peau</strong><br/>
+        Le logiciel COMPAS, utilisé par des tribunaux américains pour prédire le risque de récidive, a été analysé par ProPublica. Résultat : il était <strong>2 fois plus susceptible</strong> de classer faussement des accusés noirs comme "à haut risque" comparé aux accusés blancs — même à niveau de risque réel équivalent. Des décisions d'incarcération en découlaient.
+      </div>
+
+      <div class="scandal-card">
+        <span class="scandal-tag">📁 Apple Card — Crédit, 2019</span>
+        <strong>La carte de crédit sexiste</strong><br/>
+        Le fondateur d'Apple, Steve Wozniak, a révélé que l'algorithme d'Apple Card accordait une limite de crédit <strong>20 fois supérieure</strong> pour lui que pour sa femme — alors qu'ils partagent les mêmes comptes bancaires. Des plaintes similaires ont été déposées par des milliers d'utilisateurs. L'enquête a révélé que l'algorithme utilisait des proxies de genre.
+      </div>
+
+      <div class="scandal-card">
+        <span class="scandal-tag">📁 Google Photos — Reconnaissance d'images, 2015</span>
+        <strong>L'algorithme raciste</strong><br/>
+        L'algorithme de Google Photos a classifié des photos de personnes noires comme "gorilles". Cette erreur était due à un <strong>jeu de données d'entraînement insuffisamment diversifié</strong>. Google a retiré les catégories "gorille", "chimpanzé" et "singe" de son système — une correction de surface qui ne résout pas le problème de fond.
+      </div>
+
+      <div class="callout warn">
+        <strong>Le biais de notoriété :</strong> Ces scandales sont ceux qui ont été <em>découverts et médiatisés</em>. Combien d'algorithmes discriminatoires opèrent en ce moment même, sans qu'aucun lanceur d'alerte ne les ait encore exposés ?
+      </div>
+    `
+  },
+  {
+    icon:'🕵️',
+    title:'04 — Les variables proxies : le secret de la discrimination cachée',
+    kicker:'Un algorithme peut discriminer sans jamais utiliser directement une caractéristique protégée.',
+    html:`
+      <h3 class="lesson-h3">🎭 Discriminer sans discriminer… en apparence</h3>
+      <p class="lesson-p">
+        La loi interdit à un employeur de rejeter un CV en raison du genre, de l'origine ethnique, de l'âge ou du handicap. Mais un algorithme peut contourner cette règle en utilisant des <strong>variables corrélées</strong> à ces caractéristiques — ce qu'on appelle des <strong>variables proxies</strong>.
+      </p>
+      <div class="callout">
+        <strong>Définition :</strong> Une variable proxy est une variable qui, sans être elle-même discriminatoire, est fortement corrélée à une caractéristique protégée — et produit donc un effet discriminatoire indirect.
+      </div>
+
+      <h3 class="lesson-h3">📊 Exemples concrets de proxies</h3>
+      <table class="proxy-table">
+        <thead>
+          <tr>
+            <th>Variable utilisée</th>
+            <th>Ce qu'elle reflète vraiment</th>
+            <th>Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Code postal</strong></td>
+            <td>Origine ethnique, niveau de revenus</td>
+            <td class="proxy-red">🔴 Discriminatoire</td>
+          </tr>
+          <tr>
+            <td><strong>Prénom</strong></td>
+            <td>Genre, origine culturelle</td>
+            <td class="proxy-red">🔴 Discriminatoire</td>
+          </tr>
+          <tr>
+            <td><strong>Université fréquentée</strong></td>
+            <td>Milieu social, genre (universités historiquement genrées)</td>
+            <td class="proxy-red">🔴 Discriminatoire</td>
+          </tr>
+          <tr>
+            <td><strong>Gap dans le CV</strong></td>
+            <td>Congé maternité, maladie, chômage</td>
+            <td class="proxy-red">🔴 Discriminatoire</td>
+          </tr>
+          <tr>
+            <td><strong>Hobbies</strong></td>
+            <td>Genre, origine culturelle (certains sports, activités)</td>
+            <td class="proxy-red">🔴 Potentiellement discriminatoire</td>
+          </tr>
+          <tr>
+            <td><strong>Expérience en années</strong></td>
+            <td>Neutre si appliqué uniformément</td>
+            <td class="proxy-ok">🟢 Acceptable</td>
+          </tr>
+          <tr>
+            <td><strong>Compétences techniques listées</strong></td>
+            <td>Neutre si appliqué uniformément</td>
+            <td class="proxy-ok">🟢 Acceptable</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="lesson-h3">🔬 Corrélation ≠ Causalité — mais l'IA s'en fiche</h3>
+      <p class="lesson-p">
+        L'algorithme ne "comprend" pas la différence entre une corrélation historique et une véritable cause. Si dans les données passées, les candidats avec un prénom à consonance étrangère ont été moins souvent retenus — non pas parce qu'ils étaient moins compétents, mais parce que les recruteurs avaient des préjugés — l'algorithme va reproduire ce biais, en toute "neutralité mathématique".
+      </p>
+      <div class="callout warn">
+        <strong>Le dossier NEXUS-RH :</strong> Dans notre enquête, l'algorithme TechCorp utilise plusieurs de ces proxies. Votre mission sera d'identifier lesquels, et de prouver leur effet discriminatoire sur les candidatures.
+      </div>
+    `
+  },
+  {
+    icon:'🔄',
+    title:'05 — La boucle de rétroaction : quand l\'IA amplifie les inégalités',
+    kicker:'Un algorithme biaisé produit des données biaisées qui renforcent encore le biais. Le cercle vicieux.',
+    html:`
+      <h3 class="lesson-h3">🌀 Le feedback loop — mécanisme d'amplification</h3>
+      <p class="lesson-p">
+        Un biais algorithmique ne reste pas statique. Lorsque les décisions de l'algorithme génèrent de nouvelles données qui sont réutilisées pour l'entraîner à nouveau, le biais peut s'auto-renforcer dans une <strong>boucle de rétroaction</strong> (feedback loop). Le système devient de plus en plus discriminatoire à chaque itération.
+      </p>
+
+      <div class="callout" style="text-align:center;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap">
+          <div style="background:rgba(255,0,128,0.15);border:1px solid rgba(255,0,128,0.4);border-radius:8px;padding:10px 16px;font-size:0.9em;text-align:center;min-width:120px">
+            📊 Données biaisées
+          </div>
+          <div style="color:var(--neon-orange);font-size:1.5em;margin:0 8px">→</div>
+          <div style="background:rgba(255,149,0,0.15);border:1px solid rgba(255,149,0,0.4);border-radius:8px;padding:10px 16px;font-size:0.9em;text-align:center;min-width:120px">
+            🤖 Algorithme biaisé
+          </div>
+          <div style="color:var(--neon-orange);font-size:1.5em;margin:0 8px">→</div>
+          <div style="background:rgba(255,230,109,0.1);border:1px solid rgba(255,230,109,0.3);border-radius:8px;padding:10px 16px;font-size:0.9em;text-align:center;min-width:120px">
+            ⚖️ Décisions biaisées
+          </div>
+          <div style="color:var(--neon-orange);font-size:1.5em;margin:0 8px">→</div>
+          <div style="background:rgba(255,0,128,0.15);border:1px solid rgba(255,0,128,0.4);border-radius:8px;padding:10px 16px;font-size:0.9em;text-align:center;min-width:120px">
+            📊 Nouvelles données encore plus biaisées
+          </div>
+        </div>
+        <div style="margin-top:12px;color:var(--neon-orange);font-family:'Space Mono',monospace;font-size:0.8em">▲ BOUCLE DE RÉTROACTION — LE BIAIS GRANDIT À CHAQUE TOUR ▲</div>
+      </div>
+
+      <h3 class="lesson-h3">📋 Trois exemples de boucles réelles</h3>
+      <div class="callout pink">
+        <strong style="color:var(--neon-pink)">Justice prédictive</strong><br/>
+        Plus de patrouilles dans certains quartiers → Plus d'arrestations dans ces quartiers → Plus de données dans ces zones → Algorithme prédit plus de risques → Encore plus de patrouilles → Etc.
+      </div>
+      <div class="callout warn">
+        <strong style="color:var(--neon-orange)">Crédit et emploi</strong><br/>
+        Refus de crédit dans certaines zones → Moins d'accès à l'entreprise → Moins de revenus → Moins de crédit futur → Confirmation du refus initial.
+      </div>
+      <div class="callout blue">
+        <strong style="color:var(--neon-blue)">Recrutement algorithmique</strong><br/>
+        Moins de femmes recrutées → Moins de données de "succès" pour les femmes → Algorithme apprend que les femmes réussissent moins → Encore moins de femmes recrutées.
+      </div>
+
+      <div class="callout ok">
+        <strong>Point clé pour l'audit :</strong> Pour détecter une boucle de rétroaction, comparez les données d'entraînement <em>initiales</em> avec les données récentes. Si le déséquilibre s'est accentué au fil du temps, c'est un signal fort de feedback loop.
+      </div>
+    `
+  },
+  {
+    icon:'📐',
+    title:'06 — Mesurer le biais : les métriques d\'équité',
+    kicker:'On ne peut corriger que ce qu\'on peut mesurer. Les outils de l\'auditeur.',
+    html:`
+      <h3 class="lesson-h3">🔢 Pourquoi des métriques ?</h3>
+      <p class="lesson-p">
+        "L'algorithme semble discriminatoire" n'est pas suffisant pour un rapport d'audit. Pour convaincre, il faut des <strong>chiffres précis</strong>, des <strong>comparaisons rigoureuses</strong> et des <strong>métriques reconnues</strong>. Voici les principales métriques utilisées par les auditeurs en IA.
+      </p>
+
+      <h3 class="lesson-h3">📊 Disparate Impact (Impact Disparate)</h3>
+      <p class="lesson-p">La métrique la plus utilisée en droit et en audit. Elle compare le <strong>taux de résultats positifs</strong> entre deux groupes :</p>
+      <div class="callout" style="font-family:'Space Mono',monospace;text-align:center;padding:20px;font-size:1.1em">
+        DI = Taux de sélection groupe défavorisé ÷ Taux de sélection groupe favorisé
+      </div>
+      <p class="lesson-p">La règle des <strong>4/5e</strong> (règle 80%) : si le DI est inférieur à 0,8 (80%), l'impact est considéré comme disparate — c'est-à-dire potentiellement discriminatoire selon la loi américaine. L'UE utilise des seuils similaires.</p>
+
+      <div class="metric-bar-wrap">
+        <div class="metric-bar-label">Exemple : DI = 0.45 → ❌ Discrimination significative</div>
+        <div class="metric-bar-bg"><div class="metric-bar-fill bad" style="width:45%"><span class="metric-bar-val">45%</span></div></div>
+      </div>
+      <div class="metric-bar-wrap">
+        <div class="metric-bar-label">Exemple : DI = 0.75 → ⚠️ Zone grise (sous le seuil 80%)</div>
+        <div class="metric-bar-bg"><div class="metric-bar-fill mid" style="width:75%"><span class="metric-bar-val">75%</span></div></div>
+      </div>
+      <div class="metric-bar-wrap">
+        <div class="metric-bar-label">Exemple : DI = 0.92 → ✅ Équitable</div>
+        <div class="metric-bar-bg"><div class="metric-bar-fill good" style="width:92%"><span class="metric-bar-val">92%</span></div></div>
+      </div>
+
+      <h3 class="lesson-h3">📋 Les autres métriques essentielles</h3>
+      <div class="two-col">
+        <div class="callout">
+          <strong>Demographic Parity</strong><br/>
+          Le taux de sélection positif doit être <em>identique</em> entre les groupes. Simple mais parfois trop rigide.
+        </div>
+        <div class="callout">
+          <strong>Equal Opportunity</strong><br/>
+          Le taux de vrais positifs (sélectionnés parmi les qualifiés) doit être identique entre groupes.
+        </div>
+        <div class="callout">
+          <strong>Predictive Parity</strong><br/>
+          La précision des prédictions doit être identique entre les groupes. Utile pour la justice prédictive.
+        </div>
+        <div class="callout">
+          <strong>Individual Fairness</strong><br/>
+          Des individus similaires doivent recevoir des traitements similaires, indépendamment de leur groupe.
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <strong>L'impossible équité parfaite :</strong> Les mathématiciens ont démontré qu'il est <em>impossible</em> de satisfaire simultanément toutes les métriques d'équité quand les groupes ont des distributions différentes (théorème d'incompatibilité de Chouldechova, 2017). Toute définition de l'"équité" implique des choix de valeurs — qui doivent être faits explicitement, pas dissimulés dans le code.
+      </div>
+    `
+  },
+  {
+    icon:'🌱',
+    title:'07 — Vers une IA plus équitable',
+    kicker:'Comprendre le problème est le premier pas. Voici comment construire des algorithmes responsables.',
+    html:`
+      <h3 class="lesson-h3">🛠️ Les quatre piliers d'une IA équitable</h3>
+
+      <div class="callout ok">
+        <strong>1. Auditer les données avant l'entraînement</strong><br/>
+        Inspecter systématiquement les jeux de données : d'où viennent-ils ? Qui les a annotés ? Quels groupes sont représentés ou absents ? Les <em>Datasheets for Datasets</em> (Gebru et al., 2018) proposent un format standardisé pour cette documentation.
+      </div>
+      <div class="callout">
+        <strong>2. Diversifier les équipes de développement</strong><br/>
+        Des équipes diversifiées détectent mieux les biais car elles ont des expériences différentes. Des études montrent que la diversité de genre et d'origine dans les équipes IA réduit significativement le nombre de biais non détectés.
+      </div>
+      <div class="callout blue">
+        <strong>3. Implémenter des métriques d'équité dès la conception</strong><br/>
+        Définir <em>avant</em> l'entraînement quelles métriques d'équité l'algorithme doit satisfaire. Tester le modèle sur ces métriques à chaque itération. Ne pas déployer un modèle qui ne les respecte pas.
+      </div>
+      <div class="callout purple">
+        <strong>4. Audits indépendants réguliers</strong><br/>
+        C'est votre rôle, ARIA. Les régulateurs et chercheurs indépendants doivent avoir accès aux algorithmes pour les auditer. L'AI Act européen (2024) rend obligatoires ces audits pour les "systèmes d'IA à haut risque", dont les systèmes de recrutement.
+      </div>
+
+      <h3 class="lesson-h3">⚖️ Le cadre légal en Europe</h3>
+      <p class="lesson-p">
+        L'<strong>AI Act européen</strong> (entré en vigueur en 2024) classe les systèmes de recrutement IA comme des <em>systèmes à haut risque</em>. Cela implique :
+      </p>
+      <div class="two-col">
+        <div class="callout">
+          <strong>Obligations</strong><br/>
+          Documentation complète, tests de biais obligatoires, supervision humaine, droit à l'explication pour les personnes affectées.
+        </div>
+        <div class="callout warn">
+          <strong>Sanctions</strong><br/>
+          Jusqu'à 15 millions d'euros ou 3% du chiffre d'affaires mondial en cas de non-conformité.
+        </div>
+      </div>
+
+      <div class="callout ok">
+        <strong>Mission ARIA — Vous êtes prête !</strong><br/>
+        Vous avez maintenant les connaissances nécessaires pour auditer l'algorithme NEXUS-RH de TechCorp. Comprendre les biais, identifier leurs sources, mesurer leur impact — c'est ce que vous allez faire dans la phase suivante. L'enquête commence maintenant.
+        <br/><br/>
+        <strong>Appuyez sur "Lancer l'audit" pour commencer votre mission !</strong>
+      </div>
+    `
+  }
+];
+
+/* ===================== ÉTAT ===================== */
+let currentLesson = 0;
+
+/* ===================== FONCTIONS BRIEFING ===================== */
+function renderNav() {
+  const container = document.getElementById('nav-items');
+  container.innerHTML = lessons.map((l, i) => `
+    <div class="briefing-nav-item ${i === currentLesson ? 'active' : ''} ${i < currentLesson ? 'completed' : ''}"
+         onclick="goToLesson(${i})">
+      <span class="nav-icon">${l.icon}</span>
+      <span class="nav-number">${String(i+1).padStart(2,'0')}</span>
+      <span class="nav-text">${l.title.split('—')[1]?.trim() || l.title}</span>
+    </div>
+  `).join('');
+}
+
+function renderContent() {
+  const l = lessons[currentLesson];
+  document.getElementById('lesson-content').innerHTML = `
+    <h2 class="lesson-title">${l.title}</h2>
+    <p class="lesson-kicker">${l.kicker}</p>
+    <div class="divider"></div>
+    ${l.html}
+  `;
+  document.getElementById('lesson-content').scrollTop = 0;
+
+  // Progress
+  const pct = Math.round(((currentLesson + 1) / lessons.length) * 100);
+  document.getElementById('briefing-fill').style.width = pct + '%';
+  document.getElementById('lesson-counter').textContent = `Leçon ${currentLesson+1}/${lessons.length}`;
+
+  // Buttons
+  document.getElementById('btn-prev').disabled = currentLesson === 0;
+  const btnNext = document.getElementById('btn-next');
+  if (currentLesson === lessons.length - 1) {
+    btnNext.textContent = '⚡ Lancer l\'audit →';
+    btnNext.onclick = launchGame;
+  } else {
+    btnNext.textContent = 'Suivant →';
+    btnNext.onclick = nextLesson;
+  }
+
+  document.getElementById('lesson-hint').textContent =
+    currentLesson < lessons.length - 1
+      ? `${lessons.length - currentLesson - 1} leçon(s) restante(s)`
+      : 'Dernière leçon — prêt pour l\'audit !';
+}
+
+function goToLesson(i) {
+  currentLesson = i;
+  renderNav();
+  renderContent();
+}
+
+function nextLesson() {
+  if (currentLesson < lessons.length - 1) {
+    currentLesson++;
+    renderNav();
+    renderContent();
+  }
+}
+
+function prevLesson() {
+  if (currentLesson > 0) {
+    currentLesson--;
+    renderNav();
+    renderContent();
+  }
+}
+
+/* ===================== NAVIGATION ===================== */
 function startModule() {
-  // Phase 2 : le briefing sera ajouté ici
-  alert('Le briefing arrive dans la phase suivante !');
+  document.getElementById('title-screen').classList.add('hidden');
+  const briefing = document.getElementById('briefing-screen');
+  briefing.classList.add('active');
+  renderNav();
+  renderContent();
+}
+
+function launchGame() {
+  // Phase 3 : la phase de jeu sera ajoutée ici
+  alert('La phase de jeu (audit interactif) arrive dans la prochaine étape !');
 }
 </script>
 
