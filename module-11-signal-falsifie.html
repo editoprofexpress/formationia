@@ -1625,6 +1625,123 @@ function unlockCertificate(){
 }
 
 /* =========================================================
+   PHASE 5 — ATTESTATION
+========================================================= */
+function showCertificate(){
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('briefing-screen').classList.add('active');
+
+  document.getElementById('briefing-content').innerHTML = `
+    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de Réussite</div>
+    <div class="module-kicker">Module 11 — Signal Falsifié · L'Enquêteur de Deepfakes</div>
+    <div class="divider"></div>
+    <div class="callout ok" style="text-align:center;padding:28px 20px">
+      <div style="font-size:3em;margin-bottom:14px">🏆</div>
+      <h3 style="color:var(--neon-green);margin-bottom:14px;font-family:'Space Mono',monospace">Mission accomplie, Agent VERITAS !</h3>
+      <p style="line-height:1.8;margin-bottom:14px">Vous avez complété avec succès le <strong>Module 11 — Signal Falsifié</strong>.<br>Vos compétences de détection de deepfakes sont certifiées.</p>
+      <div style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);border-radius:10px;padding:18px;margin:18px auto;max-width:400px">
+        <p style="margin-bottom:8px"><strong>Score de certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${quizFinalScore}%</span></p>
+        <p style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.85em">Référence : IA-DEEP-${String(Math.floor(Math.random()*90000)+10000)}</p>
+      </div>
+    </div>
+    <h3 style="margin:28px 0 18px;color:var(--neon-blue)">📜 Télécharger votre attestation</h3>
+    <div class="callout" style="padding:28px">
+      <p style="margin-bottom:18px;line-height:1.8">Renseignez votre nom pour générer votre attestation officielle de l'Unité VERITAS.</p>
+      <div style="margin-bottom:14px">
+        <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue)">Nom sur l'attestation :</label>
+        <input id="certificate-name" type="text" placeholder="Prénom NOM"
+          style="width:100%;max-width:480px;padding:12px;border-radius:8px;
+                 border:1px solid rgba(0,212,255,0.35);background:rgba(0,0,0,0.25);
+                 color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none;user-select:text;"/>
+      </div>
+      <button class="briefing-btn primary" onclick="downloadCertificate()" style="font-size:1em;padding:14px 35px;margin-top:12px">
+        📥 Télécharger (HTML)
+      </button>
+      <p style="margin-top:14px;color:#8899aa;font-size:0.85em">Ouvrez le fichier HTML et utilisez Ctrl+P pour l'imprimer en PDF.</p>
+    </div>
+    <h3 style="margin:28px 0 18px;color:var(--neon-blue)">✅ Compétences validées</h3>
+    <div class="callout"><ul style="line-height:2.1;margin-left:20px">
+      <li>Identifier et distinguer les différents types de deepfakes (vidéo, audio, image, texte)</li>
+      <li>Comprendre les mécanismes techniques de génération par IA (GAN, diffusion, clonage vocal)</li>
+      <li>Repérer les indices visuels et audio révélateurs d'une manipulation</li>
+      <li>Appliquer le protocole VERITAS de vérification en 6 étapes</li>
+      <li>Utiliser les outils numériques de détection (recherche inversée, analyse spectrale)</li>
+      <li>Évaluer les impacts sociétaux et reconnaître les usages malveillants</li>
+      <li>Adopter les bons réflexes face aux contenus suspects et aux arnaques vocales</li>
+    </ul></div>
+    <div style="text-align:center;margin-top:28px">
+      <a href="modules.html" class="briefing-btn" style="text-decoration:none;display:inline-flex">← Retour aux modules</a>
+    </div>`;
+
+  document.getElementById('btn-prev').style.display='none';
+  document.getElementById('btn-next').style.display='none';
+}
+
+function downloadCertificate(){
+  const name = (document.getElementById('certificate-name')?.value||'').trim()||'Participant';
+  const date = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const ref = 'IA-DEEP-'+String(Math.floor(Math.random()*90000)+10000);
+
+  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Attestation - Module 11 Signal Falsifié</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #ffe66d;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(255,230,109,.3),inset 0 0 60px rgba(0,212,255,.1)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(0,212,255,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#ffe66d,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#00d4ff;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.unit{font-size:0.82em;color:#8899aa;margin-top:6px;letter-spacing:2px}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(0,212,255,.3);border-bottom:1px solid rgba(0,212,255,.3)}
+.mod{background:rgba(255,230,109,.1);border:1px solid rgba(255,230,109,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#ffe66d;font-size:1.3em;font-weight:600;margin-bottom:8px}
+.mod-s{color:#b0b0b0;font-size:0.9em}
+.sc{display:inline-block;background:linear-gradient(135deg,#ffe66d,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.sk{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:15px}
+.sk span{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:5px 14px;border-radius:15px;font-size:.82em;color:#00d4ff}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:28px;border-top:1px solid rgba(0,212,255,.2)}
+.fi{text-align:center}.fl{color:#888;font-size:.82em;margin-bottom:4px}.fv{color:#00d4ff;font-weight:600}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style></head><body><div class="cert">
+<div class="hd"><div class="logo">🎭🔍</div>
+<div class="ttl">Attestation de Réussite</div>
+<div class="sub">Formation IA Responsable</div>
+<div class="unit">Unité VERITAS — Cellule Forensique Numérique</div></div>
+<div class="cnt">
+<p style="font-size:1.1em;margin:30px 0 14px">Cette attestation certifie que</p>
+<div class="nm">${name}</div>
+<p>a complété avec succès le</p>
+<div class="mod">
+  <div class="mod-t">Module 11 : Signal Falsifié</div>
+  <div class="mod-s">Détection de Deepfakes — L'Enquêteur de l'Unité VERITAS</div>
+  <div class="sc">Score : ${quizFinalScore}%</div>
+</div>
+<p style="margin-bottom:14px">Compétences certifiées :</p>
+<div class="sk">
+  <span>Détection Deepfakes</span><span>Analyse Forensique</span>
+  <span>Esprit Critique</span><span>Protocole VERITAS</span>
+  <span>Clonage Vocal</span><span>Vérification de Sources</span>
+  <span>IA Responsable</span>
+</div>
+<div class="ft">
+  <div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div>
+  <div class="fi"><div class="fl">Référence</div><div class="fv">${ref}</div></div>
+  <div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div>
+  <div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div>
+</div>
+</div></div></body></html>`;
+
+  const blob = new Blob([html],{type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`Attestation_Module11_Signal_Falsifie_${name.replace(/\s+/g,'_')}.html`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('✅ Attestation téléchargée !',4000);
+}
+
+/* =========================================================
    DÉMARRAGE DU MODULE
 ========================================================= */
 function startModule(){
