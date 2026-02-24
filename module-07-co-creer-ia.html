@@ -276,6 +276,264 @@
       100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
     }
 
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #briefing-screen.active { display: flex; }
+
+    .briefing-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3em;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .briefing-title::before { content: '🎓'; font-size: 1.4em; }
+    .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.9em; }
+    .briefing-progress-bar { width: 200px; height: 6px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
+    .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue)); transition: width 0.3s; }
+
+    .briefing-body { display: flex; flex: 1; overflow: hidden; }
+
+    .briefing-nav {
+      width: 280px;
+      background: rgba(10, 20, 40, 0.9);
+      border-right: 1px solid rgba(78, 205, 196, 0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .back-link-sidebar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 15px; margin: 0 15px 20px;
+      background: rgba(78,205,196,0.05);
+      border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 8px;
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+    }
+    .back-link-sidebar:hover { background: rgba(78,205,196,0.15); border-color: var(--neon-cyan); transform: translateX(-3px); }
+
+    .briefing-nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 15px 20px; cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.3s; color: #8899aa;
+    }
+    .briefing-nav-item:hover { background: rgba(78,205,196,0.05); color: var(--text); }
+    .briefing-nav-item.active { border-left-color: var(--neon-cyan); background: rgba(78,205,196,0.1); color: var(--neon-cyan); }
+    .briefing-nav-item.completed { color: var(--neon-blue); }
+    .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); }
+    .nav-icon { font-size: 1.2em; width: 30px; text-align: center; }
+    .nav-number {
+      font-family: 'Space Mono', monospace; font-size: 0.8em;
+      background: rgba(78,205,196,0.2); padding: 2px 8px; border-radius: 3px;
+    }
+    .briefing-nav-item.active .nav-number { background: rgba(78,205,196,0.4); }
+
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .briefing-content::-webkit-scrollbar { width: 8px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(78,205,196,0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 4px; }
+
+    .briefing-footer {
+      background: rgba(10,20,40,0.95);
+      border-top: 1px solid rgba(78,205,196,0.3);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .briefing-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-cyan);
+      background: transparent;
+      color: var(--neon-cyan);
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .briefing-btn:hover { background: rgba(78,205,196,0.1); box-shadow: 0 0 20px rgba(78,205,196,0.3); }
+    .briefing-btn.primary { background: var(--neon-cyan); color: var(--dark-bg); font-weight: 700; }
+    .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
+    .briefing-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ==================== CONTENU COURS ==================== */
+    .module-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      color: var(--neon-cyan);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+    }
+    .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(78,205,196,0.5), transparent); margin: 18px 0; }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid rgba(78,205,196,.5);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72em;
+      color: var(--neon-cyan);
+      margin: 0 4px 8px 0;
+      letter-spacing: 1px;
+    }
+
+    .callout {
+      background: rgba(0, 30, 60, 0.5);
+      border: 1px solid rgba(78, 205, 196, 0.25);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 14px 0;
+      line-height: 1.7;
+    }
+    .callout.ok { border-color: rgba(0,255,136,0.4); background: rgba(0,60,30,0.3); }
+    .callout.warn { border-color: rgba(255,204,0,0.4); background: rgba(60,50,0,0.3); }
+    .callout.danger { border-color: rgba(255,77,77,0.4); background: rgba(60,10,10,0.3); }
+
+    h3 { color: var(--neon-cyan); margin: 25px 0 15px; font-size: 1.15em; }
+    p { line-height: 1.75; color: #cfe9ff; margin-bottom: 12px; }
+    strong { color: var(--text); }
+    em { color: var(--muted); }
+
+    .quote-block {
+      border-left: 3px solid var(--neon-cyan);
+      padding: 14px 20px;
+      margin: 20px 0;
+      background: rgba(78,205,196,0.05);
+      font-style: italic;
+      color: #cfe9ff;
+      font-size: 1.05em;
+      line-height: 1.7;
+    }
+
+    .ai-card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
+    .ai-card {
+      background: rgba(0,20,40,0.6);
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+    .ai-card:hover { border-color: rgba(78,205,196,0.5); background: rgba(0,30,60,0.7); }
+    .ai-card .ac-icon { font-size: 2em; margin-bottom: 10px; }
+    .ai-card .ac-name { font-family: 'Space Mono', monospace; font-size: 0.9em; color: var(--neon-cyan); margin-bottom: 6px; letter-spacing: 2px; }
+    .ai-card .ac-desc { font-size: 0.9em; color: #aabbcc; line-height: 1.6; margin: 0; }
+
+    .steps-list { list-style: none; margin: 14px 0; }
+    .steps-list li {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #cfe9ff; line-height: 1.65;
+    }
+    .steps-list li:last-child { border-bottom: none; }
+    .step-num {
+      min-width: 28px; height: 28px;
+      background: rgba(78,205,196,0.15);
+      border: 1px solid rgba(78,205,196,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+    .compare-col {
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .compare-col.good { background: rgba(0,60,30,0.3); border: 1px solid rgba(0,255,136,0.3); }
+    .compare-col.bad { background: rgba(60,10,10,0.3); border: 1px solid rgba(255,77,77,0.3); }
+    .compare-col .cc-head {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .compare-col.good .cc-head { color: var(--neon-green); }
+    .compare-col.bad .cc-head { color: var(--danger); }
+    .compare-col ul { list-style: none; }
+    .compare-col ul li { padding: 6px 0; color: #aabbcc; font-size: 0.92em; line-height: 1.5; }
+    .compare-col.good ul li::before { content: '✓ '; color: var(--neon-green); }
+    .compare-col.bad ul li::before { content: '✗ '; color: var(--danger); }
+
+    .domain-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+    .domain-tag {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+    .domain-tag.text { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.4); color: var(--neon-purple); }
+    .domain-tag.visual { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.4); color: var(--neon-blue); }
+    .domain-tag.music { background: rgba(255,0,128,0.1); border-color: rgba(255,0,128,0.4); color: var(--neon-pink); }
+    .domain-tag.code { background: rgba(0,255,136,0.1); border-color: rgba(0,255,136,0.4); color: var(--neon-green); }
+
+    .rights-table { width: 100%; border-collapse: collapse; margin: 18px 0; }
+    .rights-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--neon-cyan);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+    }
+    .rights-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #cfe9ff;
+      font-size: 0.92em;
+      vertical-align: top;
+    }
+    .rights-table tr:hover td { background: rgba(78,205,196,0.03); }
+
   </style>
 </head>
 <body>
@@ -320,6 +578,405 @@
   <button class="start-btn" onclick="startBriefing()">▶ ACCÉDER AU BRIEFING</button>
 </div>
 
+<!-- ==================== BRIEFING ==================== -->
+<div id="briefing-screen">
+  <div class="briefing-header">
+    <div class="briefing-title">SYNAPSE STUDIO — Briefing</div>
+    <div class="briefing-progress">
+      <span id="briefing-progress-text">Section 1 / 6</span>
+      <div class="briefing-progress-bar">
+        <div class="briefing-progress-fill" id="briefing-progress-fill" style="width:16.6%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="briefing-body">
+    <!-- Navigation latérale -->
+    <nav class="briefing-nav">
+      <a href="modules.html" class="back-link-sidebar">← Modules</a>
+      <div class="briefing-nav-item active" onclick="goSection(0)" id="nav-0">
+        <span class="nav-icon">🤝</span>
+        <span class="nav-number">01</span>
+        L'IA, partenaire créatif
+      </div>
+      <div class="briefing-nav-item" onclick="goSection(1)" id="nav-1">
+        <span class="nav-icon">✍️</span>
+        <span class="nav-number">02</span>
+        Co-écrire avec l'IA
+      </div>
+      <div class="briefing-nav-item" onclick="goSection(2)" id="nav-2">
+        <span class="nav-icon">🎨</span>
+        <span class="nav-number">03</span>
+        Prompt visuel
+      </div>
+      <div class="briefing-nav-item" onclick="goSection(3)" id="nav-3">
+        <span class="nav-icon">🎵</span>
+        <span class="nav-number">04</span>
+        Musique générative
+      </div>
+      <div class="briefing-nav-item" onclick="goSection(4)" id="nav-4">
+        <span class="nav-icon">💻</span>
+        <span class="nav-number">05</span>
+        Code assisté par IA
+      </div>
+      <div class="briefing-nav-item" onclick="goSection(5)" id="nav-5">
+        <span class="nav-icon">⚖️</span>
+        <span class="nav-number">06</span>
+        Droits & éthique créative
+      </div>
+    </nav>
+
+    <!-- Contenu des sections -->
+    <div class="briefing-content" id="briefing-content">
+
+      <!-- SECTION 1 : L'IA, partenaire créatif -->
+      <div class="briefing-section" id="section-0">
+        <div class="module-title">🤝 L'IA, partenaire créatif — pas un remplaçant</div>
+        <p class="module-kicker">Comprendre le rapport entre créativité humaine et intelligence artificielle</p>
+
+        <div class="domain-tags">
+          <span class="domain-tag text">Texte</span>
+          <span class="domain-tag visual">Visuel</span>
+          <span class="domain-tag music">Musique</span>
+          <span class="domain-tag code">Code</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>L'IA ne crée pas — elle complète</h3>
+        <p>
+          Les IA génératives (GPT, DALL-E, Suno, Copilot…) ne comprennent pas la beauté, l'émotion ou le sens.
+          Elles <strong>produisent des combinaisons statistiquement plausibles</strong> à partir de milliards
+          d'exemples humains. Ce sont des outils puissants, mais sans intention propre.
+        </p>
+        <p>
+          La créativité, c'est toi qui l'apportes : le <strong>sens du projet</strong>, l'<strong>intention artistique</strong>,
+          le <strong>jugement esthétique</strong> et la <strong>vision finale</strong>.
+        </p>
+
+        <div class="quote-block">
+          "L'IA est comme un musicien de studio incroyablement technique : il peut tout jouer,
+          mais c'est le compositeur qui décide ce qui mérite d'exister." — Vision commune des créatifs numériques
+        </div>
+
+        <h3>Les 4 rôles que peut jouer l'IA dans ta création</h3>
+        <div class="ai-card-grid">
+          <div class="ai-card">
+            <div class="ac-icon">💡</div>
+            <div class="ac-name">INSPIRATEUR</div>
+            <p class="ac-desc">Génère des idées, des angles, des associations inattendues. Brise le syndrome de la page blanche.</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">⚡</div>
+            <div class="ac-name">ACCÉLÉRATEUR</div>
+            <p class="ac-desc">Produit un premier jet rapide — texte, esquisse, mélodie — que tu affines ensuite.</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">🔁</div>
+            <div class="ac-name">ITÉRATEUR</div>
+            <p class="ac-desc">Propose des variantes, des reformulations, des tons différents pour explorer les possibles.</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">🛠️</div>
+            <div class="ac-name">EXÉCUTANT</div>
+            <p class="ac-desc">Réalise des tâches répétitives (mise en forme, traduction, adaptation de style) que tu diriges.</p>
+          </div>
+        </div>
+
+        <div class="callout ok">
+          <strong>✅ Bonne pratique :</strong> Commence toujours par avoir <em>une idée directrice</em> avant de
+          demander à l'IA de produire. Une IA nourrie d'une intention précise produit bien mieux qu'une IA à qui
+          l'on dit juste "fais quelque chose de créatif".
+        </div>
+      </div>
+
+      <!-- SECTION 2 : Co-écrire avec l'IA -->
+      <div class="briefing-section" id="section-1" style="display:none">
+        <div class="module-title">✍️ Co-écrire avec l'IA : texte, narration, style</div>
+        <p class="module-kicker">Techniques pour produire des textes de qualité avec une IA rédactrice</p>
+
+        <div class="divider"></div>
+
+        <h3>Le trio gagnant : contexte + ton + contrainte</h3>
+        <p>
+          Un bon prompt de rédaction ne dit pas juste <em>"Écris-moi un texte sur X"</em>.
+          Il donne à l'IA trois ingrédients clés :
+        </p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span> <div><strong>Contexte :</strong> Qui parle ? À qui ? Dans quel cadre ? <em>(ex : "pour une campagne publicitaire de luxe")</em></div></li>
+          <li><span class="step-num">2</span> <div><strong>Ton :</strong> Formel, poétique, humoristique, percutant ? <em>(ex : "ton décalé, légèrement ironique")</em></div></li>
+          <li><span class="step-num">3</span> <div><strong>Contrainte :</strong> Format, longueur, mots à éviter, style à imiter. <em>(ex : "3 phrases max, sans jargon technique")</em></div></li>
+        </ul>
+
+        <h3>L'itération : le cœur du co-writing</h3>
+        <p>
+          Rarement le premier résultat est parfait. La co-écriture est un <strong>dialogue progressif</strong> :
+          tu guides, l'IA propose, tu ajustes le tir.
+        </p>
+        <div class="compare-grid">
+          <div class="compare-col good">
+            <div class="cc-head">✅ Bonne approche</div>
+            <ul>
+              <li>Donne un brief précis</li>
+              <li>Demande plusieurs versions</li>
+              <li>Précise ce qui ne marche pas</li>
+              <li>Fusionne le meilleur de chaque version</li>
+              <li>Retravaille le résultat final toi-même</li>
+            </ul>
+          </div>
+          <div class="compare-col bad">
+            <div class="cc-head">❌ À éviter</div>
+            <ul>
+              <li>Brief vague ("fais quelque chose de cool")</li>
+              <li>Copier-coller sans relire</li>
+              <li>Accepter les clichés sans les questionner</li>
+              <li>Oublier de personnaliser la voix</li>
+              <li>Masquer que tu as utilisé l'IA (contexte éthique)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <strong>⚠️ Attention au style "IA"</strong> : Les textes générés ont souvent des patterns reconnaissables
+          — formulations trop lisses, tournures génériques, absence de spécificité. Injecte toujours ta touche personnelle,
+          des exemples concrets, une anecdote réelle.
+        </div>
+      </div>
+
+      <!-- SECTION 3 : Prompt visuel -->
+      <div class="briefing-section" id="section-2" style="display:none">
+        <div class="module-title">🎨 Prompt visuel : l'art de décrire l'invisible</div>
+        <p class="module-kicker">Maîtriser la création d'images avec des IA comme DALL-E, Midjourney ou Stable Diffusion</p>
+
+        <div class="divider"></div>
+
+        <h3>Les composants d'un prompt image efficace</h3>
+        <p>
+          Une image IA se construit comme un tableau de régie : tu empiles des <strong>couches d'information</strong>
+          que le modèle combine. Plus tu es précis, plus le résultat est maîtrisé.
+        </p>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><div><strong>Sujet principal :</strong> Ce qui doit être au centre. <em>"A young woman scientist in a lab"</em></div></li>
+          <li><span class="step-num">2</span><div><strong>Style artistique :</strong> Photo réaliste, aquarelle, cubisme, pixel art… <em>"digital art, cyberpunk style"</em></div></li>
+          <li><span class="step-num">3</span><div><strong>Ambiance / éclairage :</strong> Neon lights, golden hour, dramatic shadows… <em>"moody lighting, neon glow"</em></div></li>
+          <li><span class="step-num">4</span><div><strong>Composition :</strong> Angle, plan, format. <em>"wide shot, low angle, 16:9 cinematic"</em></div></li>
+          <li><span class="step-num">5</span><div><strong>Qualité / détails :</strong> <em>"ultra detailed, 8K, sharp focus, award-winning photography"</em></div></li>
+        </ul>
+
+        <h3>Les négatifs : dire ce qu'on ne veut PAS</h3>
+        <p>
+          La plupart des outils image acceptent un <strong>prompt négatif</strong> : une liste de ce que l'IA
+          doit éviter. C'est souvent aussi important que le prompt positif.
+        </p>
+        <div class="callout">
+          <strong>Exemple de négatifs :</strong> <em>blurry, distorted hands, extra fingers, low quality,
+          watermark, cartoon, oversaturated, text overlay</em>
+        </div>
+
+        <h3>La référence stylistique : le raccourci créatif</h3>
+        <p>
+          Tu peux demander à l'IA de s'inspirer d'un style connu : <em>"in the style of Monet"</em>,
+          <em>"Blade Runner aesthetic"</em>, <em>"comme une affiche des années 80"</em>.
+          C'est légal tant que tu ne copies pas une œuvre spécifique, mais il faut <strong>rester vigilant
+          sur l'attribution</strong> et la transparence.
+        </p>
+
+        <div class="callout ok">
+          <strong>✅ Règle d'or :</strong> Commence simple, enrichis progressivement. Un prompt trop chargé
+          produit souvent du chaos. Ajoute les détails un à un et observe l'évolution.
+        </div>
+      </div>
+
+      <!-- SECTION 4 : Musique générative -->
+      <div class="briefing-section" id="section-3" style="display:none">
+        <div class="module-title">🎵 Musique et son génératif</div>
+        <p class="module-kicker">Explorer les nouvelles frontières de la création sonore assistée par IA</p>
+
+        <div class="divider"></div>
+
+        <h3>Comment l'IA compose-t-elle ?</h3>
+        <p>
+          Les IA musicales (Suno, Udio, MusicGen…) ont été entraînées sur d'immenses bibliothèques sonores.
+          Elles apprennent les <strong>patterns mélodiques, harmoniques et rythmiques</strong> propres à chaque genre.
+          Donner un genre + une ambiance + un tempo suffit souvent pour obtenir un morceau convaincant.
+        </p>
+
+        <h3>Le vocabulaire du prompt musical</h3>
+        <div class="ai-card-grid">
+          <div class="ai-card">
+            <div class="ac-icon">🎸</div>
+            <div class="ac-name">GENRE</div>
+            <p class="ac-desc">Jazz, électro, lo-fi, cinematic, metal, folk, ambient… Sois précis : "dark cinematic orchestral" ≠ "orchestral"</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">💫</div>
+            <div class="ac-name">AMBIANCE</div>
+            <p class="ac-desc">Melancholic, uplifting, tense, dreamy, epic, nostalgic… L'émotion guide le modèle dans ses choix.</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">⚡</div>
+            <div class="ac-name">TEMPO</div>
+            <p class="ac-desc">Slow, moderate, fast, driving, floating… Ou directement en BPM : "120 bpm driving beat"</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">🎹</div>
+            <div class="ac-name">INSTRUMENTS</div>
+            <p class="ac-desc">Piano, strings, synth bass, choir, acoustic guitar… Citer les instruments oriente la texture sonore.</p>
+          </div>
+        </div>
+
+        <h3>Les usages créatifs concrets</h3>
+        <ul class="steps-list">
+          <li><span class="step-num">🎬</span><div><strong>Musique de fond</strong> pour vidéos, podcasts, présentations</div></li>
+          <li><span class="step-num">🎮</span><div><strong>Ambiances sonores</strong> pour jeux, expositions, installations</div></li>
+          <li><span class="step-num">💡</span><div><strong>Inspiration mélodique</strong> pour des musiciens qui bloquent</div></li>
+          <li><span class="step-num">🚀</span><div><strong>Prototypage rapide</strong> d'une identité sonore pour une marque</div></li>
+        </ul>
+
+        <div class="callout warn">
+          <strong>⚠️ Droits d'auteur musicaux :</strong> Les morceaux générés par IA sont dans un flou juridique.
+          Pour un usage commercial, vérifier les conditions de la plateforme utilisée.
+          Certains outils accordent les droits commerciaux, d'autres non.
+        </div>
+      </div>
+
+      <!-- SECTION 5 : Code assisté -->
+      <div class="briefing-section" id="section-4" style="display:none">
+        <div class="module-title">💻 Code assisté : l'IA comme co-développeur</div>
+        <p class="module-kicker">Comment l'IA révolutionne la manière d'écrire, corriger et documenter du code</p>
+
+        <div class="divider"></div>
+
+        <h3>L'IA comme pair de programmation</h3>
+        <p>
+          Des outils comme GitHub Copilot, ChatGPT ou Claude peuvent écrire, expliquer, déboguer et refactoriser
+          du code. Ils fonctionnent mieux quand tu <strong>décris précisément le problème</strong> plutôt que de
+          demander une solution vague.
+        </p>
+
+        <div class="compare-grid">
+          <div class="compare-col good">
+            <div class="cc-head">✅ Prompt efficace</div>
+            <ul>
+              <li>"Fonction Python qui trie une liste de dictionnaires par la clé 'date'"</li>
+              <li>"Explique pourquoi ce code génère une erreur NullPointerException"</li>
+              <li>"Réécris cette fonction pour qu'elle soit plus lisible"</li>
+              <li>"Ajoute des commentaires à ce code en français"</li>
+            </ul>
+          </div>
+          <div class="compare-col bad">
+            <div class="cc-head">❌ Prompt inefficace</div>
+            <ul>
+              <li>"Écris-moi un programme"</li>
+              <li>"Mon code ne marche pas, aide-moi"</li>
+              <li>"Fais quelque chose avec Python"</li>
+              <li>"Améliore ça" (sans contexte)</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Ce que l'IA fait bien — et mal — en code</h3>
+        <div class="ai-card-grid">
+          <div class="ai-card">
+            <div class="ac-icon">✅</div>
+            <div class="ac-name">POINTS FORTS</div>
+            <p class="ac-desc">Code standard et répétitif, fonctions utilitaires, documentation, tests unitaires, conversion de formats.</p>
+          </div>
+          <div class="ai-card">
+            <div class="ac-icon">⚠️</div>
+            <div class="ac-name">POINTS FAIBLES</div>
+            <p class="ac-desc">Code métier complexe, logique d'affaires spécifique, sécurité critique, bugs subtils. Toujours relire et tester.</p>
+          </div>
+        </div>
+
+        <div class="callout danger">
+          <strong>🚨 Règle absolue :</strong> Ne jamais déployer du code généré par IA sans le comprendre et l'avoir
+          testé. L'IA peut produire du code plausible en apparence mais incorrect, voire dangereux (failles de sécurité).
+        </div>
+      </div>
+
+      <!-- SECTION 6 : Droits & éthique -->
+      <div class="briefing-section" id="section-5" style="display:none">
+        <div class="module-title">⚖️ Droits d'auteur, éthique et paternité créative</div>
+        <p class="module-kicker">Les questions légales et morales de la création avec l'IA</p>
+
+        <div class="divider"></div>
+
+        <h3>Qui est l'auteur d'une création IA ?</h3>
+        <p>
+          La question est encore en cours de résolution juridique dans la plupart des pays.
+          En Europe et aux États-Unis, <strong>le droit d'auteur ne reconnaît pas les IA comme auteurs</strong> —
+          seul un humain peut être titulaire de droits. Mais la part créative humaine dans le prompt
+          est-elle suffisante pour constituer une œuvre protégeable ? Les tribunaux commencent à trancher.
+        </p>
+
+        <table class="rights-table">
+          <thead>
+            <tr>
+              <th>Situation</th>
+              <th>Droits probables</th>
+              <th>Recommandation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Usage personnel, non commercial</td>
+              <td>Liberté totale dans la plupart des cas</td>
+              <td>✅ Libre d'utiliser</td>
+            </tr>
+            <tr>
+              <td>Publication sur un site ou réseau social</td>
+              <td>Variable selon la plateforme IA utilisée</td>
+              <td>⚠️ Vérifier les CGU</td>
+            </tr>
+            <tr>
+              <td>Usage commercial (vente, pub, produit)</td>
+              <td>Souvent soumis à abonnement payant</td>
+              <td>⚠️ Lire les droits commerciaux</td>
+            </tr>
+            <tr>
+              <td>Imitation d'un artiste vivant</td>
+              <td>Risque de litige (image, réputation)</td>
+              <td>🚨 Éviter sans accord</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>La transparence : une norme émergente</h3>
+        <p>
+          De plus en plus d'éditeurs, plateformes et employeurs demandent de <strong>déclarer l'usage de l'IA</strong>
+          dans un processus créatif. Ce n'est pas une honte — c'est une bonne pratique professionnelle.
+        </p>
+
+        <div class="callout ok">
+          <strong>✅ Bonne pratique :</strong> Mentionne l'usage de l'IA quand c'est pertinent.
+          "Réalisé avec l'assistance de [outil IA]" ou "Prompt par [ton nom], rendu par [IA]"
+          montre ta maîtrise de l'outil ET ton honnêteté.
+        </div>
+
+        <h3>L'éthique créative : 3 principes à retenir</h3>
+        <ul class="steps-list">
+          <li><span class="step-num">1</span><div><strong>Ne remplace pas un créatif humain sans consentement :</strong> Si ton projet peut être fait par un humain professionnel, envisage ce choix.</div></li>
+          <li><span class="step-num">2</span><div><strong>Ne génère pas de contenu trompeur :</strong> Photos, voix, vidéos réalistes de vraies personnes sans leur accord.</div></li>
+          <li><span class="step-num">3</span><div><strong>Préserve ta voix :</strong> L'IA lisse, normalise, moyenne. Ta spécificité est une valeur que l'IA ne peut pas reproduire.</div></li>
+        </ul>
+
+        <div class="callout warn">
+          <strong>🎯 Prêt pour les ateliers ?</strong> Tu connais maintenant les bases de la co-création avec l'IA.
+          Il est temps de les mettre en pratique dans les 4 ateliers du SYNAPSE STUDIO !
+        </div>
+      </div>
+
+    </div><!-- fin briefing-content -->
+  </div><!-- fin briefing-body -->
+
+  <div class="briefing-footer">
+    <button class="briefing-btn" id="btn-prev" onclick="prevSection()" disabled>← Précédent</button>
+    <span id="section-indicator" style="font-family:'Space Mono',monospace;font-size:0.85em;color:#8899aa">Section 1 sur 6</span>
+    <button class="briefing-btn primary" id="btn-next" onclick="nextSection()">Suivant →</button>
+  </div>
+</div>
+
 <script>
   // ==================== PARTICULES ==================
   (function createParticles() {
@@ -342,12 +999,72 @@
     }
   })();
 
-  // ==================== NAVIGATION ==================
+  // ==================== ÉTAT GLOBAL ==================
+  const state = {
+    briefingSection: 0,
+    briefingSections: 6,
+  };
+
+  // ==================== NAVIGATION TITRE → BRIEFING ==================
   function startBriefing() {
     document.getElementById('title-screen').classList.add('hidden');
-    // Phase 2 sera ajoutée
-    alert('🚧 Briefing en cours de construction — revenez bientôt !');
-    document.getElementById('title-screen').classList.remove('hidden');
+    document.getElementById('briefing-screen').classList.add('active');
+    goSection(0);
+  }
+
+  // ==================== BRIEFING ==================
+  function goSection(idx) {
+    // Masquer toutes les sections
+    document.querySelectorAll('.briefing-section').forEach((s, i) => {
+      s.style.display = i === idx ? 'block' : 'none';
+    });
+    // Nav items
+    document.querySelectorAll('.briefing-nav-item').forEach((el, i) => {
+      el.classList.remove('active');
+      if (i < idx) el.classList.add('completed');
+    });
+    const navItem = document.getElementById('nav-' + idx);
+    if (navItem) navItem.classList.add('active');
+
+    // Barre de progression
+    const pct = ((idx + 1) / state.briefingSections * 100).toFixed(1);
+    document.getElementById('briefing-progress-fill').style.width = pct + '%';
+    document.getElementById('briefing-progress-text').textContent = `Section ${idx+1} / ${state.briefingSections}`;
+    document.getElementById('section-indicator').textContent = `Section ${idx+1} sur ${state.briefingSections}`;
+
+    // Boutons
+    document.getElementById('btn-prev').disabled = idx === 0;
+    const btnNext = document.getElementById('btn-next');
+    if (idx === state.briefingSections - 1) {
+      btnNext.textContent = '▶ ACCÉDER AUX ATELIERS';
+      btnNext.onclick = startAtelier;
+    } else {
+      btnNext.textContent = 'Suivant →';
+      btnNext.onclick = nextSection;
+    }
+
+    state.briefingSection = idx;
+    // Scroll to top
+    document.getElementById('briefing-content').scrollTop = 0;
+  }
+
+  function nextSection() {
+    if (state.briefingSection < state.briefingSections - 1) {
+      goSection(state.briefingSection + 1);
+    }
+  }
+
+  function prevSection() {
+    if (state.briefingSection > 0) {
+      goSection(state.briefingSection - 1);
+    }
+  }
+
+  function startAtelier() {
+    document.getElementById('briefing-screen').classList.remove('active');
+    // Phase 3 — ateliers — sera ajoutée bientôt
+    alert('🚧 Les ateliers arrivent bientôt !');
+    document.getElementById('briefing-screen').classList.add('active');
   }
 </script>
 
