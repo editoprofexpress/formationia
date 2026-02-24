@@ -941,6 +941,100 @@
         }
         .next-room-btn:hover { background: rgba(0,255,136,0.1); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
 
+        /* ==================== QUIZ ==================== */
+        #quiz-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #050c18 0%, #0c1c2e 50%, #050c18 100%);
+            z-index: 997;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        #quiz-screen.active { display: flex; }
+        #quiz-screen::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(78,205,196,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78,205,196,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+        .quiz-container {
+            width: 100%;
+            max-width: 780px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .quiz-header {
+            background: rgba(10,20,40,0.95);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 10px 10px 0 0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quiz-progress-bar {
+            height: 4px;
+            background: rgba(78,205,196,0.1);
+            overflow: hidden;
+        }
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--domain-color), var(--neon-blue));
+            transition: width 0.4s;
+        }
+        .quiz-body {
+            background: rgba(10,20,40,0.9);
+            border: 1px solid rgba(78,205,196,0.2);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 35px 40px;
+        }
+        .quiz-question {
+            font-size: 1.15em;
+            line-height: 1.65;
+            color: #e0f0ff;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 11px; }
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 15px 18px;
+            border: 2px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            line-height: 1.55;
+        }
+        .quiz-option:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.04); }
+        .quiz-opt-letter {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: var(--domain-color);
+            flex-shrink: 0;
+            width: 22px;
+        }
+        .quiz-opt-text { flex: 1; }
+        .quiz-explain {
+            background: rgba(78,205,196,0.06);
+            border: 1px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 18px;
+            font-size: 0.93em;
+        }
+
         /* Footer jeu */
         .game-footer {
             background: rgba(5,12,24,0.95);
@@ -2243,7 +2337,365 @@
             document.getElementById('quiz-screen').classList.add('active');
             initQuiz();
         }
+
+        // ==================== QUIZ ====================
+        const quizQuestions = [
+            {
+                question: "Dans la méthode RCTF, que représente la lettre 'R' ?",
+                options: ["Résultat attendu", "Rôle donné à l'IA", "Règles à respecter", "Reformulation de la consigne"],
+                correct: 1,
+                explain: "R = Rôle. C'est l'identité qu'on donne à l'IA (ex. 'Tu es un journaliste spécialisé en économie')."
+            },
+            {
+                question: "Quel est le principal problème d'une consigne vague comme 'Fais quelque chose sur l'environnement' ?",
+                options: [
+                    "Elle est trop longue pour l'IA",
+                    "L'IA ne comprend pas le mot 'environnement'",
+                    "L'IA va inventer ce qui lui manque et risque de se tromper",
+                    "L'IA refusera de répondre"
+                ],
+                correct: 2,
+                explain: "Sans précision, l'IA comble les manques avec des suppositions qui peuvent être totalement inadaptées à ton besoin réel."
+            },
+            {
+                question: "Laquelle de ces formulations constitue un bon 'Format' dans une consigne ?",
+                options: [
+                    "\"Réponds bien\"",
+                    "\"Sous forme de tableau comparatif à 3 colonnes, en 80 mots maximum\"",
+                    "\"Tu es un expert\"",
+                    "\"Je veux savoir pourquoi\""
+                ],
+                correct: 1,
+                explain: "Le Format précise la forme de la réponse : type de document, longueur, structure. 'Tableau 3 colonnes, 80 mots max' est un format clair et actionnable."
+            },
+            {
+                question: "\"Tu es une diététicienne spécialisée en alimentation pour sportifs.\" — Quel pilier RCTF est-ce ?",
+                options: ["Contexte", "Tâche", "Rôle", "Format"],
+                correct: 2,
+                explain: "C'est le Rôle : on attribue à l'IA une identité précise avec une spécialité, ce qui oriente radicalement le registre et le contenu de sa réponse."
+            },
+            {
+                question: "Quel verbe d'action est le plus adapté pour demander une synthèse courte d'un texte long ?",
+                options: ["\"Propose\"", "\"Résume\"", "\"Dialogue\"", "\"Traduis\""],
+                correct: 1,
+                explain: "'Résume' indique clairement à l'IA qu'on attend une version condensée. 'Propose' suggère des idées, 'Dialogue' un échange, 'Traduis' un changement de langue."
+            },
+            {
+                question: "Dans quel cas est-il le plus important d'utiliser un RCTF complet (4 piliers) ?",
+                options: [
+                    "Pour une question simple comme 'Quelle est la capitale de la France ?'",
+                    "Pour une demande complexe, personnalisée ou destinée à un usage professionnel",
+                    "Le RCTF n'est utile que pour des textes créatifs",
+                    "Uniquement quand l'IA ne comprend pas la première fois"
+                ],
+                correct: 1,
+                explain: "Plus la demande est complexe ou délicate, plus le RCTF complet est nécessaire. Pour les questions simples, une tâche claire suffit souvent."
+            },
+            {
+                question: "\"Je suis responsable RH dans une entreprise de 200 personnes. Nous préparons une réforme des congés payés.\" — Quel pilier RCTF est-ce ?",
+                options: ["Rôle", "Contexte", "Tâche", "Format"],
+                correct: 1,
+                explain: "C'est le Contexte : c'est la situation de fond que l'utilisateur fournit à l'IA — qui il est, dans quelle situation, quelle est la contrainte ou l'environnement."
+            },
+            {
+                question: "Parmi ces 4 consignes, laquelle est la plus efficace pour obtenir un bon résultat ?",
+                options: [
+                    "\"Écris un email.\"",
+                    "\"Rédige un email de relance pour un client.\"",
+                    "\"Tu es commercial senior. Mon client n'a pas répondu à mon devis de 5 000€ depuis 15 jours. Rédige un email de relance chaleureux, 3 paragraphes, objet inclus.\"",
+                    "\"Aide-moi pour quelque chose d'important.\""
+                ],
+                correct: 2,
+                explain: "La 3e consigne contient les 4 piliers RCTF : Rôle (commercial senior), Contexte (devis 5000€, 15 jours), Tâche (email relance), Format (3 paragraphes + objet)."
+            }
+        ];
+
+        let quizCurrent = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function initQuiz() {
+            quizCurrent = 0;
+            quizScore = 0;
+            quizAnswered = false;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const screen = document.getElementById('quiz-screen');
+            const q = quizQuestions[quizCurrent];
+            quizAnswered = false;
+            screen.innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <div style="font-family:'Space Mono',monospace;color:var(--domain-color);font-size:1em;">📜 QUIZ DE CERTIFICATION</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);">Question ${quizCurrent + 1}/${quizQuestions.length} • Score : ${quizScore}/${quizCurrent}</div>
+                    </div>
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-fill" style="width:${((quizCurrent)/quizQuestions.length*100).toFixed(0)}%"></div>
+                    </div>
+                    <div class="quiz-body">
+                        <div class="quiz-question">${q.question}</div>
+                        <div class="quiz-options" id="quiz-options">
+                            ${q.options.map((opt, i) => `
+                                <div class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i})">
+                                    <span class="quiz-opt-letter">${String.fromCharCode(65+i)}</span>
+                                    <span class="quiz-opt-text">${opt}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="quiz-explain" id="quiz-explain" style="display:none;"></div>
+                        <div style="margin-top:20px;text-align:center;">
+                            <button class="validate-btn" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display:none;">
+                                ${quizCurrent + 1 < quizQuestions.length ? 'Question suivante →' : '📜 Voir mes résultats'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuiz(idx) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+            const q = quizQuestions[quizCurrent];
+            const correct = idx === q.correct;
+            if (correct) quizScore++;
+
+            document.querySelectorAll('.quiz-option').forEach((el, i) => {
+                el.style.pointerEvents = 'none';
+                if (i === q.correct) {
+                    el.style.borderColor = 'var(--neon-green)';
+                    el.style.background = 'rgba(0,255,136,0.08)';
+                } else if (i === idx && !correct) {
+                    el.style.borderColor = 'var(--danger)';
+                    el.style.background = 'rgba(255,77,77,0.08)';
+                }
+            });
+
+            const explain = document.getElementById('quiz-explain');
+            explain.style.display = 'block';
+            explain.innerHTML = `
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <span style="font-size:1.4em;">${correct ? '✅' : '❌'}</span>
+                    <div>
+                        <strong style="color:${correct ? 'var(--neon-green)' : 'var(--danger)'}">
+                            ${correct ? 'Bonne réponse !' : 'Pas tout à fait...'}
+                        </strong>
+                        <p style="margin-top:6px;color:#aabbcc;font-size:0.92em;line-height:1.6;">${q.explain}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('quiz-next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuizQuestion() {
+            quizCurrent++;
+            if (quizCurrent < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            const screen = document.getElementById('quiz-screen');
+            const pct = Math.round(quizScore / quizQuestions.length * 100);
+            const pass = quizScore >= 6;
+            screen.innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <div style="font-family:'Space Mono',monospace;color:var(--domain-color);">📜 RÉSULTATS</div>
+                    </div>
+                    <div class="quiz-body" style="text-align:center;">
+                        <div style="font-size:4em;margin:20px 0;">${pass ? '🏆' : '🔄'}</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:2em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};">
+                            ${quizScore}/${quizQuestions.length}
+                        </div>
+                        <div style="font-size:1.3em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};margin:10px 0 25px;">
+                            ${pct}% — ${pass ? 'Mission accomplie !' : 'Presque...'}
+                        </div>
+                        <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 30px;">
+                            ${pass
+                                ? 'Tu as démontré que tu maîtrises l\'art de la consigne. ARIA-7 est entièrement réactivée grâce à toi. Télécharge ton attestation.'
+                                : `Tu as ${quizScore} bonnes réponses. Il faut 6/8 pour valider. Revois le briefing et réessaie !`
+                            }
+                        </p>
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            ${pass ? `<button class="validate-btn success-btn" onclick="showAttestation()">🎓 Télécharger l'attestation</button>` : ''}
+                            <button class="validate-btn" onclick="initQuiz()" style="${pass ? 'opacity:0.6;font-size:0.9em;' : ''}">🔄 ${pass ? 'Refaire le quiz' : 'Réessayer'}</button>
+                            <a href="modules.html" style="font-family:'Space Mono',monospace;padding:13px 25px;border:2px solid rgba(78,205,196,0.3);color:var(--muted);text-decoration:none;font-size:0.9em;">↩ Modules</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== ATTESTATION ====================
+        function showAttestation() {
+            const name = prompt('Entrez votre prénom et nom pour l\'attestation :');
+            if (!name || !name.trim()) return;
+            const score = Math.round(quizScore / quizQuestions.length * 100);
+            const date = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+            const ref = 'IA-PROMPT-' + Date.now().toString(36).toUpperCase();
+
+            const certHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation — L'Art de la Consigne</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700&display=swap');
+        body {
+            margin: 0; padding: 40px 20px;
+            background: linear-gradient(135deg, #050c18 0%, #0d1f35 100%);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Exo 2', sans-serif;
+        }
+        .certificate {
+            max-width: 780px; width: 100%;
+            background: linear-gradient(135deg, rgba(10,20,40,0.98), rgba(5,15,30,0.98));
+            border: 2px solid rgba(78,205,196,0.5);
+            border-radius: 16px;
+            padding: 50px 55px;
+            box-shadow: 0 0 60px rgba(78,205,196,0.15), inset 0 0 60px rgba(78,205,196,0.03);
+            position: relative;
+            color: #e0f0ff;
+        }
+        .certificate::before {
+            content: '';
+            position: absolute; inset: 8px;
+            border: 1px solid rgba(78,205,196,0.15);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .header { text-align: center; margin-bottom: 35px; }
+        .logo { font-size: 3.5em; margin-bottom: 10px; }
+        .title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase;
+            background: linear-gradient(90deg, #4ecdc4, #00d4ff, #00ff88);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+        .subtitle { color: #8899aa; font-size: 1em; letter-spacing: 2px; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(78,205,196,0.5), transparent); margin: 25px 0; }
+        .certifies { color: #8899aa; text-align: center; margin-bottom: 8px; }
+        .name {
+            font-family: 'Space Mono', monospace;
+            font-size: 2em; text-align: center;
+            color: #4ecdc4;
+            margin: 10px 0 20px;
+            text-shadow: 0 0 20px rgba(78,205,196,0.4);
+        }
+        .module-block {
+            background: rgba(78,205,196,0.06);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 10px;
+            padding: 22px; text-align: center;
+            margin: 20px 0;
+        }
+        .module-name { font-family: 'Space Mono', monospace; font-size: 1.05em; color: #4ecdc4; margin-bottom: 6px; }
+        .module-sub { color: #8899aa; font-size: 0.9em; margin-bottom: 12px; }
+        .score-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(0,212,255,0.2));
+            border: 1px solid rgba(78,205,196,0.5);
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            color: #4ecdc4; font-size: 1.1em;
+        }
+        .skills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; }
+        .skill {
+            background: rgba(78,205,196,0.08);
+            border: 1px solid rgba(78,205,196,0.3);
+            padding: 6px 16px; border-radius: 15px;
+            font-size: 0.83em; color: #4ecdc4;
+        }
+        .footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 25px; padding-top: 20px;
+            border-top: 1px solid rgba(78,205,196,0.2);
+            flex-wrap: wrap; gap: 15px;
+        }
+        .footer-item { text-align: center; }
+        .footer-label { color: #8899aa; font-size: 0.8em; margin-bottom: 4px; }
+        .footer-value { color: #00d4ff; font-weight: 600; font-size: 0.95em; }
+        .profexpress { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(78,205,196,0.15); text-align: center; }
+        .profexpress p { color: #8899aa; font-size: 0.82em; margin-bottom: 10px; }
+        .profexpress img { height: 32px; object-fit: contain; }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <div class="logo">🤖</div>
+            <div class="title">Attestation de Réussite</div>
+            <div class="subtitle">Formation IA Responsable</div>
+        </div>
+        <div class="divider"></div>
+        <p class="certifies">Cette attestation certifie que</p>
+        <div class="name">${name.trim()}</div>
+        <p style="text-align:center;color:#aabbcc;">a complété avec succès le micro-module</p>
+        <div class="module-block">
+            <div class="module-name">🤖 L'Art de la Consigne — ARIA-7</div>
+            <div class="module-sub">Module 05 — Interaction Raisonnée • Escape Room des Prompts</div>
+            <div class="score-badge">Score : ${score}%</div>
+        </div>
+        <p style="text-align:center;color:#8899aa;margin-bottom:10px;">Compétences validées :</p>
+        <div class="skills">
+            <span class="skill">🎭 Rôle (RCTF)</span>
+            <span class="skill">📍 Contexte (RCTF)</span>
+            <span class="skill">🎯 Tâche claire</span>
+            <span class="skill">📐 Format adapté</span>
+            <span class="skill">🔍 Analyse de prompts</span>
+            <span class="skill">🔧 Amélioration de consignes</span>
+        </div>
+        <div class="footer">
+            <div class="footer-item">
+                <div class="footer-label">Date d'obtention</div>
+                <div class="footer-value">${date}</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Référence</div>
+                <div class="footer-value">${ref}</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Validité</div>
+                <div class="footer-value">Permanente</div>
+            </div>
+        </div>
+        <div class="profexpress">
+            <p>Une formation proposée par</p>
+            <a href="https://www.profexpress.com" target="_blank">
+                <img src="images/logo-profexpress.png" alt="Prof Express">
+            </a>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([certHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Attestation_ARIA7_Consigne_${name.trim().replace(/\s+/g,'_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
     </script>
+
+    <!-- ==================== QUIZ ==================== -->
+    <div id="quiz-screen">
+        <!-- Contenu rendu dynamiquement par initQuiz() / renderQuizQuestion() -->
+    </div>
 
 </body>
 </html>
