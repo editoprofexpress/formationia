@@ -403,12 +403,241 @@
         .client-preview-name { font-family: 'Space Mono', monospace; font-size: 0.72em; color: var(--neon-teal); margin-bottom: 3px; }
         .client-preview-job { font-size: 0.75em; color: var(--muted); }
 
+        /* ==================== BUREAU ARIA - JEU ==================== */
+        #game-container {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #07101a 0%, #0d1a28 50%, #07101a 100%);
+            display: none; flex-direction: column;
+            z-index: 998; overflow: hidden;
+        }
+        #game-container.active { display: flex; }
+
+        /* Grille en fond du jeu */
+        #game-container::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
+        }
+
+        /* Topbar */
+        .game-topbar {
+            background: rgba(7,16,26,0.97);
+            border-bottom: 1px solid rgba(0,229,204,0.25);
+            padding: 0 24px; height: 58px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0; position: relative; z-index: 2;
+        }
+        .game-topbar-left { display: flex; align-items: center; gap: 16px; }
+        .game-topbar-title {
+            font-family: 'Space Mono', monospace; font-size: 0.95em;
+            color: var(--neon-teal); letter-spacing: 2px;
+        }
+        .client-progress {
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Space Mono', monospace; font-size: 0.8em; color: var(--muted);
+        }
+        .client-dots { display: flex; gap: 6px; }
+        .client-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(0,229,204,0.3);
+            transition: all 0.3s;
+        }
+        .client-dot.done { background: var(--neon-green); border-color: var(--neon-green); box-shadow: 0 0 8px rgba(0,255,136,0.5); }
+        .client-dot.current { background: var(--neon-teal); border-color: var(--neon-teal); box-shadow: 0 0 8px rgba(0,229,204,0.6); }
+
+        .game-score-display {
+            font-family: 'Space Mono', monospace; font-size: 0.95em;
+            color: var(--neon-teal);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .score-value {
+            font-size: 1.3em; font-weight: 700;
+            color: var(--neon-green);
+            text-shadow: 0 0 12px rgba(0,255,136,0.5);
+        }
+
+        /* Zone principale du jeu */
+        .game-main {
+            flex: 1; display: flex; gap: 0;
+            overflow: hidden; position: relative; z-index: 1;
+        }
+
+        /* Panneau gauche : profil client */
+        .client-panel {
+            width: 320px; flex-shrink: 0;
+            background: rgba(10,20,38,0.92);
+            border-right: 1px solid rgba(0,229,204,0.15);
+            display: flex; flex-direction: column;
+            padding: 28px 24px; gap: 20px;
+            overflow-y: auto;
+        }
+        .client-panel::-webkit-scrollbar { width: 4px; }
+        .client-panel::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.25); }
+
+        .client-avatar-wrap {
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .client-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(0,229,204,0.4);
+            box-shadow: 0 0 25px rgba(0,229,204,0.2);
+            transition: border-color 0.4s, box-shadow 0.4s;
+        }
+        .client-avatar.good  { border-color: rgba(0,255,136,0.7); box-shadow: 0 0 25px rgba(0,255,136,0.3); }
+        .client-avatar.bad   { border-color: rgba(255,0,128,0.7); box-shadow: 0 0 25px rgba(255,0,128,0.3); }
+        .client-avatar.ok    { border-color: rgba(255,183,0,0.7); box-shadow: 0 0 25px rgba(255,183,0,0.3); }
+
+        .client-name {
+            font-family: 'Space Mono', monospace; font-size: 1.3em;
+            color: var(--neon-teal); text-align: center;
+        }
+        .client-meta {
+            text-align: center; font-size: 0.85em; color: var(--muted);
+            line-height: 1.5;
+        }
+        .client-tag {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(0,229,204,0.08); border: 1px solid rgba(0,229,204,0.25);
+            border-radius: 12px; font-size: 0.75em; color: var(--neon-teal);
+            font-family: 'Space Mono', monospace; margin-top: 4px;
+        }
+        .client-risk {
+            width: 100%; padding: 12px;
+            background: rgba(255,0,128,0.07); border: 1px solid rgba(255,0,128,0.2);
+            border-radius: 8px; font-size: 0.82em; color: #ffaad4; line-height: 1.5;
+        }
+        .client-risk strong { color: var(--neon-pink); }
+
+        .client-speech {
+            padding: 14px; border-radius: 8px;
+            background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.18);
+            font-size: 0.88em; color: #cfe9ff; line-height: 1.7;
+            font-style: italic; position: relative;
+        }
+        .client-speech::before {
+            content: '"'; position: absolute; top: -6px; left: 10px;
+            font-size: 2.5em; color: rgba(0,212,255,0.3);
+            font-family: Georgia, serif; line-height: 1;
+        }
+
+        /* Panneau droit : stratégies */
+        .strategies-panel {
+            flex: 1; display: flex; flex-direction: column;
+            padding: 28px 32px; gap: 18px; overflow-y: auto;
+        }
+        .strategies-panel::-webkit-scrollbar { width: 6px; }
+        .strategies-panel::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.2); }
+
+        .strategies-title {
+            font-family: 'Space Mono', monospace; font-size: 1em;
+            color: var(--neon-teal); letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .strategies-subtitle { font-size: 0.88em; color: var(--muted); margin-bottom: 8px; }
+
+        .strategy-cards { display: flex; flex-direction: column; gap: 14px; }
+
+        .strategy-card {
+            padding: 20px 22px; border-radius: 10px;
+            background: rgba(10,25,45,0.85);
+            border: 1px solid rgba(0,229,204,0.2);
+            cursor: pointer; transition: all 0.25s;
+            display: flex; align-items: flex-start; gap: 16px;
+        }
+        .strategy-card:hover {
+            background: rgba(0,229,204,0.07);
+            border-color: rgba(0,229,204,0.5);
+            transform: translateX(4px);
+            box-shadow: 0 0 20px rgba(0,229,204,0.15);
+        }
+        .strategy-card.selected-good {
+            background: rgba(0,255,136,0.08);
+            border-color: rgba(0,255,136,0.5);
+            box-shadow: 0 0 20px rgba(0,255,136,0.2);
+            cursor: default;
+        }
+        .strategy-card.selected-bad {
+            background: rgba(255,0,128,0.08);
+            border-color: rgba(255,0,128,0.4);
+            box-shadow: 0 0 20px rgba(255,0,128,0.15);
+            cursor: default;
+        }
+        .strategy-card.selected-ok {
+            background: rgba(255,183,0,0.07);
+            border-color: rgba(255,183,0,0.4);
+            box-shadow: 0 0 20px rgba(255,183,0,0.15);
+            cursor: default;
+        }
+        .strategy-card.revealed-good {
+            background: rgba(0,255,136,0.05);
+            border-color: rgba(0,255,136,0.3);
+            cursor: default;
+        }
+        .strategy-card.disabled { cursor: default; opacity: 0.55; }
+
+        .strategy-letter {
+            font-family: 'Space Mono', monospace; font-size: 1.1em;
+            color: var(--neon-teal); background: rgba(0,229,204,0.1);
+            border: 1px solid rgba(0,229,204,0.3); border-radius: 6px;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-weight: 700; transition: all 0.25s;
+        }
+        .strategy-card:hover .strategy-letter { background: rgba(0,229,204,0.2); }
+        .strategy-card.selected-good .strategy-letter { background: rgba(0,255,136,0.2); border-color: var(--neon-green); color: var(--neon-green); }
+        .strategy-card.selected-bad  .strategy-letter { background: rgba(255,0,128,0.15); border-color: var(--neon-pink); color: var(--neon-pink); }
+        .strategy-card.selected-ok   .strategy-letter { background: rgba(255,183,0,0.15); border-color: var(--neon-amber); color: var(--neon-amber); }
+
+        .strategy-body { flex: 1; }
+        .strategy-title { font-weight: 700; color: var(--text); margin-bottom: 5px; font-size: 0.95em; }
+        .strategy-desc  { font-size: 0.84em; color: var(--muted); line-height: 1.55; }
+
+        .strategy-result {
+            display: none; margin-top: 8px; padding: 8px 12px;
+            border-radius: 6px; font-size: 0.82em; line-height: 1.5;
+        }
+        .strategy-result.show { display: block; }
+        .strategy-result.good   { background: rgba(0,255,136,0.1); color: #aaffcc; border-left: 3px solid var(--neon-green); }
+        .strategy-result.bad    { background: rgba(255,0,128,0.1); color: #ffaad4; border-left: 3px solid var(--neon-pink); }
+        .strategy-result.ok     { background: rgba(255,183,0,0.1); color: #ffd980; border-left: 3px solid var(--neon-amber); }
+
+        /* Feedback global après choix */
+        .global-feedback {
+            display: none; padding: 16px 20px; border-radius: 10px;
+            font-size: 0.9em; line-height: 1.7;
+            border-left: 4px solid var(--neon-teal);
+            background: rgba(0,229,204,0.06); color: #cfe9ff;
+            animation: fadeIn 0.4s ease;
+        }
+        .global-feedback.show { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+        /* Bouton suivant */
+        .game-next-btn {
+            display: none; font-family: 'Space Mono', monospace;
+            padding: 14px 36px; background: var(--neon-teal); color: var(--dark-bg);
+            border: none; cursor: pointer; font-size: 0.95em; font-weight: 700;
+            letter-spacing: 2px; border-radius: 6px;
+            transition: all 0.3s; align-self: flex-end;
+            text-transform: uppercase;
+        }
+        .game-next-btn.show { display: block; }
+        .game-next-btn:hover { background: var(--neon-green); box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.03); }
+
         /* Responsive */
+        @media (max-width: 900px) {
+            .client-panel { width: 250px; }
+            .strategies-panel { padding: 18px; }
+        }
         @media (max-width: 768px) {
             .briefing-nav { display: none; }
             .briefing-content { padding: 20px; }
             .skills-grid { grid-template-columns: 1fr; }
             .clients-preview { grid-template-columns: repeat(3, 1fr); }
+            .game-main { flex-direction: column; }
+            .client-panel { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 14px; gap: 12px; }
         }
 
     </style>
@@ -443,6 +672,43 @@
         <div class="stat-item"><div class="stat-value">~20</div><div class="stat-label">Minutes</div></div>
         <div class="stat-divider"></div>
         <div class="stat-item"><div class="stat-value">70%</div><div class="stat-label">Score mini</div></div>
+    </div>
+</div>
+
+<!-- ==================== BUREAU ARIA - JEU ==================== -->
+<div id="game-container">
+    <div class="game-topbar">
+        <div class="game-topbar-left">
+            <span class="game-topbar-title">⚙️ BUREAU ARIA — NAVIGATION DE CARRIÈRE</span>
+            <div class="client-progress">
+                <span>Client</span>
+                <div class="client-dots" id="client-dots"></div>
+            </div>
+        </div>
+        <div class="game-score-display">
+            Points : <span class="score-value" id="score-display">0</span> / <span id="max-score-display">10</span>
+        </div>
+    </div>
+    <div class="game-main">
+        <!-- Profil client -->
+        <div class="client-panel">
+            <div class="client-avatar-wrap">
+                <img id="client-avatar" class="client-avatar" src="" alt="">
+                <div class="client-name" id="client-name"></div>
+                <div class="client-meta" id="client-meta"></div>
+                <div class="client-tag" id="client-tag"></div>
+            </div>
+            <div class="client-risk" id="client-risk"></div>
+            <div class="client-speech" id="client-speech"></div>
+        </div>
+        <!-- Stratégies -->
+        <div class="strategies-panel">
+            <div class="strategies-title">Votre conseil</div>
+            <div class="strategies-subtitle" id="strategies-subtitle">Choisissez la meilleure stratégie pour ce client :</div>
+            <div class="strategy-cards" id="strategy-cards"></div>
+            <div class="global-feedback" id="global-feedback"></div>
+            <button class="game-next-btn" id="game-next-btn" onclick="nextClient()">Client suivant →</button>
+        </div>
     </div>
 </div>
 
@@ -1143,9 +1409,346 @@ function prevLesson() {
     if (currentLesson > 0) showLesson(currentLesson - 1);
 }
 
+// ==================== DONNÉES DES CLIENTS ====================
+const clients = [
+    {
+        id: 1,
+        name: 'Marcel D.',
+        meta: 'Chauffeur routier longue distance\n48 ans — 24 ans d\'expérience',
+        tag: '🚛 Transport',
+        avatar: 'images/module14-client1.png',
+        risk: '<strong>Risque : Élevé (79%)</strong><br>Le transport de marchandises est en première ligne de l\'automatisation. Les premiers camions semi-autonomes circulent déjà sur autoroute en 2031.',
+        speech: 'Ça fait 24 ans que je fais la route. J\'adore mon métier. Mais mon patron parle de robots-camions d\'ici 2 ans. Je ne sais pas quoi faire, j\'ai pas de diplôme à part mon permis et ma boîte de vitesses.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Attendre que ça passe',
+                desc: 'La réglementation sur les camions autonomes est encore floue. Marcel parie sur un ralentissement légal et reste à son poste sans se former.',
+                result: 'bad',
+                feedback: 'Mauvais pari. La réglementation européenne valide progressivement les camions autonomes pour les autoroutes depuis 2028. Attendre sans agir laisse Marcel sans filet de sécurité.',
+                points: 0
+            },
+            {
+                letter: 'B',
+                title: 'Se reconvertir en superviseur de flotte autonome',
+                desc: 'Marcel se forme à la supervision à distance des camions autonomes : gestion des incidents, coordination logistique, interface avec les algorithmes de routage.',
+                result: 'good',
+                feedback: 'Excellente stratégie ! Marcel capitalise sur son expérience terrain inestimable (connaissance des routes, des aléas, des règles) tout en acquérant de nouvelles compétences numériques. Ces superviseurs sont en forte demande et bien rémunérés.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Se reconvertir en livreur du dernier kilomètre',
+                desc: 'Marcel abandonne le longue distance pour les livraisons urbaines à vélo cargo ou scooter électrique, moins automatisables à court terme.',
+                result: 'ok',
+                feedback: 'Solution de court terme viable, mais ce secteur est aussi en mutation rapide. Surtout, cela représente une baisse de revenus significative et ne valorise pas l\'expérience de Marcel. À envisager en transition, pas comme destination finale.',
+                points: 1
+            }
+        ]
+    },
+    {
+        id: 2,
+        name: 'Isabelle M.',
+        meta: 'Comptable en cabinet\n41 ans — Expert-comptable stagiaire',
+        tag: '📊 Finance & Comptabilité',
+        avatar: 'images/module14-client2.png',
+        risk: '<strong>Risque : Élevé (88%)</strong><br>Les tâches comptables standardisées (saisie, rapprochement bancaire, déclarations) sont massivement automatisées. Les logiciels IA remplacent les juniors.',
+        speech: 'Mon cabinet a adopté une IA qui fait en 5 minutes ce que je faisais en 3 jours. Mon manager me dit que mon travail "évolue", mais je vois bien que mes missions rétrécissent. J\'ai peur de finir par ne plus être utile.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Maîtriser l\'IA comptable et monter en expertise conseil',
+                desc: 'Isabelle se forme aux nouveaux logiciels IA du cabinet, gagne du temps sur les tâches répétitives, et réoriente son énergie vers le conseil fiscal stratégique, la gestion patrimoniale et l\'accompagnement des dirigeants.',
+                result: 'good',
+                feedback: 'Stratégie idéale ! L\'IA libère Isabelle des tâches ingrates pour lui permettre de faire ce qu\'une machine ne peut pas : conseiller, anticiper, rassurer un chef d\'entreprise face à une décision complexe. Sa valeur ajoutée explose.',
+                points: 2
+            },
+            {
+                letter: 'B',
+                title: 'Refuser d\'utiliser l\'IA pour rester "irremplaçable"',
+                desc: 'Isabelle mise sur la comptabilité manuelle traditionnelle, pensant que son expertise humaine suffit à la rendre indispensable là où l\'IA échoue.',
+                result: 'bad',
+                feedback: 'Stratégie dangereuse. Refuser les outils IA la rend moins productive qu\'une collègue qui les maîtrise. Les clients et employeurs privilégieront la compétence hybride. Isabelle se marginalise en résistant à l\'adoption.',
+                points: 0
+            },
+            {
+                letter: 'C',
+                title: 'Changer de secteur — devenir commerciale',
+                desc: 'Isabelle abandonne la comptabilité pour un poste commercial dans une entreprise tech, secteur perçu comme plus dynamique.',
+                result: 'ok',
+                feedback: 'Reconversion possible mais risquée : Isabelle repart de zéro sans valoriser 15 ans d\'expertise. Elle peut réussir si elle a des aptitudes commerciales, mais c\'est un pari coûteux en temps et en argent alors qu\'une évolution dans son secteur est plus accessible.',
+                points: 1
+            }
+        ]
+    },
+    {
+        id: 3,
+        name: 'Théo B.',
+        meta: 'Journaliste polyvalent — Presse régionale\n32 ans — 7 ans d\'expérience',
+        tag: '📰 Journalisme & Médias',
+        avatar: 'images/module14-client3.png',
+        risk: '<strong>Risque : Modéré-Élevé (65%)</strong><br>Les articles de dépêches, résultats sportifs et financiers sont déjà produits par IA. Le journalisme d\'investigation reste hors de portée des algorithmes.',
+        speech: 'Ma rédac utilise maintenant une IA pour tous les matchs de foot et les résultats d\'élections. Ça représentait 40% de mon volume. Mon rédac-chef dit que je dois me "réinventer" mais il n\'explique pas comment. J\'ai l\'impression que mon métier s\'évapore.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Se reconvertir en rédacteur web SEO',
+                desc: 'Théo quitte la presse et devient rédacteur de contenus web optimisés pour le référencement, un domaine apparemment moins touché par l\'IA.',
+                result: 'ok',
+                feedback: 'Attention : le SEO est également sous pression des IA générative et des nouvelles interfaces de recherche. C\'est une solution de court terme. Si Théo part dans cette direction, il doit viser le SEO stratégique et la direction éditoriale, pas la simple rédaction.',
+                points: 1
+            },
+            {
+                letter: 'B',
+                title: 'Se spécialiser dans le grand reportage et l\'investigation',
+                desc: 'Théo abandonne la production de masse pour se concentrer sur les enquêtes de fond, les reportages terrain, les portraits et les sujets qui demandent du temps, des sources et un accès humain.',
+                result: 'good',
+                feedback: 'C\'est exactement le bon mouvement. L\'IA ne peut pas aller sur le terrain, nouer des relations de confiance avec des sources, infiltrer un réseau ou donner sa vie du sens à une histoire complexe. Le journalisme de qualité est plus que jamais valorisé — et rare.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Militer pour interdire l\'IA dans sa rédaction',
+                desc: 'Théo s\'engage syndicalement pour bloquer l\'adoption de l\'IA dans sa rédaction, argumentant que cela détruit des emplois journalistiques.',
+                result: 'bad',
+                feedback: 'L\'action syndicale est légitime, mais miser sur l\'interdiction comme stratégie personnelle est illusoire. D\'autres rédactions adopteront l\'IA. Théo risque de rester sans compétences adaptées quand son employeur sera contraint de changer — ou quand il cherchera un autre poste.',
+                points: 0
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: 'Amina K.',
+        meta: 'Infirmière en service de médecine interne\n36 ans — 11 ans d\'expérience',
+        tag: '🏥 Santé & Soins',
+        avatar: 'images/module14-client4.png',
+        risk: '<strong>Risque : Faible-Modéré (28%)</strong><br>Les soins infirmiers requièrent une présence physique, une empathie et un jugement contextuel difficiles à automatiser. Mais les outils IA transforment les pratiques.',
+        speech: 'À l\'hôpital, on a déployé des IA pour analyser les ECG, dépouiller les prises de sang et programmer les tournées. Les collègues ont peur. Moi, je ne sais pas si c\'est une bonne ou une mauvaise nouvelle. Est-ce que mon métier va vraiment changer ?',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Ne rien changer — le soin reste fondamentalement humain',
+                desc: 'Amina estime que son cœur de métier (relation patient, soins physiques, accompagnement) est trop humain pour être menacé. Elle continue sans se former aux outils IA.',
+                result: 'ok',
+                feedback: 'Partiellement vrai : la relation de soin est irremplaçable. Mais ne pas maîtriser les outils IA médicaux crée un risque d\'être dépassée par ses collègues qui les maîtrisent, d\'être moins efficace, et de rater des opportunités d\'évolution. La passivité comporte un coût.',
+                points: 1
+            },
+            {
+                letter: 'B',
+                title: 'Se former aux outils IA médicaux et devenir infirmière coordinatrice IA',
+                desc: 'Amina se forme aux interfaces des systèmes IA de son hôpital, comprend leurs sorties, peut les corriger et devient un point de référence entre les algorithmes et les soignants.',
+                result: 'good',
+                feedback: 'Excellente approche. Amina ne perd rien de sa compétence soignante — elle l\'enrichit. Elle devient la personne qui "traduit" les analyses IA pour les médecins et les patients, qui vérifie les alertes, qui comprend les limites des machines. Un profil rare et très demandé.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Se reconvertir uniquement en technicienne de systèmes IA médicaux',
+                desc: 'Amina abandonne le soin direct pour devenir technicienne de maintenance et configuration des IA médicales, un nouveau métier bien payé.',
+                result: 'bad',
+                feedback: 'Ce serait abandonner inutilement la compétence la plus précieuse d\'Amina : son expertise clinique de terrain. Les techniciens IA médicaux sans background soignant existent, mais les profils hybrides (soignant + compétences IA) sont bien plus rares et mieux valorisés.',
+                points: 0
+            }
+        ]
+    },
+    {
+        id: 5,
+        name: 'Léa F.',
+        meta: 'Illustratrice indépendante\n29 ans — 6 ans de freelance',
+        tag: '🎨 Arts & Création',
+        avatar: 'images/module14-client5.png',
+        risk: '<strong>Risque : Modéré (55%)</strong><br>L\'illustration commerciale standardisée est très concurrencée par les IA génératives. L\'art à forte identité personnelle et la direction artistique résistent mieux.',
+        speech: 'Deux de mes clients habituels m\'ont dit qu\'ils utilisaient maintenant Midjourney. J\'ai perdu 30% de mes revenus en 6 mois. Je ne sais pas si je dois baisser mes prix, changer de métier ou me former à l\'IA. J\'aime mon travail mais j\'ai peur de ne plus pouvoir en vivre.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Baisser ses tarifs pour concurrencer l\'IA',
+                desc: 'Léa réduit ses prix pour rester compétitive face aux solutions IA, en se positionnant comme une alternative moins chère mais humaine.',
+                result: 'bad',
+                feedback: 'Stratégie perdante sur le long terme. Léa ne peut pas gagner une guerre de prix contre une IA. En bradant son travail, elle se précarise davantage, dévalue l\'illustration humaine en général, et épuise sa motivation. C\'est la spirale descendante.',
+                points: 0
+            },
+            {
+                letter: 'B',
+                title: 'Miser sur son univers unique + proposer de la direction artistique IA',
+                desc: 'Léa renforce son identité visuelle distinctive (que l\'IA ne peut pas copier), cible des clients qui valorisent l\'authenticité, et propose aussi un service de direction artistique : elle pilote les IA pour ses clients qui veulent des visuels cohérents avec leur charte.',
+                result: 'good',
+                feedback: 'Stratégie gagnante sur tous les fronts. Les clients qui paient pour de l\'illustration humaine paient pour une vision unique, pas pour "une image". Léa devient aussi celle qui maîtrise l\'IA comme outil, pas comme concurrent — et elle peut facturer cette compétence rare.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Se former uniquement à la retouche et correction d\'images IA',
+                desc: 'Léa se reconvertit en spécialiste du "post-processing" d\'images générées par IA : corriger les mains, harmoniser les couleurs, adapter les visuels aux besoins des clients.',
+                result: 'ok',
+                feedback: 'Marché réel à court terme, mais fragile : les IA progressent rapidement sur ces tâches de correction. C\'est une reconversion qui peut servir de transition mais pas de destination. Si Léa ne capitalise pas sur sa créativité propre, elle restera dans une position de dépendance vis-à-vis des outils.',
+                points: 1
+            }
+        ]
+    }
+];
+
+// ==================== ÉTAT DU JEU ====================
+const gameState = {
+    currentClient: 0,
+    score: 0,
+    totalPoints: 0,
+    answered: false
+};
+
+// ==================== DÉMARRER LE JEU ====================
 function startARIA() {
-    // Phase 3 — à venir
-    alert('Bureau ARIA en cours de développement — Phase 3 à venir !');
+    document.getElementById('briefing-screen').classList.remove('active');
+    document.getElementById('game-container').classList.add('active');
+    gameState.currentClient = 0;
+    gameState.score = 0;
+    gameState.totalPoints = clients.reduce((sum, c) => sum + Math.max(...c.strategies.map(s => s.points)), 0);
+    document.getElementById('max-score-display').textContent = gameState.totalPoints;
+    buildDots();
+    loadClient(0);
+}
+
+function buildDots() {
+    const wrap = document.getElementById('client-dots');
+    wrap.innerHTML = '';
+    clients.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'client-dot' + (i === 0 ? ' current' : '');
+        d.id = 'dot-' + i;
+        wrap.appendChild(d);
+    });
+}
+
+// ==================== CHARGER UN CLIENT ====================
+function loadClient(index) {
+    const c = clients[index];
+    gameState.answered = false;
+
+    // Dots
+    for (let i = 0; i < clients.length; i++) {
+        const d = document.getElementById('dot-' + i);
+        d.className = 'client-dot' + (i < index ? ' done' : i === index ? ' current' : '');
+    }
+
+    // Profil
+    const avatar = document.getElementById('client-avatar');
+    avatar.src = c.avatar;
+    avatar.className = 'client-avatar';
+    document.getElementById('client-name').textContent = c.name;
+    document.getElementById('client-meta').textContent = c.meta;
+    document.getElementById('client-tag').textContent = c.tag;
+    document.getElementById('client-risk').innerHTML = c.risk;
+    document.getElementById('client-speech').textContent = c.speech;
+
+    // Stratégies
+    const container = document.getElementById('strategy-cards');
+    container.innerHTML = '';
+    c.strategies.forEach((s, i) => {
+        const card = document.createElement('div');
+        card.className = 'strategy-card';
+        card.id = 'strat-' + i;
+        card.onclick = () => chooseStrategy(index, i);
+        card.innerHTML = `
+            <div class="strategy-letter">${s.letter}</div>
+            <div class="strategy-body">
+                <div class="strategy-title">${s.title}</div>
+                <div class="strategy-desc">${s.desc}</div>
+                <div class="strategy-result" id="result-${i}"></div>
+            </div>`;
+        container.appendChild(card);
+    });
+
+    // Reset feedback
+    const fb = document.getElementById('global-feedback');
+    fb.className = 'global-feedback';
+    fb.textContent = '';
+    document.getElementById('game-next-btn').className = 'game-next-btn';
+    document.getElementById('score-display').textContent = gameState.score;
+    document.getElementById('strategies-subtitle').textContent = 'Choisissez la meilleure stratégie pour ce client :';
+}
+
+// ==================== CHOISIR UNE STRATÉGIE ====================
+function chooseStrategy(clientIndex, stratIndex) {
+    if (gameState.answered) return;
+    gameState.answered = true;
+
+    const c = clients[clientIndex];
+    const chosen = c.strategies[stratIndex];
+
+    // Désactiver tous les clics
+    document.querySelectorAll('.strategy-card').forEach(card => {
+        card.onclick = null;
+        card.classList.add('disabled');
+    });
+
+    // Appliquer les résultats sur toutes les cartes
+    c.strategies.forEach((s, i) => {
+        const card = document.getElementById('strat-' + i);
+        const resultEl = document.getElementById('result-' + i);
+        card.classList.remove('disabled');
+        resultEl.textContent = s.feedback;
+        resultEl.className = 'strategy-result show ' + s.result;
+
+        if (i === stratIndex) {
+            // Carte choisie
+            if (s.result === 'good')  card.className = 'strategy-card selected-good';
+            else if (s.result === 'bad') card.className = 'strategy-card selected-bad';
+            else card.className = 'strategy-card selected-ok';
+        } else if (s.result === 'good') {
+            card.className = 'strategy-card revealed-good';
+        } else {
+            card.className = 'strategy-card disabled';
+        }
+    });
+
+    // Feedback global
+    gameState.score += chosen.points;
+    document.getElementById('score-display').textContent = gameState.score;
+
+    const avatar = document.getElementById('client-avatar');
+    const fb = document.getElementById('global-feedback');
+    let fbMsg = '';
+    if (chosen.result === 'good') {
+        avatar.classList.add('good');
+        fbMsg = `✅ <strong>Excellent conseil !</strong> +${chosen.points} points de navigation. ${c.name.split(' ')[0]} repart avec un plan solide.`;
+        fb.style.borderLeftColor = 'var(--neon-green)';
+        fb.style.background = 'rgba(0,255,136,0.05)';
+    } else if (chosen.result === 'bad') {
+        avatar.classList.add('bad');
+        fbMsg = `❌ <strong>Conseil risqué.</strong> +${chosen.points} point. La stratégie optimale était la <strong>${c.strategies.find(s=>s.result==='good').letter}</strong>.`;
+        fb.style.borderLeftColor = 'var(--neon-pink)';
+        fb.style.background = 'rgba(255,0,128,0.05)';
+    } else {
+        avatar.classList.add('ok');
+        fbMsg = `⚠️ <strong>Conseil partiel.</strong> +${chosen.points} point. Une meilleure option existait : la stratégie <strong>${c.strategies.find(s=>s.result==='good').letter}</strong>.`;
+        fb.style.borderLeftColor = 'var(--neon-amber)';
+        fb.style.background = 'rgba(255,183,0,0.05)';
+    }
+    fb.innerHTML = fbMsg;
+    fb.classList.add('show');
+
+    // Bouton suivant
+    const btn = document.getElementById('game-next-btn');
+    btn.classList.add('show');
+    const isLast = clientIndex === clients.length - 1;
+    btn.textContent = isLast ? 'Résultats & Quiz →' : 'Client suivant →';
+    btn.onclick = isLast ? goToQuiz : nextClient;
+}
+
+// ==================== CLIENT SUIVANT ====================
+function nextClient() {
+    const next = gameState.currentClient + 1;
+    if (next < clients.length) {
+        gameState.currentClient = next;
+        loadClient(next);
+    }
+}
+
+function goToQuiz() {
+    // Phase 4 — à venir
+    document.getElementById('game-container').classList.remove('active');
+    alert(`Jeu terminé ! Score : ${gameState.score} / ${gameState.totalPoints}\n\nLe quiz arrive en Phase 4 !`);
+    document.getElementById('game-container').classList.add('active');
 }
 </script>
 
