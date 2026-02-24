@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHIFT - IA & Emploi : La Transformation du Travail</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --neon-teal: #00e5cc;
+            --neon-amber: #ffb700;
+            --dark-bg: #0a0e17;
+            --panel-bg: rgba(10, 20, 40, 0.95);
+            --text: #e0f0ff;
+            --muted: #8899aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ==================== ÉCRAN TITRE ==================== */
+        #title-screen {
+            position: fixed;
+            inset: 0;
+            background: url('images/module14-title-bg.png') center/cover no-repeat,
+                        linear-gradient(135deg, #0a0e17 0%, #0a1a2a 50%, #0a0e17 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #title-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 14, 23, 0.72);
+            z-index: -1;
+        }
+
+        /* Grille cyberpunk en fond */
+        #title-screen::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0, 229, 204, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 229, 204, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        #title-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Lien retour sur l'écran titre */
+        .back-link-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .back-link-title:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Badge module */
+        .module-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 18px;
+            background: rgba(0, 229, 204, 0.1);
+            border: 1px solid rgba(0, 229, 204, 0.4);
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            color: var(--neon-teal);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Icône principale flottante */
+        .title-logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 229, 204, 0.6));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Titre principal */
+        .main-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 4.5em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 12px;
+            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(0, 229, 204, 0.4));
+            margin-bottom: 8px;
+            text-align: center;
+            animation: titlePulse 4s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { filter: drop-shadow(0 0 30px rgba(0, 229, 204, 0.4)); }
+            50% { filter: drop-shadow(0 0 50px rgba(0, 229, 204, 0.7)); }
+        }
+
+        .title-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 1em;
+            color: var(--neon-teal);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+
+        .subtitle {
+            font-size: 1.15em;
+            color: var(--muted);
+            margin-bottom: 45px;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* Texte d'intro narratif */
+        .intro-text {
+            max-width: 650px;
+            text-align: center;
+            line-height: 1.9;
+            margin-bottom: 45px;
+            color: #aabbcc;
+            font-size: 1em;
+            padding: 25px 30px;
+            background: rgba(0, 229, 204, 0.04);
+            border: 1px solid rgba(0, 229, 204, 0.15);
+            border-radius: 8px;
+        }
+
+        .intro-text strong {
+            color: var(--neon-teal);
+        }
+
+        /* Bouton démarrer */
+        .start-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1em;
+            padding: 18px 60px;
+            background: transparent;
+            border: 2px solid var(--neon-teal);
+            color: var(--neon-teal);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 204, 0.25), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before {
+            left: 100%;
+        }
+
+        .start-btn:hover {
+            background: rgba(0, 229, 204, 0.1);
+            box-shadow: 0 0 35px rgba(0, 229, 204, 0.5), inset 0 0 30px rgba(0, 229, 204, 0.08);
+            transform: scale(1.04);
+        }
+
+        /* Stats rapides */
+        .quick-stats {
+            position: absolute;
+            bottom: 30px;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4em;
+            color: var(--neon-teal);
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(0, 229, 204, 0.3);
+        }
+
+        /* Effet scanline */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(transparent, rgba(0, 229, 204, 0.08), transparent);
+            animation: scanline 6s linear infinite;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Particules décoratives */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--neon-teal);
+            border-radius: 50%;
+            animation: particleRise linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes particleRise {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Effet scanline global -->
+    <div class="scanline"></div>
+
+    <!-- Particules décoratives -->
+    <div class="particles" id="particles"></div>
+
+    <!-- ==================== ÉCRAN TITRE ==================== -->
+    <div id="title-screen">
+
+        <a href="modules.html" class="back-link-title">
+            ← Modules
+        </a>
+
+        <div class="module-badge">MODULE 14 · Enjeux Citoyens</div>
+
+        <div class="title-logo">⚙️</div>
+
+        <div class="title-tagline">IA & Emploi</div>
+        <h1 class="main-title">SHIFT</h1>
+        <p class="subtitle">Le Grand Tournant — La Transformation du Travail</p>
+
+        <div class="intro-text">
+            <strong>2031. L'IA a transformé 40% des métiers.</strong><br><br>
+            Vous venez d'être recruté(e) à l'agence <strong>ARIA</strong> — Agence de Reconversion
+            pour l'Intelligence Artificielle. Des milliers de travailleurs frappent à votre porte,
+            désorientés par la révolution en cours.<br><br>
+            Votre mission : comprendre les enjeux, analyser les situations et
+            guider vos clients vers <strong>leur nouveau futur professionnel</strong>.
+        </div>
+
+        <button class="start-btn" onclick="startGame()">
+            ▶ Prendre son poste
+        </button>
+
+        <div class="quick-stats">
+            <div class="stat-item">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Leçons</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Clients</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-value">~20</div>
+                <div class="stat-label">Minutes</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-value">70%</div>
+                <div class="stat-label">Score mini</div>
+            </div>
+        </div>
+
+    </div><!-- /#title-screen -->
+
+    <script>
+        // ==================== PARTICULES ====================
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (8 + Math.random() * 14) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                p.style.width = (Math.random() > 0.7 ? 3 : 2) + 'px';
+                p.style.height = p.style.width;
+                if (Math.random() > 0.6) {
+                    p.style.background = '#00d4ff';
+                }
+                container.appendChild(p);
+            }
+        })();
+
+        // ==================== DÉMARRAGE ====================
+        function startGame() {
+            // Pour l'instant : transition vers le briefing (à coder en phase 2)
+            const titleScreen = document.getElementById('title-screen');
+            titleScreen.classList.add('hidden');
+            // TODO: afficher l'écran de briefing
+            // Temporaire — on reviendra ici
+            setTimeout(() => {
+                titleScreen.style.display = 'none';
+                alert('Briefing en cours de développement — Phase 2 à venir !');
+                titleScreen.style.display = 'flex';
+                titleScreen.classList.remove('hidden');
+            }, 800);
+        }
+    </script>
+
+</body>
+</html>
