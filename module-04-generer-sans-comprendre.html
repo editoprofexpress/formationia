@@ -1089,6 +1089,22 @@
     </div><!-- /game-body -->
   </div><!-- /game-screen -->
 
+  <!-- ==================== QUIZ SCREEN ==================== -->
+  <div id="quiz-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#1a0505 50%,#0a0e17 100%);z-index:997;display:none;flex-direction:column;overflow:hidden;">
+
+    <div style="background:rgba(10,20,40,0.97);border-bottom:1px solid rgba(255,107,107,0.3);padding:15px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div style="font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-red);">🎓 QUIZ DE CERTIFICATION — SYNTHÈSE</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)">Score minimum : 70%</div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:30px 60px;max-width:860px;width:100%;margin:0 auto;" id="quiz-content"></div>
+  </div>
+
+  <!-- ==================== CERT SCREEN ==================== -->
+  <div id="cert-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#0d1a0d 50%,#0a0e17 100%);z-index:996;display:none;flex-direction:column;overflow:hidden;align-items:center;justify-content:center;">
+    <div style="overflow-y:auto;padding:30px;width:100%;max-width:740px;" id="cert-content"></div>
+  </div>
+
   <div id="toast"></div>
 
   <script>
@@ -1784,8 +1800,410 @@
 
     function startQuiz() {
       document.getElementById('game-screen').classList.remove('active');
-      document.getElementById('quiz-screen').classList.add('active');
+      const qs = document.getElementById('quiz-screen');
+      qs.style.display = 'flex';
       buildQuiz();
+    }
+
+    // ==================== QUIZ ====================
+    const quizQuestions = [
+      {
+        q: 'Qu\'est-ce qu\'un "token" dans un modèle de langage comme GPT-4 ?',
+        opts: [
+          'Un mot entier et uniquement un mot entier',
+          'Un fragment de texte : mot, partie de mot ou ponctuation',
+          'Un paramètre numérique du réseau de neurones',
+          'Une couche d\'attention dans le transformer'
+        ],
+        correct: 1,
+        explain: 'Un token est la plus petite unité textuelle traitée. GPT-4 utilise ~100 000 tokens distincts — certains sont des mots entiers, d\'autres des syllabes ou des fragments.'
+      },
+      {
+        q: 'Comment un LLM choisit-il le prochain token à générer ?',
+        opts: [
+          'Il sélectionne aléatoirement dans un dictionnaire',
+          'Il calcule une distribution de probabilité sur tous les tokens possibles',
+          'Il cherche dans une base de données de faits vérifiés',
+          'Il demande validation à un humain pour chaque token'
+        ],
+        correct: 1,
+        explain: 'Le modèle calcule, pour chaque token possible, la probabilité qu\'il soit le suivant dans le contexte actuel. Il choisit ensuite selon une stratégie de sampling (greedy, top-k, top-p…).'
+      },
+      {
+        q: 'Qu\'est-ce que la "température" dans un modèle de génération de texte ?',
+        opts: [
+          'La chaleur dégagée par le serveur pendant le calcul',
+          'La vitesse de génération des tokens',
+          'Un paramètre qui contrôle l\'aléatoire dans le choix des tokens',
+          'Le nombre maximum de tokens à générer'
+        ],
+        correct: 2,
+        explain: 'La température ajuste la distribution de probabilité. Température basse → choix prévisibles. Température haute → choix plus diversifiés et créatifs, mais risque d\'incohérence.'
+      },
+      {
+        q: 'Pourquoi dit-on que les LLMs ne "comprennent" pas vraiment le texte qu\'ils génèrent ?',
+        opts: [
+          'Parce qu\'ils sont trop lents pour traiter le sens',
+          'Parce qu\'ils produisent des prédictions statistiques sans modèle du monde ni intention',
+          'Parce qu\'ils ont besoin d\'images pour comprendre',
+          'Parce qu\'ils ne peuvent lire que l\'anglais'
+        ],
+        correct: 1,
+        explain: 'Les LLMs n\'ont ni conscience, ni intention, ni représentation du monde réel. Ils prédisent des séquences de tokens statistiquement plausibles, ce qui peut ressembler à de la compréhension sans en être.'
+      },
+      {
+        q: 'Qu\'est-ce qu\'une "hallucination" dans le contexte des LLMs ?',
+        opts: [
+          'Une erreur de syntaxe dans le code généré',
+          'Un texte généré trop long et répétitif',
+          'La génération confiante d\'informations fausses ou inventées',
+          'Une réponse dans une mauvaise langue'
+        ],
+        correct: 2,
+        explain: 'Une hallucination est une information fausse mais présentée avec assurance : citations inventées, faits incorrects, noms inexistants. Elle résulte directement du mécanisme probabiliste : le modèle génère ce qui est statistiquement plausible, pas ce qui est vrai.'
+      },
+      {
+        q: 'Qu\'est-ce que la génération "autorégressive" ?',
+        opts: [
+          'Chaque token est généré en s\'appuyant sur tous les tokens précédents',
+          'Le modèle génère tous les tokens simultanément',
+          'Le modèle revient en arrière pour corriger ses erreurs',
+          'La génération s\'arrête automatiquement après 100 tokens'
+        ],
+        correct: 0,
+        explain: 'Dans la génération autorégressive, chaque nouveau token est prédit en prenant en compte tout le contexte précédent (prompt + tokens déjà générés). C\'est un processus séquentiel : une erreur au début peut orienter toute la suite.'
+      },
+      {
+        q: 'Qu\'est-ce que le "chain of thought" (chaîne de pensée) prompting ?',
+        opts: [
+          'Demander au modèle de générer plusieurs réponses et choisir la meilleure',
+          'Guider le modèle à décomposer son raisonnement étape par étape',
+          'Donner au modèle une liste de faits vérifiés avant de poser la question',
+          'Limiter la température à 0.1 pour plus de précision'
+        ],
+        correct: 1,
+        explain: 'En demandant au modèle de détailler ses étapes intermédiaires, on lui fournit davantage de contexte de tokens, ce qui améliore ses performances sur des problèmes complexes — même si cela reste fondamentalement de la génération.'
+      },
+      {
+        q: 'Parmi ces affirmations, laquelle est correcte ?',
+        opts: [
+          'Un LLM à haute température produit toujours des textes plus intelligents',
+          'Les hallucinations sont un bug qu\'on peut totalement éliminer avec un meilleur entraînement',
+          'Un LLM génère sans avoir accès à une base de faits vérifiés en temps réel',
+          'La génération token par token garantit la cohérence logique du texte produit'
+        ],
+        correct: 2,
+        explain: 'Par défaut, un LLM n\'a pas accès à Internet ou à une base de données lors de la génération. Il s\'appuie uniquement sur les patterns statistiques appris. C\'est pourquoi les hallucinations sont structurellement difficiles à éliminer.'
+      }
+    ];
+
+    let quizAnswers = {};
+    let finalQuizScore = 0;
+    let participantName = '';
+
+    function buildQuiz() {
+      const container = document.getElementById('quiz-content');
+      let html = `
+        <div style="text-align:center;margin-bottom:30px">
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);letter-spacing:3px;margin-bottom:8px">CERTIFICATION SYNTHÈSE</div>
+          <h2 style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-red);margin-bottom:8px">Quiz de Certification</h2>
+          <p style="color:#8899aa;line-height:1.7">Réponds aux ${quizQuestions.length} questions pour valider ta mission.<br>Score minimum : <strong style="color:var(--neon-red)">70%</strong> pour obtenir ton attestation.</p>
+        </div>
+      `;
+      quizQuestions.forEach((q, i) => {
+        html += `
+          <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(255,107,107,0.2);border-radius:12px;padding:22px 26px;margin-bottom:18px" id="qq-${i}">
+            <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);margin-bottom:8px;letter-spacing:2px">Q${i+1}/${quizQuestions.length}</div>
+            <div style="font-size:1em;color:var(--text);margin-bottom:14px;line-height:1.6">${q.q}</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              ${q.opts.map((opt, j) => `
+                <div id="qq-opt-${i}-${j}" onclick="answerQuiz(${i},${j})"
+                  style="padding:12px 16px;border:1px solid rgba(255,107,107,0.25);border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;background:rgba(255,107,107,0.03)">
+                  <span style="font-family:'Space Mono',monospace;font-size:0.75em;background:rgba(255,107,107,0.2);color:var(--neon-red);padding:2px 8px;border-radius:4px;flex-shrink:0">${String.fromCharCode(65+j)}</span>
+                  <span style="color:var(--text);font-size:0.95em">${opt}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div id="qq-explain-${i}" style="display:none;margin-top:12px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.25);border-radius:8px;padding:12px 16px;font-size:0.9em;color:#cfe9ff;line-height:1.6">${q.explain}</div>
+          </div>
+        `;
+      });
+      html += `
+        <div style="text-align:center;margin:20px 0 40px">
+          <button onclick="submitQuiz()"
+            style="font-family:'Space Mono',monospace;font-size:0.95em;padding:14px 40px;background:rgba(255,107,107,0.15);border:2px solid var(--neon-red);color:var(--neon-red);cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s">
+            ✅ Valider mes réponses
+          </button>
+        </div>
+        <div id="quiz-result"></div>
+      `;
+      container.innerHTML = html;
+    }
+
+    function answerQuiz(qi, oi) {
+      if (quizAnswers.hasOwnProperty(qi)) return;
+      quizAnswers[qi] = oi;
+      document.querySelectorAll(`[id^="qq-opt-${qi}-"]`).forEach(el => {
+        const j = parseInt(el.id.split('-').pop());
+        if (j === oi) {
+          el.style.background = 'rgba(255,107,107,0.15)';
+          el.style.borderColor = 'var(--neon-red)';
+        }
+      });
+    }
+
+    function submitQuiz() {
+      if (Object.keys(quizAnswers).length < quizQuestions.length) {
+        showToast('⚠️ Réponds à toutes les questions !', true);
+        return;
+      }
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const userAns = quizAnswers[i];
+        document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
+          el.style.cursor = 'default';
+          el.onclick = null;
+          const j = parseInt(el.id.split('-').pop());
+          if (j === q.correct) {
+            el.style.background = 'rgba(0,255,136,0.1)';
+            el.style.borderColor = 'var(--neon-green)';
+            el.style.color = 'var(--neon-green)';
+          } else if (j === userAns) {
+            el.style.background = 'rgba(255,0,128,0.1)';
+            el.style.borderColor = 'var(--neon-pink)';
+          }
+        });
+        document.getElementById(`qq-explain-${i}`).style.display = 'block';
+        if (userAns === q.correct) score++;
+      });
+
+      const pct = Math.round(score / quizQuestions.length * 100);
+      finalQuizScore = pct;
+      const success = pct >= 70;
+
+      document.getElementById('quiz-result').innerHTML = `
+        <div style="text-align:center;padding:30px;margin:20px 0;
+             background:${success ? 'rgba(0,255,136,0.08)' : 'rgba(255,204,0,0.08)'};
+             border:1px solid ${success ? 'rgba(0,255,136,0.3)' : 'rgba(255,204,0,0.3)'};
+             border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">${success ? '🎉' : '📚'}</div>
+          <h3 style="font-family:'Space Mono',monospace;color:${success ? 'var(--neon-green)' : '#ffcc00'};margin-bottom:10px;font-size:1.2em">
+            ${success ? 'Mission SYNTHÈSE accomplie !' : 'Score insuffisant'}
+          </h3>
+          <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
+            ${score}/${quizQuestions.length} — <span style="color:${success ? 'var(--neon-green)' : '#ffcc00'}">${pct}%</span>
+          </div>
+          <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
+            ${success
+              ? 'Tu comprends maintenant comment les LLMs génèrent du texte sans comprendre. Ton attestation est débloquée !'
+              : 'Score insuffisant. Relis les sections du briefing et réessaie.'}
+          </p>
+          ${success
+            ? `<div style="margin:0 auto;max-width:380px">
+                <input type="text" id="name-input" placeholder="Ton prénom et nom"
+                  style="width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(0,255,136,0.4);border-radius:8px;color:var(--neon-green);font-family:'Space Mono',monospace;font-size:0.9em;margin-bottom:12px;outline:none">
+                <button onclick="showCert()"
+                  style="width:100%;font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 20px;background:rgba(0,255,136,0.15);border:2px solid var(--neon-green);color:var(--neon-green);cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s">
+                  🎓 Obtenir mon attestation →
+                </button>
+              </div>`
+            : `<button onclick="retryQuiz()"
+                style="font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 30px;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.5);color:#ffcc00;cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s">
+                🔄 Réessayer le quiz
+              </button>`}
+        </div>
+      `;
+      document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function retryQuiz() {
+      quizAnswers = {};
+      buildQuiz();
+      document.getElementById('quiz-content').scrollTop = 0;
+    }
+
+    function showCert() {
+      const nameInput = document.getElementById('name-input');
+      participantName = nameInput ? nameInput.value.trim() : '';
+      if (!participantName) { showToast('⚠️ Entre ton prénom et ton nom !', true); return; }
+
+      document.getElementById('quiz-screen').style.display = 'none';
+      const cs = document.getElementById('cert-screen');
+      cs.style.display = 'flex';
+      renderCert();
+    }
+
+    // ==================== ATTESTATION ====================
+    function renderCert() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+      const skills = [
+        'Comprendre le mécanisme de prédiction token par token',
+        'Distinguer génération et compréhension dans les LLMs',
+        'Maîtriser l\'impact de la température sur la génération',
+        'Identifier les textes générés par IA (Turing inversé)',
+        'Reconnaître les causes et risques des hallucinations',
+        'Analyser la génération autorégressive et ses limites'
+      ];
+
+      document.getElementById('cert-content').innerHTML = `
+        <div id="cert-card" style="
+          background: linear-gradient(135deg, rgba(10,20,40,0.98), rgba(20,5,5,0.98));
+          border: 2px solid rgba(255,107,107,0.5);
+          border-radius: 16px;
+          padding: 45px 50px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 0 60px rgba(255,107,107,0.15), inset 0 0 60px rgba(0,0,0,0.3);
+        ">
+          <!-- Grille fond -->
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,107,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,107,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none"></div>
+
+          <!-- Coins décoratifs -->
+          <div style="position:absolute;top:16px;left:16px;width:30px;height:30px;border-left:2px solid rgba(255,107,107,0.5);border-top:2px solid rgba(255,107,107,0.5)"></div>
+          <div style="position:absolute;top:16px;right:16px;width:30px;height:30px;border-right:2px solid rgba(255,107,107,0.5);border-top:2px solid rgba(255,107,107,0.5)"></div>
+          <div style="position:absolute;bottom:16px;left:16px;width:30px;height:30px;border-left:2px solid rgba(255,107,107,0.5);border-bottom:2px solid rgba(255,107,107,0.5)"></div>
+          <div style="position:absolute;bottom:16px;right:16px;width:30px;height:30px;border-right:2px solid rgba(255,107,107,0.5);border-bottom:2px solid rgba(255,107,107,0.5)"></div>
+
+          <!-- Logo -->
+          <img src="images/logo-profexpress.png" alt="Prof Express" style="height:38px;object-fit:contain;margin-bottom:20px;opacity:0.9">
+
+          <!-- Badge -->
+          <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:rgba(255,107,107,0.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px">Formation IA Citoyenne — Module 04</div>
+
+          <!-- Titre -->
+          <div style="font-family:'Space Mono',monospace;font-size:1.8em;font-weight:700;text-transform:uppercase;letter-spacing:4px;
+               background:linear-gradient(90deg,var(--neon-red),var(--neon-orange),var(--neon-pink));
+               -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+               margin-bottom:6px">ATTESTATION DE RÉUSSITE</div>
+
+          <!-- Sous-titre module -->
+          <div style="font-family:'Space Mono',monospace;font-size:0.9em;color:var(--neon-orange);letter-spacing:2px;margin-bottom:24px">SYNTHÈSE — Générer sans comprendre</div>
+
+          <!-- Séparateur -->
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.5),transparent);margin:0 0 22px"></div>
+
+          <!-- Texte attestation -->
+          <p style="color:#8899aa;font-size:0.85em;margin-bottom:10px;font-family:'Exo 2',sans-serif">Nous attestons que</p>
+          <div style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-green);
+               text-shadow:0 0 20px rgba(0,255,136,0.5);margin-bottom:10px;letter-spacing:2px">
+            ${participantName}
+          </div>
+          <p style="color:#8899aa;font-size:0.85em;margin-bottom:22px;font-family:'Exo 2',sans-serif">
+            a complété avec succès ce module avec un score de<br>
+            <strong style="color:var(--neon-orange);font-size:1.3em">${finalQuizScore}%</strong>
+          </p>
+
+          <!-- Séparateur -->
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent);margin:0 0 20px"></div>
+
+          <!-- Compétences -->
+          <div style="text-align:left;max-width:480px;margin:0 auto 24px">
+            <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">Compétences validées :</div>
+            ${skills.map(s => `
+              <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:0.88em;color:#cfe9ff">
+                <span style="color:var(--neon-green);flex-shrink:0;margin-top:2px">✓</span>
+                <span>${s}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Séparateur -->
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent);margin:0 0 18px"></div>
+
+          <!-- Date et domaine -->
+          <div style="display:flex;justify-content:space-between;align-items:center;max-width:480px;margin:0 auto 25px;font-size:0.82em">
+            <span style="color:var(--muted);font-family:'Space Mono',monospace">${dateStr}</span>
+            <span style="background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.4);color:var(--neon-red);padding:3px 12px;border-radius:10px;font-family:'Space Mono',monospace;font-size:0.8em">FONDATIONS IA</span>
+          </div>
+
+          <!-- Bouton télécharger -->
+          <button onclick="downloadCert()"
+            style="font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 35px;
+                   background:linear-gradient(135deg,rgba(255,107,107,0.2),rgba(255,159,67,0.2));
+                   border:2px solid var(--neon-orange);color:var(--neon-orange);
+                   cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;
+                   transition:all .3s;margin-bottom:12px">
+            📥 Télécharger l'attestation
+          </button>
+          <br>
+          <a href="modules.html"
+            style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);text-decoration:none;
+                   border:1px solid rgba(255,255,255,0.1);padding:8px 20px;border-radius:6px;display:inline-block;
+                   transition:all .3s">
+            ← Retour aux modules
+          </a>
+        </div>
+      `;
+    }
+
+    function downloadCert() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+      const skills = [
+        'Comprendre le mécanisme de prédiction token par token',
+        'Distinguer génération et compréhension dans les LLMs',
+        'Maîtriser l\'impact de la température sur la génération',
+        'Identifier les textes générés par IA (Turing inversé)',
+        'Reconnaître les causes et risques des hallucinations',
+        'Analyser la génération autorégressive et ses limites'
+      ];
+      const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Attestation — SYNTHÈSE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@400;600&display=swap');
+  body{margin:0;padding:40px;background:#0a0e17;color:#e0f0ff;font-family:'Exo 2',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .cert{max-width:700px;width:100%;background:linear-gradient(135deg,rgba(10,20,40,0.98),rgba(20,5,5,0.98));border:2px solid rgba(255,107,107,0.5);border-radius:16px;padding:50px;text-align:center;box-shadow:0 0 60px rgba(255,107,107,0.2);position:relative}
+  .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,107,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,107,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;border-radius:14px}
+  .corner{position:absolute;width:30px;height:30px;border-color:rgba(255,107,107,0.5);border-style:solid}
+  .corner.tl{top:16px;left:16px;border-width:2px 0 0 2px}
+  .corner.tr{top:16px;right:16px;border-width:2px 2px 0 0}
+  .corner.bl{bottom:16px;left:16px;border-width:0 0 2px 2px}
+  .corner.br{bottom:16px;right:16px;border-width:0 2px 2px 0}
+  .sep{height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.5),transparent);margin:20px 0}
+  .title{font-family:'Space Mono',monospace;font-size:1.8em;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:#ff6b6b;margin-bottom:6px}
+  .subtitle{font-family:'Space Mono',monospace;font-size:0.9em;color:#ff9f43;letter-spacing:2px;margin-bottom:20px}
+  .name{font-family:'Space Mono',monospace;font-size:1.5em;color:#00ff88;text-shadow:0 0 20px rgba(0,255,136,0.5);margin:8px 0;letter-spacing:2px}
+  .skill{display:flex;align-items:flex-start;gap:10px;margin:7px 0;font-size:0.88em;color:#cfe9ff;text-align:left}
+  .skill-check{color:#00ff88;flex-shrink:0}
+  .badge{background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.4);color:#ff6b6b;padding:3px 12px;border-radius:10px;font-family:'Space Mono',monospace;font-size:0.75em}
+  @media print{body{padding:0}}
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="grid-bg"></div>
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+  <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:rgba(255,107,107,0.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px">Formation IA Citoyenne — Module 04</div>
+  <div class="title">ATTESTATION DE RÉUSSITE</div>
+  <div class="subtitle">SYNTHÈSE — Générer sans comprendre</div>
+  <div class="sep"></div>
+  <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Nous attestons que</p>
+  <div class="name">${participantName}</div>
+  <p style="color:#8899aa;font-size:0.85em;margin:8px 0 20px">a complété avec succès ce module<br>Score : <strong style="color:#ff9f43;font-size:1.2em">${finalQuizScore}%</strong></p>
+  <div class="sep"></div>
+  <div style="max-width:480px;margin:0 auto 20px;text-align:left">
+    <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:#8899aa;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Compétences validées :</div>
+    ${skills.map(s => `<div class="skill"><span class="skill-check">✓</span><span>${s}</span></div>`).join('')}
+  </div>
+  <div class="sep"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;max-width:480px;margin:0 auto;font-size:0.82em">
+    <span style="color:#8899aa;font-family:'Space Mono',monospace">${dateStr}</span>
+    <span class="badge">FONDATIONS IA</span>
+  </div>
+</div>
+</body>
+</html>`;
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `attestation-module04-synthese-${participantName.toLowerCase().replace(/\s+/g, '-')}.html`;
+      a.click();
     }
   </script>
 
