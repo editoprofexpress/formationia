@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SYNAPSE STUDIO — Module 7 (Co-créer avec l'IA)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root {
+      --neon-green: #00ff88;
+      --neon-blue: #00d4ff;
+      --neon-pink: #ff0080;
+      --neon-purple: #a855f7;
+      --neon-cyan: #4ecdc4;
+      --neon-yellow: #ffe66d;
+      --dark-bg: #0a0e17;
+      --panel-bg: rgba(10, 20, 40, 0.95);
+      --text: #e0f0ff;
+      --muted: #8899aa;
+      --danger: #ff4d4d;
+      --warn: #ffcc00;
+      --ok: #00ff88;
+      --domain-color: #4ecdc4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(78, 205, 196, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 205, 196, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==================== SCAN LINE ==================== */
+    .scan-line {
+      position: fixed;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      animation: scan 6s linear infinite;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    @keyframes scan { 0%{top:0} 100%{top:100%} }
+
+    /* ==================== ÉCRAN TITRE ==================== */
+    #title-screen {
+      position: fixed;
+      inset: 0;
+      background:
+        url('images/module7-title-bg.png') center/cover no-repeat,
+        linear-gradient(135deg, #0a0e17 0%, #0d1a2a 30%, #1a0d2e 70%, #0a0e17 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    #title-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 14, 23, 0.72);
+      z-index: -1;
+    }
+    #title-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* Bouton retour */
+    .back-link-title {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #8899aa;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+    .back-link-title:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.3);
+      color: #aabbcc;
+    }
+
+    /* Badge domaine */
+    .domain-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: rgba(78, 205, 196, 0.1);
+      border: 1px solid rgba(78, 205, 196, 0.4);
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      z-index: 10;
+    }
+
+    /* Logo animé */
+    .title-logo {
+      font-size: 4.5em;
+      margin-bottom: 16px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+
+    /* Label module */
+    .module-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: var(--neon-cyan);
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    /* Titre principal */
+    .main-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.8em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 1.3em;
+      color: #8899aa;
+      margin-bottom: 36px;
+      font-weight: 300;
+      text-align: center;
+    }
+
+    /* Boîte de dispatch / brief */
+    .intro-box {
+      max-width: 780px;
+      margin: 0 20px 35px;
+      background: rgba(10, 20, 40, 0.88);
+      border: 1px solid rgba(78, 205, 196, 0.3);
+      border-radius: 12px;
+      padding: 28px 36px;
+      text-align: left;
+      backdrop-filter: blur(10px);
+    }
+    .dispatch-header {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dispatch-header::before {
+      content: '';
+      display: block;
+      width: 8px; height: 8px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .intro-box p {
+      line-height: 1.8;
+      color: #aabbcc;
+      margin-bottom: 10px;
+      font-size: 1.05em;
+    }
+    .intro-box p:last-child { margin-bottom: 0; }
+    .intro-box strong { color: var(--text); }
+
+    /* Stats de la mission */
+    .mission-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      color: var(--muted);
+    }
+    .stat-val { color: var(--neon-cyan); font-weight: 700; }
+
+    /* Bouton démarrer */
+    .start-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      padding: 18px 55px;
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .start-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(78,205,196,0.3), transparent);
+      transition: left 0.5s;
+    }
+    .start-btn:hover::before { left: 100%; }
+    .start-btn:hover {
+      background: rgba(78,205,196,0.08);
+      box-shadow: 0 0 30px rgba(78,205,196,0.5), inset 0 0 30px rgba(78,205,196,0.08);
+      transform: scale(1.05);
+    }
+
+    /* Particules décoratives */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      animation: drift linear infinite;
+      opacity: 0;
+    }
+    @keyframes drift {
+      0% { opacity: 0; transform: translateY(0) scale(0); }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="scan-line"></div>
+
+<!-- ==================== ÉCRAN TITRE ==================== -->
+<div id="title-screen">
+  <div class="particles" id="particles"></div>
+
+  <a href="modules.html" class="back-link-title">← Modules</a>
+  <div class="domain-badge">Interaction Raisonnée · Module 7</div>
+
+  <div class="title-logo">🎨</div>
+  <div class="module-label">Module 07 — Co-créer avec l'IA</div>
+  <h1 class="main-title">SYNAPSE STUDIO</h1>
+  <p class="subtitle">Là où ta créativité rencontre l'intelligence artificielle</p>
+
+  <div class="intro-box">
+    <div class="dispatch-header">🔴 Mission reçue — SYNAPSE AGENCY</div>
+    <p>
+      <strong>Situation d'urgence.</strong> L'agence SYNAPSE doit pitcher son plus grand projet demain matin.
+      Les équipes créatives sont épuisées. Tu es appelé en renfort.
+    </p>
+    <p>
+      Ton défi : co-créer avec quatre IA spécialisées — <strong>LYRA</strong> (texte),
+      <strong>PRISM</strong> (visuel), <strong>ECHO</strong> (musique) et <strong>VOLT</strong> (code) —
+      pour produire les piliers d'une campagne complète.
+    </p>
+    <p>
+      Mais attention : l'IA ne remplace pas ta créativité. C'est toi qui diriges.
+      Ta capacité à formuler, orienter, juger et ajuster fera toute la différence.
+    </p>
+    <div class="mission-stats">
+      <div class="stat-item">⏱ Durée : <span class="stat-val">15-20 min</span></div>
+      <div class="stat-item">🎯 Missions : <span class="stat-val">4 ateliers</span></div>
+      <div class="stat-item">🏆 Validation : <span class="stat-val">Quiz + Attestation</span></div>
+      <div class="stat-item">🧠 Niveau : <span class="stat-val">Intermédiaire</span></div>
+    </div>
+  </div>
+
+  <button class="start-btn" onclick="startBriefing()">▶ ACCÉDER AU BRIEFING</button>
+</div>
+
+<script>
+  // ==================== PARTICULES ==================
+  (function createParticles() {
+    const container = document.getElementById('particles');
+    const colors = ['#4ecdc4', '#00d4ff', '#a855f7', '#00ff88'];
+    for (let i = 0; i < 30; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `
+        width:${size}px; height:${size}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        left:${Math.random()*100}%;
+        bottom:${Math.random()*20}%;
+        animation-duration:${Math.random()*6+4}s;
+        animation-delay:${Math.random()*4}s;
+        box-shadow:0 0 6px currentColor;
+      `;
+      container.appendChild(p);
+    }
+  })();
+
+  // ==================== NAVIGATION ==================
+  function startBriefing() {
+    document.getElementById('title-screen').classList.add('hidden');
+    // Phase 2 sera ajoutée
+    alert('🚧 Briefing en cours de construction — revenez bientôt !');
+    document.getElementById('title-screen').classList.remove('hidden');
+  }
+</script>
+
+</body>
+</html>
