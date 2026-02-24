@@ -205,6 +205,285 @@
       margin-bottom: 8px;
     }
 
+    /* ==================== SECTION BRIEFING ==================== */
+    #briefing-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #briefing-screen.active { display: flex; }
+
+    .briefing-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3em;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .briefing-title::before { content: '🔍'; font-size: 1.5em; }
+
+    .briefing-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9em;
+    }
+
+    .briefing-progress-bar {
+      width: 200px;
+      height: 6px;
+      background: rgba(0, 255, 136, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .briefing-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+      transition: width 0.3s ease;
+    }
+
+    .briefing-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar navigation */
+    .briefing-nav {
+      width: 280px;
+      background: rgba(10, 20, 40, 0.9);
+      border-right: 1px solid rgba(0, 255, 136, 0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+
+    .back-link-sidebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      margin: 0 15px 20px;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 8px;
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link-sidebar:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--neon-blue);
+      transform: translateX(-3px);
+    }
+
+    .briefing-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+      color: var(--muted);
+    }
+
+    .briefing-nav-item:hover {
+      background: rgba(0, 255, 136, 0.05);
+      color: var(--text);
+    }
+
+    .briefing-nav-item.active {
+      border-left-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--neon-green);
+    }
+
+    .briefing-nav-item.completed { color: var(--neon-blue); }
+    .briefing-nav-item.completed::after {
+      content: '✓';
+      margin-left: auto;
+      color: var(--neon-green);
+    }
+
+    .nav-icon { font-size: 1.2em; width: 30px; text-align: center; }
+    .nav-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      background: rgba(0, 255, 136, 0.2);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    /* Zone contenu */
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .briefing-content::-webkit-scrollbar { width: 8px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(0, 255, 136, 0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(0, 255, 136, 0.3); border-radius: 4px; }
+
+    /* Footer navigation */
+    .briefing-footer {
+      background: rgba(10, 20, 40, 0.95);
+      border-top: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .briefing-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-green);
+      background: transparent;
+      color: var(--neon-green);
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .briefing-btn:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .briefing-btn.primary {
+      background: var(--neon-green);
+      color: var(--dark-bg);
+    }
+
+    .briefing-btn.primary:hover {
+      background: var(--neon-blue);
+      border-color: var(--neon-blue);
+    }
+
+    .briefing-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==================== CONTENU LEÇONS ==================== */
+    .lesson { display: none; }
+    .lesson.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .module-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      color: var(--neon-green);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+      margin: 22px 0;
+    }
+
+    .callout {
+      background: rgba(0, 255, 136, 0.08);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      padding: 16px;
+      border-radius: 14px;
+      box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+      margin: 14px 0;
+      line-height: 1.65;
+      color: #cfe9ff;
+    }
+
+    .callout.warn {
+      background: rgba(255, 204, 0, 0.08);
+      border-color: rgba(255, 204, 0, 0.30);
+      box-shadow: 0 0 18px rgba(255, 204, 0, 0.16);
+    }
+
+    .callout.pink {
+      background: rgba(255, 0, 128, 0.10);
+      border-color: rgba(255, 0, 128, 0.30);
+      box-shadow: 0 0 18px rgba(255, 0, 128, 0.16);
+    }
+
+    .callout.purple {
+      background: rgba(168, 85, 247, 0.10);
+      border-color: rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.18);
+    }
+
+    .callout.blue {
+      background: rgba(0, 212, 255, 0.08);
+      border-color: rgba(0, 212, 255, 0.30);
+      box-shadow: 0 0 18px rgba(0, 212, 255, 0.16);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid rgba(0, 255, 136, .5);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: .78em;
+      color: var(--neon-green);
+      background: rgba(0, 255, 136, .05);
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .pill.blue { border-color: rgba(0, 212, 255, .5); color: var(--neon-blue); background: rgba(0, 212, 255, .05); }
+    .pill.pink { border-color: rgba(255, 0, 128, .5); color: var(--neon-pink); background: rgba(255, 0, 128, .05); }
+
+    h3 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-blue);
+      margin: 20px 0 12px;
+      font-size: 1.15em;
+    }
+
+    p { line-height: 1.65; margin-bottom: 12px; }
+    ul, ol { margin: 10px 0 10px 22px; line-height: 1.65; }
+    li { margin-bottom: 6px; }
+
+    strong { color: var(--neon-green); }
+    em { color: var(--neon-blue); font-style: normal; }
+
     /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .main-title { font-size: 1.9em; letter-spacing: 2px; }
@@ -212,6 +491,11 @@
       .intro-text { font-size: 0.95em; margin: 0 15px 30px; }
       .start-btn { font-size: 0.95em; padding: 15px 35px; }
       .title-logo { font-size: 3em; }
+      .briefing-nav { display: none; }
+      .briefing-content { padding: 20px; }
+      .module-title { font-size: 1.3em; }
+      .briefing-footer { flex-direction: column; gap: 10px; }
+      .briefing-btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -248,10 +532,304 @@
     </div>
   </section>
 
+  <!-- ==================== ÉCRAN BRIEFING ==================== -->
+  <div id="briefing-screen">
+    <div class="briefing-header">
+      <div class="briefing-title">DECODE // DOSSIER ATLAS</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Fichier 1/8</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="briefing-body">
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span>←</span>
+          <span>Tous les modules</span>
+        </a>
+
+        <div class="briefing-nav-item active" onclick="goToLesson(0)">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-number">01</span>
+          L'IA, c'est quoi ?
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(1)">
+          <span class="nav-icon">📜</span>
+          <span class="nav-number">02</span>
+          De Turing à Dartmouth
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(2)">
+          <span class="nav-icon">🎭</span>
+          <span class="nav-number">03</span>
+          IA symbolique
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(3)">
+          <span class="nav-icon">🔗</span>
+          <span class="nav-number">04</span>
+          IA connexionniste
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(4)">
+          <span class="nav-icon">📊</span>
+          <span class="nav-number">05</span>
+          Hiérarchie des concepts
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(5)">
+          <span class="nav-icon">📅</span>
+          <span class="nav-number">06</span>
+          75 ans d'IA
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(6)">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-number">07</span>
+          Ce que l'IA fait… et ne fait pas
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(7)">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-number">08</span>
+          Mission : Opération ATLAS
+        </div>
+      </nav>
+
+      <div class="briefing-content" id="briefing-content">
+
+        <!-- ===== LEÇON 1 ===== -->
+        <div class="lesson active" id="lesson-0">
+          <h2 class="module-title">01 — L'IA partout, mais c'est quoi ?</h2>
+
+          <p class="module-kicker">
+            Avant d'évaluer le produit ATLAS de NovaMind Corp, l'agence DECODE exige que chaque analyste
+            maîtrise les fondamentaux. Commençons par la question la plus simple… et la plus mal comprise.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🌐 L'IA est déjà partout autour de vous</h3>
+          <p>
+            Chaque jour, sans y penser, vous interagissez avec des systèmes d'intelligence artificielle :
+          </p>
+          <ul>
+            <li><strong>Assistants vocaux</strong> (Siri, Alexa, Google Assistant) — reconnaissance vocale</li>
+            <li><strong>Réseaux sociaux</strong> — algorithmes de recommandation qui choisissent ce que vous voyez</li>
+            <li><strong>Traduction automatique</strong> (DeepL, Google Translate) — traitement du langage</li>
+            <li><strong>Filtres photo</strong> et détection de visages — vision par ordinateur</li>
+            <li><strong>Suggestions de texte</strong> sur votre clavier — prédiction linguistique</li>
+            <li><strong>ChatGPT, Claude, Gemini</strong> — génération de texte par modèles de langage</li>
+          </ul>
+
+          <div class="callout blue">
+            <strong>💡 Le saviez-vous ?</strong><br>
+            En 2024, plus de <strong>77 % des appareils</strong> que nous utilisons quotidiennement
+            intègrent au moins une fonctionnalité basée sur l'IA. Pourtant, la majorité des utilisateurs
+            n'en sont pas conscients.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>🤔 Mais alors, c'est quoi exactement « l'intelligence artificielle » ?</h3>
+          <p>
+            Le terme « intelligence artificielle » a été inventé en <em>1956</em>, mais il n'existe
+            toujours pas de définition universelle. Voici la plus utile :
+          </p>
+
+          <div class="callout">
+            <strong>📋 Définition de travail</strong><br>
+            L'intelligence artificielle désigne un <strong>ensemble de techniques informatiques</strong>
+            permettant à des machines de <strong>réaliser des tâches</strong> qui, si elles étaient effectuées
+            par un humain, nécessiteraient de <em>l'intelligence</em> : reconnaître des images, comprendre
+            du texte, prendre des décisions, jouer à des jeux, etc.
+          </div>
+
+          <p>
+            Notez bien : il s'agit de <strong>simuler un comportement intelligent</strong>,
+            pas d'être réellement intelligent. La nuance est cruciale.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🚫 Les mythes les plus courants</h3>
+
+          <div class="callout pink">
+            <strong>❌ MYTHE :</strong> « L'IA comprend ce qu'elle fait »<br>
+            <strong>✅ RÉALITÉ :</strong> L'IA calcule des probabilités statistiques sur des données.
+            Elle ne « comprend » rien au sens humain. ChatGPT ne sait pas qu'il parle français —
+            il prédit le mot le plus probable après le précédent.
+          </div>
+
+          <div class="callout pink">
+            <strong>❌ MYTHE :</strong> « L'IA pense de façon autonome »<br>
+            <strong>✅ RÉALITÉ :</strong> Chaque IA est conçue par des humains, entraînée sur des données
+            choisies par des humains, et exécute des algorithmes écrits par des humains.
+            Il n'y a pas de pensée autonome.
+          </div>
+
+          <div class="callout pink">
+            <strong>❌ MYTHE :</strong> « L'IA va bientôt devenir consciente »<br>
+            <strong>✅ RÉALITÉ :</strong> Aucune IA actuelle ne possède de conscience, d'émotions ou de
+            volonté propre. Les chercheurs ne savent même pas exactement ce qu'est la conscience humaine,
+            encore moins comment la reproduire.
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note pour l'analyste DECODE</strong><br>
+            NovaMind Corp présente ATLAS comme une « IA consciente ». Gardez ces mythes en tête —
+            ils seront utiles lors de votre analyse finale.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 2 ===== -->
+        <div class="lesson" id="lesson-1">
+          <h2 class="module-title">02 — Aux origines : de Turing à Dartmouth</h2>
+
+          <p class="module-kicker">
+            Pour comprendre ce qu'est vraiment l'IA aujourd'hui, il faut remonter à ses origines.
+            L'IA n'est pas née avec ChatGPT — elle a plus de 70 ans.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🧪 1950 — Alan Turing pose LA question</h3>
+          <p>
+            Le mathématicien britannique <strong>Alan Turing</strong> publie un article fondateur :
+            <em>« Computing Machinery and Intelligence »</em>.
+            Il y pose une question provocante :
+          </p>
+
+          <div class="callout blue">
+            <strong>« Les machines peuvent-elles penser ? »</strong><br><br>
+            Pour y répondre, Turing propose un test : si un humain, en discutant par écrit avec une machine,
+            ne parvient pas à distinguer celle-ci d'un autre humain, alors la machine peut être considérée
+            comme « intelligente ».<br><br>
+            C'est le fameux <strong>Test de Turing</strong>, toujours discuté aujourd'hui.
+          </div>
+
+          <p>
+            Turing ne dit pas que la machine <em>pense réellement</em>. Il propose simplement un critère
+            pratique : si le comportement est indiscernable, la question de la « vraie » pensée
+            devient secondaire.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🏛️ 1956 — La conférence de Dartmouth</h3>
+          <p>
+            En été 1956, un petit groupe de chercheurs se réunit au <strong>Dartmouth College</strong>
+            (États-Unis) pour un workshop de 8 semaines. Parmi eux :
+          </p>
+          <ul>
+            <li><strong>John McCarthy</strong> — qui invente le terme « Artificial Intelligence »</li>
+            <li><strong>Marvin Minsky</strong> — futur cofondateur du MIT AI Lab</li>
+            <li><strong>Claude Shannon</strong> — père de la théorie de l'information</li>
+            <li><strong>Herbert Simon</strong> — futur prix Nobel d'économie</li>
+          </ul>
+
+          <div class="callout">
+            <strong>📋 Acte de naissance</strong><br>
+            La conférence de Dartmouth est considérée comme l'<strong>acte de naissance officiel</strong>
+            de l'intelligence artificielle en tant que discipline scientifique. C'est là que le mot « IA » est né.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>⏪ Avant Dartmouth : les précurseurs</h3>
+          <ul>
+            <li><strong>1943</strong> — McCulloch & Pitts publient un modèle mathématique du <em>neurone artificiel</em>, inspiré du cerveau biologique</li>
+            <li><strong>1948</strong> — Norbert Wiener fonde la <em>cybernétique</em> : l'étude des systèmes auto-régulés (machines et vivants)</li>
+            <li><strong>1950</strong> — Turing publie son article et imagine le Test de Turing</li>
+          </ul>
+
+          <div class="callout warn">
+            <strong>⚠️ Point clé pour l'analyste</strong><br>
+            L'IA est un domaine de recherche de <strong>plus de 70 ans</strong>, pas une invention récente.
+            Quand une entreprise comme NovaMind prétend avoir « inventé » quelque chose de radicalement nouveau,
+            un bon analyste vérifie d'abord ce qui existait <em>avant</em>.
+          </div>
+        </div>
+
+      </div><!-- fin briefing-content -->
+    </div><!-- fin briefing-body -->
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
+        ← Précédent
+      </button>
+      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
+        Suivant →
+      </button>
+    </div>
+  </div>
+
   <script>
+    /* ==================== NAVIGATION BRIEFING ==================== */
+    const TOTAL_LESSONS = 8;
+    let currentLesson = 0;
+    let visitedLessons = new Set([0]);
+
     function startModule() {
       document.getElementById('title-screen').classList.add('hidden');
-      // La suite sera ajoutée dans les prochaines étapes
+      document.getElementById('briefing-screen').classList.add('active');
+    }
+
+    function goToLesson(index) {
+      if (index < 0 || index >= TOTAL_LESSONS) return;
+
+      // Masquer la leçon actuelle
+      const current = document.getElementById('lesson-' + currentLesson);
+      if (current) current.classList.remove('active');
+
+      // Afficher la nouvelle
+      currentLesson = index;
+      visitedLessons.add(index);
+      const next = document.getElementById('lesson-' + index);
+      if (next) next.classList.add('active');
+
+      // Scroll en haut
+      document.getElementById('briefing-content').scrollTop = 0;
+
+      updateNav();
+    }
+
+    function nextLesson() {
+      if (currentLesson < TOTAL_LESSONS - 1) {
+        goToLesson(currentLesson + 1);
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) {
+        goToLesson(currentLesson - 1);
+      }
+    }
+
+    function updateNav() {
+      // Barre de progression
+      const pct = ((currentLesson + 1) / TOTAL_LESSONS * 100).toFixed(1);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = 'Fichier ' + (currentLesson + 1) + '/' + TOTAL_LESSONS;
+
+      // Boutons prev/next
+      document.getElementById('btn-prev').disabled = (currentLesson === 0);
+      const btnNext = document.getElementById('btn-next');
+      if (currentLesson === TOTAL_LESSONS - 1) {
+        btnNext.textContent = '🎯 Lancer la mission';
+        btnNext.onclick = function() { /* sera implémenté plus tard */ };
+      } else {
+        btnNext.innerHTML = 'Suivant →';
+        btnNext.onclick = nextLesson;
+      }
+
+      // Items sidebar
+      const items = document.querySelectorAll('.briefing-nav-item');
+      items.forEach((item, i) => {
+        item.classList.remove('active', 'completed');
+        if (i === currentLesson) {
+          item.classList.add('active');
+        } else if (visitedLessons.has(i)) {
+          item.classList.add('completed');
+        }
+      });
     }
   </script>
 
