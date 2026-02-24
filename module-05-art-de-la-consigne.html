@@ -506,19 +506,554 @@
 
         p.body-text { line-height: 1.75; color: #cfe9ff; margin: 14px 0; }
 
-        /* ==================== PLACEHOLDER GAME (Phase suivante) ==================== */
+        /* ==================== ÉCRAN JEU ==================== */
         #game-screen {
             display: none;
             position: fixed;
             inset: 0;
-            background: var(--dark-bg);
+            background: linear-gradient(135deg, #050c18 0%, #0c1c2e 50%, #050c18 100%);
             z-index: 998;
+            flex-direction: column;
+        }
+        #game-screen.active { display: flex; }
+
+        /* Grille de fond dans le jeu */
+        #game-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(78,205,196,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78,205,196,0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        /* Header jeu */
+        .game-header {
+            background: rgba(5,12,24,0.95);
+            border-bottom: 1px solid rgba(78,205,196,0.3);
+            padding: 14px 28px;
+            display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .game-title {
+            font-family: 'Space Mono', monospace;
+            color: var(--domain-color);
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .room-badge {
+            background: rgba(78,205,196,0.15);
+            border: 1px solid rgba(78,205,196,0.4);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8em;
+        }
+        .room-progress-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .room-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid rgba(78,205,196,0.3);
+            transition: all 0.4s;
+        }
+        .room-dot.active { border-color: var(--domain-color); background: rgba(78,205,196,0.3); }
+        .room-dot.done { border-color: var(--neon-green); background: var(--neon-green); }
+
+        /* Corps du jeu */
+        .game-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Zone principale challenge */
+        .game-challenge-area {
+            flex: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        #game-screen.active { display: flex; }
+        .game-challenge-area::-webkit-scrollbar { width: 5px; }
+        .game-challenge-area::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 3px; }
+
+        /* Terminal ARIA */
+        .aria-terminal {
+            width: 320px;
+            background: rgba(0,0,0,0.6);
+            border-left: 1px solid rgba(78,205,196,0.2);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+        .terminal-header {
+            background: rgba(78,205,196,0.1);
+            border-bottom: 1px solid rgba(78,205,196,0.2);
+            padding: 10px 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            color: var(--domain-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .terminal-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .td-red { background: #ff5f57; }
+        .td-yellow { background: #ffbd2e; }
+        .td-green { background: #28c840; }
+        .terminal-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78em;
+            line-height: 1.8;
+            color: #88aacc;
+        }
+        .terminal-line { margin-bottom: 8px; }
+        .t-prompt { color: var(--domain-color); }
+        .t-response { color: #cce8ff; }
+        .t-error { color: var(--danger); }
+        .t-success { color: var(--neon-green); }
+        .t-system { color: var(--muted); }
+
+        /* Titre de salle */
+        .room-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4em;
+            color: var(--domain-color);
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(78,205,196,0.3);
+            margin-bottom: 5px;
+        }
+        .room-subtitle { color: var(--muted); font-size: 0.92em; line-height: 1.6; }
+
+        /* Carte scénario */
+        .scenario-card {
+            background: rgba(10,25,45,0.8);
+            border: 1px solid rgba(78,205,196,0.25);
+            border-left: 3px solid var(--domain-color);
+            border-radius: 8px;
+            padding: 18px 22px;
+            line-height: 1.7;
+        }
+        .scenario-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72em;
+            color: var(--domain-color);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        /* Bouton valider */
+        .validate-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 13px 35px;
+            border: 2px solid var(--domain-color);
+            background: transparent;
+            color: var(--domain-color);
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .validate-btn:hover {
+            background: rgba(78,205,196,0.1);
+            box-shadow: 0 0 20px rgba(78,205,196,0.3);
+        }
+        .validate-btn.success-btn {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        .validate-btn.success-btn:hover { box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+
+        /* Résultat feedback */
+        .result-panel {
+            border-radius: 8px;
+            padding: 18px 22px;
+            line-height: 1.7;
+            margin-top: 5px;
+            border: 1px solid;
+            display: none;
+        }
+        .result-panel.show { display: block; }
+        .result-panel.ok { border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.06); color: #cce8ff; }
+        .result-panel.bad { border-color: rgba(255,77,77,0.4); background: rgba(255,77,77,0.06); color: #cce8ff; }
+
+        /* ---- SALLE 1 : Tri de consignes ---- */
+        .sort-prompts {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 10px 0;
+        }
+        .sort-card {
+            background: rgba(10,25,45,0.8);
+            border: 2px solid rgba(78,205,196,0.2);
+            border-radius: 10px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.88em;
+            line-height: 1.6;
+            position: relative;
+        }
+        .sort-card:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.05); }
+        .sort-card.selected-vague {
+            border-color: var(--danger);
+            background: rgba(255,77,77,0.1);
+        }
+        .sort-card.selected-precis {
+            border-color: var(--neon-green);
+            background: rgba(0,255,136,0.08);
+        }
+        .sort-card .card-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .sort-toggle {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .toggle-btn {
+            flex: 1;
+            padding: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72em;
+            border: 1px solid;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+        }
+        .btn-vague { border-color: rgba(255,77,77,0.4); color: #ff8080; }
+        .btn-vague:hover, .btn-vague.active { background: rgba(255,77,77,0.15); border-color: var(--danger); }
+        .btn-precis { border-color: rgba(0,255,136,0.4); color: #80ffb0; }
+        .btn-precis:hover, .btn-precis.active { background: rgba(0,255,136,0.12); border-color: var(--neon-green); }
+
+        /* ---- SALLE 2 : Détecteur RCTF ---- */
+        .rctf-checker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 14px 0;
+        }
+        .rctf-check-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border: 1px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .rctf-check-item:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.04); }
+        .rctf-check-item input[type=checkbox] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--domain-color);
+            cursor: pointer;
+        }
+        .rctf-check-label { font-size: 0.92em; }
+        .rctf-check-letter { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.1em; color: var(--domain-color); }
+
+        /* ---- SALLE 3 : Réparation ---- */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 10px 0;
+        }
+        .option-item {
+            display: flex;
+            gap: 14px;
+            padding: 16px 18px;
+            border: 2px solid rgba(78,205,196,0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-items: flex-start;
+        }
+        .option-item:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.04); }
+        .option-item.selected { border-color: var(--domain-color); background: rgba(78,205,196,0.08); }
+        .option-item.correct { border-color: var(--neon-green) !important; background: rgba(0,255,136,0.08) !important; }
+        .option-item.wrong { border-color: var(--danger) !important; background: rgba(255,77,77,0.06) !important; }
+        .option-letter {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1em;
+            color: var(--domain-color);
+            font-weight: 700;
+            flex-shrink: 0;
+            width: 24px;
+        }
+        .option-text { font-size: 0.9em; line-height: 1.65; }
+
+        /* ---- SALLE 4 : Classement ---- */
+        .rank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .rank-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 14px 16px;
+            border: 1px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.88em;
+            line-height: 1.6;
+        }
+        .rank-item:hover { border-color: rgba(78,205,196,0.4); background: rgba(78,205,196,0.04); }
+        .rank-item.rank-1 { border-color: var(--warn); background: rgba(255,204,0,0.06); }
+        .rank-item.rank-2 { border-color: var(--muted); background: rgba(136,153,170,0.06); }
+        .rank-item.rank-3 { border-color: rgba(139,90,43,0.6); background: rgba(139,90,43,0.06); }
+        .rank-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(78,205,196,0.3);
+            color: var(--muted);
+        }
+        .rank-badge.b1 { border-color: var(--warn); color: var(--warn); }
+        .rank-badge.b2 { border-color: var(--muted); color: var(--muted); }
+        .rank-badge.b3 { border-color: rgba(139,90,43,0.8); color: #c8a000; }
+
+        /* ---- SALLE 5 : Constructeur ---- */
+        .builder-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 14px 0;
+        }
+        .builder-block {
+            background: rgba(10,25,45,0.8);
+            border: 1px solid rgba(78,205,196,0.25);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .builder-block-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .builder-letter {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 1.2em;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .builder-block-label { font-weight: 600; font-size: 0.95em; }
+        .builder-select {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: var(--text);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 0.88em;
+            cursor: pointer;
+            outline: none;
+        }
+        .builder-select:focus { border-color: var(--domain-color); }
+        .builder-select option { background: #0a1525; color: var(--text); }
+
+        .prompt-preview {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.82em;
+            line-height: 1.8;
+            min-height: 80px;
+            color: #aabbcc;
+            margin: 10px 0;
+        }
+        .prompt-preview .part-r { color: #c084fc; }
+        .prompt-preview .part-c { color: var(--neon-blue); }
+        .prompt-preview .part-t { color: var(--neon-green); }
+        .prompt-preview .part-f { color: var(--warn); }
+
+        /* Animation porte déverrouillée */
+        .door-unlock {
+            text-align: center;
+            padding: 25px;
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 12px;
+            animation: doorGlow 1s ease-in-out;
+        }
+        @keyframes doorGlow {
+            0% { box-shadow: 0 0 0 rgba(0,255,136,0); }
+            50% { box-shadow: 0 0 40px rgba(0,255,136,0.4); }
+            100% { box-shadow: 0 0 15px rgba(0,255,136,0.2); }
+        }
+        .door-icon { font-size: 3em; margin-bottom: 12px; animation: float 2s ease-in-out infinite; }
+        .door-title { font-family: 'Space Mono', monospace; color: var(--neon-green); font-size: 1.1em; margin-bottom: 8px; }
+        .next-room-btn {
+            font-family: 'Space Mono', monospace;
+            margin-top: 18px;
+            padding: 12px 35px;
+            border: 2px solid var(--neon-green);
+            background: transparent;
+            color: var(--neon-green);
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+        }
+        .next-room-btn:hover { background: rgba(0,255,136,0.1); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+
+        /* ==================== QUIZ ==================== */
+        #quiz-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #050c18 0%, #0c1c2e 50%, #050c18 100%);
+            z-index: 997;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        #quiz-screen.active { display: flex; }
+        #quiz-screen::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(78,205,196,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78,205,196,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+        .quiz-container {
+            width: 100%;
+            max-width: 780px;
+            margin: 30px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .quiz-header {
+            background: rgba(10,20,40,0.95);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 10px 10px 0 0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quiz-progress-bar {
+            height: 4px;
+            background: rgba(78,205,196,0.1);
+            overflow: hidden;
+        }
+        .quiz-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--domain-color), var(--neon-blue));
+            transition: width 0.4s;
+        }
+        .quiz-body {
+            background: rgba(10,20,40,0.9);
+            border: 1px solid rgba(78,205,196,0.2);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 35px 40px;
+        }
+        .quiz-question {
+            font-size: 1.15em;
+            line-height: 1.65;
+            color: #e0f0ff;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 11px; }
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 15px 18px;
+            border: 2px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            line-height: 1.55;
+        }
+        .quiz-option:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.04); }
+        .quiz-opt-letter {
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            color: var(--domain-color);
+            flex-shrink: 0;
+            width: 22px;
+        }
+        .quiz-opt-text { flex: 1; }
+        .quiz-explain {
+            background: rgba(78,205,196,0.06);
+            border: 1px solid rgba(78,205,196,0.2);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 18px;
+            font-size: 0.93em;
+        }
+
+        /* Footer jeu */
+        .game-footer {
+            background: rgba(5,12,24,0.95);
+            border-top: 1px solid rgba(78,205,196,0.2);
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+        .game-footer a {
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            text-decoration: none;
+        }
+        .game-footer a:hover { color: var(--domain-color); }
 
     </style>
 </head>
@@ -629,13 +1164,58 @@
         </div>
     </div>
 
-    <!-- ==================== PLACEHOLDER GAME (Phase 3) ==================== -->
+    <!-- ==================== JEU : ESCAPE ROOM ==================== -->
     <div id="game-screen">
-        <p style="font-family:'Space Mono',monospace;color:#4ecdc4;font-size:1.2em;">⚙️ Salles en cours de développement...</p>
-        <button onclick="showBriefing()"
-            style="margin-top:20px;font-family:'Space Mono',monospace;padding:10px 30px;border:1px solid #4ecdc4;background:transparent;color:#4ecdc4;cursor:pointer;">
-            ← Retour briefing
-        </button>
+
+        <!-- Header -->
+        <div class="game-header">
+            <div class="game-title">
+                🔐 <span id="room-name-header">ARIA LAB</span>
+                <span class="room-badge" id="room-badge">SALLE 1/5</span>
+            </div>
+            <div class="room-progress-dots" id="room-dots">
+                <div class="room-dot active" id="dot-1"></div>
+                <div class="room-dot" id="dot-2"></div>
+                <div class="room-dot" id="dot-3"></div>
+                <div class="room-dot" id="dot-4"></div>
+                <div class="room-dot" id="dot-5"></div>
+            </div>
+        </div>
+
+        <!-- Corps -->
+        <div class="game-body">
+
+            <!-- Zone challenge -->
+            <div class="game-challenge-area" id="game-challenge-area">
+                <!-- Rendu dynamiquement par JS -->
+            </div>
+
+            <!-- Terminal ARIA -->
+            <div class="aria-terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot td-red"></span>
+                    <span class="terminal-dot td-yellow"></span>
+                    <span class="terminal-dot td-green"></span>
+                    &nbsp;ARIA-7 // TERMINAL
+                </div>
+                <div class="terminal-body" id="aria-terminal-body">
+                    <div class="terminal-line t-system">// Système ARIA-7 en ligne</div>
+                    <div class="terminal-line t-system">// Opérateur requis pour débloquer</div>
+                    <div class="terminal-line t-system">// En attente de vos instructions...</div>
+                    <div class="terminal-line">&nbsp;</div>
+                    <div class="terminal-line t-prompt">ARIA-7 &gt; <span class="blink">█</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="game-footer">
+            <button onclick="showBriefing()" style="font-family:'Space Mono',monospace;padding:8px 20px;border:1px solid rgba(78,205,196,0.3);background:transparent;color:var(--muted);cursor:pointer;font-size:0.8em;">
+                ← Briefing
+            </button>
+            <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);">ARIA_LAB :: MISSION ACTIVE</span>
+            <a href="modules.html" style="font-family:'Space Mono',monospace;font-size:0.75em;">↩ Modules</a>
+        </div>
     </div>
 
     <script>
@@ -1113,8 +1693,1009 @@
         function startGame() {
             document.getElementById('briefing-screen').classList.remove('active');
             document.getElementById('game-screen').classList.add('active');
+            currentRoom = 1;
+            roomsCompleted = [];
+            renderRoom(1);
+        }
+
+        // ==================== ÉTAT DU JEU ====================
+        let currentRoom = 1;
+        let roomsCompleted = [];
+
+        // ==================== TERMINAL ARIA ====================
+        function terminalLog(lines) {
+            const body = document.getElementById('aria-terminal-body');
+            body.innerHTML = '';
+            lines.forEach(([cls, txt]) => {
+                const d = document.createElement('div');
+                d.className = 'terminal-line ' + cls;
+                d.innerHTML = txt;
+                body.appendChild(d);
+            });
+            const cursor = document.createElement('div');
+            cursor.className = 'terminal-line t-prompt';
+            cursor.innerHTML = 'ARIA-7 &gt; <span class="blink">█</span>';
+            body.appendChild(cursor);
+        }
+
+        function updateRoomHeader(roomNum) {
+            const names = ['', 'INITIATION', 'IDENTIFICATION', 'RÉPARATION', 'OPTIMISATION', 'MAÎTRISE'];
+            document.getElementById('room-name-header').textContent = names[roomNum];
+            document.getElementById('room-badge').textContent = `SALLE ${roomNum}/5`;
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById('dot-' + i);
+                dot.classList.remove('active', 'done');
+                if (i < roomNum) dot.classList.add('done');
+                else if (i === roomNum) dot.classList.add('active');
+            }
+        }
+
+        function renderRoom(n) {
+            updateRoomHeader(n);
+            const fns = [null, renderRoom1, renderRoom2, renderRoom3, renderRoom4, renderRoom5];
+            fns[n]();
+        }
+
+        function goNextRoom() {
+            roomsCompleted.push(currentRoom);
+            if (currentRoom < 5) {
+                currentRoom++;
+                renderRoom(currentRoom);
+            } else {
+                startQuiz();
+            }
+        }
+
+        // ==================== SALLE 1 : TRI DE CONSIGNES ====================
+        const room1Data = [
+            { id: 0, text: "Écris-moi quelque chose.", correct: 'vague' },
+            { id: 1, text: "Tu es un journaliste sportif. Rédige un article de 200 mots sur la finale de la Coupe du Monde 2022 pour un public adolescent.", correct: 'precis' },
+            { id: 2, text: "Fais quelque chose avec les maths.", correct: 'vague' },
+            { id: 3, text: "Liste en 5 points les avantages du télétravail pour les managers d'équipes de plus de 10 personnes.", correct: 'precis' },
+            { id: 4, text: "Dis-moi un truc intéressant.", correct: 'vague' },
+            { id: 5, text: "Tu es un chef cuisinier. Propose un menu végétarien 3 plats pour 4 personnes, budget max 30€, avec les recettes en étapes numérotées.", correct: 'precis' },
+        ];
+        let room1Answers = {};
+
+        function renderRoom1() {
+            const area = document.getElementById('game-challenge-area');
+            room1Answers = {};
+            area.innerHTML = `
+                <div class="room-title">🚪 SALLE 1 — Initiation</div>
+                <p class="room-subtitle">La porte de l'entrée est verrouillée. Pour l'ouvrir, tu dois prouver que tu sais distinguer une consigne vague d'une consigne précise.<br/>Classifie chacune des 6 instructions ci-dessous.</p>
+
+                <div class="scenario-card" style="margin:10px 0;">
+                    <div class="scenario-label">📋 CONSIGNE DE MISSION</div>
+                    Pour chaque prompt, clique sur <span style="color:var(--danger);font-weight:600;">VAGUE</span> ou <span style="color:var(--neon-green);font-weight:600;">PRÉCIS</span>.
+                    Une consigne précise contient au moins : une tâche claire + un contexte ou une contrainte.
+                </div>
+
+                <div class="sort-prompts" id="sort-prompts">
+                    ${room1Data.map(p => `
+                        <div class="sort-card" id="sort-card-${p.id}">
+                            <div class="card-num">PROMPT #${p.id + 1}</div>
+                            <div style="min-height:50px;">"${p.text}"</div>
+                            <div class="sort-toggle">
+                                <button class="toggle-btn btn-vague" onclick="setAnswer(${p.id},'vague',this)">❌ Vague</button>
+                                <button class="toggle-btn btn-precis" onclick="setAnswer(${p.id},'precis',this)">✅ Précis</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="display:flex;align-items:center;gap:15px;margin-top:5px;">
+                    <button class="validate-btn" onclick="validateRoom1()">🔑 Vérifier & Déverrouiller</button>
+                    <span id="r1-count" style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);">0/6 classés</span>
+                </div>
+                <div class="result-panel" id="r1-result"></div>
+            `;
+            terminalLog([
+                ['t-system', '// Salle 1 : Initiation'],
+                ['t-system', '// Verrouillage : ACTIF'],
+                ['t-system', '// Défi : Tri de consignes'],
+                ['', ''],
+                ['t-error', 'ERREUR : Opérateur doit démontrer'],
+                ['t-error', 'sa capacité à distinguer les'],
+                ['t-error', 'consignes vagues des précises.'],
+            ]);
+        }
+
+        function setAnswer(id, val, btn) {
+            room1Answers[id] = val;
+            const card = document.getElementById('sort-card-' + id);
+            card.classList.remove('selected-vague', 'selected-precis');
+            card.classList.add('selected-' + val);
+            card.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const count = Object.keys(room1Answers).length;
+            document.getElementById('r1-count').textContent = `${count}/6 classés`;
+        }
+
+        function validateRoom1() {
+            if (Object.keys(room1Answers).length < 6) {
+                showResultPanel('r1-result', false, 'Tu dois classer les 6 prompts avant de continuer. Il en reste ' + (6 - Object.keys(room1Answers).length) + '.', null);
+                return;
+            }
+            let correct = 0;
+            room1Data.forEach(p => {
+                if (room1Answers[p.id] === p.correct) correct++;
+            });
+            const pass = correct >= 5;
+            if (pass) {
+                terminalLog([
+                    ['t-success', '// ANALYSE TERMINÉE'],
+                    ['t-success', `// Score : ${correct}/6`],
+                    ['t-success', '// Seuil atteint : OUI'],
+                    ['', ''],
+                    ['t-success', '>> PORTE DÉVERROUILLÉE'],
+                    ['t-success', '>> Accès Salle 2 autorisé'],
+                ]);
+                showUnlock('r1-result', `${correct}/6 corrects — Excellent travail, Agent !`, 2);
+            } else {
+                terminalLog([
+                    ['t-error', `// Score : ${correct}/6`],
+                    ['t-error', '// Seuil non atteint (5/6 min.)'],
+                    ['t-error', '// PORTE MAINTENUE'],
+                    ['', ''],
+                    ['t-prompt', '>> Réessayez. Indice : une consigne'],
+                    ['t-prompt', '>> précise répond à QUI, QUOI,'],
+                    ['t-prompt', '>> COMBIEN et COMMENT.'],
+                ]);
+                showResultPanel('r1-result', false, `${correct}/6 corrects. Il faut au moins 5/6 pour déverrouiller. Rejoue !`, '<button class="validate-btn" onclick="renderRoom1()" style="margin-top:10px;">🔄 Réessayer</button>');
+            }
+        }
+
+        // ==================== SALLE 2 : DÉTECTEUR RCTF ====================
+        const room2Prompts = [
+            {
+                text: `"Tu es un avocat spécialisé en droit du travail. Mon employeur refuse de me rembourser mes frais de déplacement alors que mon contrat le prévoit. Rédige un email formel de réclamation en 3 paragraphes, ton assertif mais professionnel."`,
+                R: true, C: true, T: true, F: true,
+                explain: {
+                    R: "✓ 'Tu es un avocat spécialisé en droit du travail'",
+                    C: "✓ La situation : remboursement refusé malgré contrat",
+                    T: "✓ Rédiger un email de réclamation",
+                    F: "✓ 3 paragraphes, ton assertif mais professionnel"
+                }
+            }
+        ];
+
+        function renderRoom2() {
+            const area = document.getElementById('game-challenge-area');
+            const p = room2Prompts[0];
+            area.innerHTML = `
+                <div class="room-title">🔍 SALLE 2 — Identification</div>
+                <p class="room-subtitle">La porte du laboratoire est protégée par un détecteur de piliers RCTF. Analyse ce prompt et coche les éléments que tu y repères.</p>
+
+                <div class="scenario-card" style="margin:10px 0;">
+                    <div class="scenario-label">🤖 PROMPT À ANALYSER</div>
+                    <em style="line-height:1.8;color:#cce8ff;">${p.text}</em>
+                </div>
+
+                <div class="rctf-checker">
+                    <label class="rctf-check-item">
+                        <input type="checkbox" id="chk-R2"/>
+                        <span class="rctf-check-letter" style="color:#c084fc;">R</span>
+                        <span class="rctf-check-label">Rôle — l'IA a une identité</span>
+                    </label>
+                    <label class="rctf-check-item">
+                        <input type="checkbox" id="chk-C2"/>
+                        <span class="rctf-check-letter" style="color:var(--neon-blue);">C</span>
+                        <span class="rctf-check-label">Contexte — la situation est expliquée</span>
+                    </label>
+                    <label class="rctf-check-item">
+                        <input type="checkbox" id="chk-T2"/>
+                        <span class="rctf-check-letter" style="color:var(--neon-green);">T</span>
+                        <span class="rctf-check-label">Tâche — ce qu'elle doit faire</span>
+                    </label>
+                    <label class="rctf-check-item">
+                        <input type="checkbox" id="chk-F2"/>
+                        <span class="rctf-check-letter" style="color:var(--warn);">F</span>
+                        <span class="rctf-check-label">Format — la forme de la réponse</span>
+                    </label>
+                </div>
+
+                <div style="margin-top:5px;">
+                    <button class="validate-btn" onclick="validateRoom2()">🔑 Valider l'analyse</button>
+                </div>
+                <div class="result-panel" id="r2-result"></div>
+            `;
+            terminalLog([
+                ['t-system', '// Salle 2 : Identification'],
+                ['t-system', '// Verrouillage : ACTIF'],
+                ['', ''],
+                ['t-error', 'DÉTECTEUR RCTF EN LIGNE'],
+                ['t-error', 'Identifiez les piliers présents'],
+                ['t-error', 'dans le prompt pour débloquer.'],
+            ]);
+        }
+
+        function validateRoom2() {
+            const r = document.getElementById('chk-R2').checked;
+            const c = document.getElementById('chk-C2').checked;
+            const t = document.getElementById('chk-T2').checked;
+            const f = document.getElementById('chk-F2').checked;
+            const p = room2Prompts[0];
+            let correct = 0;
+            if (r === p.R) correct++;
+            if (c === p.C) correct++;
+            if (t === p.T) correct++;
+            if (f === p.F) correct++;
+            const pass = correct === 4;
+            if (pass) {
+                const details = `<ul style="margin:12px 0 0 18px;line-height:2;">
+                    <li style="color:var(--neon-green);">${p.explain.R}</li>
+                    <li style="color:var(--neon-blue);">${p.explain.C}</li>
+                    <li style="color:var(--neon-green);">${p.explain.T}</li>
+                    <li style="color:var(--warn);">${p.explain.F}</li>
+                </ul>`;
+                terminalLog([
+                    ['t-success', '// ANALYSE : 4/4 corrects'],
+                    ['t-success', '// RCTF complet détecté'],
+                    ['', ''],
+                    ['t-success', '>> PORTE DÉVERROUILLÉE'],
+                    ['t-success', '>> Accès Salle 3 autorisé'],
+                ]);
+                showUnlock('r2-result', `Parfait ! Les 4 piliers RCTF identifiés.${details}`, 3);
+            } else {
+                terminalLog([
+                    ['t-error', `// ANALYSE : ${correct}/4 corrects`],
+                    ['t-error', '// PORTE MAINTENUE'],
+                    ['t-prompt', '>> Indice : ce prompt contient'],
+                    ['t-prompt', '>> les 4 piliers RCTF.'],
+                ]);
+                showResultPanel('r2-result', false, `${correct}/4 piliers correctement identifiés. Relis le prompt attentivement. Les 4 éléments y sont bien présents !`, '<button class="validate-btn" onclick="renderRoom2()" style="margin-top:10px;">🔄 Réessayer</button>');
+            }
+        }
+
+        // ==================== SALLE 3 : RÉPARATION ====================
+        function renderRoom3() {
+            const area = document.getElementById('game-challenge-area');
+            area.innerHTML = `
+                <div class="room-title">🔧 SALLE 3 — Réparation</div>
+                <p class="room-subtitle">La salle de contrôle est verrouillée. ARIA-7 a reçu un prompt défectueux et donne une réponse inutile. Choisis la meilleure amélioration pour débloquer la porte.</p>
+
+                <div class="scenario-card" style="margin:8px 0;border-left-color:var(--danger);">
+                    <div class="scenario-label" style="color:var(--danger);">❌ PROMPT DÉFECTUEUX REÇU</div>
+                    <em style="color:#ff9999;">"Parle-moi de la nutrition."</em>
+                </div>
+
+                <div style="background:rgba(255,77,77,0.06);border:1px solid rgba(255,77,77,0.2);border-radius:8px;padding:14px 18px;margin:8px 0;">
+                    <div style="font-family:'Space Mono',monospace;font-size:0.72em;color:var(--danger);margin-bottom:8px;">🤖 RÉPONSE ACTUELLE D'ARIA-7</div>
+                    <em style="color:#aabbcc;font-size:0.92em;">"La nutrition est la science qui étudie les aliments et leur relation avec la santé. Elle comprend les macronutriments (protéines, glucides, lipides), les micronutriments (vitamines et minéraux), ainsi que les fibres et l'eau. Une bonne nutrition est essentielle pour..."</em>
+                    <p style="margin-top:10px;font-size:0.85em;color:var(--muted);">⚠️ Réponse trop générique, inadaptée, impossible à utiliser directement.</p>
+                </div>
+
+                <p style="font-family:'Space Mono',monospace;font-size:0.82em;color:var(--domain-color);margin:12px 0 8px;">→ Quelle version améliorée permettrait de débloquer ARIA-7 ?</p>
+
+                <div class="options-grid" id="r3-options">
+                    <div class="option-item" id="opt-A" onclick="selectOption3('A')">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">"Parle-moi encore de la nutrition, mais en plus détaillé."</span>
+                    </div>
+                    <div class="option-item" id="opt-B" onclick="selectOption3('B')">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">"Tu es diététicienne spécialisée en perte de poids. Je suis un homme de 45 ans, sédentaire, voulant perdre 8 kg en 4 mois. Propose-moi un plan alimentaire hebdomadaire équilibré sous forme de tableau (petit-déjeuner, déjeuner, dîner), sans gluten."</span>
+                    </div>
+                    <div class="option-item" id="opt-C" onclick="selectOption3('C')">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">"Donne-moi des conseils de nutrition pour maigrir."</span>
+                    </div>
+                </div>
+
+                <div style="margin-top:12px;">
+                    <button class="validate-btn" id="r3-validate" onclick="validateRoom3()" disabled style="opacity:0.5;cursor:not-allowed;">🔑 Valider le choix</button>
+                </div>
+                <div class="result-panel" id="r3-result"></div>
+            `;
+            window.r3Selected = null;
+            terminalLog([
+                ['t-system', '// Salle 3 : Réparation'],
+                ['t-error', 'PROMPT CORROMPU DÉTECTÉ'],
+                ['t-error', 'Réponse ARIA-7 : invalide'],
+                ['', ''],
+                ['t-prompt', '>> Sélectionnez le prompt corrigé'],
+                ['t-prompt', '>> pour rétablir le système.'],
+            ]);
+        }
+
+        function selectOption3(opt) {
+            window.r3Selected = opt;
+            ['A', 'B', 'C'].forEach(o => document.getElementById('opt-' + o).classList.remove('selected'));
+            document.getElementById('opt-' + opt).classList.add('selected');
+            const btn = document.getElementById('r3-validate');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        }
+
+        function validateRoom3() {
+            if (!window.r3Selected) return;
+            const correct = window.r3Selected === 'B';
+            ['A', 'B', 'C'].forEach(o => {
+                const el = document.getElementById('opt-' + o);
+                el.classList.remove('selected');
+                if (o === 'B') el.classList.add('correct');
+                else if (o === window.r3Selected && !correct) el.classList.add('wrong');
+            });
+            if (correct) {
+                terminalLog([
+                    ['t-success', '// PROMPT VALIDÉ'],
+                    ['t-success', '// RCTF complet détecté'],
+                    ['t-success', '// Réponse ARIA-7 : optimale'],
+                    ['', ''],
+                    ['t-success', '>> PORTE DÉVERROUILLÉE'],
+                    ['t-success', '>> Accès Salle 4 autorisé'],
+                ]);
+                showUnlock('r3-result', 'Excellent choix ! Le prompt B est le seul qui contient les 4 piliers RCTF :<br/>🎭 Rôle + 📍 Contexte précis + 🎯 Tâche claire + 📐 Format (tableau, sans gluten)', 4);
+            } else {
+                terminalLog([
+                    ['t-error', '// MAUVAIS PROMPT SÉLECTIONNÉ'],
+                    ['t-error', '// PORTE MAINTENUE'],
+                    ['t-prompt', '>> Indice : cherche le prompt'],
+                    ['t-prompt', '>> qui répond à QUI, POUR QUI,'],
+                    ['t-prompt', '>> QUOI et COMMENT.'],
+                ]);
+                showResultPanel('r3-result', false,
+                    window.r3Selected === 'A'
+                        ? "La réponse A demande juste \"plus de détails\" sans rien préciser — ce n'est pas une amélioration réelle."
+                        : "La réponse C est légèrement meilleure mais reste vague : pas de rôle, pas de contexte personnel, pas de format.",
+                    '<button class="validate-btn" onclick="renderRoom3()" style="margin-top:10px;">🔄 Réessayer</button>');
+            }
+        }
+
+        // ==================== SALLE 4 : OPTIMISATION ====================
+        const room4Prompts = [
+            { id: 0, rank: 3, label: 'PROMPT ALPHA', text: '"Écris quelque chose sur le changement climatique pour des jeunes."' },
+            { id: 1, rank: 2, label: 'PROMPT BETA', text: '"Explique le changement climatique de façon claire et engageante pour des lycéens de Terminale."' },
+            { id: 2, rank: 1, label: 'PROMPT GAMMA', text: '"Tu es un scientifique du GIEC. Pour des lycéens de Terminale préparant un exposé, résume les 3 principales causes du changement climatique. Format : 3 sections titrées, chacune en 80 mots max, avec un exemple concret."' },
+        ];
+        let room4Rankings = {};
+
+        function renderRoom4() {
+            const area = document.getElementById('game-challenge-area');
+            room4Rankings = {};
+            area.innerHTML = `
+                <div class="room-title">📊 SALLE 4 — Optimisation</div>
+                <p class="room-subtitle">Le système de classement de la salle est en panne. Pour le réparer, tu dois trier ces 3 prompts du <strong style="color:var(--warn);">meilleur (#1)</strong> au <strong style="color:#c8a000;">#3</strong>. Clique dans l'ordre de ta préférence.</p>
+
+                <div class="scenario-card" style="margin:8px 0;">
+                    <div class="scenario-label">🎯 MÊME OBJECTIF, 3 NIVEAUX DE QUALITÉ</div>
+                    Tous ces prompts ont le même but : expliquer le changement climatique à des jeunes. Laquelle est la meilleure formulation ?
+                </div>
+
+                <div class="rank-list" id="rank-list">
+                    ${room4Prompts.map(p => `
+                        <div class="rank-item" id="rank-item-${p.id}" onclick="setRank4(${p.id})">
+                            <div class="rank-badge" id="rank-badge-${p.id}">?</div>
+                            <div>
+                                <div style="font-family:'Space Mono',monospace;font-size:0.72em;color:var(--domain-color);margin-bottom:6px;">${p.label}</div>
+                                <div>${p.text}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div style="display:flex;align-items:center;gap:15px;margin-top:10px;">
+                    <button class="validate-btn" onclick="validateRoom4()">🔑 Valider le classement</button>
+                    <span id="r4-count" style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);">0/3 classés</span>
+                </div>
+                <div class="result-panel" id="r4-result"></div>
+            `;
+            window.r4NextRank = 1;
+            terminalLog([
+                ['t-system', '// Salle 4 : Optimisation'],
+                ['t-error', 'SYSTÈME DE CLASSEMENT : PANNE'],
+                ['', ''],
+                ['t-prompt', '>> Classez les prompts du meilleur'],
+                ['t-prompt', '>> (#1) au moins bon (#3).'],
+                ['t-prompt', '>> Cliquez dans l\'ordre voulu.'],
+            ]);
+        }
+
+        function setRank4(id) {
+            if (room4Rankings[id] !== undefined) return;
+            const rankNum = window.r4NextRank;
+            room4Rankings[id] = rankNum;
+            window.r4NextRank++;
+            const badgeColors = ['', 'b1', 'b2', 'b3'];
+            const badge = document.getElementById('rank-badge-' + id);
+            badge.textContent = '#' + rankNum;
+            badge.className = 'rank-badge ' + badgeColors[rankNum];
+            const item = document.getElementById('rank-item-' + id);
+            item.classList.add('rank-' + rankNum);
+            item.style.cursor = 'default';
+            const count = Object.keys(room4Rankings).length;
+            document.getElementById('r4-count').textContent = `${count}/3 classés`;
+        }
+
+        function validateRoom4() {
+            if (Object.keys(room4Rankings).length < 3) {
+                showResultPanel('r4-result', false, 'Classe les 3 prompts avant de valider.', null);
+                return;
+            }
+            // Correct order: Gamma(id=2) #1, Beta(id=1) #2, Alpha(id=0) #3
+            const correct = room4Rankings[2] === 1 && room4Rankings[1] === 2 && room4Rankings[0] === 3;
+            if (correct) {
+                terminalLog([
+                    ['t-success', '// CLASSEMENT VALIDÉ'],
+                    ['t-success', '// Ordre : GAMMA > BETA > ALPHA'],
+                    ['', ''],
+                    ['t-success', '>> SYSTÈME RÉPARÉ'],
+                    ['t-success', '>> PORTE DÉVERROUILLÉE'],
+                    ['t-success', '>> Accès Salle 5 autorisé'],
+                ]);
+                showUnlock('r4-result', 'Classement parfait !<br/>#1 GAMMA : RCTF complet (rôle + contexte + tâche + format)<br/>#2 BETA : meilleur mais sans rôle ni format précis<br/>#3 ALPHA : trop vague, aucun pilier RCTF', 5);
+            } else {
+                terminalLog([
+                    ['t-error', '// CLASSEMENT INCORRECT'],
+                    ['t-error', '// SYSTÈME NON RÉPARÉ'],
+                    ['t-prompt', '>> Indice : le meilleur prompt'],
+                    ['t-prompt', '>> a les 4 piliers RCTF.'],
+                ]);
+                showResultPanel('r4-result', false, 'Ce n\'est pas le bon ordre. Pense à chercher le prompt qui a RCTF complet pour le #1.', '<button class="validate-btn" onclick="renderRoom4()" style="margin-top:10px;">🔄 Réessayer</button>');
+            }
+        }
+
+        // ==================== SALLE 5 : CONSTRUCTION ====================
+        const room5Options = {
+            R: [
+                { val: '', label: '— Choisir un rôle —' },
+                { val: 'Tu es un médecin généraliste.', label: '🩺 Médecin généraliste' },
+                { val: 'Tu es un expert en cybersécurité pédagogue.', label: '🔐 Expert cybersécurité (pédagogue)', correct: true },
+                { val: 'Tu es une IA sans spécialité.', label: '🤖 IA sans spécialité' },
+            ],
+            C: [
+                { val: '', label: '— Choisir un contexte —' },
+                { val: 'Le contexte : je suis curieux.', label: '😐 Je suis juste curieux' },
+                { val: 'Je suis directeur d\'une PME de 50 salariés non-techniques.', label: '🏢 PME, 50 salariés non-techniques', correct: true },
+                { val: 'J\'ai lu un article sur internet.', label: '📰 J\'ai lu un article' },
+            ],
+            T: [
+                { val: '', label: '— Choisir une tâche —' },
+                { val: 'Parle-moi de la sécurité.', label: '💬 Parle-moi de la sécurité' },
+                { val: 'Fais quelque chose d\'utile.', label: '🤷 Fais quelque chose d\'utile' },
+                { val: 'Explique les 5 cybermenaces les plus courantes pour les entreprises.', label: '🎯 5 cybermenaces pour entreprises', correct: true },
+            ],
+            F: [
+                { val: '', label: '— Choisir un format —' },
+                { val: 'Réponse en texte libre.', label: '📄 Texte libre (sans contrainte)' },
+                { val: 'Sous forme de liste à puces, chaque point en 2 phrases max, langage simple, sans jargon.', label: '📝 Liste à puces, 2 phrases max, sans jargon', correct: true },
+                { val: 'En JSON.', label: '🧮 Format JSON technique' },
+            ]
+        };
+
+        function renderRoom5() {
+            const area = document.getElementById('game-challenge-area');
+            area.innerHTML = `
+                <div class="room-title">🏆 SALLE 5 — Maîtrise</div>
+                <p class="room-subtitle">Tu es à la porte de sortie. Pour l'ouvrir, construis le prompt parfait pour cette mission. Sélectionne le meilleur élément pour chaque pilier RCTF.</p>
+
+                <div class="scenario-card" style="margin:8px 0;">
+                    <div class="scenario-label">🎯 MISSION FINALE</div>
+                    Un directeur de PME veut former ses équipes à la cybersécurité. Il a besoin d'un document clair, accessible aux non-techniciens, listant les menaces à connaître.
+                </div>
+
+                <div class="builder-grid">
+                    <div class="builder-block" style="border-color:rgba(192,132,252,0.4);">
+                        <div class="builder-block-header">
+                            <div class="builder-letter" style="background:rgba(192,132,252,0.15);color:#c084fc;">R</div>
+                            <div class="builder-block-label" style="color:#c084fc;">Rôle</div>
+                        </div>
+                        <select class="builder-select" id="sel-R" onchange="updatePreview()">
+                            ${room5Options.R.map(o => `<option value="${o.val}">${o.label}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="builder-block" style="border-color:rgba(0,212,255,0.4);">
+                        <div class="builder-block-header">
+                            <div class="builder-letter" style="background:rgba(0,212,255,0.15);color:var(--neon-blue);">C</div>
+                            <div class="builder-block-label" style="color:var(--neon-blue);">Contexte</div>
+                        </div>
+                        <select class="builder-select" id="sel-C" onchange="updatePreview()">
+                            ${room5Options.C.map(o => `<option value="${o.val}">${o.label}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="builder-block" style="border-color:rgba(0,255,136,0.4);">
+                        <div class="builder-block-header">
+                            <div class="builder-letter" style="background:rgba(0,255,136,0.15);color:var(--neon-green);">T</div>
+                            <div class="builder-block-label" style="color:var(--neon-green);">Tâche</div>
+                        </div>
+                        <select class="builder-select" id="sel-T" onchange="updatePreview()">
+                            ${room5Options.T.map(o => `<option value="${o.val}">${o.label}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="builder-block" style="border-color:rgba(255,204,0,0.4);">
+                        <div class="builder-block-header">
+                            <div class="builder-letter" style="background:rgba(255,204,0,0.15);color:var(--warn);">F</div>
+                            <div class="builder-block-label" style="color:var(--warn);">Format</div>
+                        </div>
+                        <select class="builder-select" id="sel-F" onchange="updatePreview()">
+                            ${room5Options.F.map(o => `<option value="${o.val}">${o.label}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin:10px 0;">
+                    <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--domain-color);margin-bottom:8px;">👁 PRÉVISUALISATION DU PROMPT</div>
+                    <div class="prompt-preview" id="prompt-preview">Sélectionne les 4 piliers pour construire ton prompt...</div>
+                </div>
+
+                <div style="margin-top:5px;">
+                    <button class="validate-btn" onclick="validateRoom5()">🔑 Activer le prompt final</button>
+                </div>
+                <div class="result-panel" id="r5-result"></div>
+            `;
+            terminalLog([
+                ['t-system', '// Salle 5 : Maîtrise'],
+                ['t-error', 'SYSTÈME FINAL : VERROUILLÉ'],
+                ['', ''],
+                ['t-prompt', '>> Construisez le prompt parfait'],
+                ['t-prompt', '>> en sélectionnant chaque pilier.'],
+                ['t-prompt', '>> La combinaison exacte ouvrira'],
+                ['t-prompt', '>> la porte de sortie.'],
+            ]);
+        }
+
+        function updatePreview() {
+            const r = document.getElementById('sel-R').value;
+            const c = document.getElementById('sel-C').value;
+            const t = document.getElementById('sel-T').value;
+            const f = document.getElementById('sel-F').value;
+            const preview = document.getElementById('prompt-preview');
+            if (!r && !c && !t && !f) {
+                preview.innerHTML = 'Sélectionne les 4 piliers pour construire ton prompt...';
+                return;
+            }
+            let html = '';
+            if (r) html += `<span class="part-r">[R] ${r}</span> `;
+            if (c) html += `<span class="part-c">[C] ${c}</span> `;
+            if (t) html += `<span class="part-t">[T] ${t}</span> `;
+            if (f) html += `<span class="part-f">[F] ${f}</span>`;
+            preview.innerHTML = html || '<em style="color:var(--muted)">Prompt vide...</em>';
+
+            // Terminal dynamique
+            terminalLog([
+                ['t-system', '// Analyse du prompt en cours...'],
+                ['', ''],
+                r ? ['t-success', '✓ Rôle détecté'] : ['t-error', '✗ Rôle manquant'],
+                c ? ['t-success', '✓ Contexte détecté'] : ['t-error', '✗ Contexte manquant'],
+                t ? ['t-success', '✓ Tâche détectée'] : ['t-error', '✗ Tâche manquante'],
+                f ? ['t-success', '✓ Format détecté'] : ['t-error', '✗ Format manquant'],
+            ]);
+        }
+
+        function validateRoom5() {
+            const r = document.getElementById('sel-R').value;
+            const c = document.getElementById('sel-C').value;
+            const t = document.getElementById('sel-T').value;
+            const f = document.getElementById('sel-F').value;
+            const rOk = room5Options.R.find(o => o.correct && o.val === r);
+            const cOk = room5Options.C.find(o => o.correct && o.val === c);
+            const tOk = room5Options.T.find(o => o.correct && o.val === t);
+            const fOk = room5Options.F.find(o => o.correct && o.val === f);
+            const pass = rOk && cOk && tOk && fOk;
+            if (pass) {
+                terminalLog([
+                    ['t-success', '// PROMPT PARFAIT VALIDÉ'],
+                    ['t-success', '// R: Expert cybersécurité ✓'],
+                    ['t-success', '// C: PME 50 salariés ✓'],
+                    ['t-success', '// T: 5 cybermenaces ✓'],
+                    ['t-success', '// F: Liste, 2 phrases, simple ✓'],
+                    ['', ''],
+                    ['t-success', '>> ARIA-7 RÉACTIVÉE'],
+                    ['t-success', '>> PORTE DE SORTIE : OUVERTE'],
+                ]);
+                showUnlock('r5-result', '🎉 ARIA-7 est pleinement réactivée ! Tu as maîtrisé l\'art de la consigne.<br/><br/>Tu as prouvé que tu sais construire un prompt RCTF complet et adapté à la situation.', 'quiz');
+            } else {
+                let missing = [];
+                if (!rOk) missing.push('le rôle (expert cybersécurité pédagogue)');
+                if (!cOk) missing.push('le contexte (PME, 50 salariés non-techniques)');
+                if (!tOk) missing.push('la tâche (5 cybermenaces précises)');
+                if (!fOk) missing.push('le format (liste à puces, sans jargon)');
+                terminalLog([
+                    ['t-error', '// PROMPT INCOMPLET'],
+                    ['t-error', '// Éléments manquants :'],
+                    ...missing.map(m => ['t-error', `//  - ${m}`]),
+                    ['', ''],
+                    ['t-prompt', '>> Réajustez votre sélection.'],
+                ]);
+                showResultPanel('r5-result', false,
+                    `Pas encore parfait. Éléments à revoir : ${missing.join(', ')}.`,
+                    null
+                );
+            }
+        }
+
+        // ==================== HELPERS ====================
+        function showResultPanel(id, ok, msg, extra) {
+            const el = document.getElementById(id);
+            el.className = 'result-panel show ' + (ok ? 'ok' : 'bad');
+            el.innerHTML = `<strong>${ok ? '✅' : '⚠️'} ${msg}</strong>${extra ? extra : ''}`;
+        }
+
+        function showUnlock(resultId, msg, nextRoom) {
+            const el = document.getElementById(resultId);
+            el.className = 'result-panel show ok';
+            const nextLabel = nextRoom === 'quiz'
+                ? '📜 Passer le quiz de certification'
+                : `→ Entrer dans la Salle ${nextRoom}`;
+            const nextAction = nextRoom === 'quiz'
+                ? 'startQuiz()'
+                : `goNextRoom()`;
+            el.innerHTML = `
+                <div class="door-unlock">
+                    <div class="door-icon">🚪✅</div>
+                    <div class="door-title">PORTE DÉVERROUILLÉE !</div>
+                    <p style="color:#aabbcc;margin-bottom:5px;">${msg}</p>
+                    <button class="next-room-btn" onclick="${nextAction}">${nextLabel}</button>
+                </div>
+            `;
+        }
+
+        // ==================== TRANSITION VERS QUIZ ====================
+        function startQuiz() {
+            document.getElementById('game-screen').classList.remove('active');
+            document.getElementById('quiz-screen').classList.add('active');
+            initQuiz();
+        }
+
+        // ==================== QUIZ ====================
+        const quizQuestions = [
+            {
+                question: "Dans la méthode RCTF, que représente la lettre 'R' ?",
+                options: ["Résultat attendu", "Rôle donné à l'IA", "Règles à respecter", "Reformulation de la consigne"],
+                correct: 1,
+                explain: "R = Rôle. C'est l'identité qu'on donne à l'IA (ex. 'Tu es un journaliste spécialisé en économie')."
+            },
+            {
+                question: "Quel est le principal problème d'une consigne vague comme 'Fais quelque chose sur l'environnement' ?",
+                options: [
+                    "Elle est trop longue pour l'IA",
+                    "L'IA ne comprend pas le mot 'environnement'",
+                    "L'IA va inventer ce qui lui manque et risque de se tromper",
+                    "L'IA refusera de répondre"
+                ],
+                correct: 2,
+                explain: "Sans précision, l'IA comble les manques avec des suppositions qui peuvent être totalement inadaptées à ton besoin réel."
+            },
+            {
+                question: "Laquelle de ces formulations constitue un bon 'Format' dans une consigne ?",
+                options: [
+                    "\"Réponds bien\"",
+                    "\"Sous forme de tableau comparatif à 3 colonnes, en 80 mots maximum\"",
+                    "\"Tu es un expert\"",
+                    "\"Je veux savoir pourquoi\""
+                ],
+                correct: 1,
+                explain: "Le Format précise la forme de la réponse : type de document, longueur, structure. 'Tableau 3 colonnes, 80 mots max' est un format clair et actionnable."
+            },
+            {
+                question: "\"Tu es une diététicienne spécialisée en alimentation pour sportifs.\" — Quel pilier RCTF est-ce ?",
+                options: ["Contexte", "Tâche", "Rôle", "Format"],
+                correct: 2,
+                explain: "C'est le Rôle : on attribue à l'IA une identité précise avec une spécialité, ce qui oriente radicalement le registre et le contenu de sa réponse."
+            },
+            {
+                question: "Quel verbe d'action est le plus adapté pour demander une synthèse courte d'un texte long ?",
+                options: ["\"Propose\"", "\"Résume\"", "\"Dialogue\"", "\"Traduis\""],
+                correct: 1,
+                explain: "'Résume' indique clairement à l'IA qu'on attend une version condensée. 'Propose' suggère des idées, 'Dialogue' un échange, 'Traduis' un changement de langue."
+            },
+            {
+                question: "Dans quel cas est-il le plus important d'utiliser un RCTF complet (4 piliers) ?",
+                options: [
+                    "Pour une question simple comme 'Quelle est la capitale de la France ?'",
+                    "Pour une demande complexe, personnalisée ou destinée à un usage professionnel",
+                    "Le RCTF n'est utile que pour des textes créatifs",
+                    "Uniquement quand l'IA ne comprend pas la première fois"
+                ],
+                correct: 1,
+                explain: "Plus la demande est complexe ou délicate, plus le RCTF complet est nécessaire. Pour les questions simples, une tâche claire suffit souvent."
+            },
+            {
+                question: "\"Je suis responsable RH dans une entreprise de 200 personnes. Nous préparons une réforme des congés payés.\" — Quel pilier RCTF est-ce ?",
+                options: ["Rôle", "Contexte", "Tâche", "Format"],
+                correct: 1,
+                explain: "C'est le Contexte : c'est la situation de fond que l'utilisateur fournit à l'IA — qui il est, dans quelle situation, quelle est la contrainte ou l'environnement."
+            },
+            {
+                question: "Parmi ces 4 consignes, laquelle est la plus efficace pour obtenir un bon résultat ?",
+                options: [
+                    "\"Écris un email.\"",
+                    "\"Rédige un email de relance pour un client.\"",
+                    "\"Tu es commercial senior. Mon client n'a pas répondu à mon devis de 5 000€ depuis 15 jours. Rédige un email de relance chaleureux, 3 paragraphes, objet inclus.\"",
+                    "\"Aide-moi pour quelque chose d'important.\""
+                ],
+                correct: 2,
+                explain: "La 3e consigne contient les 4 piliers RCTF : Rôle (commercial senior), Contexte (devis 5000€, 15 jours), Tâche (email relance), Format (3 paragraphes + objet)."
+            }
+        ];
+
+        let quizCurrent = 0;
+        let quizScore = 0;
+        let quizAnswered = false;
+
+        function initQuiz() {
+            quizCurrent = 0;
+            quizScore = 0;
+            quizAnswered = false;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const screen = document.getElementById('quiz-screen');
+            const q = quizQuestions[quizCurrent];
+            quizAnswered = false;
+            screen.innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <div style="font-family:'Space Mono',monospace;color:var(--domain-color);font-size:1em;">📜 QUIZ DE CERTIFICATION</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);">Question ${quizCurrent + 1}/${quizQuestions.length} • Score : ${quizScore}/${quizCurrent}</div>
+                    </div>
+                    <div class="quiz-progress-bar">
+                        <div class="quiz-progress-fill" style="width:${((quizCurrent)/quizQuestions.length*100).toFixed(0)}%"></div>
+                    </div>
+                    <div class="quiz-body">
+                        <div class="quiz-question">${q.question}</div>
+                        <div class="quiz-options" id="quiz-options">
+                            ${q.options.map((opt, i) => `
+                                <div class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i})">
+                                    <span class="quiz-opt-letter">${String.fromCharCode(65+i)}</span>
+                                    <span class="quiz-opt-text">${opt}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="quiz-explain" id="quiz-explain" style="display:none;"></div>
+                        <div style="margin-top:20px;text-align:center;">
+                            <button class="validate-btn" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display:none;">
+                                ${quizCurrent + 1 < quizQuestions.length ? 'Question suivante →' : '📜 Voir mes résultats'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function answerQuiz(idx) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+            const q = quizQuestions[quizCurrent];
+            const correct = idx === q.correct;
+            if (correct) quizScore++;
+
+            document.querySelectorAll('.quiz-option').forEach((el, i) => {
+                el.style.pointerEvents = 'none';
+                if (i === q.correct) {
+                    el.style.borderColor = 'var(--neon-green)';
+                    el.style.background = 'rgba(0,255,136,0.08)';
+                } else if (i === idx && !correct) {
+                    el.style.borderColor = 'var(--danger)';
+                    el.style.background = 'rgba(255,77,77,0.08)';
+                }
+            });
+
+            const explain = document.getElementById('quiz-explain');
+            explain.style.display = 'block';
+            explain.innerHTML = `
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <span style="font-size:1.4em;">${correct ? '✅' : '❌'}</span>
+                    <div>
+                        <strong style="color:${correct ? 'var(--neon-green)' : 'var(--danger)'}">
+                            ${correct ? 'Bonne réponse !' : 'Pas tout à fait...'}
+                        </strong>
+                        <p style="margin-top:6px;color:#aabbcc;font-size:0.92em;line-height:1.6;">${q.explain}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('quiz-next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuizQuestion() {
+            quizCurrent++;
+            if (quizCurrent < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            const screen = document.getElementById('quiz-screen');
+            const pct = Math.round(quizScore / quizQuestions.length * 100);
+            const pass = quizScore >= 6;
+            screen.innerHTML = `
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <div style="font-family:'Space Mono',monospace;color:var(--domain-color);">📜 RÉSULTATS</div>
+                    </div>
+                    <div class="quiz-body" style="text-align:center;">
+                        <div style="font-size:4em;margin:20px 0;">${pass ? '🏆' : '🔄'}</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:2em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};">
+                            ${quizScore}/${quizQuestions.length}
+                        </div>
+                        <div style="font-size:1.3em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};margin:10px 0 25px;">
+                            ${pct}% — ${pass ? 'Mission accomplie !' : 'Presque...'}
+                        </div>
+                        <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 30px;">
+                            ${pass
+                                ? 'Tu as démontré que tu maîtrises l\'art de la consigne. ARIA-7 est entièrement réactivée grâce à toi. Télécharge ton attestation.'
+                                : `Tu as ${quizScore} bonnes réponses. Il faut 6/8 pour valider. Revois le briefing et réessaie !`
+                            }
+                        </p>
+                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+                            ${pass ? `<button class="validate-btn success-btn" onclick="showAttestation()">🎓 Télécharger l'attestation</button>` : ''}
+                            <button class="validate-btn" onclick="initQuiz()" style="${pass ? 'opacity:0.6;font-size:0.9em;' : ''}">🔄 ${pass ? 'Refaire le quiz' : 'Réessayer'}</button>
+                            <a href="modules.html" style="font-family:'Space Mono',monospace;padding:13px 25px;border:2px solid rgba(78,205,196,0.3);color:var(--muted);text-decoration:none;font-size:0.9em;">↩ Modules</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ==================== ATTESTATION ====================
+        function showAttestation() {
+            const name = prompt('Entrez votre prénom et nom pour l\'attestation :');
+            if (!name || !name.trim()) return;
+            const score = Math.round(quizScore / quizQuestions.length * 100);
+            const date = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' });
+            const ref = 'IA-PROMPT-' + Date.now().toString(36).toUpperCase();
+
+            const certHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attestation — L'Art de la Consigne</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700&display=swap');
+        body {
+            margin: 0; padding: 40px 20px;
+            background: linear-gradient(135deg, #050c18 0%, #0d1f35 100%);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Exo 2', sans-serif;
+        }
+        .certificate {
+            max-width: 780px; width: 100%;
+            background: linear-gradient(135deg, rgba(10,20,40,0.98), rgba(5,15,30,0.98));
+            border: 2px solid rgba(78,205,196,0.5);
+            border-radius: 16px;
+            padding: 50px 55px;
+            box-shadow: 0 0 60px rgba(78,205,196,0.15), inset 0 0 60px rgba(78,205,196,0.03);
+            position: relative;
+            color: #e0f0ff;
+        }
+        .certificate::before {
+            content: '';
+            position: absolute; inset: 8px;
+            border: 1px solid rgba(78,205,196,0.15);
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .header { text-align: center; margin-bottom: 35px; }
+        .logo { font-size: 3.5em; margin-bottom: 10px; }
+        .title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8em; font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase;
+            background: linear-gradient(90deg, #4ecdc4, #00d4ff, #00ff88);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+        .subtitle { color: #8899aa; font-size: 1em; letter-spacing: 2px; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(78,205,196,0.5), transparent); margin: 25px 0; }
+        .certifies { color: #8899aa; text-align: center; margin-bottom: 8px; }
+        .name {
+            font-family: 'Space Mono', monospace;
+            font-size: 2em; text-align: center;
+            color: #4ecdc4;
+            margin: 10px 0 20px;
+            text-shadow: 0 0 20px rgba(78,205,196,0.4);
+        }
+        .module-block {
+            background: rgba(78,205,196,0.06);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 10px;
+            padding: 22px; text-align: center;
+            margin: 20px 0;
+        }
+        .module-name { font-family: 'Space Mono', monospace; font-size: 1.05em; color: #4ecdc4; margin-bottom: 6px; }
+        .module-sub { color: #8899aa; font-size: 0.9em; margin-bottom: 12px; }
+        .score-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(78,205,196,0.2), rgba(0,212,255,0.2));
+            border: 1px solid rgba(78,205,196,0.5);
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            color: #4ecdc4; font-size: 1.1em;
+        }
+        .skills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; }
+        .skill {
+            background: rgba(78,205,196,0.08);
+            border: 1px solid rgba(78,205,196,0.3);
+            padding: 6px 16px; border-radius: 15px;
+            font-size: 0.83em; color: #4ecdc4;
+        }
+        .footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 25px; padding-top: 20px;
+            border-top: 1px solid rgba(78,205,196,0.2);
+            flex-wrap: wrap; gap: 15px;
+        }
+        .footer-item { text-align: center; }
+        .footer-label { color: #8899aa; font-size: 0.8em; margin-bottom: 4px; }
+        .footer-value { color: #00d4ff; font-weight: 600; font-size: 0.95em; }
+        .profexpress { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(78,205,196,0.15); text-align: center; }
+        .profexpress p { color: #8899aa; font-size: 0.82em; margin-bottom: 10px; }
+        .profexpress img { height: 32px; object-fit: contain; }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <div class="logo">🤖</div>
+            <div class="title">Attestation de Réussite</div>
+            <div class="subtitle">Formation IA Responsable</div>
+        </div>
+        <div class="divider"></div>
+        <p class="certifies">Cette attestation certifie que</p>
+        <div class="name">${name.trim()}</div>
+        <p style="text-align:center;color:#aabbcc;">a complété avec succès le micro-module</p>
+        <div class="module-block">
+            <div class="module-name">🤖 L'Art de la Consigne — ARIA-7</div>
+            <div class="module-sub">Module 05 — Interaction Raisonnée • Escape Room des Prompts</div>
+            <div class="score-badge">Score : ${score}%</div>
+        </div>
+        <p style="text-align:center;color:#8899aa;margin-bottom:10px;">Compétences validées :</p>
+        <div class="skills">
+            <span class="skill">🎭 Rôle (RCTF)</span>
+            <span class="skill">📍 Contexte (RCTF)</span>
+            <span class="skill">🎯 Tâche claire</span>
+            <span class="skill">📐 Format adapté</span>
+            <span class="skill">🔍 Analyse de prompts</span>
+            <span class="skill">🔧 Amélioration de consignes</span>
+        </div>
+        <div class="footer">
+            <div class="footer-item">
+                <div class="footer-label">Date d'obtention</div>
+                <div class="footer-value">${date}</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Référence</div>
+                <div class="footer-value">${ref}</div>
+            </div>
+            <div class="footer-item">
+                <div class="footer-label">Validité</div>
+                <div class="footer-value">Permanente</div>
+            </div>
+        </div>
+        <div class="profexpress">
+            <p>Une formation proposée par</p>
+            <a href="https://www.profexpress.com" target="_blank">
+                <img src="images/logo-profexpress.png" alt="Prof Express">
+            </a>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            const blob = new Blob([certHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Attestation_ARIA7_Consigne_${name.trim().replace(/\s+/g,'_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
+
+    <!-- ==================== QUIZ ==================== -->
+    <div id="quiz-screen">
+        <!-- Contenu rendu dynamiquement par initQuiz() / renderQuizQuestion() -->
+    </div>
 
 </body>
 </html>
