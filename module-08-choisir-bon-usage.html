@@ -475,6 +475,292 @@
       line-height: 1.7;
     }
 
+    /* ==================== TRIAGE CENTER ==================== */
+    #triage-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #triage-screen.active { display: flex; }
+
+    .triage-header {
+      background: rgba(10,20,40,0.95);
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+      padding: 14px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 20px;
+    }
+    .triage-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+    .triage-header-title::before { content: '📋'; font-size: 1.3em; }
+
+    .triage-scorebar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+    }
+    .triage-score-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+    .triage-score-item .tsv { font-weight: 700; font-size: 1.1em; }
+    .tsv.green { color: var(--neon-green); }
+    .tsv.amber { color: var(--warn); }
+    .tsv.red-v { color: var(--danger); }
+
+    .triage-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82em;
+      white-space: nowrap;
+    }
+    .triage-bar { width: 160px; height: 6px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
+    .triage-bar-fill { height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green)); transition: width 0.4s; }
+
+    /* Corps */
+    .triage-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 40px;
+      overflow-y: auto;
+    }
+
+    .case-card {
+      max-width: 820px;
+      width: 100%;
+      background: rgba(10,20,40,0.9);
+      border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 16px;
+      padding: 36px 44px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+
+    .case-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .case-number::before {
+      content: '';
+      display: block; width: 8px; height: 8px;
+      background: var(--neon-cyan); border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: blink 1.2s infinite;
+    }
+
+    .case-sector {
+      display: inline-block;
+      padding: 4px 12px;
+      border: 1px solid rgba(78,205,196,0.4);
+      border-radius: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72em;
+      color: var(--neon-cyan);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .case-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2em;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .case-desc {
+      line-height: 1.8;
+      color: #aabbcc;
+      margin-bottom: 28px;
+      font-size: 1.02em;
+    }
+
+    .case-question {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
+
+    .protocol-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .p-btn {
+      padding: 18px 12px;
+      border-radius: 10px;
+      border: 2px solid;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .p-btn .p-btn-icon { font-size: 1.8em; }
+    .p-btn.btn-green {
+      border-color: rgba(0,255,136,0.5);
+      color: var(--neon-green);
+    }
+    .p-btn.btn-green:hover {
+      background: rgba(0,255,136,0.1);
+      box-shadow: 0 0 20px rgba(0,255,136,0.3);
+      transform: translateY(-3px);
+    }
+    .p-btn.btn-amber {
+      border-color: rgba(255,204,0,0.5);
+      color: var(--warn);
+    }
+    .p-btn.btn-amber:hover {
+      background: rgba(255,204,0,0.1);
+      box-shadow: 0 0 20px rgba(255,204,0,0.3);
+      transform: translateY(-3px);
+    }
+    .p-btn.btn-red {
+      border-color: rgba(255,77,77,0.5);
+      color: var(--danger);
+    }
+    .p-btn.btn-red:hover {
+      background: rgba(255,77,77,0.1);
+      box-shadow: 0 0 20px rgba(255,77,77,0.3);
+      transform: translateY(-3px);
+    }
+    .p-btn.selected-correct {
+      background: rgba(0,255,136,0.2);
+      border-color: var(--neon-green);
+      box-shadow: 0 0 25px rgba(0,255,136,0.4);
+    }
+    .p-btn.selected-wrong {
+      background: rgba(255,77,77,0.2);
+      border-color: var(--danger);
+    }
+    .p-btn.show-correct {
+      background: rgba(0,255,136,0.15);
+      border-color: var(--neon-green);
+    }
+    .p-btn:disabled { cursor: not-allowed; opacity: 0.6; transform: none !important; }
+
+    /* Feedback */
+    .case-feedback {
+      display: none;
+      margin-top: 6px;
+      border-radius: 10px;
+      padding: 20px 24px;
+      line-height: 1.7;
+    }
+    .case-feedback.correct {
+      display: block;
+      background: rgba(0,60,30,0.5);
+      border: 1px solid rgba(0,255,136,0.4);
+    }
+    .case-feedback.wrong {
+      display: block;
+      background: rgba(60,10,10,0.5);
+      border: 1px solid rgba(255,77,77,0.4);
+    }
+    .feedback-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .feedback-title.ok { color: var(--neon-green); }
+    .feedback-title.err { color: var(--danger); }
+
+    .btn-next-case {
+      width: 100%;
+      margin-top: 18px;
+      padding: 15px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--neon-cyan);
+      color: var(--dark-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+      display: none;
+    }
+    .btn-next-case:hover { background: var(--neon-blue); transform: scale(1.02); }
+
+    /* Fin de triage */
+    .triage-end {
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+    }
+    .triage-end-icon { font-size: 4em; margin-bottom: 20px; }
+    .triage-end-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      margin-bottom: 12px;
+    }
+    .triage-score-display {
+      font-size: 3em;
+      font-weight: 700;
+      margin: 20px 0;
+      font-family: 'Space Mono', monospace;
+    }
+    .triage-end-msg { color: #aabbcc; line-height: 1.7; margin-bottom: 30px; }
+    .btn-go-quiz {
+      font-family: 'Space Mono', monospace;
+      font-size: 1em;
+      padding: 16px 40px;
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+      border-radius: 6px;
+    }
+    .btn-go-quiz:hover {
+      background: rgba(78,205,196,0.1);
+      box-shadow: 0 0 20px rgba(78,205,196,0.4);
+      transform: scale(1.04);
+    }
+
   </style>
 </head>
 <body>
@@ -570,6 +856,26 @@
       <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
       <span id="lesson-counter" style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.85em"></span>
       <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- ==================== TRIAGE CENTER ==================== -->
+  <div id="triage-screen">
+    <div class="triage-header">
+      <div class="triage-header-title">Centre de Triage — Nexus Protocol</div>
+      <div class="triage-scorebar">
+        <div class="triage-score-item">🟢 <span id="score-green" class="tsv green">0</span></div>
+        <div class="triage-score-item">🟡 <span id="score-amber" class="tsv amber">0</span></div>
+        <div class="triage-score-item">🔴 <span id="score-red" class="tsv red-v">0</span></div>
+      </div>
+      <div class="triage-progress-wrap">
+        <span id="triage-counter">Cas 1/10</span>
+        <div class="triage-bar"><div class="triage-bar-fill" id="triage-bar-fill" style="width:10%"></div></div>
+      </div>
+    </div>
+
+    <div class="triage-body" id="triage-body">
+      <!-- Le cas courant est injecté ici -->
     </div>
   </div>
 
@@ -992,9 +1298,252 @@
     showLesson(0);
   }
 
+  /* =========================================================
+     TRIAGE : DONNÉES DES 10 CAS
+  ========================================================= */
+  const triageCases = [
+    {
+      sector: "🎨 Créativité & Éducation",
+      title: "Aider un lycéen à brainstormer pour son projet artistique",
+      desc: "Théo, 16 ans, doit rendre un dossier d'art plastique sur le thème de la mémoire. Il n'a pas encore d'idées et souhaite utiliser un chatbot IA pour générer des pistes créatives : supports, techniques, artistes de référence, angles d'approche...",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ Générer des pistes créatives est une tâche idéale pour l'IA. L'enjeu est faible (brouillon d'idées), il n'y a pas de données sensibles, le lycéen conserve son jugement artistique final, et le résultat est facilement évaluable. L'IA joue ici le rôle d'un brainstorming élargi.",
+        wrong: "Révision nécessaire. Cette demande relève du Protocole Vert : générer des idées créatives est une tâche à faible enjeu où l'IA excelle. Aucune donnée sensible, pas de décision critique. Le lycéen sélectionne et adapte lui-même les idées — il reste acteur."
+      }
+    },
+    {
+      sector: "🏥 Santé & Médecine",
+      title: "Générer des hypothèses de diagnostic pour un patient",
+      desc: "Dr. Amara, médecin généraliste, reçoit un patient avec des symptômes atypiques. Elle envisage de soumettre la liste des symptômes à un chatbot IA grand public pour obtenir des hypothèses de diagnostic avant de prescrire des examens complémentaires.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ Un diagnostic médical engage la vie d'un patient et la responsabilité légale du médecin. L'IA grand public peut halluciner des diagnostics plausibles mais faux. Les outils médicaux certifiés (avec validation clinique) sont à distinguer des chatbots généraux — qui ne doivent jamais remplacer le jugement clinique d'un professionnel.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Rouge. Même si l'IA peut lister des hypothèses, elle ne dispose d'aucune licence médicale, ne connaît pas le dossier complet du patient et peut halluciner des diagnostics avec assurance. En cas d'erreur, c'est le médecin (et la santé du patient) qui en pâtit."
+      }
+    },
+    {
+      sector: "👥 Ressources humaines",
+      title: "Préparer une liste de questions pour un entretien de recrutement",
+      desc: "Fatima, DRH d'une PME, recrute un comptable senior. Elle souhaite utiliser l'IA pour générer une liste de 15 questions d'entretien couvrant les compétences techniques (fiscal, normes IFRS) et comportementales. Elle les adaptera ensuite au profil du candidat.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'amber',
+      feedback: {
+        correct: "Protocole Ambre validé ✅ L'IA peut générer un excellent point de départ pour une grille d'entretien. Mais attention : les questions doivent être adaptées au contexte réel de l'entreprise, vérifiées pour éviter tout biais discriminatoire, et complétées par l'expertise RH de Fatima. Le résultat ne doit pas être utilisé tel quel sans relecture critique.",
+        wrong: "Révision nécessaire. C'est du Protocole Ambre. L'IA est utile ici, mais les questions générées peuvent contenir des biais, être inadaptées au contexte ou manquer de spécificité métier. Fatima doit relire, adapter et endosser la responsabilité des questions posées — elle ne peut pas déléguer entièrement à l'IA."
+      }
+    },
+    {
+      sector: "✍️ Communication & Marketing",
+      title: "Rédiger un billet de blog pour présenter une startup",
+      desc: "Lucas vient de lancer une startup dans le domaine de la livraison éco-responsable. Il souhaite publier un premier billet de blog de 500 mots pour présenter sa vision, ses valeurs et son offre. Il utilisera l'IA pour rédiger un brouillon qu'il remaniera à sa façon.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ Rédiger un brouillon de contenu marketing est un usage idéal de l'IA. Aucune donnée sensible, enjeu créatif faible, résultat facilement révisable. Lucas garde la main sur le contenu final et y apportera sa voix personnelle. C'est exactement le type de tâche où l'IA fait gagner du temps sans risque.",
+        wrong: "Révision nécessaire. Cette demande est bien Protocole Vert. Créer un brouillon de billet de blog est une tâche créative à faible enjeu. Lucas relit et adapte le texte final — l'IA n'est qu'un assistant rédactionnel. Aucune donnée sensible, aucune responsabilité engagée."
+      }
+    },
+    {
+      sector: "⚖️ Justice & Droit",
+      title: "Évaluer le risque de récidive d'un prévenu via l'IA",
+      desc: "Un tribunal envisage d'utiliser un système d'IA pour calculer automatiquement un 'score de risque de récidive' pour chaque prévenu, score qui servirait d'argument dans la décision de mise en liberté ou de détention provisoire.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ Cette situation est un exemple réel et problématique (système COMPAS aux États-Unis). Un algorithme qui décide de la liberté d'un individu concentre des biais systémiques (souvent racistes), manque de transparence et peut violer le droit fondamental à un procès équitable. Les décisions judiciaires engageant la liberté des personnes doivent rester sous contrôle humain total.",
+        wrong: "Révision nécessaire. Cette demande est clairement Protocole Rouge. Aucun algorithme ne devrait décider seul de la liberté d'un être humain. Les systèmes de scoring judiciaire ont démontré des biais profonds et une opacité inacceptable dans un État de droit. L'IA peut informer, jamais décider."
+      }
+    },
+    {
+      sector: "📰 Information & Journalisme",
+      title: "Vérifier des faits sur un événement qui vient de se produire",
+      desc: "Soraya, journaliste en ligne, reçoit une rumeur sur un événement survenu il y a 3 heures. Elle envisage de demander à ChatGPT de confirmer ou infirmer les informations circulant sur les réseaux sociaux, afin d'aller plus vite pour son article.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ L'IA grand public a une date limite de connaissance (cutoff). Elle n'a aucun accès aux événements récents. Pire : face à une question sur un fait récent, elle peut inventer une réponse plausible (hallucination) plutôt qu'admettre son ignorance. La vérification journalistique doit passer par des sources primaires, des agences de presse et des témoins — jamais par un chatbot.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Rouge. L'IA n'a pas accès aux événements récents et peut fabriquer des 'faits' convaincants sur des sujets qu'elle ne connaît pas. Pour du fact-checking en temps réel, il faut des bases de données d'agences de presse, des sources directes, ou des outils dédiés à la vérification d'information."
+      }
+    },
+    {
+      sector: "💻 Développement & Tech",
+      title: "Générer une fonction pour trier une liste de produits par prix",
+      desc: "Amélie, développeuse junior, travaille sur un site e-commerce. Elle doit implémenter une fonction de tri d'une liste de produits par ordre croissant de prix. Elle veut utiliser l'IA pour générer un code JavaScript propre qu'elle intégrera après l'avoir testé.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ C'est un usage idéal de l'IA pour le développement. La tâche est bien définie, standard et facilement testable. Amélie dit explicitement qu'elle testera le code avant intégration — elle garde le contrôle. Pour des fonctions courantes sans enjeu de sécurité critique, l'IA est un excellent accélérateur de productivité.",
+        wrong: "Révision nécessaire. C'est Protocole Vert. Générer une fonction de tri standard est une tâche technique bien définie, sans donnée sensible et facilement vérifiable par les tests. Amélie teste le code avant de l'intégrer, ce qui est la bonne pratique. L'IA accélère le travail sans prendre de décision critique."
+      }
+    },
+    {
+      sector: "😔 Soutien psychologique",
+      title: "Chercher du réconfort auprès d'un chatbot en situation de crise",
+      desc: "Mia, 17 ans, traverse une période très difficile. Elle se sent incomprise, parle d'idées sombres et commence à utiliser un chatbot IA comme confident unique, plusieurs heures par jour, en remplacement de tout contact humain ou professionnel.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ L'IA peut sembler empathique, mais elle simule sans ressentir. En situation de souffrance psychologique sérieuse, a fortiori chez une mineure, le risque de réponse inadaptée est réel (conseils dangereux, minimisation de la crise, dépendance affective à l'outil). Il faut orienter vers des professionnels : psychologue, médecin, numéros d'urgence (3114 en France). L'IA peut compléter un suivi, jamais le remplacer.",
+        wrong: "Révision nécessaire. Cette situation est Protocole Rouge. La santé mentale en crise nécessite des professionnels humains. L'IA ne peut pas évaluer une situation de crise réelle, elle peut répondre de façon inadaptée ou dangereuse, et créer une dépendance qui retarde une prise en charge adaptée. En France : numéro national de prévention du suicide 3114."
+      }
+    },
+    {
+      sector: "📝 Juridique & Contracts",
+      title: "Comprendre les grandes lignes d'un contrat commercial avant de consulter un avocat",
+      desc: "Olivier, directeur d'une PME, reçoit un contrat de partenariat de 40 pages en anglais juridique. Avant son rendez-vous avec son avocat dans 3 jours, il souhaite utiliser l'IA pour obtenir un résumé des clauses clés, identifier les points inhabituels et préparer ses questions.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'amber',
+      feedback: {
+        correct: "Protocole Ambre validé ✅ Ici, l'IA est utilisée pour préparer et mieux comprendre — pas pour décider. Olivier continue à consulter un avocat pour la décision finale. C'est une utilisation Ambre légitime : l'IA comme outil de compréhension préliminaire, sous réserve de ne pas s'y fier pour la décision finale et de ne pas partager des clauses ultra-confidentielles avec des services non sécurisés.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Ambre. Olivier utilise l'IA pour comprendre et préparer ses questions — pas pour décider seul. C'est une nuance importante. Tant que la décision finale reste avec l'avocat et que le contrat n'est pas signé sur la base du seul avis de l'IA, cet usage est acceptable avec précaution."
+      }
+    },
+    {
+      sector: "📊 Communication institutionnelle",
+      title: "Résumer un rapport annuel de 60 pages en 2 pages pour des donateurs",
+      desc: "L'association 'Espaces Verts Partagés' doit envoyer à ses 500 donateurs une synthèse de son rapport annuel de 60 pages. La coordinatrice, Nadia, souhaite utiliser l'IA pour produire un résumé de 2 pages qu'elle relira, complétera et validera avant envoi.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ Résumer un long document associatif public est une tâche idéale pour l'IA. Aucune donnée personnelle sensible, enjeu faible, résultat directement vérifiable par Nadia qui connaît le rapport. La démarche est exemplaire : l'IA produit un brouillon, Nadia valide. C'est exactement la bonne posture.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Vert. Synthétiser un rapport public à faible enjeu, avec vérification humaine avant envoi, est un usage recommandé de l'IA. Nadia garde le contrôle total : elle relit, complète et valide. L'IA ne fait que réduire le travail de rédaction initial."
+      }
+    }
+  ];
+
+  /* =========================================================
+     TRIAGE : ÉTAT ET LOGIQUE
+  ========================================================= */
+  let triageState = {
+    currentCase: 0,
+    scores: { correct: 0, wrong: 0 },
+    answered: false
+  };
+
   function startTriage() {
-    // Phase 3 — à venir
-    alert('Centre de Triage en cours de développement… (Phase 3 à venir)');
+    document.getElementById('briefing-screen').classList.remove('active');
+    document.getElementById('triage-screen').classList.add('active');
+    triageState = { currentCase: 0, scores: { correct: 0, wrong: 0 }, answered: false };
+    renderCase(0);
+  }
+
+  function renderCase(idx) {
+    const c = triageCases[idx];
+    triageState.answered = false;
+    document.getElementById('triage-counter').textContent = `Cas ${idx + 1}/10`;
+    document.getElementById('triage-bar-fill').style.width = ((idx + 1) / 10 * 100) + '%';
+
+    document.getElementById('triage-body').innerHTML = `
+      <div class="case-card" id="case-card">
+        <div class="case-number">Dossier entrant — Protocole requis</div>
+        <div class="case-sector">${c.sector}</div>
+        <div class="case-title">${c.title}</div>
+        <div class="case-desc">${c.desc}</div>
+        <div class="case-question">${c.question}</div>
+
+        <div class="protocol-btns">
+          <button class="p-btn btn-green" onclick="answerTriage('green')" id="pbtn-green">
+            <span class="p-btn-icon">🟢</span>
+            Protocole Vert
+          </button>
+          <button class="p-btn btn-amber" onclick="answerTriage('amber')" id="pbtn-amber">
+            <span class="p-btn-icon">🟡</span>
+            Protocole Ambre
+          </button>
+          <button class="p-btn btn-red" onclick="answerTriage('red')" id="pbtn-red">
+            <span class="p-btn-icon">🔴</span>
+            Protocole Rouge
+          </button>
+        </div>
+
+        <div id="case-feedback" class="case-feedback"></div>
+
+        <button class="btn-next-case" id="btn-next-case" onclick="nextCase()">
+          ${idx < triageCases.length - 1 ? '→ Cas suivant' : '📝 Accéder au Quiz de certification'}
+        </button>
+      </div>
+    `;
+  }
+
+  function answerTriage(protocol) {
+    if (triageState.answered) return;
+    triageState.answered = true;
+
+    const c = triageCases[triageState.currentCase];
+    const isCorrect = (protocol === c.correct);
+
+    if (isCorrect) triageState.scores.correct++;
+    else triageState.scores.wrong++;
+
+    // Colorer les boutons
+    ['green', 'amber', 'red'].forEach(p => {
+      const btn = document.getElementById('pbtn-' + p);
+      btn.disabled = true;
+      if (p === protocol && isCorrect) btn.classList.add('selected-correct');
+      else if (p === protocol && !isCorrect) btn.classList.add('selected-wrong');
+      if (p === c.correct && !isCorrect) btn.classList.add('show-correct');
+    });
+
+    // Afficher feedback
+    const fb = document.getElementById('case-feedback');
+    fb.className = 'case-feedback ' + (isCorrect ? 'correct' : 'wrong');
+    fb.innerHTML = `
+      <div class="feedback-title ${isCorrect ? 'ok' : 'err'}">${isCorrect ? '✅ Bonne décision !' : '❌ Protocole incorrect'}</div>
+      <div style="color:#cfe9ff;line-height:1.7">${isCorrect ? c.feedback.correct : c.feedback.wrong}</div>
+    `;
+
+    document.getElementById('btn-next-case').style.display = 'block';
+  }
+
+  function nextCase() {
+    triageState.currentCase++;
+    if (triageState.currentCase >= triageCases.length) {
+      showTriageEnd();
+    } else {
+      renderCase(triageState.currentCase);
+    }
+  }
+
+  function showTriageEnd() {
+    const total = triageCases.length;
+    const correct = triageState.scores.correct;
+    const pct = Math.round(correct / total * 100);
+
+    document.getElementById('triage-body').innerHTML = `
+      <div class="triage-end">
+        <div class="triage-end-icon">${pct >= 80 ? '🏆' : pct >= 60 ? '🎯' : '📚'}</div>
+        <div class="triage-end-title" style="color:var(--neon-cyan)">Triage terminé !</div>
+        <div class="triage-score-display" style="color:${pct >= 80 ? 'var(--neon-green)' : pct >= 60 ? 'var(--warn)' : 'var(--danger)'}">
+          ${correct} / ${total}
+        </div>
+        <div class="triage-end-msg">
+          ${pct >= 80
+            ? `Excellent travail, Agent ! Vous maîtrisez les protocoles NEXUS avec brio (${pct}% de réussite). Vous êtes prêt·e pour la certification.`
+            : pct >= 60
+            ? `Bon début (${pct}% de réussite). Quelques cas vous ont résisté — la certification vous permettra d'affiner vos connaissances.`
+            : `${pct}% de réussite. Il vous reste des protocoles à consolider. Relisez le dossier et retentez !`
+          }
+        </div>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-go-quiz" onclick="startQuiz()">📝 Accéder au Quiz de certification</button>
+          <button class="btn-go-quiz" style="border-color:rgba(78,205,196,0.4);color:var(--muted)" onclick="restartTriage()">🔄 Refaire le triage</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function restartTriage() {
+    triageState = { currentCase: 0, scores: { correct: 0, wrong: 0 }, answered: false };
+    renderCase(0);
+    document.getElementById('triage-bar-fill').style.width = '10%';
+  }
+
+  function startQuiz() {
+    // Phase 4 — à venir
+    alert('Quiz de certification en cours de développement… (Phase 4 à venir)');
   }
   </script>
 
