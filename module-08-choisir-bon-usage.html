@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS DÉCISION — Module 8 (Choisir le bon usage de l'IA)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root {
+      --neon-green: #00ff88;
+      --neon-blue: #00d4ff;
+      --neon-pink: #ff0080;
+      --neon-purple: #a855f7;
+      --neon-cyan: #4ecdc4;
+      --dark-bg: #0a0e17;
+      --panel-bg: rgba(10, 20, 40, 0.95);
+      --text: #e0f0ff;
+      --muted: #8899aa;
+      --danger: #ff4d4d;
+      --warn: #ffcc00;
+      --ok: #00ff88;
+      --domain-color: #4ecdc4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(78, 205, 196, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78, 205, 196, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ==================== ÉCRAN TITRE ==================== */
+    #title-screen {
+      position: fixed;
+      inset: 0;
+      background:
+        url('images/module8-title-bg.png') center/cover no-repeat,
+        linear-gradient(135deg, #0a0e17 0%, #0d1f2a 50%, #0a0e17 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.5s, visibility 0.5s;
+    }
+    #title-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 14, 23, 0.72);
+      z-index: -1;
+    }
+    #title-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .back-link-title {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #8899aa;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+    }
+    .back-link-title:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #aabbcc; }
+
+    .domain-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: rgba(78, 205, 196, 0.1);
+      border: 1px solid rgba(78, 205, 196, 0.4);
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .title-logo {
+      font-size: 4em;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+
+    .main-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.8em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .module-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: var(--neon-cyan);
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+
+    .subtitle {
+      font-size: 1.3em;
+      color: #8899aa;
+      margin-bottom: 40px;
+      font-weight: 300;
+      text-align: center;
+    }
+
+    .intro-box {
+      max-width: 760px;
+      margin: 0 20px 35px;
+      background: rgba(10, 20, 40, 0.85);
+      border: 1px solid rgba(78, 205, 196, 0.3);
+      border-radius: 12px;
+      padding: 28px 36px;
+      text-align: left;
+      backdrop-filter: blur(10px);
+    }
+    .dispatch-header {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dispatch-header::before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: blink 1.2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .intro-box p { line-height: 1.8; color: #aabbcc; margin-bottom: 10px; font-size: 1.05em; }
+    .intro-box p:last-child { margin-bottom: 0; }
+    .intro-box strong { color: var(--text); }
+
+    .mission-stats { display: flex; gap: 20px; margin-top: 16px; flex-wrap: wrap; }
+    .stat-item {
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Space Mono', monospace; font-size: 0.78em; color: var(--muted);
+    }
+    .stat-item .stat-val { color: var(--neon-cyan); font-weight: 700; }
+
+    .start-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      padding: 18px 55px;
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .start-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(78,205,196,0.3), transparent);
+      transition: left 0.5s;
+    }
+    .start-btn:hover::before { left: 100%; }
+    .start-btn:hover {
+      background: rgba(78,205,196,0.08);
+      box-shadow: 0 0 30px rgba(78,205,196,0.5), inset 0 0 30px rgba(78,205,196,0.08);
+      transform: scale(1.05);
+    }
+
+    .scan-line {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      animation: scan 4s linear infinite; opacity: 0.4;
+    }
+    @keyframes scan { 0%{top:0} 100%{top:100%} }
+
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #briefing-screen.active { display: flex; }
+
+    .briefing-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3em;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .briefing-title::before { content: '🧭'; font-size: 1.4em; }
+
+    .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.9em; }
+    .briefing-progress-bar { width: 200px; height: 6px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
+    .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue)); transition: width 0.3s; }
+
+    .briefing-body { display: flex; flex: 1; overflow: hidden; }
+
+    .briefing-nav {
+      width: 280px;
+      background: rgba(10, 20, 40, 0.9);
+      border-right: 1px solid rgba(78, 205, 196, 0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    .back-link-sidebar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 15px; margin: 0 15px 20px;
+      background: rgba(78,205,196,0.05);
+      border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 8px;
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s;
+    }
+    .back-link-sidebar:hover { background: rgba(78,205,196,0.15); border-color: var(--neon-cyan); transform: translateX(-3px); }
+
+    .briefing-nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 15px 20px; cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.3s; color: #8899aa;
+    }
+    .briefing-nav-item:hover { background: rgba(78,205,196,0.05); color: var(--text); }
+    .briefing-nav-item.active { border-left-color: var(--neon-cyan); background: rgba(78,205,196,0.1); color: var(--neon-cyan); }
+    .briefing-nav-item.completed { color: var(--neon-blue); }
+    .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); }
+    .nav-icon { font-size: 1.2em; width: 30px; text-align: center; }
+    .nav-number {
+      font-family: 'Space Mono', monospace; font-size: 0.8em;
+      background: rgba(78,205,196,0.2); padding: 2px 8px; border-radius: 3px;
+    }
+    .briefing-nav-item.active .nav-number { background: rgba(78,205,196,0.4); }
+
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .briefing-content::-webkit-scrollbar { width: 8px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(78,205,196,0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 4px; }
+
+    .briefing-footer {
+      background: rgba(10,20,40,0.95);
+      border-top: 1px solid rgba(78,205,196,0.3);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .briefing-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-cyan);
+      background: transparent;
+      color: var(--neon-cyan);
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .briefing-btn:hover { background: rgba(78,205,196,0.1); box-shadow: 0 0 20px rgba(78,205,196,0.3); }
+    .briefing-btn.primary { background: var(--neon-cyan); color: var(--dark-bg); }
+    .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
+    .briefing-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ==================== CONTENU COURS ==================== */
+    .module-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      color: var(--neon-cyan);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+    }
+    .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(78,205,196,0.5), transparent); margin: 18px 0; }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid rgba(78,205,196,.5);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72em;
+      color: var(--neon-cyan);
+      margin: 0 4px 8px 0;
+      letter-spacing: 1px;
+    }
+
+    .callout {
+      background: rgba(0, 30, 60, 0.5);
+      border: 1px solid rgba(78, 205, 196, 0.25);
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin: 14px 0;
+      line-height: 1.7;
+    }
+    .callout.ok { border-color: rgba(0,255,136,0.4); background: rgba(0,60,30,0.3); }
+    .callout.warn { border-color: rgba(255,204,0,0.4); background: rgba(60,50,0,0.3); }
+    .callout.danger { border-color: rgba(255,77,77,0.4); background: rgba(60,10,10,0.3); }
+
+    h3 { color: var(--neon-cyan); margin: 25px 0 15px; font-size: 1.15em; }
+    p { line-height: 1.75; color: #cfe9ff; margin-bottom: 12px; }
+    strong { color: var(--text); }
+    em { color: var(--muted); }
+
+    /* Protocole cards */
+    .protocol-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0; }
+    .protocol-card {
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      border: 2px solid;
+    }
+    .protocol-card.green {
+      background: rgba(0, 80, 40, 0.35);
+      border-color: rgba(0,255,136,0.5);
+    }
+    .protocol-card.amber {
+      background: rgba(80, 60, 0, 0.35);
+      border-color: rgba(255,204,0,0.5);
+    }
+    .protocol-card.red {
+      background: rgba(80, 10, 10, 0.35);
+      border-color: rgba(255,77,77,0.5);
+    }
+    .protocol-card .p-icon { font-size: 2.2em; margin-bottom: 10px; }
+    .protocol-card .p-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .protocol-card.green .p-label { color: var(--neon-green); }
+    .protocol-card.amber .p-label { color: var(--warn); }
+    .protocol-card.red .p-label { color: var(--danger); }
+    .protocol-card p { font-size: 0.9em; color: #aabbcc; margin: 0; }
+
+    .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 15px 0; }
+    .criteria-card {
+      background: rgba(0,20,40,0.5);
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .criteria-card .c-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--neon-cyan);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .criteria-card p { font-size: 0.9em; margin: 0; color: #aabbcc; }
+
+    .domain-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .domain-table th {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--neon-cyan);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+    }
+    .domain-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #cfe9ff;
+      font-size: 0.95em;
+      vertical-align: top;
+    }
+    .domain-table tr:hover td { background: rgba(78,205,196,0.04); }
+    .badge-green { color: var(--neon-green); font-weight: 700; }
+    .badge-amber { color: var(--warn); font-weight: 700; }
+    .badge-red { color: var(--danger); font-weight: 700; }
+
+    .trap-list { list-style: none; margin: 10px 0; }
+    .trap-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      line-height: 1.6;
+      color: #cfe9ff;
+    }
+    .trap-list li:last-child { border-bottom: none; }
+    .trap-list li .trap-icon { font-size: 1.3em; flex-shrink: 0; margin-top: 2px; }
+
+    .quote-block {
+      border-left: 3px solid var(--neon-cyan);
+      padding: 14px 20px;
+      margin: 20px 0;
+      background: rgba(78,205,196,0.05);
+      font-style: italic;
+      color: #cfe9ff;
+      font-size: 1.05em;
+      line-height: 1.7;
+    }
+
+    /* ==================== QUIZ ==================== */
+    #quiz-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 997;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #quiz-screen.active { display: flex; }
+
+    .q-card {
+      background: rgba(10,20,40,0.85);
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin-bottom: 20px;
+    }
+    .q-head { margin-bottom: 10px; }
+    .q-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+    }
+    .q-text {
+      font-size: 1.05em;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+    .q-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .q-opt {
+      padding: 13px 18px;
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #cfe9ff;
+      line-height: 1.5;
+    }
+    .q-opt:hover { background: rgba(78,205,196,0.08); border-color: rgba(78,205,196,0.4); }
+    .q-opt.selected { background: rgba(78,205,196,0.12); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+    .q-opt.opt-correct { background: rgba(0,60,30,0.5) !important; border-color: var(--neon-green) !important; color: var(--neon-green) !important; }
+    .q-opt.opt-wrong { background: rgba(60,10,10,0.5) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
+
+    .q-explain {
+      display: none;
+      background: rgba(0,20,40,0.6);
+      border-left: 3px solid var(--neon-cyan);
+      padding: 14px 18px;
+      color: #aabbcc;
+      font-size: 0.93em;
+      line-height: 1.7;
+      border-radius: 0 8px 8px 0;
+    }
+    .q-explain.show { display: block; }
+
+    .quiz-result-box {
+      border-radius: 14px;
+      padding: 30px;
+      text-align: center;
+      margin: 10px 0 30px;
+    }
+    .quiz-result-box.res-ok { background: rgba(0,60,30,0.4); border: 1px solid rgba(0,255,136,0.4); }
+    .quiz-result-box.res-warn { background: rgba(60,50,0,0.4); border: 1px solid rgba(255,204,0,0.4); }
+    .btn-unlock {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 35px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--neon-cyan);
+      color: var(--dark-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+    .btn-unlock:hover { background: var(--neon-green); transform: scale(1.04); }
+
+    /* ==================== CERT SCREEN ==================== */
+    #cert-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 996;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #cert-screen.active { display: flex; }
+
+    /* ==================== TRIAGE CENTER ==================== */
+    #triage-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #triage-screen.active { display: flex; }
+
+    .triage-header {
+      background: rgba(10,20,40,0.95);
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+      padding: 14px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 20px;
+    }
+    .triage-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+    .triage-header-title::before { content: '📋'; font-size: 1.3em; }
+
+    .triage-scorebar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+    }
+    .triage-score-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+    .triage-score-item .tsv { font-weight: 700; font-size: 1.1em; }
+    .tsv.green { color: var(--neon-green); }
+    .tsv.amber { color: var(--warn); }
+    .tsv.red-v { color: var(--danger); }
+
+    .triage-progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82em;
+      white-space: nowrap;
+    }
+    .triage-bar { width: 160px; height: 6px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
+    .triage-bar-fill { height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green)); transition: width 0.4s; }
+
+    /* Corps */
+    .triage-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 40px;
+      overflow-y: auto;
+    }
+
+    .case-card {
+      max-width: 820px;
+      width: 100%;
+      background: rgba(10,20,40,0.9);
+      border: 1px solid rgba(78,205,196,0.3);
+      border-radius: 16px;
+      padding: 36px 44px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+
+    .case-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .case-number::before {
+      content: '';
+      display: block; width: 8px; height: 8px;
+      background: var(--neon-cyan); border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-cyan);
+      animation: blink 1.2s infinite;
+    }
+
+    .case-sector {
+      display: inline-block;
+      padding: 4px 12px;
+      border: 1px solid rgba(78,205,196,0.4);
+      border-radius: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72em;
+      color: var(--neon-cyan);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .case-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2em;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .case-desc {
+      line-height: 1.8;
+      color: #aabbcc;
+      margin-bottom: 28px;
+      font-size: 1.02em;
+    }
+
+    .case-question {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 18px;
+    }
+
+    .protocol-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .p-btn {
+      padding: 18px 12px;
+      border-radius: 10px;
+      border: 2px solid;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.25s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .p-btn .p-btn-icon { font-size: 1.8em; }
+    .p-btn.btn-green {
+      border-color: rgba(0,255,136,0.5);
+      color: var(--neon-green);
+    }
+    .p-btn.btn-green:hover {
+      background: rgba(0,255,136,0.1);
+      box-shadow: 0 0 20px rgba(0,255,136,0.3);
+      transform: translateY(-3px);
+    }
+    .p-btn.btn-amber {
+      border-color: rgba(255,204,0,0.5);
+      color: var(--warn);
+    }
+    .p-btn.btn-amber:hover {
+      background: rgba(255,204,0,0.1);
+      box-shadow: 0 0 20px rgba(255,204,0,0.3);
+      transform: translateY(-3px);
+    }
+    .p-btn.btn-red {
+      border-color: rgba(255,77,77,0.5);
+      color: var(--danger);
+    }
+    .p-btn.btn-red:hover {
+      background: rgba(255,77,77,0.1);
+      box-shadow: 0 0 20px rgba(255,77,77,0.3);
+      transform: translateY(-3px);
+    }
+    .p-btn.selected-correct {
+      background: rgba(0,255,136,0.2);
+      border-color: var(--neon-green);
+      box-shadow: 0 0 25px rgba(0,255,136,0.4);
+    }
+    .p-btn.selected-wrong {
+      background: rgba(255,77,77,0.2);
+      border-color: var(--danger);
+    }
+    .p-btn.show-correct {
+      background: rgba(0,255,136,0.15);
+      border-color: var(--neon-green);
+    }
+    .p-btn:disabled { cursor: not-allowed; opacity: 0.6; transform: none !important; }
+
+    /* Feedback */
+    .case-feedback {
+      display: none;
+      margin-top: 6px;
+      border-radius: 10px;
+      padding: 20px 24px;
+      line-height: 1.7;
+    }
+    .case-feedback.correct {
+      display: block;
+      background: rgba(0,60,30,0.5);
+      border: 1px solid rgba(0,255,136,0.4);
+    }
+    .case-feedback.wrong {
+      display: block;
+      background: rgba(60,10,10,0.5);
+      border: 1px solid rgba(255,77,77,0.4);
+    }
+    .feedback-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .feedback-title.ok { color: var(--neon-green); }
+    .feedback-title.err { color: var(--danger); }
+
+    .btn-next-case {
+      width: 100%;
+      margin-top: 18px;
+      padding: 15px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--neon-cyan);
+      color: var(--dark-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+      display: none;
+    }
+    .btn-next-case:hover { background: var(--neon-blue); transform: scale(1.02); }
+
+    /* Fin de triage */
+    .triage-end {
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+    }
+    .triage-end-icon { font-size: 4em; margin-bottom: 20px; }
+    .triage-end-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      margin-bottom: 12px;
+    }
+    .triage-score-display {
+      font-size: 3em;
+      font-weight: 700;
+      margin: 20px 0;
+      font-family: 'Space Mono', monospace;
+    }
+    .triage-end-msg { color: #aabbcc; line-height: 1.7; margin-bottom: 30px; }
+    .btn-go-quiz {
+      font-family: 'Space Mono', monospace;
+      font-size: 1em;
+      padding: 16px 40px;
+      background: transparent;
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+      border-radius: 6px;
+    }
+    .btn-go-quiz:hover {
+      background: rgba(78,205,196,0.1);
+      box-shadow: 0 0 20px rgba(78,205,196,0.4);
+      transform: scale(1.04);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ==================== ÉCRAN TITRE ==================== -->
+  <div id="title-screen">
+    <div class="scan-line"></div>
+    <a href="modules.html" class="back-link-title">← Modules</a>
+    <div class="domain-badge">Interaction Raisonnée · Module 08</div>
+
+    <div class="title-logo">🧭</div>
+    <div class="module-label">Module 08 — Centre de Protocole</div>
+    <h1 class="main-title">NEXUS DÉCISION</h1>
+    <div class="subtitle">Choisir le bon usage de l'IA</div>
+
+    <div class="intro-box">
+      <div class="dispatch-header">Transmission sécurisée — Nexus Protocol Division</div>
+      <p>
+        Agent, bienvenue au <strong>Centre de Protocole IA</strong>. Des dizaines de demandes arrivent chaque jour dans notre terminal : des organisations, des professionnels, des équipes qui veulent utiliser l'IA pour leurs missions.
+      </p>
+      <p>
+        Votre rôle : évaluer chaque cas et appliquer le bon protocole. L'IA n'est pas toujours la meilleure réponse. Certaines situations réclament de la prudence. D'autres exigent une expertise humaine irremplaçable.
+      </p>
+      <p>
+        Maîtrisez les <strong>trois niveaux de protocole</strong>, analysez les cas qui vous sont soumis, et démontrez que vous savez quand utiliser l'IA — et quand ne pas le faire.
+      </p>
+      <div class="mission-stats">
+        <div class="stat-item">🕐 Durée : <span class="stat-val">15–20 min</span></div>
+        <div class="stat-item">📋 Cas : <span class="stat-val">10 scénarios</span></div>
+        <div class="stat-item">✅ Validation : <span class="stat-val">Quiz 70%</span></div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startModule()">▶ Activer le protocole</button>
+  </div>
+
+  <!-- ==================== BRIEFING ==================== -->
+  <div id="briefing-screen">
+    <div class="briefing-header">
+      <div class="briefing-title">NEXUS DÉCISION — Dossier de Protocole</div>
+      <div class="briefing-progress">
+        <span id="progress-label">Dossier 1/6</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width:16.6%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="briefing-body">
+      <!-- Navigation latérale -->
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar">
+          <span class="back-arrow">←</span> Retour modules
+        </a>
+
+        <div class="briefing-nav-item active" id="nav-0" onclick="showLesson(0)">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-number">01</span>
+          L'IA : un outil, pas tout
+        </div>
+        <div class="briefing-nav-item" id="nav-1" onclick="showLesson(1)">
+          <span class="nav-icon">🚦</span>
+          <span class="nav-number">02</span>
+          Les 3 protocoles
+        </div>
+        <div class="briefing-nav-item" id="nav-2" onclick="showLesson(2)">
+          <span class="nav-icon">⚖️</span>
+          <span class="nav-number">03</span>
+          Critères de décision
+        </div>
+        <div class="briefing-nav-item" id="nav-3" onclick="showLesson(3)">
+          <span class="nav-icon">⚠️</span>
+          <span class="nav-number">04</span>
+          Domaines sensibles
+        </div>
+        <div class="briefing-nav-item" id="nav-4" onclick="showLesson(4)">
+          <span class="nav-icon">🪤</span>
+          <span class="nav-number">05</span>
+          Pièges de la délégation
+        </div>
+        <div class="briefing-nav-item" id="nav-5" onclick="showLesson(5)">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-number">06</span>
+          Garder son agentivité
+        </div>
+      </nav>
+
+      <!-- Contenu -->
+      <div class="briefing-content" id="briefing-content"></div>
+    </div>
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
+      <span id="lesson-counter" style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.85em"></span>
+      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- ==================== TRIAGE CENTER ==================== -->
+  <div id="triage-screen">
+    <div class="triage-header">
+      <div class="triage-header-title">Centre de Triage — Nexus Protocol</div>
+      <div class="triage-scorebar">
+        <div class="triage-score-item">🟢 <span id="score-green" class="tsv green">0</span></div>
+        <div class="triage-score-item">🟡 <span id="score-amber" class="tsv amber">0</span></div>
+        <div class="triage-score-item">🔴 <span id="score-red" class="tsv red-v">0</span></div>
+      </div>
+      <div class="triage-progress-wrap">
+        <span id="triage-counter">Cas 1/10</span>
+        <div class="triage-bar"><div class="triage-bar-fill" id="triage-bar-fill" style="width:10%"></div></div>
+      </div>
+    </div>
+
+    <div class="triage-body" id="triage-body">
+      <!-- Le cas courant est injecté ici -->
+    </div>
+  </div>
+
+  <script>
+  /* =========================================================
+     DONNÉES DES LEÇONS
+  ========================================================= */
+  const lessons = [
+    /* 0 — L'IA : un outil, pas tout */
+    {
+      title: "01 — L'IA : un outil puissant, pas une solution universelle",
+      kicker: "Comprendre les forces et les limites de l'IA pour l'utiliser de façon éclairée.",
+      html: `
+        <div class="pill">NEXUS DÉCISION</div><div class="pill">Module 08</div><div class="pill">Fondamentaux</div>
+        <div class="divider"></div>
+
+        <h3>🤖 L'IA est très douée pour certaines choses…</h3>
+        <p>Les modèles d'IA actuels ont des capacités remarquables : ils traitent des quantités massives de texte, génèrent des contenus cohérents, reformulent à la demande, résument, traduisent, codent, brainstorment. Pour des tâches <strong>répétitives, bien définies, sans enjeu critique</strong>, l'IA peut être un gain de temps considérable.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+          <div class="callout ok">
+            <strong style="color:var(--neon-green)">✅ L'IA excelle dans…</strong><br/><br/>
+            <ul style="margin-left:16px;line-height:2">
+              <li>Générer des brouillons et variantes de texte</li>
+              <li>Résumer de longs documents</li>
+              <li>Reformuler pour différents publics</li>
+              <li>Suggérer des idées, brainstormer</li>
+              <li>Expliquer des concepts courants</li>
+              <li>Traduire avec cohérence</li>
+              <li>Produire du code pour des tâches standards</li>
+            </ul>
+          </div>
+          <div class="callout danger">
+            <strong style="color:var(--danger)">⚠️ L'IA peine avec…</strong><br/><br/>
+            <ul style="margin-left:16px;line-height:2">
+              <li>Les informations récentes ou locales</li>
+              <li>La vérification des faits en temps réel</li>
+              <li>Les décisions éthiques complexes</li>
+              <li>L'empathie et le soutien émotionnel profond</li>
+              <li>La responsabilité légale ou médicale</li>
+              <li>Les situations inédites sans précédent</li>
+              <li>Comprendre les nuances culturelles subtiles</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>🔍 Pourquoi "bien utiliser" l'IA est une compétence</h3>
+        <p>
+          La vraie compétence n'est pas de savoir <em>comment</em> écrire un prompt — c'est de savoir <em>quand</em> et <em>si</em> l'utiliser. Une personne qui confie aveuglément à l'IA des tâches à enjeu fort prend des risques. Une personne qui refuse systématiquement de l'utiliser se prive d'un outil utile.
+        </p>
+        <p>
+          L'objectif du Centre de Protocole : vous apprendre à <strong>évaluer chaque situation</strong> avant d'agir.
+        </p>
+
+        <div class="quote-block">
+          "La question n'est pas 'L'IA peut-elle le faire ?' mais 'L'IA devrait-elle le faire ici, dans ce contexte ?'"
+        </div>
+
+        <h3>⚡ Le bon usage : une question de contexte</h3>
+        <p>Une même tâche peut être verte dans un contexte et rouge dans un autre. Exemple : rédiger un email.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0">
+          <div class="callout ok">
+            <strong style="color:var(--neon-green)">🟢 Vert</strong> — Email de relance commerciale standard pour une liste de prospects
+          </div>
+          <div class="callout danger">
+            <strong style="color:var(--danger)">🔴 Rouge</strong> — Email d'annonce de licenciement à un salarié avec 15 ans d'ancienneté
+          </div>
+        </div>
+        <p>Le contenu est similaire (un email), mais l'<strong>enjeu humain</strong>, la <strong>responsabilité</strong> et le <strong>risque d'erreur</strong> sont radicalement différents.</p>
+      `
+    },
+
+    /* 1 — Les 3 protocoles */
+    {
+      title: "02 — Les 3 niveaux de protocole",
+      kicker: "Apprendre à classer chaque usage selon son niveau de risque et de confiance.",
+      html: `
+        <div class="pill">NEXUS DÉCISION</div><div class="pill">Module 08</div><div class="pill">Protocoles</div>
+        <div class="divider"></div>
+
+        <h3>🚦 Le système de classification NEXUS</h3>
+        <p>Au Centre de Protocole, chaque demande est évaluée selon trois niveaux. Ce système vous aidera à prendre des décisions rapides et éclairées :</p>
+
+        <div class="protocol-grid">
+          <div class="protocol-card green">
+            <div class="p-icon">🟢</div>
+            <div class="p-label">Protocole Vert</div>
+            <p>Usage recommandé. L'IA peut traiter la demande avec un faible risque d'erreur ou de préjudice.</p>
+          </div>
+          <div class="protocol-card amber">
+            <div class="p-icon">🟡</div>
+            <div class="p-label">Protocole Ambre</div>
+            <p>Usage avec précautions. L'IA peut aider, mais une vérification humaine est indispensable.</p>
+          </div>
+          <div class="protocol-card red">
+            <div class="p-icon">🔴</div>
+            <div class="p-label">Protocole Rouge</div>
+            <p>Usage déconseillé. Risque trop élevé : expertise humaine seule acceptable.</p>
+          </div>
+        </div>
+
+        <h3>🟢 Détail Protocole Vert — Usage recommandé</h3>
+        <div class="callout ok">
+          <strong>Caractéristiques :</strong> tâche créative ou administrative à faible enjeu, aucun risque pour autrui, résultat facilement vérifiable, aucune donnée sensible impliquée.<br/><br/>
+          <strong>Exemples :</strong> rédiger un brouillon de post sur les réseaux, résumer un article, brainstormer des noms pour un projet, générer des idées de menus, créer une liste de vocabulaire, expliquer un concept général.
+        </div>
+
+        <h3>🟡 Détail Protocole Ambre — Usage avec précautions</h3>
+        <div class="callout warn">
+          <strong>Caractéristiques :</strong> tâche à enjeu modéré, résultat utilisé tel quel dans un contexte professionnel ou public, données partiellement sensibles, vérification difficile mais possible.<br/><br/>
+          <strong>Exemples :</strong> rédiger une communication officielle (à relire), suggérer un plan d'action (à valider), analyser un texte juridique courant (à confirmer avec un expert), préparer des questions d'entretien (à adapter au contexte réel).<br/><br/>
+          <strong>Règle d'or :</strong> <em>toujours vérifier, contextualiser, assumer la responsabilité du résultat final.</em>
+        </div>
+
+        <h3>🔴 Détail Protocole Rouge — Usage déconseillé</h3>
+        <div class="callout danger">
+          <strong>Caractéristiques :</strong> décision à fort enjeu humain, médical, légal ou éthique ; risque sérieux en cas d'erreur ; données hautement confidentielles ; responsabilité engagée.<br/><br/>
+          <strong>Exemples :</strong> poser un diagnostic médical, donner un conseil juridique sur un cas spécifique, prendre une décision disciplinaire sur un employé, évaluer une situation de crise psychologique, rédiger un testament ou contrat engageant.<br/><br/>
+          <strong>La règle :</strong> <em>l'IA peut être consultée pour s'informer, mais jamais pour décider à la place d'un expert humain qualifié.</em>
+        </div>
+      `
+    },
+
+    /* 2 — Critères de décision */
+    {
+      title: "03 — Les critères de décision",
+      kicker: "Comment évaluer rapidement n'importe quel cas pour lui attribuer le bon protocole.",
+      html: `
+        <div class="pill">NEXUS DÉCISION</div><div class="pill">Module 08</div><div class="pill">Évaluation</div>
+        <div class="divider"></div>
+
+        <h3>⚖️ Les 5 questions à se poser face à chaque cas</h3>
+        <p>Pour classer rapidement une demande, posez-vous ces 5 questions dans l'ordre :</p>
+
+        <div class="criteria-grid">
+          <div class="criteria-card">
+            <div class="c-title">1️⃣ Quel est l'enjeu ?</div>
+            <p>En cas d'erreur, quelle est la conséquence ? Anodine (texte mal tourné) ou grave (décision médicale erronée, licenciement injuste) ?</p>
+          </div>
+          <div class="criteria-card">
+            <div class="c-title">2️⃣ Y a-t-il des données sensibles ?</div>
+            <p>Faut-il partager des informations personnelles, médicales, financières ou confidentielles avec l'IA ? Si oui, attention : ces données sont traitées par des serveurs externes.</p>
+          </div>
+          <div class="criteria-card">
+            <div class="c-title">3️⃣ Peut-on vérifier facilement ?</div>
+            <p>Est-il simple pour un non-expert de vérifier le résultat ? Un brouillon de texte s'évalue à vue. Un diagnostic médical nécessite un professionnel.</p>
+          </div>
+          <div class="criteria-card">
+            <div class="c-title">4️⃣ Une expertise spécifique est-elle requise ?</div>
+            <p>La tâche exige-t-elle une licence, une certification, une responsabilité légale ou une connaissance intime d'un contexte particulier ?</p>
+          </div>
+        </div>
+
+        <div class="criteria-card" style="margin:12px 0">
+          <div class="c-title">5️⃣ Qui assume la responsabilité finale ?</div>
+          <p>L'IA ne peut pas être tenue responsable. Si un résultat incorrect cause un préjudice, c'est la personne qui a fait confiance à l'IA qui en répond. Plus la responsabilité est grande, plus la prudence est nécessaire.</p>
+        </div>
+
+        <h3>🧮 Grille d'évaluation rapide</h3>
+        <table class="domain-table">
+          <thead>
+            <tr>
+              <th>Facteur</th>
+              <th>🟢 Vert</th>
+              <th>🟡 Ambre</th>
+              <th>🔴 Rouge</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Enjeu en cas d'erreur</strong></td>
+              <td class="badge-green">Faible</td>
+              <td class="badge-amber">Modéré</td>
+              <td class="badge-red">Élevé / critique</td>
+            </tr>
+            <tr>
+              <td><strong>Données sensibles</strong></td>
+              <td class="badge-green">Aucune</td>
+              <td class="badge-amber">Partielles</td>
+              <td class="badge-red">Hautement confidentielles</td>
+            </tr>
+            <tr>
+              <td><strong>Vérification du résultat</strong></td>
+              <td class="badge-green">Facile</td>
+              <td class="badge-amber">Nécessite attention</td>
+              <td class="badge-red">Requiert un expert</td>
+            </tr>
+            <tr>
+              <td><strong>Expertise requise</strong></td>
+              <td class="badge-green">Générale</td>
+              <td class="badge-amber">Spécialisée mais accessible</td>
+              <td class="badge-red">Légale / médicale / éthique</td>
+            </tr>
+            <tr>
+              <td><strong>Responsabilité engagée</strong></td>
+              <td class="badge-green">Minime</td>
+              <td class="badge-amber">Professionnelle</td>
+              <td class="badge-red">Légale / humaine directe</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout ok">
+          <strong>💡 Conseil d'agent confirmé :</strong> Si vous hésitez entre Ambre et Rouge, choisissez toujours Rouge et impliquez un expert. Il est moins grave d'être trop prudent que trop confiant.
+        </div>
+      `
+    },
+
+    /* 3 — Domaines sensibles */
+    {
+      title: "04 — Domaines sensibles : à traiter avec précaution",
+      kicker: "Certains secteurs exigent une vigilance renforcée, quelle que soit la tâche.",
+      html: `
+        <div class="pill">NEXUS DÉCISION</div><div class="pill">Module 08</div><div class="pill">Sensibilité</div>
+        <div class="divider"></div>
+
+        <h3>⚠️ Pourquoi certains domaines sont classés « sensibles »</h3>
+        <p>L'IA ne dispose pas d'une licence, d'une responsabilité légale ou d'un serment professionnel. Dans certains domaines, ces éléments sont fondamentaux. Une erreur de l'IA dans ces secteurs peut avoir des conséquences graves, irréversibles ou légalement engagées.</p>
+
+        <table class="domain-table">
+          <thead>
+            <tr>
+              <th>Domaine</th>
+              <th>Pourquoi sensible ?</th>
+              <th>Protocole</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>🏥 Santé & Médecine</strong></td>
+              <td>L'IA peut suggérer des diagnostics faux avec grande assurance. Risque vital, responsabilité médicale.</td>
+              <td class="badge-red">Rouge (pour décisions)<br/><span style="color:var(--warn);font-size:0.85em">Ambre pour s'informer</span></td>
+            </tr>
+            <tr>
+              <td><strong>⚖️ Droit & Juridique</strong></td>
+              <td>Les lois varient selon le pays, la date, le cas précis. L'IA peut produire des conseils inexacts avec l'air d'être sûre.</td>
+              <td class="badge-red">Rouge (pour décisions)<br/><span style="color:var(--warn);font-size:0.85em">Ambre pour comprendre</span></td>
+            </tr>
+            <tr>
+              <td><strong>💰 Finance & Investissement</strong></td>
+              <td>Prédictions financières non fiables. Responsabilité réglementaire. Risque de pertes réelles.</td>
+              <td class="badge-amber">Ambre / Rouge selon l'enjeu</td>
+            </tr>
+            <tr>
+              <td><strong>🧒 Enfants & Éducation</strong></td>
+              <td>Contenus inadaptés, biais pédagogiques, risque de dépendance excessive chez les jeunes.</td>
+              <td class="badge-amber">Ambre (encadrement fort requis)</td>
+            </tr>
+            <tr>
+              <td><strong>😔 Soutien émotionnel</strong></td>
+              <td>L'IA simule l'empathie sans la ressentir. En situation de crise, une réponse inadaptée peut être dangereuse.</td>
+              <td class="badge-red">Rouge pour crises<br/><span style="color:var(--warn);font-size:0.85em">Ambre pour soutien léger</span></td>
+            </tr>
+            <tr>
+              <td><strong>📰 Information & Journalisme</strong></td>
+              <td>L'IA peut halluciner des faits, des dates, des sources. Risque de désinformation.</td>
+              <td class="badge-amber">Ambre (vérification systématique)</td>
+            </tr>
+            <tr>
+              <td><strong>🔐 Cybersécurité</strong></td>
+              <td>L'IA peut aider les défenseurs comme les attaquants. Risque d'usage malveillant.</td>
+              <td class="badge-red">Rouge (hors contexte autorisé)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>📌 La règle des domaines sensibles</h3>
+        <div class="callout warn">
+          Dans un domaine sensible, l'IA peut être un <strong>outil de recherche et d'information</strong> ("Qu'est-ce que l'article L1237-19 du Code du travail ?"), mais elle ne doit jamais être une <strong>source de décision finale</strong> ("Dois-je licencier cet employé en me basant sur cette analyse ?"). La frontière est cruciale.
+        </div>
+      `
+    },
+
+    /* 4 — Pièges de la délégation */
+    {
+      title: "05 — Les pièges de la délégation excessive",
+      kicker: "Quand trop faire confiance à l'IA devient un problème.",
+      html: `
+        <div class="pill">NEXUS DÉCISION</div><div class="pill">Module 08</div><div class="pill">Vigilance</div>
+        <div class="divider"></div>
+
+        <h3>🪤 Piège n°1 — L'automation aveugle</h3>
+        <p>Laisser l'IA produire un contenu sans le lire ni le vérifier, puis l'envoyer ou le publier directement. Ce que vous signez ou publiez vous engage, même si l'IA l'a rédigé.</p>
+        <div class="callout danger">
+          <strong>Cas réel :</strong> En 2023, un avocat américain a soumis à un tribunal des arguments juridiques rédigés par ChatGPT. Les affaires citées n'existaient pas — elles avaient été inventées (hallucinations). L'avocat a été sanctionné. L'IA ne pouvait pas être poursuivie.
+        </div>
+
+        <h3>🪤 Piège n°2 — La sur-confiance dans la précision</h3>
+        <p>L'IA écrit avec la même assurance qu'elle ait raison ou tort. Un texte fluide, structuré et convaincant peut contenir des erreurs factuelles significatives. <strong>La qualité de la forme ne garantit pas la vérité du fond.</strong></p>
+
+        <h3>🪤 Piège n°3 — La perte de compétences</h3>
+        <p>À force de déléguer toujours les mêmes tâches à l'IA, on finit par ne plus savoir les faire seul. C'est particulièrement problématique pour les compétences professionnelles essentielles (rédaction, analyse, argumentation, calcul).</p>
+
+        <ul class="trap-list">
+          <li>
+            <span class="trap-icon">📉</span>
+            <span>Un étudiant qui n'écrit plus ses dissertations lui-même ne développe pas les compétences de synthèse et d'argumentation que lui demande l'enseignement supérieur.</span>
+          </li>
+          <li>
+            <span class="trap-icon">📉</span>
+            <span>Un médecin qui s'appuie sur l'IA pour tous ses diagnostics peut perdre le réflexe clinique forgé par des années de pratique.</span>
+          </li>
+          <li>
+            <span class="trap-icon">📉</span>
+            <span>Un développeur qui copie-colle du code IA sans le comprendre ne progresse pas et introduit des failles qu'il ne sait pas détecter.</span>
+          </li>
+        </ul>
+
+        <h3>🪤 Piège n°4 — L'IA comme bouc émissaire</h3>
+        <p>"C'est l'IA qui a dit ça" n'est pas une défense valide. Professionnellement, légalement et éthiquement, <strong>vous êtes responsable de ce que vous faites avec les sorties de l'IA</strong>.</p>
+
+        <div class="callout warn">
+          <strong>Le bon réflexe :</strong> Traitez chaque sortie d'IA comme une première ébauche proposée par un stagiaire compétent mais faillible. Utile, souvent bon, mais jamais définitif sans votre regard critique.
+        </div>
+      `
+    },
+
+    /* 5 — Garder son agentivité */
+    {
+      title: "06 — Garder son agentivité : rester acteur, pas spectateur",
+      kicker: "L'IA amplifie vos capacités — à condition que vous restiez aux commandes.",
+      html: `
+        <div class="pill">NEXUS DÉCISION</div><div class="pill">Module 08</div><div class="pill">Agentivité</div>
+        <div class="divider"></div>
+
+        <h3>🧠 Qu'est-ce que l'agentivité ?</h3>
+        <p>L'<strong>agentivité</strong> (ou "agency"), c'est votre capacité à agir intentionnellement, à prendre des décisions conscientes et à assumer vos choix. Face à l'IA, l'agentivité, c'est rester la personne qui décide — pas celle qui subit ou applique automatiquement.</p>
+
+        <div class="quote-block">
+          "Un outil intelligent ne rend pas l'utilisateur plus intelligent — il amplifie ce que l'utilisateur apporte. Si vous apportez un jugement solide, l'IA vous rend plus efficace. Si vous apportez de la passivité, l'IA vous rend plus passif."
+        </div>
+
+        <h3>✅ Conserver son agentivité en pratique</h3>
+        <div class="criteria-grid">
+          <div class="criteria-card">
+            <div class="c-title">🎯 Définissez l'objectif vous-même</div>
+            <p>Ne laissez pas l'IA décider ce que vous voulez. Ayez une intention claire avant d'interagir. "J'ai besoin d'un brouillon de présentation pour X contexte" est mieux que "Fais-moi une présentation".</p>
+          </div>
+          <div class="criteria-card">
+            <div class="c-title">🔎 Lisez et évaluez toujours</div>
+            <p>Ne publiez jamais un contenu IA sans l'avoir lu. Posez-vous : "Est-ce que j'assume ce texte ?" Si non, corrigez ou réécrivez.</p>
+          </div>
+          <div class="criteria-card">
+            <div class="c-title">🛠️ Gardez les décisions importantes</div>
+            <p>Utilisez l'IA pour préparer, documenter, explorer. Mais gardez les décisions qui comptent pour vous : recrutement, diagnostic, conseil juridique, expression personnelle profonde.</p>
+          </div>
+          <div class="criteria-card">
+            <div class="c-title">📚 Continuez d'apprendre</div>
+            <p>Pratiquez régulièrement les compétences que vous déléguez parfois à l'IA. Gardez la capacité de faire sans elle : c'est ça, la maîtrise.</p>
+          </div>
+        </div>
+
+        <h3>🏁 La checklist de l'agent NEXUS</h3>
+        <div class="callout ok">
+          Avant d'utiliser l'IA, posez-vous ces 3 questions :<br/><br/>
+          <strong style="color:var(--neon-green)">1.</strong> Quel protocole s'applique ici ? (Vert, Ambre, Rouge)<br/>
+          <strong style="color:var(--neon-green)">2.</strong> Y a-t-il des données sensibles à ne pas partager ?<br/>
+          <strong style="color:var(--neon-green)">3.</strong> Vais-je vérifier, adapter et assumer le résultat final ?<br/><br/>
+          Si vous répondez à ces 3 questions, vous utilisez l'IA de façon responsable.
+        </div>
+
+        <div class="callout" style="text-align:center;padding:25px;margin-top:20px">
+          <div style="font-size:2em;margin-bottom:12px">🧭</div>
+          <p style="font-size:1.1em;margin:0">Vous êtes maintenant prêt·e à prendre les commandes du <strong style="color:var(--neon-cyan)">Centre de Triage</strong>. À vous de classifier 10 cas réels selon les protocoles NEXUS !</p>
+        </div>
+      `
+    }
+  ];
+
+  /* =========================================================
+     NAVIGATION BRIEFING
+  ========================================================= */
+  let currentLesson = 0;
+  const maxLessons = lessons.length;
+
+  function showLesson(idx) {
+    if (idx < 0 || idx >= maxLessons) return;
+    currentLesson = idx;
+
+    const lesson = lessons[idx];
+    document.getElementById('briefing-content').innerHTML = `
+      <div class="module-title">${lesson.title}</div>
+      <div class="module-kicker">${lesson.kicker}</div>
+      ${lesson.html}
+    `;
+    document.getElementById('briefing-content').scrollTop = 0;
+
+    // Nav items
+    document.querySelectorAll('.briefing-nav-item').forEach((el, i) => {
+      el.classList.remove('active');
+      if (i < idx) el.classList.add('completed');
+    });
+    const navEl = document.getElementById('nav-' + idx);
+    if (navEl) { navEl.classList.add('active'); navEl.classList.remove('completed'); }
+
+    // Progress
+    const pct = Math.round(((idx + 1) / maxLessons) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = `Dossier ${idx + 1}/${maxLessons}`;
+    document.getElementById('lesson-counter').textContent = `${idx + 1} / ${maxLessons}`;
+
+    // Buttons
+    document.getElementById('btn-prev').disabled = (idx === 0);
+    const btnNext = document.getElementById('btn-next');
+    if (idx === maxLessons - 1) {
+      btnNext.textContent = '▶ Accéder au Centre de Triage';
+      btnNext.onclick = startTriage;
+    } else {
+      btnNext.textContent = 'Suivant →';
+      btnNext.onclick = nextLesson;
+    }
+  }
+
+  function nextLesson() { showLesson(currentLesson + 1); }
+  function prevLesson() { showLesson(currentLesson - 1); }
+
+  function startModule() {
+    document.getElementById('title-screen').classList.add('hidden');
+    document.getElementById('briefing-screen').classList.add('active');
+    showLesson(0);
+  }
+
+  /* =========================================================
+     TRIAGE : DONNÉES DES 10 CAS
+  ========================================================= */
+  const triageCases = [
+    {
+      sector: "🎨 Créativité & Éducation",
+      title: "Aider un lycéen à brainstormer pour son projet artistique",
+      desc: "Théo, 16 ans, doit rendre un dossier d'art plastique sur le thème de la mémoire. Il n'a pas encore d'idées et souhaite utiliser un chatbot IA pour générer des pistes créatives : supports, techniques, artistes de référence, angles d'approche...",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ Générer des pistes créatives est une tâche idéale pour l'IA. L'enjeu est faible (brouillon d'idées), il n'y a pas de données sensibles, le lycéen conserve son jugement artistique final, et le résultat est facilement évaluable. L'IA joue ici le rôle d'un brainstorming élargi.",
+        wrong: "Révision nécessaire. Cette demande relève du Protocole Vert : générer des idées créatives est une tâche à faible enjeu où l'IA excelle. Aucune donnée sensible, pas de décision critique. Le lycéen sélectionne et adapte lui-même les idées — il reste acteur."
+      }
+    },
+    {
+      sector: "🏥 Santé & Médecine",
+      title: "Générer des hypothèses de diagnostic pour un patient",
+      desc: "Dr. Amara, médecin généraliste, reçoit un patient avec des symptômes atypiques. Elle envisage de soumettre la liste des symptômes à un chatbot IA grand public pour obtenir des hypothèses de diagnostic avant de prescrire des examens complémentaires.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ Un diagnostic médical engage la vie d'un patient et la responsabilité légale du médecin. L'IA grand public peut halluciner des diagnostics plausibles mais faux. Les outils médicaux certifiés (avec validation clinique) sont à distinguer des chatbots généraux — qui ne doivent jamais remplacer le jugement clinique d'un professionnel.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Rouge. Même si l'IA peut lister des hypothèses, elle ne dispose d'aucune licence médicale, ne connaît pas le dossier complet du patient et peut halluciner des diagnostics avec assurance. En cas d'erreur, c'est le médecin (et la santé du patient) qui en pâtit."
+      }
+    },
+    {
+      sector: "👥 Ressources humaines",
+      title: "Préparer une liste de questions pour un entretien de recrutement",
+      desc: "Fatima, DRH d'une PME, recrute un comptable senior. Elle souhaite utiliser l'IA pour générer une liste de 15 questions d'entretien couvrant les compétences techniques (fiscal, normes IFRS) et comportementales. Elle les adaptera ensuite au profil du candidat.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'amber',
+      feedback: {
+        correct: "Protocole Ambre validé ✅ L'IA peut générer un excellent point de départ pour une grille d'entretien. Mais attention : les questions doivent être adaptées au contexte réel de l'entreprise, vérifiées pour éviter tout biais discriminatoire, et complétées par l'expertise RH de Fatima. Le résultat ne doit pas être utilisé tel quel sans relecture critique.",
+        wrong: "Révision nécessaire. C'est du Protocole Ambre. L'IA est utile ici, mais les questions générées peuvent contenir des biais, être inadaptées au contexte ou manquer de spécificité métier. Fatima doit relire, adapter et endosser la responsabilité des questions posées — elle ne peut pas déléguer entièrement à l'IA."
+      }
+    },
+    {
+      sector: "✍️ Communication & Marketing",
+      title: "Rédiger un billet de blog pour présenter une startup",
+      desc: "Lucas vient de lancer une startup dans le domaine de la livraison éco-responsable. Il souhaite publier un premier billet de blog de 500 mots pour présenter sa vision, ses valeurs et son offre. Il utilisera l'IA pour rédiger un brouillon qu'il remaniera à sa façon.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ Rédiger un brouillon de contenu marketing est un usage idéal de l'IA. Aucune donnée sensible, enjeu créatif faible, résultat facilement révisable. Lucas garde la main sur le contenu final et y apportera sa voix personnelle. C'est exactement le type de tâche où l'IA fait gagner du temps sans risque.",
+        wrong: "Révision nécessaire. Cette demande est bien Protocole Vert. Créer un brouillon de billet de blog est une tâche créative à faible enjeu. Lucas relit et adapte le texte final — l'IA n'est qu'un assistant rédactionnel. Aucune donnée sensible, aucune responsabilité engagée."
+      }
+    },
+    {
+      sector: "⚖️ Justice & Droit",
+      title: "Évaluer le risque de récidive d'un prévenu via l'IA",
+      desc: "Un tribunal envisage d'utiliser un système d'IA pour calculer automatiquement un 'score de risque de récidive' pour chaque prévenu, score qui servirait d'argument dans la décision de mise en liberté ou de détention provisoire.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ Cette situation est un exemple réel et problématique (système COMPAS aux États-Unis). Un algorithme qui décide de la liberté d'un individu concentre des biais systémiques (souvent racistes), manque de transparence et peut violer le droit fondamental à un procès équitable. Les décisions judiciaires engageant la liberté des personnes doivent rester sous contrôle humain total.",
+        wrong: "Révision nécessaire. Cette demande est clairement Protocole Rouge. Aucun algorithme ne devrait décider seul de la liberté d'un être humain. Les systèmes de scoring judiciaire ont démontré des biais profonds et une opacité inacceptable dans un État de droit. L'IA peut informer, jamais décider."
+      }
+    },
+    {
+      sector: "📰 Information & Journalisme",
+      title: "Vérifier des faits sur un événement qui vient de se produire",
+      desc: "Soraya, journaliste en ligne, reçoit une rumeur sur un événement survenu il y a 3 heures. Elle envisage de demander à ChatGPT de confirmer ou infirmer les informations circulant sur les réseaux sociaux, afin d'aller plus vite pour son article.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ L'IA grand public a une date limite de connaissance (cutoff). Elle n'a aucun accès aux événements récents. Pire : face à une question sur un fait récent, elle peut inventer une réponse plausible (hallucination) plutôt qu'admettre son ignorance. La vérification journalistique doit passer par des sources primaires, des agences de presse et des témoins — jamais par un chatbot.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Rouge. L'IA n'a pas accès aux événements récents et peut fabriquer des 'faits' convaincants sur des sujets qu'elle ne connaît pas. Pour du fact-checking en temps réel, il faut des bases de données d'agences de presse, des sources directes, ou des outils dédiés à la vérification d'information."
+      }
+    },
+    {
+      sector: "💻 Développement & Tech",
+      title: "Générer une fonction pour trier une liste de produits par prix",
+      desc: "Amélie, développeuse junior, travaille sur un site e-commerce. Elle doit implémenter une fonction de tri d'une liste de produits par ordre croissant de prix. Elle veut utiliser l'IA pour générer un code JavaScript propre qu'elle intégrera après l'avoir testé.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ C'est un usage idéal de l'IA pour le développement. La tâche est bien définie, standard et facilement testable. Amélie dit explicitement qu'elle testera le code avant intégration — elle garde le contrôle. Pour des fonctions courantes sans enjeu de sécurité critique, l'IA est un excellent accélérateur de productivité.",
+        wrong: "Révision nécessaire. C'est Protocole Vert. Générer une fonction de tri standard est une tâche technique bien définie, sans donnée sensible et facilement vérifiable par les tests. Amélie teste le code avant de l'intégrer, ce qui est la bonne pratique. L'IA accélère le travail sans prendre de décision critique."
+      }
+    },
+    {
+      sector: "😔 Soutien psychologique",
+      title: "Chercher du réconfort auprès d'un chatbot en situation de crise",
+      desc: "Mia, 17 ans, traverse une période très difficile. Elle se sent incomprise, parle d'idées sombres et commence à utiliser un chatbot IA comme confident unique, plusieurs heures par jour, en remplacement de tout contact humain ou professionnel.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'red',
+      feedback: {
+        correct: "Protocole Rouge validé ✅ L'IA peut sembler empathique, mais elle simule sans ressentir. En situation de souffrance psychologique sérieuse, a fortiori chez une mineure, le risque de réponse inadaptée est réel (conseils dangereux, minimisation de la crise, dépendance affective à l'outil). Il faut orienter vers des professionnels : psychologue, médecin, numéros d'urgence (3114 en France). L'IA peut compléter un suivi, jamais le remplacer.",
+        wrong: "Révision nécessaire. Cette situation est Protocole Rouge. La santé mentale en crise nécessite des professionnels humains. L'IA ne peut pas évaluer une situation de crise réelle, elle peut répondre de façon inadaptée ou dangereuse, et créer une dépendance qui retarde une prise en charge adaptée. En France : numéro national de prévention du suicide 3114."
+      }
+    },
+    {
+      sector: "📝 Juridique & Contracts",
+      title: "Comprendre les grandes lignes d'un contrat commercial avant de consulter un avocat",
+      desc: "Olivier, directeur d'une PME, reçoit un contrat de partenariat de 40 pages en anglais juridique. Avant son rendez-vous avec son avocat dans 3 jours, il souhaite utiliser l'IA pour obtenir un résumé des clauses clés, identifier les points inhabituels et préparer ses questions.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'amber',
+      feedback: {
+        correct: "Protocole Ambre validé ✅ Ici, l'IA est utilisée pour préparer et mieux comprendre — pas pour décider. Olivier continue à consulter un avocat pour la décision finale. C'est une utilisation Ambre légitime : l'IA comme outil de compréhension préliminaire, sous réserve de ne pas s'y fier pour la décision finale et de ne pas partager des clauses ultra-confidentielles avec des services non sécurisés.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Ambre. Olivier utilise l'IA pour comprendre et préparer ses questions — pas pour décider seul. C'est une nuance importante. Tant que la décision finale reste avec l'avocat et que le contrat n'est pas signé sur la base du seul avis de l'IA, cet usage est acceptable avec précaution."
+      }
+    },
+    {
+      sector: "📊 Communication institutionnelle",
+      title: "Résumer un rapport annuel de 60 pages en 2 pages pour des donateurs",
+      desc: "L'association 'Espaces Verts Partagés' doit envoyer à ses 500 donateurs une synthèse de son rapport annuel de 60 pages. La coordinatrice, Nadia, souhaite utiliser l'IA pour produire un résumé de 2 pages qu'elle relira, complétera et validera avant envoi.",
+      question: "Quel protocole appliquez-vous à cette demande ?",
+      correct: 'green',
+      feedback: {
+        correct: "Protocole Vert validé ✅ Résumer un long document associatif public est une tâche idéale pour l'IA. Aucune donnée personnelle sensible, enjeu faible, résultat directement vérifiable par Nadia qui connaît le rapport. La démarche est exemplaire : l'IA produit un brouillon, Nadia valide. C'est exactement la bonne posture.",
+        wrong: "Révision nécessaire. Cette demande est Protocole Vert. Synthétiser un rapport public à faible enjeu, avec vérification humaine avant envoi, est un usage recommandé de l'IA. Nadia garde le contrôle total : elle relit, complète et valide. L'IA ne fait que réduire le travail de rédaction initial."
+      }
+    }
+  ];
+
+  /* =========================================================
+     TRIAGE : ÉTAT ET LOGIQUE
+  ========================================================= */
+  let triageState = {
+    currentCase: 0,
+    scores: { correct: 0, wrong: 0 },
+    answered: false
+  };
+
+  function startTriage() {
+    document.getElementById('briefing-screen').classList.remove('active');
+    document.getElementById('triage-screen').classList.add('active');
+    triageState = { currentCase: 0, scores: { correct: 0, wrong: 0 }, answered: false };
+    renderCase(0);
+  }
+
+  function renderCase(idx) {
+    const c = triageCases[idx];
+    triageState.answered = false;
+    document.getElementById('triage-counter').textContent = `Cas ${idx + 1}/10`;
+    document.getElementById('triage-bar-fill').style.width = ((idx + 1) / 10 * 100) + '%';
+
+    document.getElementById('triage-body').innerHTML = `
+      <div class="case-card" id="case-card">
+        <div class="case-number">Dossier entrant — Protocole requis</div>
+        <div class="case-sector">${c.sector}</div>
+        <div class="case-title">${c.title}</div>
+        <div class="case-desc">${c.desc}</div>
+        <div class="case-question">${c.question}</div>
+
+        <div class="protocol-btns">
+          <button class="p-btn btn-green" onclick="answerTriage('green')" id="pbtn-green">
+            <span class="p-btn-icon">🟢</span>
+            Protocole Vert
+          </button>
+          <button class="p-btn btn-amber" onclick="answerTriage('amber')" id="pbtn-amber">
+            <span class="p-btn-icon">🟡</span>
+            Protocole Ambre
+          </button>
+          <button class="p-btn btn-red" onclick="answerTriage('red')" id="pbtn-red">
+            <span class="p-btn-icon">🔴</span>
+            Protocole Rouge
+          </button>
+        </div>
+
+        <div id="case-feedback" class="case-feedback"></div>
+
+        <button class="btn-next-case" id="btn-next-case" onclick="nextCase()">
+          ${idx < triageCases.length - 1 ? '→ Cas suivant' : '📝 Accéder au Quiz de certification'}
+        </button>
+      </div>
+    `;
+  }
+
+  function answerTriage(protocol) {
+    if (triageState.answered) return;
+    triageState.answered = true;
+
+    const c = triageCases[triageState.currentCase];
+    const isCorrect = (protocol === c.correct);
+
+    if (isCorrect) triageState.scores.correct++;
+    else triageState.scores.wrong++;
+
+    // Colorer les boutons
+    ['green', 'amber', 'red'].forEach(p => {
+      const btn = document.getElementById('pbtn-' + p);
+      btn.disabled = true;
+      if (p === protocol && isCorrect) btn.classList.add('selected-correct');
+      else if (p === protocol && !isCorrect) btn.classList.add('selected-wrong');
+      if (p === c.correct && !isCorrect) btn.classList.add('show-correct');
+    });
+
+    // Afficher feedback
+    const fb = document.getElementById('case-feedback');
+    fb.className = 'case-feedback ' + (isCorrect ? 'correct' : 'wrong');
+    fb.innerHTML = `
+      <div class="feedback-title ${isCorrect ? 'ok' : 'err'}">${isCorrect ? '✅ Bonne décision !' : '❌ Protocole incorrect'}</div>
+      <div style="color:#cfe9ff;line-height:1.7">${isCorrect ? c.feedback.correct : c.feedback.wrong}</div>
+    `;
+
+    document.getElementById('btn-next-case').style.display = 'block';
+  }
+
+  function nextCase() {
+    triageState.currentCase++;
+    if (triageState.currentCase >= triageCases.length) {
+      showTriageEnd();
+    } else {
+      renderCase(triageState.currentCase);
+    }
+  }
+
+  function showTriageEnd() {
+    const total = triageCases.length;
+    const correct = triageState.scores.correct;
+    const pct = Math.round(correct / total * 100);
+
+    document.getElementById('triage-body').innerHTML = `
+      <div class="triage-end">
+        <div class="triage-end-icon">${pct >= 80 ? '🏆' : pct >= 60 ? '🎯' : '📚'}</div>
+        <div class="triage-end-title" style="color:var(--neon-cyan)">Triage terminé !</div>
+        <div class="triage-score-display" style="color:${pct >= 80 ? 'var(--neon-green)' : pct >= 60 ? 'var(--warn)' : 'var(--danger)'}">
+          ${correct} / ${total}
+        </div>
+        <div class="triage-end-msg">
+          ${pct >= 80
+            ? `Excellent travail, Agent ! Vous maîtrisez les protocoles NEXUS avec brio (${pct}% de réussite). Vous êtes prêt·e pour la certification.`
+            : pct >= 60
+            ? `Bon début (${pct}% de réussite). Quelques cas vous ont résisté — la certification vous permettra d'affiner vos connaissances.`
+            : `${pct}% de réussite. Il vous reste des protocoles à consolider. Relisez le dossier et retentez !`
+          }
+        </div>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-go-quiz" onclick="startQuiz()">📝 Accéder au Quiz de certification</button>
+          <button class="btn-go-quiz" style="border-color:rgba(78,205,196,0.4);color:var(--muted)" onclick="restartTriage()">🔄 Refaire le triage</button>
+        </div>
+      </div>
+    `;
+  }
+
+  function restartTriage() {
+    triageState = { currentCase: 0, scores: { correct: 0, wrong: 0 }, answered: false };
+    renderCase(0);
+    document.getElementById('triage-bar-fill').style.width = '10%';
+  }
+
+  /* =========================================================
+     QUIZ : DONNÉES DES 10 QUESTIONS
+  ========================================================= */
+  const quizQuestions = [
+    {
+      q: "Quel protocole s'applique à la rédaction d'un brouillon de post pour les réseaux sociaux ?",
+      opts: ["Protocole Rouge — données potentiellement sensibles", "Protocole Ambre — vérification humaine obligatoire", "Protocole Vert — tâche créative à faible enjeu", "Aucun protocole — l'IA est interdite pour ce type de contenu"],
+      correct: 2,
+      explain: "Rédiger un brouillon de contenu marketing ou créatif est un usage Vert idéal. L'enjeu est faible, il n'y a pas de données sensibles, et l'utilisateur relit et adapte le résultat final."
+    },
+    {
+      q: "Qu'est-ce que l'agentivité face à l'IA ?",
+      opts: ["La capacité de l'IA à agir de façon autonome", "La capacité de l'utilisateur à rester acteur conscient de ses décisions", "La vitesse à laquelle l'IA répond à nos demandes", "Le fait de confier toutes les tâches répétitives à l'IA"],
+      correct: 1,
+      explain: "L'agentivité (agency), c'est votre capacité à agir intentionnellement et à assumer vos choix. Face à l'IA, c'est rester la personne qui décide — pas celle qui subit ou applique automatiquement."
+    },
+    {
+      q: "Quel est le critère le plus déterminant pour classer une demande en Protocole Rouge ?",
+      opts: ["Le texte est long ou complexe", "Il s'agit d'un sujet technique", "L'enjeu en cas d'erreur est élevé ou critique pour une personne", "La demande dépasse 100 mots"],
+      correct: 2,
+      explain: "Le critère clé du Protocole Rouge est l'enjeu humain en cas d'erreur : décisions médicales, juridiques, disciplinaires ou de sécurité où une erreur peut avoir des conséquences graves et irréversibles."
+    },
+    {
+      q: "Pourquoi ne doit-on pas utiliser un chatbot IA grand public pour vérifier des faits sur un événement récent ?",
+      opts: ["Les chatbots sont trop lents pour ce type de requête", "L'IA a une date limite de connaissance et peut inventer des informations récentes", "Les chatbots refusent toujours de parler d'actualité", "C'est trop coûteux en calcul pour le serveur"],
+      correct: 1,
+      explain: "Les modèles d'IA ont une date limite de connaissance (cutoff). Ils n'ont pas accès aux événements récents et peuvent halluciner des 'faits' convaincants en répondant à des questions sur l'actualité qu'ils ne connaissent pas."
+    },
+    {
+      q: "Que signifie précisément le Protocole Ambre ?",
+      opts: ["L'IA est interdite pour cette tâche", "L'IA peut être utilisée sans vérification si le résultat paraît correct", "L'IA peut aider, mais une vérification et une prise de responsabilité humaine sont indispensables", "L'IA remplace entièrement le travail humain dans ce cas"],
+      correct: 2,
+      explain: "Le Protocole Ambre signifie 'usage avec précautions'. L'IA produit un travail utile mais le résultat ne peut jamais être utilisé tel quel : il doit être relu, vérifié, contextualisé, et la personne doit en assumer la responsabilité finale."
+    },
+    {
+      q: "Quel est le principal risque de la délégation excessive à l'IA au fil du temps ?",
+      opts: ["L'IA devient plus chère à utiliser", "L'IA finit par refuser d'aider", "On perd des compétences essentielles et la capacité d'assumer la responsabilité des résultats", "La connexion internet devient trop lente"],
+      correct: 2,
+      explain: "Déléguer systématiquement les mêmes tâches à l'IA peut entraîner une atrophie des compétences correspondantes. Un étudiant qui ne rédige plus, un développeur qui ne code plus — leurs compétences régressent, les rendant dépendants et incapables d'évaluer la qualité des sorties."
+    },
+    {
+      q: "Parmi ces situations, laquelle justifie un Protocole Rouge strict ?",
+      opts: ["Générer 10 slogans pour une campagne publicitaire", "Résumer les 20 premières pages d'un roman", "Décider seul d'une mise en détention provisoire sur la base d'un score IA", "Créer une liste d'idées de noms pour un projet personnel"],
+      correct: 2,
+      explain: "Décider de la liberté d'une personne sur la base d'un algorithme est un cas emblématique de Protocole Rouge (référence au système COMPAS aux USA). Les décisions judiciaires engageant la liberté des individus doivent rester sous contrôle humain total, avec transparence et possibilité de recours."
+    },
+    {
+      q: "Pourquoi l'IA ne doit-elle pas être le seul soutien d'une personne en crise psychologique sérieuse ?",
+      opts: ["Parce que les chatbots sont souvent hors ligne", "Parce qu'elle simule l'empathie sans la ressentir et peut répondre de façon inadaptée ou dangereuse", "Parce que les conversations sont trop courtes", "Parce que l'IA parle uniquement en anglais"],
+      correct: 1,
+      explain: "L'IA peut paraître empathique, mais elle simule sans ressentir. En situation de crise réelle, une réponse inadaptée peut être dangereuse. L'IA crée aussi une dépendance qui retarde une prise en charge professionnelle. En France, le 3114 est le numéro national de prévention du suicide."
+    },
+    {
+      q: "Quelle est la 'checklist de l'agent NEXUS' — les 3 questions à se poser avant d'utiliser l'IA ?",
+      opts: [
+        "L'IA est-elle gratuite ? Ai-je internet ? Mon ordinateur est-il assez puissant ?",
+        "Quel protocole s'applique ? Y a-t-il des données sensibles ? Vais-je vérifier et assumer le résultat ?",
+        "L'IA connaît-elle le sujet ? La réponse sera-t-elle longue ? Ai-je le temps de la lire ?",
+        "Ai-je essayé Google avant ? L'IA m'a-t-elle déjà aidé ? Le sujet est-il populaire ?"
+      ],
+      correct: 1,
+      explain: "La checklist en 3 questions : 1) Quel protocole s'applique (Vert, Ambre, Rouge) ? 2) Y a-t-il des données sensibles à ne pas partager ? 3) Vais-je vérifier, adapter et assumer le résultat final ? Si oui à tout, l'usage est responsable."
+    },
+    {
+      q: "Quel terme désigne le phénomène où l'IA affirme avec confiance des informations fausses ou inventées ?",
+      opts: ["Le bug cognitif", "L'hallucination", "La surchauffe sémantique", "Le biais de confirmation"],
+      correct: 1,
+      explain: "L'hallucination (ou confabulation) est le phénomène par lequel un modèle de langage génère des informations fausses, inexistantes ou incorrectes avec la même assurance que des informations vraies. C'est l'une des limites fondamentales des LLMs actuels — et une raison clé pour toujours vérifier."
+    }
+  ];
+
+  /* =========================================================
+     QUIZ : ÉTAT ET LOGIQUE
+  ========================================================= */
+  let quizAnswers = {};
+  let finalScore = 0;
+  let certUnlocked = false;
+
+  function startQuiz() {
+    document.getElementById('triage-screen').classList.remove('active');
+    document.getElementById('quiz-screen').classList.add('active');
+    renderQuiz();
+  }
+
+  function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = quizQuestions.map((q, i) => `
+      <div class="q-card" id="q-card-${i}">
+        <div class="q-head"><span class="q-num">Q${i+1}/${quizQuestions.length}</span></div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-opts">
+          ${q.opts.map((o, j) => `
+            <div class="q-opt" data-q="${i}" data-o="${j}" onclick="selectAnswer(${i},${j})">${o}</div>
+          `).join('')}
+        </div>
+        <div class="q-explain" id="qexplain-${i}">${q.explain}</div>
+      </div>
+    `).join('');
+  }
+
+  function selectAnswer(qIdx, oIdx) {
+    quizAnswers[qIdx] = oIdx;
+    document.querySelectorAll(`.q-opt[data-q="${qIdx}"]`).forEach(el => {
+      el.classList.remove('selected');
+      if (parseInt(el.dataset.o) === oIdx) el.classList.add('selected');
+    });
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizQuestions.forEach((q, i) => {
+      const ans = quizAnswers[i];
+      document.querySelectorAll(`.q-opt[data-q="${i}"]`).forEach(el => {
+        el.style.pointerEvents = 'none';
+        const oIdx = parseInt(el.dataset.o);
+        if (oIdx === q.correct) el.classList.add('opt-correct');
+        if (oIdx === ans && ans !== q.correct) el.classList.add('opt-wrong');
+      });
+      if (ans === q.correct) score++;
+      document.getElementById('qexplain-' + i).classList.add('show');
+    });
+
+    const pct = Math.round(score / quizQuestions.length * 100);
+    finalScore = pct;
+    document.getElementById('quiz-submit').style.display = 'none';
+
+    const resEl = document.getElementById('quiz-result');
+    resEl.innerHTML = `
+      <div class="quiz-result-box ${pct >= 70 ? 'res-ok' : 'res-warn'}">
+        <h3 style="color:${pct >= 70 ? 'var(--neon-green)' : 'var(--warn)'};margin-bottom:12px">
+          ${pct >= 70 ? '🎉 Félicitations !' : '📚 Score insuffisant'}
+        </h3>
+        <p style="font-size:1.4em;margin-bottom:10px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
+        <p style="line-height:1.7;color:#aabbcc">
+          ${pct >= 70
+            ? 'Vous maîtrisez les protocoles NEXUS. Votre attestation de certification est débloquée !'
+            : 'Il faut au moins 70% pour valider. Relisez le dossier de protocole et retentez.'}
+        </p>
+        ${pct >= 70 ? '<button class="btn-unlock" onclick="showCertificate()">🎓 Télécharger mon attestation</button>' : ''}
+      </div>
+    `;
+    resEl.scrollIntoView({ behavior: 'smooth' });
+
+    if (pct >= 70) certUnlocked = true;
+  }
+
+  function showCertificate() {
+    document.getElementById('quiz-screen').classList.remove('active');
+    document.getElementById('cert-screen').classList.add('active');
+  }
+  </script>
+
+  <!-- ==================== QUIZ ==================== -->
+  <div id="quiz-screen">
+    <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
+      <div class="briefing-title" style="color:var(--neon-cyan)">Quiz de Certification — NEXUS DÉCISION</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)">Score minimum : 70%</div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:40px;max-width:860px;margin:0 auto;width:100%">
+      <div id="quiz-container"></div>
+      <div style="text-align:center;margin:30px 0">
+        <button id="quiz-submit" class="briefing-btn primary" style="font-size:1.1em;padding:15px 40px" onclick="submitQuiz()">
+          ✅ Valider mes réponses
+        </button>
+      </div>
+      <div id="quiz-result"></div>
+    </div>
+  </div>
+
+  <!-- ==================== ATTESTATION ==================== -->
+  <div id="cert-screen">
+    <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
+      <div class="briefing-title" style="color:var(--neon-cyan)">Attestation de réussite — NEXUS DÉCISION</div>
+      <a href="modules.html" class="back-link-sidebar" style="position:static;margin:0">← Retour modules</a>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto;width:100%">
+
+      <div class="callout ok" style="text-align:center;padding:30px;margin-bottom:28px">
+        <div style="font-size:3em;margin-bottom:14px">🎉</div>
+        <h3 style="color:var(--neon-green);font-family:'Space Mono',monospace;margin-bottom:12px">Certification NEXUS validée !</h3>
+        <p style="line-height:1.8;margin-bottom:10px">
+          Vous avez complété avec succès le <strong>Module 08 — Choisir le bon usage de l'IA</strong>.
+        </p>
+        <div style="display:inline-block;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:14px 28px;margin:10px 0">
+          <p style="margin:0 0 6px"><strong>Score :</strong> <span id="cert-score-display" style="color:var(--neon-green);font-size:1.3em;font-family:'Space Mono',monospace"></span></p>
+          <p style="margin:0;font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.85em" id="cert-ref"></p>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin-bottom:18px;font-family:'Space Mono',monospace">📜 Télécharger votre attestation</h3>
+      <div class="callout" style="padding:28px">
+        <p style="margin-bottom:18px;line-height:1.8">Renseignez votre nom pour générer votre attestation officielle :</p>
+        <div style="margin-bottom:18px">
+          <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-cyan);font-size:0.9em">NOM complet sur l'attestation :</label>
+          <input id="cert-name" type="text" placeholder="Prénom NOM"
+            style="width:100%;max-width:500px;padding:12px 16px;border-radius:8px;border:1px solid rgba(78,205,196,0.4);background:rgba(0,0,0,0.3);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none" />
+        </div>
+        <button onclick="downloadCert()" style="padding:14px 35px;font-family:'Space Mono',monospace;font-size:0.95em;text-transform:uppercase;letter-spacing:2px;background:var(--neon-cyan);color:var(--dark-bg);border:none;border-radius:8px;cursor:pointer;font-weight:700;transition:all 0.3s" onmouseover="this.style.background='var(--neon-green)'" onmouseout="this.style.background='var(--neon-cyan)'">
+          📥 Télécharger (HTML)
+        </button>
+        <p style="margin-top:14px;color:#8899aa;font-size:0.88em">💡 Ouvrez le fichier HTML et utilisez Ctrl+P pour imprimer en PDF.</p>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin:28px 0 18px;font-family:'Space Mono',monospace">✅ Compétences validées</h3>
+      <div class="callout">
+        <ul style="line-height:2.2;margin-left:20px;color:#cfe9ff">
+          <li>Identifier les forces et limites de l'IA selon les contextes</li>
+          <li>Appliquer les 3 niveaux de protocole NEXUS (Vert, Ambre, Rouge)</li>
+          <li>Évaluer les 5 critères de décision d'un cas</li>
+          <li>Reconnaître les domaines sensibles nécessitant une vigilance accrue</li>
+          <li>Éviter les pièges de la délégation excessive</li>
+          <li>Préserver son agentivité face à l'IA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* =========================================================
+     ATTESTATION — DOWNLOAD
+  ========================================================= */
+  function downloadCert() {
+    const name = (document.getElementById('cert-name')?.value || '').trim() || 'Participant';
+    const date = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+    const refNum = 'IA-NEXUS-' + (Math.floor(Math.random() * 90000) + 10000);
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Attestation — Module 8 NEXUS DÉCISION</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #4ecdc4;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(78,205,196,.3),inset 0 0 60px rgba(0,212,255,.08)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(78,205,196,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}
+.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#4ecdc4,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#4ecdc4;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(78,205,196,.3);border-bottom:1px solid rgba(78,205,196,.3)}
+.mod{background:rgba(78,205,196,.08);border:1px solid rgba(78,205,196,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#4ecdc4;font-size:1.3em;font-weight:600;margin-bottom:10px}
+.sc{display:inline-block;background:linear-gradient(135deg,#4ecdc4,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:30px;border-top:1px solid rgba(78,205,196,.2)}
+.fi{text-align:center}
+.fl{color:#888;font-size:.85em;margin-bottom:5px}
+.fv{color:#4ecdc4;font-weight:600}
+.sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px}
+.sk span{background:rgba(78,205,196,.1);border:1px solid rgba(78,205,196,.3);padding:5px 15px;border-radius:15px;font-size:.85em;color:#4ecdc4}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="hd">
+    <div class="logo">🧭✨</div>
+    <div class="ttl">Attestation de Réussite</div>
+    <div class="sub">Formation IA Responsable</div>
+  </div>
+  <div class="cnt">
+    <p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p>
+    <div class="nm">${name}</div>
+    <p>a complété avec succès le</p>
+    <div class="mod">
+      <div class="mod-t">Module 08 : Choisir le bon usage de l'IA</div>
+      <p style="color:#b0b0b0;margin-top:10px">Protocoles NEXUS — Centre de Triage IA</p>
+      <div class="sc">Score : ${finalScore}%</div>
+    </div>
+    <p style="margin-bottom:15px">Compétences validées :</p>
+    <div class="sk">
+      <span>Protocole Vert</span>
+      <span>Protocole Ambre</span>
+      <span>Protocole Rouge</span>
+      <span>Critères de décision</span>
+      <span>Domaines sensibles</span>
+      <span>Agentivité</span>
+      <span>Délégation responsable</span>
+    </div>
+    <div class="ft">
+      <div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div>
+      <div class="fi"><div class="fl">Référence</div><div class="fv">${refNum}</div></div>
+      <div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Attestation_Module8_NexusDecision_${name.replace(/\s+/g,'_')}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Initialise l'affichage de l'écran de certification
+  const _origShowCert = showCertificate;
+  window.showCertificate = function() {
+    _origShowCert();
+    const refNum = 'IA-NEXUS-' + (Math.floor(Math.random() * 90000) + 10000);
+    const el = document.getElementById('cert-score-display');
+    const refEl = document.getElementById('cert-ref');
+    if (el) el.textContent = finalScore + '%';
+    if (refEl) refEl.textContent = 'Référence : ' + refNum;
+  };
+  </script>
+
+</body>
+</html>
