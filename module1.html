@@ -1028,6 +1028,7 @@
     }
 
     .attestation-name-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+    .attestation-name-input { user-select: text; }
 
     .attestation-download-btn {
       font-family: 'Space Mono', monospace;
@@ -1166,6 +1167,21 @@
           <span class="nav-icon">🎯</span>
           <span class="nav-number">08</span>
           Mission : Opération ATLAS
+        </div>
+
+        <!-- Séparateur -->
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent); margin: 15px 20px;"></div>
+
+        <div class="briefing-nav-item" onclick="startMission()" style="color: var(--neon-blue); opacity: 0.6;" id="nav-mission">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-number" style="background: rgba(0, 212, 255, 0.2);">▶</span>
+          Activité : Enquête
+        </div>
+
+        <div class="briefing-nav-item" style="color: var(--neon-pink); opacity: 0.4; cursor: default;" id="nav-attestation">
+          <span class="nav-icon">🎓</span>
+          <span class="nav-number" style="background: rgba(255, 0, 128, 0.2);">🔒</span>
+          Attestation
         </div>
       </nav>
 
