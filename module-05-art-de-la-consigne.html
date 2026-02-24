@@ -293,35 +293,232 @@
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* ==================== PLACEHOLDER BRIEFING (Phase suivante) ==================== */
+        /* ==================== BRIEFING ==================== */
         #briefing-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0e17 0%, #0d1f30 50%, #0a0e17 100%);
+            z-index: 999;
+            display: none;
+            overflow: hidden;
+        }
+        #briefing-screen.active { display: flex; flex-direction: column; width: 100%; height: 100%; }
+
+        .briefing-header {
+            background: rgba(10, 20, 40, 0.95);
+            border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .briefing-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1em;
+            color: var(--domain-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.85em; }
+        .briefing-progress-bar { width: 180px; height: 5px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
+        .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--domain-color), var(--neon-blue)); transition: width 0.4s; }
+
+        .briefing-body { display: flex; flex: 1; overflow: hidden; }
+
+        .briefing-nav {
+            width: 270px;
+            background: rgba(10, 20, 40, 0.9);
+            border-right: 1px solid rgba(78, 205, 196, 0.2);
+            padding: 20px 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .briefing-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+            color: #8899aa;
+            font-size: 0.9em;
+        }
+        .briefing-nav-item:hover { background: rgba(78,205,196,0.05); color: var(--text); }
+        .briefing-nav-item.active { border-left-color: var(--domain-color); background: rgba(78,205,196,0.1); color: var(--domain-color); }
+        .briefing-nav-item.completed { color: var(--neon-blue); }
+        .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); font-size: 0.9em; }
+        .nav-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            background: rgba(78,205,196,0.15);
+            padding: 2px 7px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .briefing-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 60px;
+            max-width: 880px;
+            margin: 0 auto;
+        }
+        .briefing-content::-webkit-scrollbar { width: 6px; }
+        .briefing-content::-webkit-scrollbar-track { background: rgba(78,205,196,0.05); }
+        .briefing-content::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 3px; }
+
+        .briefing-footer {
+            background: rgba(10,20,40,0.95);
+            border-top: 1px solid rgba(78,205,196,0.3);
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .briefing-btn {
+            font-family: 'Space Mono', monospace;
+            padding: 11px 28px;
+            border: 2px solid var(--domain-color);
+            background: transparent;
+            color: var(--domain-color);
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .briefing-btn:hover { background: rgba(78,205,196,0.1); box-shadow: 0 0 15px rgba(78,205,196,0.3); }
+        .briefing-btn.primary { background: var(--domain-color); color: var(--dark-bg); font-weight: 700; }
+        .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
+        .briefing-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ---- Contenu cours ---- */
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.6em;
+            color: var(--domain-color);
+            margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(78,205,196,0.3);
+        }
+        .section-kicker { color: var(--muted); margin-bottom: 20px; line-height: 1.55; font-size: 1.05em; }
+        .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(78,205,196,0.4), transparent); margin: 20px 0; }
+
+        .pill {
+            display: inline-block;
+            padding: 5px 12px;
+            border: 1px solid rgba(78,205,196,0.4);
+            border-radius: 999px;
+            font-size: 0.78em;
+            color: var(--domain-color);
+            margin: 0 4px 8px 0;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .callout {
+            background: rgba(10, 30, 50, 0.7);
+            border: 1px solid rgba(78,205,196,0.25);
+            border-left: 3px solid var(--domain-color);
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin: 14px 0;
+            line-height: 1.7;
+        }
+        .callout.ok { border-left-color: var(--neon-green); border-color: rgba(0,255,136,0.3); }
+        .callout.warn { border-left-color: var(--warn); border-color: rgba(255,204,0,0.3); }
+        .callout.bad { border-left-color: var(--danger); border-color: rgba(255,77,77,0.3); }
+
+        .rctf-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 20px 0;
+        }
+        .rctf-card {
+            background: rgba(10,25,45,0.8);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .rctf-letter {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.2em;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .rctf-label { font-weight: 700; font-size: 1.05em; margin-bottom: 6px; }
+        .rctf-desc { font-size: 0.9em; color: #aabbcc; line-height: 1.6; }
+
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 14px 0;
+        }
+        .compare-bad { border-left-color: var(--danger) !important; background: rgba(255,77,77,0.05) !important; }
+        .compare-good { border-left-color: var(--neon-green) !important; background: rgba(0,255,136,0.05) !important; }
+        .compare-label { font-family: 'Space Mono', monospace; font-size: 0.75em; margin-bottom: 10px; letter-spacing: 1px; }
+
+        .prompt-example {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.88em;
+            background: rgba(0,0,0,0.4);
+            border-radius: 6px;
+            padding: 14px 16px;
+            line-height: 1.7;
+            margin: 12px 0;
+            border: 1px solid rgba(78,205,196,0.15);
+            color: #cce8ff;
+        }
+
+        .aria-response {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: rgba(78,205,196,0.06);
+            border: 1px solid rgba(78,205,196,0.2);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 14px 0;
+        }
+        .aria-avatar {
+            font-size: 1.8em;
+            flex-shrink: 0;
+        }
+        .aria-bubble {
+            font-size: 0.95em;
+            line-height: 1.7;
+            color: #cce8ff;
+        }
+        .aria-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            color: var(--domain-color);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        p.body-text { line-height: 1.75; color: #cfe9ff; margin: 14px 0; }
+
+        /* ==================== PLACEHOLDER GAME (Phase suivante) ==================== */
+        #game-screen {
             display: none;
             position: fixed;
             inset: 0;
             background: var(--dark-bg);
-            z-index: 999;
+            z-index: 998;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             gap: 20px;
         }
-
-        #briefing-screen.active {
-            display: flex;
-        }
-
-        .placeholder-msg {
-            font-family: 'Space Mono', monospace;
-            color: var(--domain-color);
-            font-size: 1.2em;
-            text-align: center;
-        }
-
-        .placeholder-sub {
-            color: var(--muted);
-            font-size: 0.9em;
-            text-align: center;
-        }
+        #game-screen.active { display: flex; }
 
     </style>
 </head>
@@ -379,13 +576,65 @@
         </div>
     </div>
 
-    <!-- ==================== PLACEHOLDER — PHASES SUIVANTES ==================== -->
+    <!-- ==================== BRIEFING ==================== -->
     <div id="briefing-screen">
-        <p class="placeholder-msg">⚙️ Chargement du briefing...</p>
-        <p class="placeholder-sub">Phase 2 en cours de développement</p>
-        <button onclick="document.getElementById('briefing-screen').classList.remove('active'); document.getElementById('title-screen').classList.remove('hidden');"
+
+        <!-- En-tête -->
+        <div class="briefing-header">
+            <div class="briefing-title">
+                🤖 ARIA-7 — Briefing Opérateur
+            </div>
+            <div class="briefing-progress">
+                <span id="progress-label">Section 1/6</span>
+                <div class="briefing-progress-bar">
+                    <div class="briefing-progress-fill" id="progress-fill" style="width:16.6%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Corps -->
+        <div class="briefing-body">
+
+            <!-- Nav latérale -->
+            <nav class="briefing-nav" id="briefing-nav">
+                <div class="briefing-nav-item active" data-section="0" onclick="goToSection(0)">
+                    <span class="nav-num">01</span> La consigne, c'est quoi ?
+                </div>
+                <div class="briefing-nav-item" data-section="1" onclick="goToSection(1)">
+                    <span class="nav-num">02</span> Les 4 piliers RCTF
+                </div>
+                <div class="briefing-nav-item" data-section="2" onclick="goToSection(2)">
+                    <span class="nav-num">03</span> Le Rôle
+                </div>
+                <div class="briefing-nav-item" data-section="3" onclick="goToSection(3)">
+                    <span class="nav-num">04</span> Le Contexte
+                </div>
+                <div class="briefing-nav-item" data-section="4" onclick="goToSection(4)">
+                    <span class="nav-num">05</span> La Tâche précise
+                </div>
+                <div class="briefing-nav-item" data-section="5" onclick="goToSection(5)">
+                    <span class="nav-num">06</span> Le Format
+                </div>
+            </nav>
+
+            <!-- Contenu -->
+            <div class="briefing-content" id="briefing-content"></div>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="briefing-footer">
+            <button class="briefing-btn" id="prev-btn" onclick="prevSection()" disabled>← Précédent</button>
+            <a href="modules.html" style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.8em;text-decoration:none;">↩ Modules</a>
+            <button class="briefing-btn primary" id="next-btn" onclick="nextSection()">Suivant →</button>
+        </div>
+    </div>
+
+    <!-- ==================== PLACEHOLDER GAME (Phase 3) ==================== -->
+    <div id="game-screen">
+        <p style="font-family:'Space Mono',monospace;color:#4ecdc4;font-size:1.2em;">⚙️ Salles en cours de développement...</p>
+        <button onclick="showBriefing()"
             style="margin-top:20px;font-family:'Space Mono',monospace;padding:10px 30px;border:1px solid #4ecdc4;background:transparent;color:#4ecdc4;cursor:pointer;">
-            ← Retour titre
+            ← Retour briefing
         </button>
     </div>
 
@@ -404,14 +653,466 @@
             }
         })();
 
-        // ==================== DÉMARRAGE ====================
+        // ==================== CONTENU BRIEFING ====================
+        const briefingSections = [
+            {
+                title: '01 — La consigne, c\'est quoi ?',
+                kicker: 'Comprendre pourquoi la qualité de votre instruction détermine la qualité de la réponse.',
+                html: `
+                    <div class="pill">ARIA-7</div><div class="pill">Module 05</div><div class="pill">Fondamentaux</div>
+                    <div class="divider"></div>
+
+                    <p class="body-text">
+                        Quand tu parles à une IA, tu lui donnes une <strong style="color:var(--domain-color)">consigne</strong> — aussi appelée <em>prompt</em>.
+                        C'est l'instruction qui déclenche sa réponse. Et comme pour tout outil, la qualité du résultat
+                        dépend directement de la qualité de ta demande.
+                    </p>
+
+                    <div class="aria-response">
+                        <div class="aria-avatar">🤖</div>
+                        <div>
+                            <div class="aria-name">ARIA-7 // LOG D'ERREUR</div>
+                            <div class="aria-bubble">
+                                Les anciens opérateurs me donnaient des consignes vagues comme <em>"Fais quelque chose de bien"</em>.
+                                Résultat : je ne savais pas quoi faire. Ma réponse était aléatoire, inutile.
+                                Une bonne consigne, c'est comme une <strong>clé précise pour une serrure précise</strong>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">⚡ L'effet de la précision</h3>
+                    <div class="compare-row">
+                        <div class="callout compare-bad">
+                            <div class="compare-label" style="color:var(--danger);">❌ CONSIGNE VAGUE</div>
+                            <div class="prompt-example">"Écris quelque chose sur les voyages."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">
+                                L'IA ne sait pas : quel type de texte ? Pour qui ? Quelle longueur ?
+                                Quel ton ? Elle va improviser — et probablement rater.
+                            </p>
+                        </div>
+                        <div class="callout compare-good">
+                            <div class="compare-label" style="color:var(--neon-green);">✅ CONSIGNE PRÉCISE</div>
+                            <div class="prompt-example">"Écris un email de 150 mots pour inviter des collègues à un séminaire à Lyon le 15 mars. Ton enthousiaste et professionnel."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">
+                                L'IA sait exactement ce qu'elle doit produire. Elle va le faire efficacement.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">🔑 La règle d'or</h3>
+                    <div class="callout ok">
+                        <strong>Ne laisse jamais l'IA deviner ce que tu veux.</strong><br/><br/>
+                        Chaque information que tu n'as pas donnée, l'IA va l'inventer.
+                        Et elle peut se tromper complètement. Plus ta consigne est claire et complète,
+                        plus la réponse sera utile et adaptée.
+                    </div>
+
+                    <p class="body-text" style="margin-top:20px;">
+                        Dans ce module, tu vas apprendre à structurer tes consignes grâce à 4 piliers fondamentaux.
+                        Puis tu vas les mettre en pratique dans les 5 salles du ARIA Lab.
+                        Prêt·e à devenir un expert des consignes ?
+                    </p>
+                `
+            },
+            {
+                title: '02 — Les 4 piliers RCTF',
+                kicker: 'Une méthode simple pour construire des instructions efficaces à tous les coups.',
+                html: `
+                    <div class="pill">ARIA-7</div><div class="pill">Module 05</div><div class="pill">Méthode RCTF</div>
+                    <div class="divider"></div>
+
+                    <p class="body-text">
+                        Pour écrire une consigne efficace, il suffit de se poser 4 questions.
+                        C'est la méthode <strong style="color:var(--domain-color)">RCTF</strong> — un cadre simple que
+                        les professionnels utilisent pour maximiser la qualité des réponses de l'IA.
+                    </p>
+
+                    <div class="rctf-grid">
+                        <div class="rctf-card" style="border-color:rgba(168,85,247,0.5);">
+                            <div class="rctf-letter" style="color:#a855f7;">R</div>
+                            <div class="rctf-label" style="color:#c084fc;">Rôle</div>
+                            <div class="rctf-desc">
+                                Qui est l'IA dans ce contexte ?<br/>
+                                <em>Ex : "Tu es un professeur de maths"</em>
+                            </div>
+                        </div>
+                        <div class="rctf-card" style="border-color:rgba(0,212,255,0.5);">
+                            <div class="rctf-letter" style="color:var(--neon-blue);">C</div>
+                            <div class="rctf-label" style="color:var(--neon-blue);">Contexte</div>
+                            <div class="rctf-desc">
+                                Quelle est la situation de fond ?<br/>
+                                <em>Ex : "pour des élèves de CM2 en difficulté"</em>
+                            </div>
+                        </div>
+                        <div class="rctf-card" style="border-color:rgba(0,255,136,0.5);">
+                            <div class="rctf-letter" style="color:var(--neon-green);">T</div>
+                            <div class="rctf-label" style="color:var(--neon-green);">Tâche</div>
+                            <div class="rctf-desc">
+                                Que dois-je faire exactement ?<br/>
+                                <em>Ex : "explique la division"</em>
+                            </div>
+                        </div>
+                        <div class="rctf-card" style="border-color:rgba(255,204,0,0.5);">
+                            <div class="rctf-letter" style="color:var(--warn);">F</div>
+                            <div class="rctf-label" style="color:var(--warn);">Format</div>
+                            <div class="rctf-desc">
+                                Sous quelle forme dois-je répondre ?<br/>
+                                <em>Ex : "en 5 étapes avec exemples concrets"</em>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">🧪 Le prompt RCTF complet</h3>
+                    <div class="prompt-example">
+                        <span style="color:#c084fc;">[R]</span> "Tu es un professeur de maths bienveillant et créatif.
+                        <span style="color:var(--neon-blue);">[C]</span> Je travaille avec des élèves de CM2 qui ont du mal avec les fractions.
+                        <span style="color:var(--neon-green);">[T]</span> Explique-leur comment additionner deux fractions.
+                        <span style="color:var(--warn);">[F]</span> Utilise une analogie avec des pizzas et donne 2 exemples pratiques."
+                    </div>
+
+                    <div class="aria-response">
+                        <div class="aria-avatar">🤖</div>
+                        <div>
+                            <div class="aria-name">ARIA-7 // RÉPONSE OPTIMALE</div>
+                            <div class="aria-bubble">
+                                Avec ce prompt RCTF complet, je sais exactement comment me positionner,
+                                qui est mon public, ce que je dois faire et comment le présenter.
+                                <strong>Résultat : une réponse parfaitement adaptée à vos besoins.</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout warn">
+                        <strong>Tous les piliers sont-ils toujours obligatoires ?</strong><br/><br/>
+                        Non ! Une consigne simple peut n'avoir besoin que d'une Tâche claire.
+                        Mais plus la demande est complexe ou délicate, plus il faut compléter les 4 piliers.
+                        Le RCTF est un <strong>filet de sécurité</strong>, pas une contrainte rigide.
+                    </div>
+                `
+            },
+            {
+                title: '03 — Le Rôle : donner une identité à l\'IA',
+                kicker: 'Dire à l\'IA qui elle est transforme radicalement la nature de ses réponses.',
+                html: `
+                    <div class="pill">ARIA-7</div><div class="pill">Module 05</div><div class="pill">Rôle</div>
+                    <div class="divider"></div>
+
+                    <p class="body-text">
+                        Quand tu dis à l'IA <strong style="color:#c084fc;">"Tu es un nutritionniste"</strong>,
+                        tu actives un ensemble de connaissances, un vocabulaire spécifique et un angle d'approche.
+                        Ce n'est pas du jeu de rôle gratuit — c'est un levier puissant pour orienter la réponse.
+                    </p>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">🎭 Même question, 3 rôles différents</h3>
+                    <p class="body-text">Question : <em>"Explique pourquoi manger des légumes est important."</em></p>
+
+                    <div class="callout" style="border-left-color:#c084fc;">
+                        <strong style="color:#c084fc;">🧑‍⚕️ Rôle : Médecin nutritionniste</strong><br/><br/>
+                        <em style="color:#aabbcc;">"Les légumes apportent des micronutriments essentiels (vitamines, minéraux, antioxydants)
+                        qui préviennent les maladies cardiovasculaires, réduisent l'inflammation chronique..."</em>
+                    </div>
+
+                    <div class="callout" style="border-left-color:var(--neon-green);">
+                        <strong style="color:var(--neon-green);">👩‍🏫 Rôle : Instit' de CE1</strong><br/><br/>
+                        <em style="color:#aabbcc;">"Les légumes, c'est comme le carburant de super pour ton corps ! Ils donnent des vitamines
+                        qui aident tes muscles à être forts et ton cerveau à bien travailler à l'école..."</em>
+                    </div>
+
+                    <div class="callout" style="border-left-color:var(--warn);">
+                        <strong style="color:var(--warn);">🍳 Rôle : Chef cuisinier</strong><br/><br/>
+                        <em style="color:#aabbcc;">"Les légumes frais sont la base de toute bonne cuisine. Ils apportent des textures,
+                        des saveurs et des couleurs qui transforment un plat banal en œuvre d'art culinaire..."</em>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">📋 Construire un bon rôle</h3>
+                    <div class="compare-row">
+                        <div class="callout compare-bad">
+                            <div class="compare-label" style="color:var(--danger);">❌ RÔLE BASIQUE</div>
+                            <div class="prompt-example">"Tu es un prof."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">Quel prof ? De quoi ? Pour qui ? L'IA ne sait pas se positionner.</p>
+                        </div>
+                        <div class="callout compare-good">
+                            <div class="compare-label" style="color:var(--neon-green);">✅ RÔLE ENRICHI</div>
+                            <div class="prompt-example">"Tu es un prof de SVT passionné, pédagogue, qui aime utiliser des analogies du quotidien pour expliquer la biologie à des lycéens."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">L'IA a tous les repères pour adopter le bon positionnement.</p>
+                        </div>
+                    </div>
+
+                    <div class="callout ok">
+                        <strong>Conseil pratique :</strong> Le rôle est encore plus puissant quand tu lui ajoutes
+                        une <strong>caractéristique de personnalité</strong> ou une <strong>méthode</strong>.
+                        <em>"Tu es un coach sportif bienveillant qui adapte toujours ses conseils au niveau du débutant"</em>
+                        donne bien plus qu'un simple <em>"Tu es un coach sportif"</em>.
+                    </div>
+                `
+            },
+            {
+                title: '04 — Le Contexte : planter le décor',
+                kicker: 'Les informations de fond que tu fournis évitent à l\'IA de faire des suppositions erronées.',
+                html: `
+                    <div class="pill">ARIA-7</div><div class="pill">Module 05</div><div class="pill">Contexte</div>
+                    <div class="divider"></div>
+
+                    <p class="body-text">
+                        L'IA ne connaît pas ta situation personnelle. Sans contexte, elle va faire des suppositions
+                        — et ces suppositions peuvent être <strong style="color:var(--danger)">complètement fausses</strong>.
+                        Le contexte, c'est tout ce que l'IA a besoin de savoir <em>sur toi ou la situation</em>
+                        pour répondre de manière adaptée.
+                    </p>
+
+                    <div class="aria-response">
+                        <div class="aria-avatar">🤖</div>
+                        <div>
+                            <div class="aria-name">ARIA-7 // PROBLÈME CONNU</div>
+                            <div class="aria-bubble">
+                                Si tu me demandes "comment améliorer mon texte" sans me donner le texte,
+                                je ne peux rien faire d'utile. Si tu me demandes "comment gérer mon équipe"
+                                sans dire que c'est une équipe de 3 personnes en télétravail dans une startup,
+                                je vais te donner des conseils génériques inutiles.
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">📦 Quoi mettre dans le contexte ?</h3>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0;">
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">👤</div>
+                            <strong style="color:var(--domain-color);">Qui tu es</strong><br/>
+                            <span style="font-size:0.88em;color:#aabbcc;">Niveau, profession, expérience, public</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">🎯</div>
+                            <strong style="color:var(--domain-color);">Pourquoi tu demandes</strong><br/>
+                            <span style="font-size:0.88em;color:#aabbcc;">Usage prévu, objectif final</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">📄</div>
+                            <strong style="color:var(--domain-color);">Ce que tu as déjà</strong><br/>
+                            <span style="font-size:0.88em;color:#aabbcc;">Document, ébauche, contraintes existantes</span>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">🔬 Avant / Après avec contexte</h3>
+                    <div class="compare-row">
+                        <div class="callout compare-bad">
+                            <div class="compare-label" style="color:var(--danger);">❌ SANS CONTEXTE</div>
+                            <div class="prompt-example">"Aide-moi à rédiger un email de relance."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">L'IA va inventer un contexte. Résultat générique et probablement inadapté.</p>
+                        </div>
+                        <div class="callout compare-good">
+                            <div class="compare-label" style="color:var(--neon-green);">✅ AVEC CONTEXTE</div>
+                            <div class="prompt-example">"Je suis freelance graphiste. J'ai envoyé un devis à un client il y a 10 jours, sans réponse. Le projet vaut 2 000€ et le client est une PME de 30 personnes. Aide-moi à rédiger un email de relance."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">L'IA peut maintenant produire quelque chose de réellement utile et adapté.</p>
+                        </div>
+                    </div>
+
+                    <div class="callout warn">
+                        <strong>Attention :</strong> Ne mets jamais dans le contexte des <strong>informations personnelles sensibles</strong>
+                        (numéros de sécurité sociale, mots de passe, données bancaires).
+                        Donne uniquement ce qui est pertinent pour la tâche.
+                    </div>
+                `
+            },
+            {
+                title: '05 — La Tâche : être précis',
+                kicker: 'Formuler clairement ce que tu attends évite les malentendus et les réponses à côté.',
+                html: `
+                    <div class="pill">ARIA-7</div><div class="pill">Module 05</div><div class="pill">Tâche</div>
+                    <div class="divider"></div>
+
+                    <p class="body-text">
+                        La Tâche, c'est le cœur de ta consigne : <strong style="color:var(--neon-green);">que veux-tu que l'IA fasse ?</strong>
+                        Une tâche floue produit une réponse floue. Une tâche précise produit une réponse précise.
+                        Trois questions t'aident à rendre une tâche efficace.
+                    </p>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:20px 0;">
+                        <div class="callout" style="border-left-color:var(--neon-green);text-align:center;">
+                            <div style="font-size:2em;margin-bottom:8px;">❓</div>
+                            <strong style="color:var(--neon-green);">QUOI ?</strong><br/>
+                            <span style="font-size:0.88em;color:#aabbcc;">Quel est le livrable exact ?<br/><em>"Un résumé", "Une liste", "Un plan"</em></span>
+                        </div>
+                        <div class="callout" style="border-left-color:var(--neon-blue);text-align:center;">
+                            <div style="font-size:2em;margin-bottom:8px;">📏</div>
+                            <strong style="color:var(--neon-blue);">COMBIEN ?</strong><br/>
+                            <span style="font-size:0.88em;color:#aabbcc;">Quelle longueur ou quantité ?<br/><em>"En 3 points", "200 mots max"</em></span>
+                        </div>
+                        <div class="callout" style="border-left-color:#c084fc;text-align:center;">
+                            <div style="font-size:2em;margin-bottom:8px;">🎨</div>
+                            <strong style="color:#c084fc;">COMMENT ?</strong><br/>
+                            <span style="font-size:0.88em;color:#aabbcc;">Quel style ou approche ?<br/><em>"Ton formel", "Avec exemples"</em></span>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">⚡ Des verbes d'action précis</h3>
+                    <p class="body-text">Le verbe que tu choisis pour démarrer ta tâche envoie un signal très fort à l'IA :</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0;">
+                        <div class="callout">
+                            <strong style="color:var(--domain-color);">Résume</strong> → synthèse courte<br/>
+                            <strong style="color:var(--domain-color);">Explique</strong> → pédagogie, clarté<br/>
+                            <strong style="color:var(--domain-color);">Compare</strong> → analyse différentielle<br/>
+                            <strong style="color:var(--domain-color);">Liste</strong> → format énumératif
+                        </div>
+                        <div class="callout">
+                            <strong style="color:var(--domain-color);">Rédige</strong> → texte complet<br/>
+                            <strong style="color:var(--domain-color);">Propose</strong> → idées créatives<br/>
+                            <strong style="color:var(--domain-color);">Corrige</strong> → amélioration<br/>
+                            <strong style="color:var(--domain-color);">Traduis</strong> → conversion linguistique
+                        </div>
+                    </div>
+
+                    <div class="compare-row" style="margin-top:20px;">
+                        <div class="callout compare-bad">
+                            <div class="compare-label" style="color:var(--danger);">❌ TÂCHE FLOUE</div>
+                            <div class="prompt-example">"Parle-moi de la photosynthèse."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">L'IA ne sait pas si tu veux un cours complet, une définition, un schéma verbal, ou juste une anecdote.</p>
+                        </div>
+                        <div class="callout compare-good">
+                            <div class="compare-label" style="color:var(--neon-green);">✅ TÂCHE PRÉCISE</div>
+                            <div class="prompt-example">"Explique la photosynthèse en 5 étapes numérotées, avec une analogie simple, pour des élèves de 4e."</div>
+                            <p style="font-size:0.9em;color:#aabbcc;margin-top:10px;">L'IA sait exactement quoi faire, combien d'étapes, et pour qui.</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: '06 — Le Format : choisir la forme',
+                kicker: 'La bonne information dans le mauvais format est souvent inutile. Spécifier la forme, c\'est gagner du temps.',
+                html: `
+                    <div class="pill">ARIA-7</div><div class="pill">Module 05</div><div class="pill">Format</div>
+                    <div class="divider"></div>
+
+                    <p class="body-text">
+                        Tu peux obtenir la <em>bonne information</em> dans le <em>mauvais format</em> — et ça la rend inutilisable.
+                        Cinq paragraphes denses là où un tableau aurait suffi. Un texte littéraire là où tu avais besoin d'une liste.
+                        Spécifier le format, c'est le dernier levier d'une consigne efficace.
+                    </p>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">📐 Les formats courants</h3>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0;">
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">📝</div>
+                            <strong>Liste à puces</strong><br/><span style="color:#aabbcc;font-size:0.85em;">Points clés, recommandations</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">📊</div>
+                            <strong>Tableau</strong><br/><span style="color:#aabbcc;font-size:0.85em;">Comparaison, catégorisation</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">🔢</div>
+                            <strong>Étapes numérotées</strong><br/><span style="color:#aabbcc;font-size:0.85em;">Tutoriels, procédures</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">📧</div>
+                            <strong>Email / Lettre</strong><br/><span style="color:#aabbcc;font-size:0.85em;">Objet, corps, signature</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">📄</div>
+                            <strong>Paragraphe</strong><br/><span style="color:#aabbcc;font-size:0.85em;">Texte continu, explication</span>
+                        </div>
+                        <div class="callout" style="text-align:center;">
+                            <div style="font-size:1.8em;margin-bottom:8px;">💬</div>
+                            <strong>Dialogue</strong><br/><span style="color:#aabbcc;font-size:0.85em;">Script, simulation</span>
+                        </div>
+                    </div>
+
+                    <h3 style="color:var(--domain-color);margin:25px 0 15px;">🏆 Le prompt RCTF parfait — récapitulatif</h3>
+                    <div class="prompt-example">
+                        <div style="margin-bottom:8px;"><span style="color:#c084fc;">[R] Rôle :</span> "Tu es un expert en cybersécurité pédagogue."</div>
+                        <div style="margin-bottom:8px;"><span style="color:var(--neon-blue);">[C] Contexte :</span> "Je suis responsable informatique d'une PME de 50 personnes. Mes collègues ne sont pas téchniques."</div>
+                        <div style="margin-bottom:8px;"><span style="color:var(--neon-green);">[T] Tâche :</span> "Rédige un guide des 5 bonnes pratiques pour éviter le phishing."</div>
+                        <div><span style="color:var(--warn);">[F] Format :</span> "5 règles numérotées, chacune avec un titre accrocheur et 2 phrases d'explication. Maximum 300 mots."</div>
+                    </div>
+
+                    <div class="callout ok" style="margin-top:25px;">
+                        <strong>🎯 Tu es prêt·e !</strong><br/><br/>
+                        Tu connais maintenant les 4 piliers d'une bonne consigne : <strong>R</strong>ôle, <strong>C</strong>ontexte, <strong>T</strong>âche, <strong>F</strong>ormat.
+                        Il est temps de les mettre en pratique dans les salles sécurisées du ARIA Lab.
+                        Chaque salle te demandera de mobiliser ces connaissances pour débloquer la porte suivante.
+                        <br/><br/>
+                        <strong style="color:var(--domain-color);">Bonne chance, Agent.</strong>
+                    </div>
+                `
+            }
+        ];
+
+        // ==================== NAVIGATION BRIEFING ====================
+        let currentSection = 0;
+        const TOTAL_SECTIONS = briefingSections.length;
+
+        function renderSection(index) {
+            const s = briefingSections[index];
+            const content = document.getElementById('briefing-content');
+            content.innerHTML = `
+                <div class="section-title">${s.title}</div>
+                <p class="section-kicker">${s.kicker}</p>
+                ${s.html}
+            `;
+            content.scrollTop = 0;
+
+            // Nav items
+            document.querySelectorAll('.briefing-nav-item').forEach((item, i) => {
+                item.classList.remove('active');
+                if (i < index) item.classList.add('completed');
+                else item.classList.remove('completed');
+            });
+            document.querySelector(`[data-section="${index}"]`).classList.add('active');
+
+            // Progress
+            const pct = ((index + 1) / TOTAL_SECTIONS * 100).toFixed(1);
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('progress-label').textContent = `Section ${index + 1}/${TOTAL_SECTIONS}`;
+
+            // Buttons
+            document.getElementById('prev-btn').disabled = (index === 0);
+            const nextBtn = document.getElementById('next-btn');
+            if (index === TOTAL_SECTIONS - 1) {
+                nextBtn.textContent = '🔐 Entrer dans le Lab →';
+                nextBtn.onclick = startGame;
+            } else {
+                nextBtn.textContent = 'Suivant →';
+                nextBtn.onclick = nextSection;
+            }
+        }
+
+        function nextSection() {
+            if (currentSection < TOTAL_SECTIONS - 1) {
+                currentSection++;
+                renderSection(currentSection);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 0) {
+                currentSection--;
+                renderSection(currentSection);
+            }
+        }
+
+        function goToSection(index) {
+            currentSection = index;
+            renderSection(currentSection);
+        }
+
+        // ==================== TRANSITIONS ====================
         function startMission() {
             const titleScreen = document.getElementById('title-screen');
             const briefingScreen = document.getElementById('briefing-screen');
             titleScreen.classList.add('hidden');
             setTimeout(() => {
                 briefingScreen.classList.add('active');
+                renderSection(0);
             }, 400);
+        }
+
+        function showBriefing() {
+            document.getElementById('game-screen').classList.remove('active');
+            document.getElementById('briefing-screen').classList.add('active');
+        }
+
+        function startGame() {
+            document.getElementById('briefing-screen').classList.remove('active');
+            document.getElementById('game-screen').classList.add('active');
         }
     </script>
 
