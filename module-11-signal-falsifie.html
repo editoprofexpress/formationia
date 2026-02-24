@@ -539,6 +539,68 @@
     }
     .summary-label{font-family:'Space Mono',monospace;color:var(--muted);font-size:0.9em}
 
+    /* ==================== QUIZ (PHASE 4) ==================== */
+    #quiz-screen{
+      position:fixed;inset:0;
+      background:linear-gradient(135deg,#0a0e17 0%,#1a1500 50%,#0a0e17 100%);
+      z-index:997;display:none;flex-direction:column;overflow:hidden;
+    }
+    #quiz-screen.active{display:flex}
+
+    .quiz-header{
+      background:rgba(10,20,40,0.97);
+      border-bottom:1px solid rgba(255,230,109,0.3);
+      padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
+      flex-shrink:0;
+    }
+    .quiz-header-title{font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-yellow);display:flex;align-items:center;gap:10px}
+    .quiz-meta{font-family:'Space Mono',monospace;font-size:0.83em;color:var(--muted)}
+
+    .quiz-body{
+      flex:1;overflow-y:auto;padding:40px 60px;
+      max-width:860px;margin:0 auto;width:100%;
+    }
+    .quiz-body::-webkit-scrollbar{width:6px}
+    .quiz-body::-webkit-scrollbar-thumb{background:rgba(255,230,109,0.2);border-radius:3px}
+
+    .quiz-q-block{margin-bottom:32px}
+    .quiz-q-num{
+      font-family:'Space Mono',monospace;font-size:0.75em;letter-spacing:2px;
+      color:var(--neon-yellow);margin-bottom:10px;text-transform:uppercase;
+    }
+    .quiz-q-text{
+      font-size:1.05em;font-weight:600;color:var(--text);line-height:1.65;margin-bottom:14px;
+    }
+    .quiz-opts{display:flex;flex-direction:column;gap:8px}
+    .quiz-opt{
+      background:rgba(255,230,109,0.04);border:1px solid rgba(255,230,109,0.2);
+      border-radius:9px;padding:13px 18px;cursor:pointer;transition:all .25s;
+      font-size:0.93em;color:#cfe9ff;display:flex;align-items:center;gap:12px;
+    }
+    .quiz-opt:hover{border-color:var(--neon-yellow);background:rgba(255,230,109,0.08);transform:translateX(4px)}
+    .quiz-opt.selected{border-color:var(--neon-blue);background:rgba(0,212,255,0.12);color:var(--text)}
+    .quiz-opt.correct{border-color:var(--neon-green);background:rgba(0,255,136,0.12);color:var(--neon-green);cursor:default;transform:none}
+    .quiz-opt.wrong{border-color:var(--danger);background:rgba(255,77,77,0.12);color:var(--danger);cursor:default;transform:none}
+    .quiz-opt.disabled{cursor:default;transform:none;opacity:0.65}
+    .opt-letter{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      background:rgba(255,230,109,0.12);color:var(--neon-yellow);
+      padding:3px 8px;border-radius:4px;flex-shrink:0;
+    }
+    .quiz-explain{
+      background:rgba(0,0,0,0.25);border-left:3px solid var(--neon-yellow);
+      border-radius:0 8px 8px 0;padding:12px 15px;margin-top:10px;
+      font-size:0.87em;line-height:1.65;color:#b0c4de;display:none;
+    }
+    .quiz-explain.show{display:block;animation:fadeIn .3s ease}
+
+    .quiz-footer{
+      background:rgba(10,20,40,0.97);border-top:1px solid rgba(255,230,109,0.3);
+      padding:18px 30px;display:flex;justify-content:space-between;align-items:center;
+      flex-shrink:0;
+    }
+    #quiz-result{margin-top:20px;margin-bottom:10px}
+
     /* ==================== TOAST ==================== */
     #toast{
       position:fixed;bottom:30px;right:30px;z-index:9999;
@@ -708,6 +770,21 @@
       </button>
     </div>
 
+  </div>
+</div>
+
+<!-- ======================== QUIZ (PHASE 4) ======================== -->
+<div id="quiz-screen">
+  <div class="quiz-header">
+    <div class="quiz-header-title">📋 QUIZ DE VALIDATION — Unité VERITAS</div>
+    <div class="quiz-meta" id="quiz-meta-bar">Question 1/8</div>
+  </div>
+  <div class="quiz-body" id="quiz-body"></div>
+  <div class="quiz-footer">
+    <div style="font-family:'Space Mono',monospace;font-size:0.82em;color:var(--muted)">Score minimum requis : 70 %</div>
+    <button class="briefing-btn primary" id="quiz-submit-btn" onclick="submitQuiz()" style="display:none">
+      ✅ Valider mes réponses
+    </button>
   </div>
 </div>
 
@@ -1390,7 +1467,161 @@ function backToGrid(){
 }
 
 function goToQuiz(){
-  toast('📋 Quiz — Phase 4 bientôt disponible…');
+  document.getElementById('game-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  initQuiz();
+}
+
+/* =========================================================
+   PHASE 4 — QUIZ DE VALIDATION
+========================================================= */
+const quizQuestions = [
+  {
+    q:'Qu\'est-ce que le terme "deepfake" désigne à l\'origine ?',
+    opts:['Une technique d\'espionnage numérique des années 2000','Une méthode de manipulation photo via Photoshop','Un contenu fabriqué par deep learning pour paraître authentique','Un virus informatique capable de cloner des identités'],
+    correct:2,
+    explain:'Deepfake = deep learning + fake. Le terme désigne les contenus (images, vidéos, audio) générés ou manipulés par IA pour paraître réels, apparu popularisé vers 2017.'
+  },
+  {
+    q:'Quelle technologie est à la base de la majorité des deepfakes vidéo ?',
+    opts:['Les réseaux de neurones convolutifs (CNN) seuls','Les réseaux adversariaux génératifs (GAN)','Les transformeurs (comme GPT)','La compression HEVC avancée'],
+    correct:1,
+    explain:'Les GAN (Generative Adversarial Networks) mettent en compétition un générateur et un discriminateur. Après des milliers d\'itérations, le générateur produit des images indiscernables du réel.'
+  },
+  {
+    q:'Lequel de ces indices est le plus révélateur d\'un deepfake vidéo ?',
+    opts:['Une mauvaise qualité audio','L\'absence ou l\'irrégularité des clignements des yeux','Un arrière-plan flou','Une légère pixelisation générale'],
+    correct:1,
+    explain:'Les GAN peinent à simuler les clignements naturels (15–20/min). Une absence totale de clignement ou un rythme anormal est l\'un des signes les plus fiables de détection.'
+  },
+  {
+    q:'Une comptable reçoit un message vocal urgent de son PDG demandant un virement exceptionnel. Quelle est la bonne réaction ?',
+    opts:['Effectuer le virement rapidement pour ne pas bloquer l\'affaire','Envoyer un email de confirmation au PDG','Raccrocher et rappeler le PDG sur son numéro habituel connu','Demander l\'autorisation à son supérieur hiérarchique direct'],
+    correct:2,
+    explain:'La règle d\'or face à une demande vocale urgente d\'argent : toujours raccrocher et rappeler la personne sur un numéro que vous connaissez déjà — jamais sur un numéro fourni dans le message suspect.'
+  },
+  {
+    q:'Qu\'est-ce que le "dividende du menteur" dans le contexte des deepfakes ?',
+    opts:['Les profits réalisés par les créateurs de deepfakes','La capacité à nier une vraie vidéo compromettante en invoquant les deepfakes','Le surcoût financier lié à la détection des faux','Les revenus générés par les plateformes hébergeant des deepfakes'],
+    correct:1,
+    explain:'Le dividende du menteur : l\'existence des deepfakes permet à n\'importe qui de nier une vraie vidéo en disant "c\'est un deepfake". Même sans que personne ne soit trompé, la vérité devient contestable.'
+  },
+  {
+    q:'Avec quelle quantité d\'audio une IA peut-elle aujourd\'hui cloner une voix de façon convaincante ?',
+    opts:['Au moins 10 heures d\'enregistrements de haute qualité','Plusieurs jours de captation en studio','Quelques secondes à quelques minutes d\'audio','Uniquement avec des données biométriques complètes'],
+    correct:2,
+    explain:'Les outils modernes de clonage vocal (ElevenLabs, Bark, etc.) n\'ont besoin que de quelques secondes à quelques minutes d\'audio pour reproduire fidèlement une voix. C\'est ce qui rend les arnaques vocales si accessibles.'
+  },
+  {
+    q:'Quelle méthode de détection est la plus fiable pour un article de presse potentiellement généré par IA ?',
+    opts:['Utiliser exclusivement un détecteur de texte IA (GPTZero)','Vérifier le style d\'écriture et le nombre de mots','Croiser l\'information avec au moins deux sources indépendantes et fiables','Vérifier la longueur de l\'article et la date de publication'],
+    correct:2,
+    explain:'Les détecteurs de texte IA font des erreurs (faux positifs et faux négatifs). La méthode la plus fiable reste le croisement avec des sources indépendantes reconnues. Les outils automatiques sont complémentaires, pas suffisants seuls.'
+  },
+  {
+    q:'Quelle est la proportion estimée de contenu deepfake ciblant des femmes ?',
+    opts:['Environ 30 %','Environ 50 %','Environ 70 %','Environ 90 %'],
+    correct:3,
+    explain:'Selon plusieurs études (Sensity AI, Home Security Heroes), environ 90 % du contenu deepfake non consenti cible des femmes, en grande majorité sous forme de contenu à caractère pornographique créé sans leur consentement.'
+  },
+];
+
+let quizAnswers = {};
+let quizSubmitted = false;
+let quizFinalScore = 0;
+let certificateUnlocked = false;
+
+function initQuiz(){
+  quizAnswers = {};
+  quizSubmitted = false;
+
+  const body = document.getElementById('quiz-body');
+  body.innerHTML = quizQuestions.map((q,i)=>`
+    <div class="quiz-q-block" id="qblock-${i}">
+      <div class="quiz-q-num">Question ${i+1} / ${quizQuestions.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,j)=>`
+          <div class="quiz-opt" id="opt-${i}-${j}" onclick="selectOpt(${i},${j})">
+            <span class="opt-letter">${String.fromCharCode(65+j)}</span>
+            ${o}
+          </div>`).join('')}
+      </div>
+      <div class="quiz-explain" id="explain-${i}">${q.explain}</div>
+    </div>`).join('')+'<div id="quiz-result"></div>';
+
+  document.getElementById('quiz-submit-btn').style.display='none';
+  document.getElementById('quiz-meta-bar').textContent = '0/'+quizQuestions.length+' répondu(e)s';
+  body.scrollTop = 0;
+}
+
+function selectOpt(qIdx, oIdx){
+  if(quizSubmitted) return;
+  quizAnswers[qIdx] = oIdx;
+
+  // Mettre à jour visuellement
+  document.querySelectorAll(`.quiz-opt[id^="opt-${qIdx}-"]`).forEach(el=>{
+    el.classList.remove('selected');
+  });
+  document.getElementById('opt-'+qIdx+'-'+oIdx)?.classList.add('selected');
+
+  // Mettre à jour le compteur
+  const answered = Object.keys(quizAnswers).length;
+  document.getElementById('quiz-meta-bar').textContent = answered+'/'+quizQuestions.length+' répondue'+(answered>1?'s':'');
+
+  // Afficher bouton soumettre si tout répondu
+  if(answered === quizQuestions.length){
+    document.getElementById('quiz-submit-btn').style.display='flex';
+    toast('✅ Toutes les questions répondues — validez vos réponses !');
+  }
+}
+
+function submitQuiz(){
+  if(quizSubmitted) return;
+  quizSubmitted = true;
+
+  let score = 0;
+  quizQuestions.forEach((q,i)=>{
+    const userAns = quizAnswers[i];
+    // Désactiver toutes les options
+    document.querySelectorAll(`.quiz-opt[id^="opt-${i}-"]`).forEach(el=>{
+      el.classList.remove('selected');
+      el.classList.add('disabled');
+      el.onclick = null;
+    });
+    // Colorier correct / wrong
+    document.getElementById('opt-'+i+'-'+q.correct)?.classList.add('correct');
+    if(userAns !== undefined && userAns !== q.correct){
+      document.getElementById('opt-'+i+'-'+userAns)?.classList.add('wrong');
+    }
+    // Afficher explication
+    document.getElementById('explain-'+i)?.classList.add('show');
+    if(userAns === q.correct) score++;
+  });
+
+  const pct = Math.round(score/quizQuestions.length*100);
+  quizFinalScore = pct;
+
+  document.getElementById('quiz-submit-btn').style.display='none';
+  document.getElementById('quiz-result').innerHTML = `
+    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:28px;margin-top:10px">
+      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:14px;font-family:'Space Mono',monospace">
+        ${pct>=70?'🏆 Mission accomplie !':'⚠️ Score insuffisant'}
+      </h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.7">${pct>=70
+        ?'Vous avez prouvé votre maîtrise de la détection des deepfakes. Votre attestation Unité VERITAS est débloquée !'
+        :'Il faut au moins 70 % pour valider. Relisez le briefing et retentez le quiz.'
+      }</p>
+      ${pct>=70?`<button class="briefing-btn primary" onclick="showCertificate()" style="margin-top:18px;font-size:1em;padding:14px 35px">🎓 Obtenir mon attestation →</button>`:''}
+    </div>`;
+
+  if(pct>=70) unlockCertificate();
+  document.getElementById('quiz-body').scrollTop = document.getElementById('quiz-body').scrollHeight;
+}
+
+function unlockCertificate(){
+  certificateUnlocked = true;
 }
 
 /* =========================================================
