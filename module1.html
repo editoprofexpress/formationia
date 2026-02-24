@@ -484,6 +484,296 @@
     strong { color: var(--neon-green); }
     em { color: var(--neon-blue); font-style: normal; }
 
+    /* ==================== MISSION INTERACTIVE ==================== */
+    #mission-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2d 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #mission-screen.active { display: flex; }
+
+    .mission-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mission-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2em;
+      color: var(--neon-blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mission-phase-indicator {
+      display: flex; gap: 8px; align-items: center;
+    }
+
+    .phase-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: rgba(0, 212, 255, 0.2);
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      transition: all 0.3s;
+    }
+
+    .phase-dot.active {
+      background: var(--neon-blue);
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    .phase-dot.done {
+      background: var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+
+    .mission-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .mission-body::-webkit-scrollbar { width: 8px; }
+    .mission-body::-webkit-scrollbar-track { background: rgba(0, 212, 255, 0.05); }
+    .mission-body::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.3); border-radius: 4px; }
+
+    .mission-phase { display: none; max-width: 950px; margin: 0 auto; }
+    .mission-phase.active { display: block; animation: fadeIn 0.4s ease; }
+
+    /* Grille preuves */
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      margin: 25px 0;
+    }
+
+    .evidence-card {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(0, 212, 255, 0.02));
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .evidence-card:hover {
+      border-color: var(--neon-blue);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 212, 255, 0.06));
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+    }
+
+    .evidence-card.viewed {
+      border-color: rgba(0, 255, 136, 0.5);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 255, 136, 0.03));
+    }
+
+    .evidence-icon { font-size: 2.5em; margin-bottom: 12px; }
+    .evidence-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--neon-blue);
+      margin-bottom: 8px;
+    }
+    .evidence-name { font-weight: 600; font-size: 1em; }
+
+    .evidence-counter {
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    .evidence-counter strong { color: var(--neon-green); }
+
+    /* Modal preuve */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      display: none;
+      background: rgba(0, 5, 15, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal-card {
+      max-width: 680px;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(10, 20, 50, 0.98), rgba(5, 15, 35, 0.98));
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 0 60px rgba(0, 212, 255, 0.25), inset 0 1px 0 rgba(0, 212, 255, 0.15);
+      animation: modalIn 0.3s ease forwards;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes modalIn {
+      from { transform: scale(0.85) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-card h3 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-card p { line-height: 1.65; color: #cfe9ff; }
+
+    .modal-close-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 10px 25px;
+      border: 1px solid var(--neon-blue);
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--neon-blue);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 18px;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+
+    /* Questions d'analyse */
+    .analysis-question {
+      background: rgba(0, 212, 255, 0.04);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .analysis-question h3 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-blue);
+      margin-bottom: 14px;
+    }
+
+    .analysis-options {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .analysis-option {
+      background: rgba(136, 136, 136, 0.05);
+      border: 2px solid rgba(136, 136, 136, 0.25);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+    }
+
+    .analysis-option:hover {
+      border-color: rgba(0, 255, 136, 0.5);
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .analysis-option.selected {
+      border-color: var(--neon-blue);
+      background: rgba(0, 212, 255, 0.12);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    .analysis-option.correct {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.15);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .analysis-option.wrong {
+      border-color: var(--danger);
+      background: rgba(255, 77, 77, 0.12);
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
+    }
+
+    .analysis-explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.6;
+      font-size: 0.95em;
+    }
+
+    .analysis-explanation.show { display: block; animation: fadeIn 0.3s ease; }
+
+    .analysis-explanation.correct-expl {
+      background: rgba(0, 255, 136, 0.1);
+      border-left: 4px solid var(--neon-green);
+    }
+
+    .analysis-explanation.wrong-expl {
+      background: rgba(255, 77, 77, 0.08);
+      border-left: 4px solid var(--danger);
+    }
+
+    /* Phase résultat */
+    .mission-result {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .mission-result-icon { font-size: 4em; margin-bottom: 20px; }
+
+    .mission-result h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+
+    .mission-result-score {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.5em;
+      margin: 20px 0;
+    }
+
+    .mission-next-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      padding: 16px 45px;
+      border: 2px solid var(--neon-green);
+      background: var(--neon-green);
+      color: var(--dark-bg);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+      margin-top: 25px;
+    }
+
+    .mission-next-btn:hover {
+      background: var(--neon-blue);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+    }
+
     /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .main-title { font-size: 1.9em; letter-spacing: 2px; }
@@ -1289,7 +1579,440 @@
 
     function startMission() {
       document.getElementById('briefing-screen').classList.remove('active');
-      // La mission sera implémentée dans le prochain commit
+      document.getElementById('mission-screen').classList.add('active');
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN MISSION ==================== -->
+  <div id="mission-screen">
+    <div class="mission-header">
+      <div class="mission-header-title">
+        🔍 DECODE — Opération ATLAS
+      </div>
+      <div class="mission-phase-indicator">
+        <span style="color: var(--muted); font-size: 0.85em; margin-right: 8px;">Phase :</span>
+        <div class="phase-dot active" id="phase-dot-0"></div>
+        <div class="phase-dot" id="phase-dot-1"></div>
+        <div class="phase-dot" id="phase-dot-2"></div>
+      </div>
+    </div>
+
+    <div class="mission-body">
+
+      <!-- PHASE 1 : COLLECTE DES PREUVES -->
+      <div class="mission-phase active" id="mission-phase-0">
+        <h2 style="font-family: 'Space Mono', monospace; color: var(--neon-blue); margin-bottom: 8px;">
+          Phase 1 : Collecte des preuves
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 20px;">
+          Consultez chaque pièce à conviction. Lisez attentivement — les détails comptent.
+        </p>
+
+        <div class="evidence-grid">
+          <div class="evidence-card" onclick="openEvidence(0)">
+            <div class="evidence-icon">📰</div>
+            <div class="evidence-label">PIÈCE N°1</div>
+            <div class="evidence-name">Communiqué de presse NovaMind</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(1)">
+            <div class="evidence-icon">📋</div>
+            <div class="evidence-label">PIÈCE N°2</div>
+            <div class="evidence-name">Fiche technique ATLAS</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(2)">
+            <div class="evidence-icon">🧑‍🔬</div>
+            <div class="evidence-label">PIÈCE N°3</div>
+            <div class="evidence-name">Témoignage d'un ex-ingénieur</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(3)">
+            <div class="evidence-icon">📊</div>
+            <div class="evidence-label">PIÈCE N°4</div>
+            <div class="evidence-name">Rapport de tests indépendants</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(4)">
+            <div class="evidence-icon">💬</div>
+            <div class="evidence-label">PIÈCE N°5</div>
+            <div class="evidence-name">Extrait de conversation ATLAS</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(5)">
+            <div class="evidence-icon">📄</div>
+            <div class="evidence-label">PIÈCE N°6</div>
+            <div class="evidence-name">Brevet déposé par NovaMind</div>
+          </div>
+        </div>
+
+        <div class="evidence-counter">
+          Preuves consultées : <strong id="evidence-count">0</strong> / 6
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="mission-next-btn" id="btn-to-phase2" onclick="goToMissionPhase(1)" disabled style="opacity: 0.5;">
+            Passer à l'analyse →
+          </button>
+          <p style="color: var(--muted); font-size: 0.85em; margin-top: 10px;" id="evidence-hint">
+            Consultez les 6 preuves pour débloquer l'analyse
+          </p>
+        </div>
+      </div>
+
+      <!-- PHASE 2 : ANALYSE -->
+      <div class="mission-phase" id="mission-phase-1">
+        <h2 style="font-family: 'Space Mono', monospace; color: var(--neon-blue); margin-bottom: 8px;">
+          Phase 2 : Analyse critique
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 25px;">
+          Sur la base des preuves collectées, répondez aux 3 questions suivantes.
+        </p>
+
+        <!-- Question 1 -->
+        <div class="analysis-question" id="aq-0">
+          <h3>❓ Question 1 — Type d'IA</h3>
+          <p>D'après les pièces à conviction, ATLAS repose principalement sur quel type d'IA ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(0, 0)">
+              <strong>A.</strong> IA symbolique (système à règles)
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(0, 1)">
+              <strong>B.</strong> IA connexionniste (apprentissage automatique)
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(0, 2)">
+              <strong>C.</strong> IA générale consciente (AGI)
+            </div>
+          </div>
+          <div class="analysis-explanation" id="aq-expl-0"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="analysis-question" id="aq-1">
+          <h3>❓ Question 2 — Principale faiblesse</h3>
+          <p>Quel est le principal risque ou limite d'ATLAS identifié dans le dossier ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(1, 0)">
+              <strong>A.</strong> Il consomme trop d'énergie
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(1, 1)">
+              <strong>B.</strong> Il est trop rigide et échoue face aux cas imprévus
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(1, 2)">
+              <strong>C.</strong> Il est trop lent pour un usage médical
+            </div>
+          </div>
+          <div class="analysis-explanation" id="aq-expl-1"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="analysis-question" id="aq-2">
+          <h3>❓ Question 3 — Signal d'alerte marketing</h3>
+          <p>Quel élément du communiqué de presse constitue le signal d'alerte le plus flagrant ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(2, 0)">
+              <strong>A.</strong> « ATLAS comprend véritablement les patients »
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(2, 1)">
+              <strong>B.</strong> « ATLAS utilise 50 000 règles médicales »
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(2, 2)">
+              <strong>C.</strong> « ATLAS a été développé en 3 ans »
+            </div>
+          </div>
+          <div class="analysis-explanation" id="aq-expl-2"></div>
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="mission-next-btn" id="btn-submit-report" onclick="submitReport()" disabled style="opacity: 0.5;">
+            📝 Soumettre le rapport
+          </button>
+          <p style="color: var(--muted); font-size: 0.85em; margin-top: 10px;" id="analysis-hint">
+            Répondez aux 3 questions pour soumettre votre rapport
+          </p>
+        </div>
+      </div>
+
+      <!-- PHASE 3 : RÉSULTAT -->
+      <div class="mission-phase" id="mission-phase-2">
+        <div class="mission-result" id="mission-result">
+          <!-- Contenu injecté par JS -->
+        </div>
+      </div>
+
+    </div><!-- fin mission-body -->
+  </div>
+
+  <!-- MODAL PREUVE -->
+  <div class="modal-overlay" id="evidence-modal">
+    <div class="modal-card">
+      <h3 id="evidence-modal-title"></h3>
+      <div id="evidence-modal-body"></div>
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="modal-close-btn" onclick="closeEvidence()">Fermer le dossier</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== DONNÉES MISSION ==================== */
+    const evidenceData = [
+      {
+        title: '📰 Pièce N°1 — Communiqué de presse NovaMind',
+        body: `
+          <div class="callout pink">
+            <p style="font-size: 1.05em; font-weight: 600; color: var(--neon-pink);">
+              « ATLAS : LA PREMIÈRE IA VÉRITABLEMENT CONSCIENTE AU SERVICE DE LA MÉDECINE »
+            </p>
+          </div>
+          <p>NovaMind Corp annonce aujourd'hui le lancement d'ATLAS, <strong style="color: var(--neon-pink);">une super IA révolutionnaire</strong>
+          qui <strong style="color: var(--neon-pink);">comprend véritablement</strong> les patients et peut établir des diagnostics
+          médicaux avec une précision « sans précédent ».</p>
+          <p>« ATLAS ne se contente pas d'analyser des données — elle comprend réellement la souffrance
+          humaine et adapte ses recommandations avec empathie », déclare le PDG de NovaMind, Viktor Leroy.</p>
+          <p>Le système serait capable de diagnostiquer plus de 200 pathologies avec
+          « une fiabilité supérieure à celle de n'importe quel médecin humain ».</p>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indices à noter :</strong> les termes « consciente », « comprend véritablement »,
+            « super IA révolutionnaire », « empathie ».
+          </div>
+        `
+      },
+      {
+        title: '📋 Pièce N°2 — Fiche technique ATLAS',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Spécifications techniques (document interne intercepté) :</strong></p>
+          <ul>
+            <li><strong>Architecture :</strong> Système à base de règles (rule-based expert system)</li>
+            <li><strong>Base de connaissances :</strong> 50 000 règles médicales SI/ALORS</li>
+            <li><strong>Moteur d'inférence :</strong> Chaînage avant et arrière</li>
+            <li><strong>Sources :</strong> Protocoles médicaux validés, guidelines OMS</li>
+            <li><strong>Couverture :</strong> 200 pathologies, 3 spécialités (cardiologie, pneumologie, dermatologie)</li>
+            <li><strong>Explicabilité :</strong> Trace de raisonnement complète pour chaque diagnostic</li>
+          </ul>
+          <div class="callout" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> ATLAS est un <strong>système expert à règles</strong> (IA symbolique),
+            pas un réseau de neurones ni un modèle de langage.
+          </div>
+        `
+      },
+      {
+        title: '🧑‍🔬 Pièce N°3 — Témoignage d\'un ex-ingénieur',
+        body: `
+          <div class="callout blue">
+            <p style="font-style: italic;">
+              « J'ai travaillé 18 mois chez NovaMind sur ATLAS. C'est un bon système expert,
+              bien conçu, avec des règles médicales solides. Mais ce n'est absolument pas
+              une IA qui "comprend" quoi que ce soit. »
+            </p>
+            <p style="font-style: italic;">
+              « Le problème principal, c'est que le système est <strong>très rigide</strong>.
+              Quand un patient présente des symptômes inhabituels ou combinés qui ne correspondent
+              à aucune de nos 50 000 règles, ATLAS ne sait pas quoi faire. Il dit simplement
+              "diagnostic impossible" ou, pire, force un diagnostic erroné. »
+            </p>
+            <p style="font-style: italic;">
+              « J'ai quitté l'entreprise quand le marketing a commencé à parler de "conscience".
+              C'est du mensonge pur. ATLAS n'a pas plus de conscience qu'une calculatrice. »
+            </p>
+            <p style="font-style: italic; color: var(--neon-blue);">
+              — Témoignage anonyme, ancien ingénieur NovaMind (vérifié par DECODE)
+            </p>
+          </div>
+        `
+      },
+      {
+        title: '📊 Pièce N°4 — Rapport de tests indépendants',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Tests réalisés par le Laboratoire HealthCheck (indépendant) :</strong></p>
+          <div class="callout">
+            <p><strong>Cas standards (symptômes classiques) :</strong></p>
+            <p style="font-size: 1.2em; color: var(--neon-green);">✅ Précision : 94.2 %</p>
+            <p style="color: var(--muted);">Excellent résultat, comparable aux meilleurs médecins spécialistes.</p>
+          </div>
+          <div class="callout pink">
+            <p><strong>Cas atypiques (symptômes inhabituels ou combinés) :</strong></p>
+            <p style="font-size: 1.2em; color: var(--danger);">❌ Précision : 31.7 %</p>
+            <p style="color: var(--muted);">Résultat catastrophique. Le système échoue massivement
+            dès que les cas sortent de ses règles prédéfinies.</p>
+          </div>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> Cet écart de performance (94% → 31%) est typique
+            d'un système à règles rigide — excellent dans son domaine, mais incapable d'adaptation.
+          </div>
+        `
+      },
+      {
+        title: '💬 Pièce N°5 — Extrait de conversation ATLAS',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Transcription d'une session de démonstration :</strong></p>
+          <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 18px; margin: 12px 0; font-family: 'Space Mono', monospace; font-size: 0.88em; line-height: 1.8;">
+            <p><span style="color: var(--neon-green);">Patient :</span> J'ai mal à la poitrine depuis 3 jours et j'ai du mal à respirer.</p>
+            <p><span style="color: var(--neon-blue);">ATLAS :</span> Je comprends votre inquiétude. D'après vos symptômes, voici les diagnostics possibles :</p>
+            <p style="padding-left: 20px; color: #aabbcc;">
+              — Angine de poitrine (probabilité : 0.72)<br>
+              — Pneumothorax (probabilité : 0.15)<br>
+              — Anxiété (probabilité : 0.13)
+            </p>
+            <p><span style="color: var(--neon-green);">Patient :</span> Est-ce que ça pourrait être lié au fait que je sois tombé d'une échelle hier ?</p>
+            <p><span style="color: var(--neon-blue);">ATLAS :</span> Je comprends votre inquiétude. D'après vos symptômes, voici les diagnostics possibles :</p>
+            <p style="padding-left: 20px; color: #aabbcc;">
+              [Mêmes résultats identiques — la chute n'est pas prise en compte]
+            </p>
+          </div>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> ATLAS répète la même phrase d'empathie scriptée
+            (« Je comprends votre inquiétude ») et ignore le contexte de la chute — preuve
+            qu'il ne « comprend » pas, il exécute des règles prédéfinies.
+          </div>
+        `
+      },
+      {
+        title: '📄 Pièce N°6 — Brevet déposé par NovaMind',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Extrait du brevet N° EP-2024-ATLAS-0847 :</strong></p>
+          <div class="callout blue">
+            <p style="font-style: italic;">
+              « Le présent brevet décrit un <strong>système expert médical à base de règles</strong>
+              utilisant un moteur d'inférence avec chaînage avant et arrière.
+              Le système comprend une base de connaissances de règles de production
+              de la forme SI [conditions] ALORS [conclusions] avec des facteurs de certitude associés. »
+            </p>
+          </div>
+          <p>Le brevet confirme sans ambiguïté la nature du système : c'est de l'<strong>IA symbolique classique</strong>,
+          une technologie qui existe depuis les années 1970.</p>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> Le brevet contredit directement le marketing.
+            Aucune mention de « conscience », de « compréhension » ni d'apprentissage automatique.
+            C'est un système à règles, ni plus ni moins.
+          </div>
+        `
+      }
+    ];
+
+    const analysisQuestions = [
+      {
+        correct: 0,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> La fiche technique et le brevet confirment qu\'ATLAS est un système expert à base de 50 000 règles SI/ALORS — c\'est de l\'IA symbolique classique. Ce n\'est ni du Machine Learning, ni une IA consciente.',
+          wrong: '❌ Les preuves montrent clairement qu\'ATLAS est un <strong>système à règles</strong> (IA symbolique). La fiche technique mentionne « 50 000 règles SI/ALORS » et le brevet décrit un « système expert à base de règles ». Ce n\'est pas du connexionnisme, et l\'IA générale consciente n\'existe pas encore.'
+        }
+      },
+      {
+        correct: 1,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> Le rapport de tests montre un effondrement de 94 % à 31 % sur les cas atypiques, et l\'ex-ingénieur confirme que le système est « très rigide ». C\'est la limite classique de l\'IA symbolique.',
+          wrong: '❌ Le principal risque identifié est la <strong>rigidité</strong>. Le rapport de tests montre un effondrement spectaculaire (de 94 % à 31 %) sur les cas atypiques. L\'ex-ingénieur confirme : ATLAS échoue quand les symptômes sortent de ses règles prédéfinies.'
+        }
+      },
+      {
+        correct: 0,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> Affirmer qu\'une IA « comprend véritablement » est un signal d\'alerte majeur. Aucune IA actuelle ne comprend quoi que ce soit au sens humain — elle calcule des probabilités. C\'est de l\'anthropomorphisme marketing (effet ELIZA).',
+          wrong: '❌ Le signal d\'alerte le plus flagrant est <strong>« comprend véritablement les patients »</strong>. Aucune IA actuelle ne comprend quoi que ce soit — et encore moins un système à règles. C\'est l\'exploitation de l\'effet ELIZA à des fins marketing.'
+        }
+      }
+    ];
+
+    let evidenceViewed = new Set();
+    let analysisAnswers = [null, null, null];
+    let analysisLocked = [false, false, false];
+    let missionScore = 0;
+
+    function openEvidence(index) {
+      evidenceViewed.add(index);
+      document.querySelectorAll('.evidence-card')[index].classList.add('viewed');
+      document.getElementById('evidence-count').textContent = evidenceViewed.size;
+
+      document.getElementById('evidence-modal-title').innerHTML = evidenceData[index].title;
+      document.getElementById('evidence-modal-body').innerHTML = evidenceData[index].body;
+      document.getElementById('evidence-modal').classList.add('show');
+
+      if (evidenceViewed.size === 6) {
+        const btn = document.getElementById('btn-to-phase2');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        document.getElementById('evidence-hint').textContent = '✅ Toutes les preuves consultées — vous pouvez passer à l\'analyse';
+        document.getElementById('evidence-hint').style.color = 'var(--neon-green)';
+      }
+    }
+
+    function closeEvidence() {
+      document.getElementById('evidence-modal').classList.remove('show');
+    }
+
+    function goToMissionPhase(phase) {
+      document.querySelectorAll('.mission-phase').forEach(p => p.classList.remove('active'));
+      document.getElementById('mission-phase-' + phase).classList.add('active');
+
+      document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+        dot.classList.remove('active', 'done');
+        if (i < phase) dot.classList.add('done');
+        if (i === phase) dot.classList.add('active');
+      });
+
+      document.querySelector('.mission-body').scrollTop = 0;
+    }
+
+    function selectAnalysis(qIndex, optionIndex) {
+      if (analysisLocked[qIndex]) return;
+      analysisLocked[qIndex] = true;
+      analysisAnswers[qIndex] = optionIndex;
+
+      const q = analysisQuestions[qIndex];
+      const isCorrect = optionIndex === q.correct;
+      if (isCorrect) missionScore++;
+
+      const options = document.querySelectorAll('#aq-' + qIndex + ' .analysis-option');
+      options.forEach((opt, i) => {
+        opt.style.cursor = 'default';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
+      });
+
+      const expl = document.getElementById('aq-expl-' + qIndex);
+      expl.innerHTML = isCorrect ? q.explanations.correct : q.explanations.wrong;
+      expl.classList.add('show', isCorrect ? 'correct-expl' : 'wrong-expl');
+
+      const allAnswered = analysisAnswers.every(a => a !== null);
+      if (allAnswered) {
+        const btn = document.getElementById('btn-submit-report');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        document.getElementById('analysis-hint').textContent = '✅ Toutes les questions traitées — soumettez votre rapport';
+        document.getElementById('analysis-hint').style.color = 'var(--neon-green)';
+      }
+    }
+
+    function submitReport() {
+      goToMissionPhase(2);
+
+      const resultDiv = document.getElementById('mission-result');
+      const perfect = missionScore === 3;
+
+      resultDiv.innerHTML = `
+        <div class="mission-result-icon">${perfect ? '🏆' : '📋'}</div>
+        <h2 style="color: ${perfect ? 'var(--neon-green)' : 'var(--neon-blue)'};">
+          ${perfect ? 'RAPPORT EXEMPLAIRE' : 'RAPPORT SOUMIS'}
+        </h2>
+        <div class="mission-result-score" style="color: ${perfect ? 'var(--neon-green)' : 'var(--warn)'};">
+          ${missionScore} / 3
+        </div>
+        <p style="color: var(--muted); max-width: 600px; margin: 0 auto 15px; line-height: 1.7;">
+          ${perfect
+            ? 'Excellent travail, analyste ! Vous avez correctement identifié qu\'ATLAS est un système expert symbolique, que sa rigidité est son principal défaut, et que le marketing exploite l\'effet ELIZA. La directrice Chen est impressionnée.'
+            : 'Votre rapport contient des analyses pertinentes, mais certaines conclusions méritent d\'être affinées. Relisez les preuves et les leçons pour renforcer votre esprit critique.'}
+        </p>
+        <div class="callout" style="max-width: 600px; margin: 20px auto; text-align: left;">
+          <strong>📋 Conclusion DECODE sur ATLAS :</strong><br>
+          ATLAS est un <strong>système expert classique</strong> (IA symbolique) performant sur les cas standards
+          mais <strong>rigide et limité</strong> face aux situations imprévues. Les affirmations de « conscience »
+          et de « compréhension véritable » sont du <strong>marketing trompeur</strong> exploitant l'anthropomorphisme.
+        </div>
+        <button class="mission-next-btn" onclick="startQuiz()">
+          Passer au quiz de certification →
+        </button>
+      `;
+    }
+
+    function startQuiz() {
+      document.getElementById('mission-screen').classList.remove('active');
+      // Le quiz sera implémenté dans le prochain commit
     }
   </script>
 
