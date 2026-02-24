@@ -1809,5 +1809,152 @@
     </div>
   </div>
 
+  <!-- ==================== ATTESTATION ==================== -->
+  <div id="cert-screen">
+    <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
+      <div class="briefing-title" style="color:var(--neon-cyan)">Attestation de réussite — NEXUS DÉCISION</div>
+      <a href="modules.html" class="back-link-sidebar" style="position:static;margin:0">← Retour modules</a>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto;width:100%">
+
+      <div class="callout ok" style="text-align:center;padding:30px;margin-bottom:28px">
+        <div style="font-size:3em;margin-bottom:14px">🎉</div>
+        <h3 style="color:var(--neon-green);font-family:'Space Mono',monospace;margin-bottom:12px">Certification NEXUS validée !</h3>
+        <p style="line-height:1.8;margin-bottom:10px">
+          Vous avez complété avec succès le <strong>Module 08 — Choisir le bon usage de l'IA</strong>.
+        </p>
+        <div style="display:inline-block;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:14px 28px;margin:10px 0">
+          <p style="margin:0 0 6px"><strong>Score :</strong> <span id="cert-score-display" style="color:var(--neon-green);font-size:1.3em;font-family:'Space Mono',monospace"></span></p>
+          <p style="margin:0;font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.85em" id="cert-ref"></p>
+        </div>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin-bottom:18px;font-family:'Space Mono',monospace">📜 Télécharger votre attestation</h3>
+      <div class="callout" style="padding:28px">
+        <p style="margin-bottom:18px;line-height:1.8">Renseignez votre nom pour générer votre attestation officielle :</p>
+        <div style="margin-bottom:18px">
+          <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-cyan);font-size:0.9em">NOM complet sur l'attestation :</label>
+          <input id="cert-name" type="text" placeholder="Prénom NOM"
+            style="width:100%;max-width:500px;padding:12px 16px;border-radius:8px;border:1px solid rgba(78,205,196,0.4);background:rgba(0,0,0,0.3);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none" />
+        </div>
+        <button onclick="downloadCert()" style="padding:14px 35px;font-family:'Space Mono',monospace;font-size:0.95em;text-transform:uppercase;letter-spacing:2px;background:var(--neon-cyan);color:var(--dark-bg);border:none;border-radius:8px;cursor:pointer;font-weight:700;transition:all 0.3s" onmouseover="this.style.background='var(--neon-green)'" onmouseout="this.style.background='var(--neon-cyan)'">
+          📥 Télécharger (HTML)
+        </button>
+        <p style="margin-top:14px;color:#8899aa;font-size:0.88em">💡 Ouvrez le fichier HTML et utilisez Ctrl+P pour imprimer en PDF.</p>
+      </div>
+
+      <h3 style="color:var(--neon-blue);margin:28px 0 18px;font-family:'Space Mono',monospace">✅ Compétences validées</h3>
+      <div class="callout">
+        <ul style="line-height:2.2;margin-left:20px;color:#cfe9ff">
+          <li>Identifier les forces et limites de l'IA selon les contextes</li>
+          <li>Appliquer les 3 niveaux de protocole NEXUS (Vert, Ambre, Rouge)</li>
+          <li>Évaluer les 5 critères de décision d'un cas</li>
+          <li>Reconnaître les domaines sensibles nécessitant une vigilance accrue</li>
+          <li>Éviter les pièges de la délégation excessive</li>
+          <li>Préserver son agentivité face à l'IA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* =========================================================
+     ATTESTATION — DOWNLOAD
+  ========================================================= */
+  function downloadCert() {
+    const name = (document.getElementById('cert-name')?.value || '').trim() || 'Participant';
+    const date = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+    const refNum = 'IA-NEXUS-' + (Math.floor(Math.random() * 90000) + 10000);
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Attestation — Module 8 NEXUS DÉCISION</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a1628,#1a2d4a);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.cert{background:linear-gradient(180deg,#0d1f35,#162840);border:3px solid #4ecdc4;border-radius:20px;padding:50px 60px;max-width:800px;width:100%;position:relative;box-shadow:0 0 60px rgba(78,205,196,.3),inset 0 0 60px rgba(0,212,255,.08)}
+.cert::before{content:'';position:absolute;top:15px;left:15px;right:15px;bottom:15px;border:1px solid rgba(78,205,196,.3);border-radius:15px;pointer-events:none}
+.hd{text-align:center;margin-bottom:40px}
+.logo{font-size:3em;margin-bottom:10px}
+.ttl{font-family:'Playfair Display',serif;font-size:2.5em;background:linear-gradient(90deg,#4ecdc4,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:5px}
+.sub{color:#4ecdc4;font-size:1.1em;letter-spacing:3px;text-transform:uppercase}
+.cnt{text-align:center;color:#e0e0e0;line-height:1.8}
+.nm{font-family:'Playfair Display',serif;font-size:2.2em;color:#fff;margin:20px 0;padding:15px 0;border-top:1px solid rgba(78,205,196,.3);border-bottom:1px solid rgba(78,205,196,.3)}
+.mod{background:rgba(78,205,196,.08);border:1px solid rgba(78,205,196,.3);border-radius:10px;padding:20px;margin:30px 0}
+.mod-t{color:#4ecdc4;font-size:1.3em;font-weight:600;margin-bottom:10px}
+.sc{display:inline-block;background:linear-gradient(135deg,#4ecdc4,#00d4ff);color:#0a1628;padding:8px 25px;border-radius:20px;font-weight:600;margin-top:10px}
+.ft{display:flex;justify-content:space-between;margin-top:40px;padding-top:30px;border-top:1px solid rgba(78,205,196,.2)}
+.fi{text-align:center}
+.fl{color:#888;font-size:.85em;margin-bottom:5px}
+.fv{color:#4ecdc4;font-weight:600}
+.sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px}
+.sk span{background:rgba(78,205,196,.1);border:1px solid rgba(78,205,196,.3);padding:5px 15px;border-radius:15px;font-size:.85em;color:#4ecdc4}
+@media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="hd">
+    <div class="logo">🧭✨</div>
+    <div class="ttl">Attestation de Réussite</div>
+    <div class="sub">Formation IA Responsable</div>
+  </div>
+  <div class="cnt">
+    <p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p>
+    <div class="nm">${name}</div>
+    <p>a complété avec succès le</p>
+    <div class="mod">
+      <div class="mod-t">Module 08 : Choisir le bon usage de l'IA</div>
+      <p style="color:#b0b0b0;margin-top:10px">Protocoles NEXUS — Centre de Triage IA</p>
+      <div class="sc">Score : ${finalScore}%</div>
+    </div>
+    <p style="margin-bottom:15px">Compétences validées :</p>
+    <div class="sk">
+      <span>Protocole Vert</span>
+      <span>Protocole Ambre</span>
+      <span>Protocole Rouge</span>
+      <span>Critères de décision</span>
+      <span>Domaines sensibles</span>
+      <span>Agentivité</span>
+      <span>Délégation responsable</span>
+    </div>
+    <div class="ft">
+      <div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div>
+      <div class="fi"><div class="fl">Référence</div><div class="fv">${refNum}</div></div>
+      <div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Attestation_Module8_NexusDecision_${name.replace(/\s+/g,'_')}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Initialise l'affichage de l'écran de certification
+  const _origShowCert = showCertificate;
+  window.showCertificate = function() {
+    _origShowCert();
+    const refNum = 'IA-NEXUS-' + (Math.floor(Math.random() * 90000) + 10000);
+    const el = document.getElementById('cert-score-display');
+    const refEl = document.getElementById('cert-ref');
+    if (el) el.textContent = finalScore + '%';
+    if (refEl) refEl.textContent = 'Référence : ' + refNum;
+  };
+  </script>
+
 </body>
 </html>
