@@ -774,6 +774,191 @@
       box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
     }
 
+    /* ==================== QUIZ ==================== */
+    #quiz-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      z-index: 997;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #quiz-screen.active { display: flex; }
+
+    .quiz-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .quiz-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2em;
+      color: var(--neon-purple);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-progress-info {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--muted);
+      font-size: 0.9em;
+    }
+
+    .quiz-progress-bar {
+      width: 200px; height: 6px;
+      background: rgba(168, 85, 247, 0.15);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+      transition: width 0.3s ease;
+    }
+
+    .quiz-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .quiz-card {
+      max-width: 750px;
+      width: 100%;
+    }
+
+    .quiz-question-number {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-purple);
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .quiz-question-text {
+      font-size: 1.2em;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: var(--text);
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      background: rgba(168, 85, 247, 0.04);
+      border: 2px solid rgba(168, 85, 247, 0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text);
+      font-size: 1em;
+      line-height: 1.5;
+    }
+
+    .quiz-option:hover {
+      border-color: rgba(168, 85, 247, 0.6);
+      background: rgba(168, 85, 247, 0.08);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--neon-purple);
+      background: rgba(168, 85, 247, 0.15);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.12);
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--danger);
+      background: rgba(255, 77, 77, 0.1);
+    }
+
+    .quiz-explanation {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.6;
+      font-size: 0.95em;
+      background: rgba(168, 85, 247, 0.08);
+      border-left: 4px solid var(--neon-purple);
+    }
+
+    .quiz-explanation.show { display: block; animation: fadeIn 0.3s ease; }
+
+    .quiz-next-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-purple);
+      background: var(--neon-purple);
+      color: white;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .quiz-next-btn.show { display: inline-block; }
+
+    .quiz-next-btn:hover {
+      background: var(--neon-pink);
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+    }
+
+    /* Résultat quiz */
+    .quiz-result {
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .quiz-result-icon { font-size: 4em; margin-bottom: 20px; }
+
+    .quiz-result h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+
+    .quiz-score-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 3em;
+      margin: 20px 0;
+    }
+
+    .quiz-score-bar-container {
+      width: 100%; max-width: 400px;
+      height: 12px;
+      background: rgba(168, 85, 247, 0.15);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 15px auto;
+    }
+
+    .quiz-score-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease;
+    }
+
     /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .main-title { font-size: 1.9em; letter-spacing: 2px; }
@@ -2012,7 +2197,241 @@
 
     function startQuiz() {
       document.getElementById('mission-screen').classList.remove('active');
-      // Le quiz sera implémenté dans le prochain commit
+      document.getElementById('quiz-screen').classList.add('active');
+      renderQuizQuestion();
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN QUIZ ==================== -->
+  <div id="quiz-screen">
+    <div class="quiz-header">
+      <div class="quiz-header-title">
+        📝 Quiz de certification — Module 1
+      </div>
+      <div class="quiz-progress-info">
+        <span id="quiz-progress-text">Question 1/8</span>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-body">
+      <div class="quiz-card" id="quiz-card">
+        <!-- Contenu injecté par JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== QUIZ DE CERTIFICATION ==================== */
+    const quizQuestions = [
+      {
+        q: 'Quelle est la principale différence entre l\'IA actuelle et l\'intelligence humaine ?',
+        options: [
+          'L\'IA est plus intelligente que les humains dans tous les domaines',
+          'L\'IA excelle dans des tâches spécifiques mais n\'a ni conscience ni compréhension réelle',
+          'L\'IA comprend le monde comme un humain mais plus rapidement',
+          'L\'IA apprend sans avoir besoin de données'
+        ],
+        correct: 1,
+        explanation: 'L\'IA actuelle est spécialisée : elle peut surpasser l\'humain sur certaines tâches précises (jeu d\'échecs, reconnaissance d\'images) mais elle n\'a aucune conscience, aucune compréhension et aucune capacité de généralisation comme un humain.'
+      },
+      {
+        q: 'Qu\'est-ce qui caractérise l\'IA symbolique ?',
+        options: [
+          'Elle apprend à partir d\'exemples',
+          'Elle utilise des règles logiques explicites programmées par des humains',
+          'Elle fonctionne uniquement avec des réseaux de neurones',
+          'Elle s\'adapte automatiquement aux nouvelles situations'
+        ],
+        correct: 1,
+        explanation: 'L\'IA symbolique repose sur des règles SI/ALORS écrites par des experts humains. C\'est l\'approche des systèmes experts comme MYCIN (médecine) ou Deep Blue (échecs). Elle est explicable mais rigide.'
+      },
+      {
+        q: 'Quelle est la principale limite de l\'IA symbolique ?',
+        options: [
+          'C\'est une boîte noire impossible à comprendre',
+          'Elle nécessite trop de données d\'entraînement',
+          'Elle est trop rigide et échoue face aux situations imprévues',
+          'Elle consomme trop d\'énergie'
+        ],
+        correct: 2,
+        explanation: 'L\'IA symbolique est limitée aux cas prévus par ses règles. Dès qu\'une situation sort du cadre, elle ne peut pas s\'adapter. C\'est le « goulot d\'étranglement de la connaissance » : il faudrait prévoir une règle pour chaque cas possible, ce qui est impossible.'
+      },
+      {
+        q: 'Comment fonctionne l\'IA connexionniste (Machine Learning) ?',
+        options: [
+          'Elle utilise des règles explicites programmées à la main',
+          'Elle apprend des patterns à partir de grandes quantités de données',
+          'Elle n\'a besoin d\'aucune donnée d\'entraînement',
+          'Elle explique facilement chacune de ses décisions'
+        ],
+        correct: 1,
+        explanation: 'L\'IA connexionniste apprend en analysant des milliers ou millions d\'exemples pour en extraire des patterns statistiques. Elle ne suit pas de règles écrites par des humains — elle les découvre elle-même dans les données.'
+      },
+      {
+        q: 'Quel est le bon ordre d\'emboîtement des concepts ?',
+        options: [
+          'Machine Learning ⊃ IA ⊃ Deep Learning ⊃ Transformers',
+          'IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers',
+          'Transformers ⊃ Deep Learning ⊃ Machine Learning ⊃ IA',
+          'IA ⊃ Deep Learning ⊃ Machine Learning ⊃ Transformers'
+        ],
+        correct: 1,
+        explanation: 'L\'IA est le domaine le plus large, qui inclut le Machine Learning, qui inclut le Deep Learning (réseaux profonds), qui inclut les Transformers (architecture derrière ChatGPT, Claude, etc.).'
+      },
+      {
+        q: 'Dans quelle situation le Deep Learning est-il le plus adapté ?',
+        options: [
+          'Appliquer des règles médicales strictes et traçables',
+          'Résoudre des calculs mathématiques simples',
+          'Reconnaître des images complexes ou traiter du langage naturel',
+          'Suivre une procédure légale sans ambiguïté'
+        ],
+        correct: 2,
+        explanation: 'Le Deep Learning excelle dans le traitement de données complexes et non structurées : images, audio, texte. C\'est la technologie derrière la reconnaissance faciale, la traduction automatique, et les modèles de langage comme ChatGPT.'
+      },
+      {
+        q: 'Quel est le signe d\'un marketing trompeur autour de l\'IA ?',
+        options: [
+          'Publier les résultats de tests indépendants',
+          'Mentionner les limites connues du système',
+          'Utiliser des termes comme « super IA », « comprend véritablement », « révolutionnaire »',
+          'Décrire précisément la technologie utilisée'
+        ],
+        correct: 2,
+        explanation: 'Les termes vagues et grandiloquents (« super IA », « comprend véritablement », « révolutionnaire ») sont des signaux d\'alerte classiques. Un acteur sérieux décrit sa technologie avec précision et mentionne ses limites.'
+      },
+      {
+        q: 'Quelle affirmation sur l\'IA actuelle est correcte ?',
+        options: [
+          'L\'IA peut comprendre véritablement le sens de ce qu\'elle traite',
+          'L\'IA est consciente d\'elle-même depuis 2022',
+          'L\'IA excelle sur des tâches spécifiques mais ne possède ni compréhension ni conscience',
+          'L\'IA apprend de manière autonome sans aucune donnée humaine'
+        ],
+        correct: 2,
+        explanation: 'L\'IA actuelle est un outil puissant pour des tâches spécifiques, mais elle ne comprend pas, ne ressent pas et n\'est pas consciente. Elle calcule des probabilités statistiques sur des données fournies par des humains.'
+      }
+    ];
+
+    let quizCurrent = 0;
+    let quizScore = 0;
+    let quizLocked = false;
+
+    function renderQuizQuestion() {
+      if (quizCurrent >= quizQuestions.length) {
+        showQuizResult();
+        return;
+      }
+
+      const q = quizQuestions[quizCurrent];
+      const pct = ((quizCurrent + 1) / quizQuestions.length * 100).toFixed(1);
+      document.getElementById('quiz-progress-fill').style.width = pct + '%';
+      document.getElementById('quiz-progress-text').textContent = 'Question ' + (quizCurrent + 1) + '/' + quizQuestions.length;
+
+      quizLocked = false;
+
+      let html = `
+        <div class="quiz-question-number">QUESTION ${quizCurrent + 1} / ${quizQuestions.length}</div>
+        <div class="quiz-question-text">${q.q}</div>
+        <div class="quiz-options">
+      `;
+
+      q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(65 + i);
+        html += `<div class="quiz-option" onclick="answerQuiz(${i})"><strong>${letter}.</strong> ${opt}</div>`;
+      });
+
+      html += `
+        </div>
+        <div class="quiz-explanation" id="quiz-expl"></div>
+        <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuizQuestion()">
+          ${quizCurrent < quizQuestions.length - 1 ? 'Question suivante →' : 'Voir le résultat →'}
+        </button>
+      `;
+
+      document.getElementById('quiz-card').innerHTML = html;
+    }
+
+    function answerQuiz(optionIndex) {
+      if (quizLocked) return;
+      quizLocked = true;
+
+      const q = quizQuestions[quizCurrent];
+      const isCorrect = optionIndex === q.correct;
+      if (isCorrect) quizScore++;
+
+      const options = document.querySelectorAll('.quiz-option');
+      options.forEach((opt, i) => {
+        opt.style.cursor = 'default';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
+      });
+
+      const expl = document.getElementById('quiz-expl');
+      expl.innerHTML = (isCorrect ? '✅ ' : '❌ ') + q.explanation;
+      expl.classList.add('show');
+      expl.style.borderLeftColor = isCorrect ? 'var(--neon-green)' : 'var(--danger)';
+      expl.style.background = isCorrect ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 77, 77, 0.06)';
+
+      document.getElementById('quiz-next-btn').classList.add('show');
+    }
+
+    function nextQuizQuestion() {
+      quizCurrent++;
+      renderQuizQuestion();
+      document.querySelector('.quiz-body').scrollTop = 0;
+    }
+
+    function showQuizResult() {
+      const pct = Math.round(quizScore / quizQuestions.length * 100);
+      const passed = pct >= 70;
+
+      document.getElementById('quiz-progress-fill').style.width = '100%';
+      document.getElementById('quiz-progress-text').textContent = 'Terminé !';
+
+      document.getElementById('quiz-card').innerHTML = `
+        <div class="quiz-result">
+          <div class="quiz-result-icon">${passed ? '🎓' : '📖'}</div>
+          <h2 style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
+            ${passed ? 'CERTIFICATION RÉUSSIE !' : 'SCORE INSUFFISANT'}
+          </h2>
+          <div class="quiz-score-display" style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
+            ${quizScore} / ${quizQuestions.length}
+          </div>
+          <div class="quiz-score-bar-container">
+            <div class="quiz-score-bar-fill" style="width: ${pct}%; background: ${passed ? 'linear-gradient(90deg, var(--neon-green), var(--neon-blue))' : 'linear-gradient(90deg, var(--warn), var(--danger))'};">
+            </div>
+          </div>
+          <p style="color: var(--muted); font-size: 1.1em; margin-top: 10px;">${pct}% — Seuil requis : 70%</p>
+          <p style="color: var(--muted); margin-top: 15px; line-height: 1.6;">
+            ${passed
+              ? 'Félicitations, analyste ! Vous avez démontré une solide compréhension des fondamentaux de l\'IA. Vous pouvez maintenant télécharger votre attestation de réussite.'
+              : 'Vous n\'avez pas atteint le seuil de 70%. Relisez les leçons et retentez le quiz pour obtenir votre attestation.'}
+          </p>
+          ${passed
+            ? '<button class="mission-next-btn" onclick="showAttestation()" style="margin-top: 25px;">🎓 Obtenir mon attestation</button>'
+            : '<button class="mission-next-btn" onclick="retryQuiz()" style="margin-top: 25px; background: var(--warn); border-color: var(--warn); color: var(--dark-bg);">🔄 Retenter le quiz</button>'}
+        </div>
+      `;
+
+      setTimeout(() => {
+        const bar = document.querySelector('.quiz-score-bar-fill');
+        if (bar) bar.style.width = pct + '%';
+      }, 100);
+    }
+
+    function retryQuiz() {
+      quizCurrent = 0;
+      quizScore = 0;
+      renderQuizQuestion();
+    }
+
+    function showAttestation() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      // L'attestation sera implémentée dans le prochain commit
     }
   </script>
 
