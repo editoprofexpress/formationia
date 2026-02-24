@@ -205,6 +205,860 @@
       margin-bottom: 8px;
     }
 
+    /* ==================== SECTION BRIEFING ==================== */
+    #briefing-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #briefing-screen.active { display: flex; }
+
+    .briefing-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3em;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .briefing-title::before { content: '🔍'; font-size: 1.5em; }
+
+    .briefing-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.9em;
+    }
+
+    .briefing-progress-bar {
+      width: 200px;
+      height: 6px;
+      background: rgba(0, 255, 136, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .briefing-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+      transition: width 0.3s ease;
+    }
+
+    .briefing-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar navigation */
+    .briefing-nav {
+      width: 280px;
+      background: rgba(10, 20, 40, 0.9);
+      border-right: 1px solid rgba(0, 255, 136, 0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+
+    .back-link-sidebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 15px;
+      margin: 0 15px 20px;
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 8px;
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link-sidebar:hover {
+      background: rgba(0, 212, 255, 0.15);
+      border-color: var(--neon-blue);
+      transform: translateX(-3px);
+    }
+
+    .briefing-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+      color: var(--muted);
+    }
+
+    .briefing-nav-item:hover {
+      background: rgba(0, 255, 136, 0.05);
+      color: var(--text);
+    }
+
+    .briefing-nav-item.active {
+      border-left-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--neon-green);
+    }
+
+    .briefing-nav-item.completed { color: var(--neon-blue); }
+    .briefing-nav-item.completed::after {
+      content: '✓';
+      margin-left: auto;
+      color: var(--neon-green);
+    }
+
+    .nav-icon { font-size: 1.2em; width: 30px; text-align: center; }
+    .nav-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      background: rgba(0, 255, 136, 0.2);
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+
+    /* Zone contenu */
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .briefing-content::-webkit-scrollbar { width: 8px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(0, 255, 136, 0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(0, 255, 136, 0.3); border-radius: 4px; }
+
+    /* Footer navigation */
+    .briefing-footer {
+      background: rgba(10, 20, 40, 0.95);
+      border-top: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .briefing-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-green);
+      background: transparent;
+      color: var(--neon-green);
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .briefing-btn:hover {
+      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .briefing-btn.primary {
+      background: var(--neon-green);
+      color: var(--dark-bg);
+    }
+
+    .briefing-btn.primary:hover {
+      background: var(--neon-blue);
+      border-color: var(--neon-blue);
+    }
+
+    .briefing-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==================== CONTENU LEÇONS ==================== */
+    .lesson { display: none; }
+    .lesson.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .module-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      color: var(--neon-green);
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+      margin: 22px 0;
+    }
+
+    .callout {
+      background: rgba(0, 255, 136, 0.08);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      padding: 16px;
+      border-radius: 14px;
+      box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+      margin: 14px 0;
+      line-height: 1.65;
+      color: #cfe9ff;
+    }
+
+    .callout.warn {
+      background: rgba(255, 204, 0, 0.08);
+      border-color: rgba(255, 204, 0, 0.30);
+      box-shadow: 0 0 18px rgba(255, 204, 0, 0.16);
+    }
+
+    .callout.pink {
+      background: rgba(255, 0, 128, 0.10);
+      border-color: rgba(255, 0, 128, 0.30);
+      box-shadow: 0 0 18px rgba(255, 0, 128, 0.16);
+    }
+
+    .callout.purple {
+      background: rgba(168, 85, 247, 0.10);
+      border-color: rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.18);
+    }
+
+    .callout.blue {
+      background: rgba(0, 212, 255, 0.08);
+      border-color: rgba(0, 212, 255, 0.30);
+      box-shadow: 0 0 18px rgba(0, 212, 255, 0.16);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border: 1px solid rgba(0, 255, 136, .5);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: .78em;
+      color: var(--neon-green);
+      background: rgba(0, 255, 136, .05);
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .pill.blue { border-color: rgba(0, 212, 255, .5); color: var(--neon-blue); background: rgba(0, 212, 255, .05); }
+    .pill.pink { border-color: rgba(255, 0, 128, .5); color: var(--neon-pink); background: rgba(255, 0, 128, .05); }
+
+    h3 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-blue);
+      margin: 20px 0 12px;
+      font-size: 1.15em;
+    }
+
+    p { line-height: 1.65; margin-bottom: 12px; }
+    ul, ol { margin: 10px 0 10px 22px; line-height: 1.65; }
+    li { margin-bottom: 6px; }
+
+    strong { color: var(--neon-green); }
+    em { color: var(--neon-blue); font-style: normal; }
+
+    /* ==================== MISSION INTERACTIVE ==================== */
+    #mission-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2d 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #mission-screen.active { display: flex; }
+
+    .mission-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mission-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2em;
+      color: var(--neon-blue);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mission-phase-indicator {
+      display: flex; gap: 8px; align-items: center;
+    }
+
+    .phase-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: rgba(0, 212, 255, 0.2);
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      transition: all 0.3s;
+    }
+
+    .phase-dot.active {
+      background: var(--neon-blue);
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    .phase-dot.done {
+      background: var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green);
+    }
+
+    .mission-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .mission-body::-webkit-scrollbar { width: 8px; }
+    .mission-body::-webkit-scrollbar-track { background: rgba(0, 212, 255, 0.05); }
+    .mission-body::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.3); border-radius: 4px; }
+
+    .mission-phase { display: none; max-width: 950px; margin: 0 auto; }
+    .mission-phase.active { display: block; animation: fadeIn 0.4s ease; }
+
+    /* Grille preuves */
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      margin: 25px 0;
+    }
+
+    .evidence-card {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.06), rgba(0, 212, 255, 0.02));
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .evidence-card:hover {
+      border-color: var(--neon-blue);
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 212, 255, 0.06));
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+    }
+
+    .evidence-card.viewed {
+      border-color: rgba(0, 255, 136, 0.5);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 255, 136, 0.03));
+    }
+
+    .evidence-icon { font-size: 2.5em; margin-bottom: 12px; }
+    .evidence-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--neon-blue);
+      margin-bottom: 8px;
+    }
+    .evidence-name { font-weight: 600; font-size: 1em; }
+
+    .evidence-counter {
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      color: var(--muted);
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    .evidence-counter strong { color: var(--neon-green); }
+
+    /* Modal preuve */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      display: none;
+      background: rgba(0, 5, 15, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal-card {
+      max-width: 680px;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(10, 20, 50, 0.98), rgba(5, 15, 35, 0.98));
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 0 60px rgba(0, 212, 255, 0.25), inset 0 1px 0 rgba(0, 212, 255, 0.15);
+      animation: modalIn 0.3s ease forwards;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes modalIn {
+      from { transform: scale(0.85) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-card h3 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-card p { line-height: 1.65; color: #cfe9ff; }
+
+    .modal-close-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 10px 25px;
+      border: 1px solid var(--neon-blue);
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--neon-blue);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 18px;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+
+    /* Questions d'analyse */
+    .analysis-question {
+      background: rgba(0, 212, 255, 0.04);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    .analysis-question h3 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-blue);
+      margin-bottom: 14px;
+    }
+
+    .analysis-options {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .analysis-option {
+      background: rgba(136, 136, 136, 0.05);
+      border: 2px solid rgba(136, 136, 136, 0.25);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+    }
+
+    .analysis-option:hover {
+      border-color: rgba(0, 255, 136, 0.5);
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .analysis-option.selected {
+      border-color: var(--neon-blue);
+      background: rgba(0, 212, 255, 0.12);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    .analysis-option.correct {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.15);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+    }
+
+    .analysis-option.wrong {
+      border-color: var(--danger);
+      background: rgba(255, 77, 77, 0.12);
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
+    }
+
+    .analysis-explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.6;
+      font-size: 0.95em;
+    }
+
+    .analysis-explanation.show { display: block; animation: fadeIn 0.3s ease; }
+
+    .analysis-explanation.correct-expl {
+      background: rgba(0, 255, 136, 0.1);
+      border-left: 4px solid var(--neon-green);
+    }
+
+    .analysis-explanation.wrong-expl {
+      background: rgba(255, 77, 77, 0.08);
+      border-left: 4px solid var(--danger);
+    }
+
+    /* Phase résultat */
+    .mission-result {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .mission-result-icon { font-size: 4em; margin-bottom: 20px; }
+
+    .mission-result h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+
+    .mission-result-score {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.5em;
+      margin: 20px 0;
+    }
+
+    .mission-next-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      padding: 16px 45px;
+      border: 2px solid var(--neon-green);
+      background: var(--neon-green);
+      color: var(--dark-bg);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all 0.3s;
+      margin-top: 25px;
+    }
+
+    .mission-next-btn:hover {
+      background: var(--neon-blue);
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
+    }
+
+    /* ==================== QUIZ ==================== */
+    #quiz-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      z-index: 997;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #quiz-screen.active { display: flex; }
+
+    .quiz-header {
+      background: rgba(10, 20, 40, 0.95);
+      border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .quiz-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2em;
+      color: var(--neon-purple);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .quiz-progress-info {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--muted);
+      font-size: 0.9em;
+    }
+
+    .quiz-progress-bar {
+      width: 200px; height: 6px;
+      background: rgba(168, 85, 247, 0.15);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+      transition: width 0.3s ease;
+    }
+
+    .quiz-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .quiz-card {
+      max-width: 750px;
+      width: 100%;
+    }
+
+    .quiz-question-number {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-purple);
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .quiz-question-text {
+      font-size: 1.2em;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: var(--text);
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      background: rgba(168, 85, 247, 0.04);
+      border: 2px solid rgba(168, 85, 247, 0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text);
+      font-size: 1em;
+      line-height: 1.5;
+    }
+
+    .quiz-option:hover {
+      border-color: rgba(168, 85, 247, 0.6);
+      background: rgba(168, 85, 247, 0.08);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--neon-purple);
+      background: rgba(168, 85, 247, 0.15);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--neon-green);
+      background: rgba(0, 255, 136, 0.12);
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--danger);
+      background: rgba(255, 77, 77, 0.1);
+    }
+
+    .quiz-explanation {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.6;
+      font-size: 0.95em;
+      background: rgba(168, 85, 247, 0.08);
+      border-left: 4px solid var(--neon-purple);
+    }
+
+    .quiz-explanation.show { display: block; animation: fadeIn 0.3s ease; }
+
+    .quiz-next-btn {
+      font-family: 'Space Mono', monospace;
+      padding: 12px 30px;
+      border: 2px solid var(--neon-purple);
+      background: var(--neon-purple);
+      color: white;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .quiz-next-btn.show { display: inline-block; }
+
+    .quiz-next-btn:hover {
+      background: var(--neon-pink);
+      border-color: var(--neon-pink);
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+    }
+
+    /* Résultat quiz */
+    .quiz-result {
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    .quiz-result-icon { font-size: 4em; margin-bottom: 20px; }
+
+    .quiz-result h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+
+    .quiz-score-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 3em;
+      margin: 20px 0;
+    }
+
+    .quiz-score-bar-container {
+      width: 100%; max-width: 400px;
+      height: 12px;
+      background: rgba(168, 85, 247, 0.15);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 15px auto;
+    }
+
+    .quiz-score-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease;
+    }
+
+    /* ==================== ATTESTATION ==================== */
+    #attestation-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2d 50%, #0a0e17 100%);
+      z-index: 996;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    #attestation-screen.active { display: flex; }
+
+    .attestation-card {
+      max-width: 550px;
+      width: 100%;
+      background: rgba(10, 20, 50, 0.95);
+      border: 2px solid var(--neon-green);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 60px rgba(0, 255, 136, 0.2);
+      text-align: center;
+    }
+
+    .attestation-icon { font-size: 4em; margin-bottom: 20px; }
+
+    .attestation-card h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .attestation-module-name {
+      font-size: 1.15em;
+      color: var(--neon-blue);
+      margin-bottom: 25px;
+    }
+
+    .attestation-score-box {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .attestation-name-input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(0, 50, 100, 0.4);
+      border: 2px solid rgba(0, 212, 255, 0.4);
+      border-radius: 8px;
+      color: white;
+      font-size: 1em;
+      font-family: 'Exo 2', sans-serif;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    .attestation-name-input:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    .attestation-name-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+    .attestation-name-input { user-select: text; }
+
+    .attestation-download-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.05em;
+      padding: 14px 35px;
+      border: 2px solid var(--neon-green);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 212, 255, 0.2));
+      color: var(--neon-green);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 15px;
+    }
+
+    .attestation-download-btn:hover {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.4), rgba(0, 212, 255, 0.3));
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .attestation-back-link {
+      display: inline-block;
+      margin-top: 25px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: color 0.3s;
+    }
+
+    .attestation-back-link:hover { color: var(--neon-blue); }
+
     /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .main-title { font-size: 1.9em; letter-spacing: 2px; }
@@ -212,6 +1066,13 @@
       .intro-text { font-size: 0.95em; margin: 0 15px 30px; }
       .start-btn { font-size: 0.95em; padding: 15px 35px; }
       .title-logo { font-size: 3em; }
+      .briefing-nav { display: none; }
+      .briefing-content { padding: 20px; }
+      .module-title { font-size: 1.3em; }
+      .briefing-footer { flex-direction: column; gap: 10px; }
+      .briefing-btn { width: 100%; justify-content: center; }
+      .attestation-card { padding: 25px; }
+      .evidence-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -248,10 +1109,1672 @@
     </div>
   </section>
 
+  <!-- ==================== ÉCRAN BRIEFING ==================== -->
+  <div id="briefing-screen">
+    <div class="briefing-header">
+      <div class="briefing-title">DECODE // DOSSIER ATLAS</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Fichier 1/8</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width: 12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="briefing-body">
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span>←</span>
+          <span>Tous les modules</span>
+        </a>
+
+        <div class="briefing-nav-item active" onclick="goToLesson(0)">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-number">01</span>
+          L'IA, c'est quoi ?
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(1)">
+          <span class="nav-icon">📜</span>
+          <span class="nav-number">02</span>
+          De Turing à Dartmouth
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(2)">
+          <span class="nav-icon">🎭</span>
+          <span class="nav-number">03</span>
+          IA symbolique
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(3)">
+          <span class="nav-icon">🔗</span>
+          <span class="nav-number">04</span>
+          IA connexionniste
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(4)">
+          <span class="nav-icon">📊</span>
+          <span class="nav-number">05</span>
+          Hiérarchie des concepts
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(5)">
+          <span class="nav-icon">📅</span>
+          <span class="nav-number">06</span>
+          75 ans d'IA
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(6)">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-number">07</span>
+          Ce que l'IA fait… et ne fait pas
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(7)">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-number">08</span>
+          Mission : Opération ATLAS
+        </div>
+
+        <!-- Séparateur -->
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent); margin: 15px 20px;"></div>
+
+        <div class="briefing-nav-item" onclick="startMission()" style="color: var(--neon-blue); opacity: 0.6;" id="nav-mission">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-number" style="background: rgba(0, 212, 255, 0.2);">▶</span>
+          Activité : Enquête
+        </div>
+
+        <div class="briefing-nav-item" style="color: var(--neon-pink); opacity: 0.4; cursor: default;" id="nav-attestation">
+          <span class="nav-icon">🎓</span>
+          <span class="nav-number" style="background: rgba(255, 0, 128, 0.2);">🔒</span>
+          Attestation
+        </div>
+      </nav>
+
+      <div class="briefing-content" id="briefing-content">
+
+        <!-- ===== LEÇON 1 ===== -->
+        <div class="lesson active" id="lesson-0">
+          <h2 class="module-title">01 — L'IA partout, mais c'est quoi ?</h2>
+
+          <p class="module-kicker">
+            Avant d'évaluer le produit ATLAS de NovaMind Corp, l'agence DECODE exige que chaque analyste
+            maîtrise les fondamentaux. Commençons par la question la plus simple… et la plus mal comprise.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🌐 L'IA est déjà partout autour de vous</h3>
+          <p>
+            Chaque jour, sans y penser, vous interagissez avec des systèmes d'intelligence artificielle :
+          </p>
+          <ul>
+            <li><strong>Assistants vocaux</strong> (Siri, Alexa, Google Assistant) — reconnaissance vocale</li>
+            <li><strong>Réseaux sociaux</strong> — algorithmes de recommandation qui choisissent ce que vous voyez</li>
+            <li><strong>Traduction automatique</strong> (DeepL, Google Translate) — traitement du langage</li>
+            <li><strong>Filtres photo</strong> et détection de visages — vision par ordinateur</li>
+            <li><strong>Suggestions de texte</strong> sur votre clavier — prédiction linguistique</li>
+            <li><strong>ChatGPT, Claude, Gemini</strong> — génération de texte par modèles de langage</li>
+          </ul>
+
+          <div class="callout blue">
+            <strong>💡 Le saviez-vous ?</strong><br>
+            En 2024, plus de <strong>77 % des appareils</strong> que nous utilisons quotidiennement
+            intègrent au moins une fonctionnalité basée sur l'IA. Pourtant, la majorité des utilisateurs
+            n'en sont pas conscients.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>🤔 Mais alors, c'est quoi exactement « l'intelligence artificielle » ?</h3>
+          <p>
+            Le terme « intelligence artificielle » a été inventé en <em>1956</em>, mais il n'existe
+            toujours pas de définition universelle. Voici la plus utile :
+          </p>
+
+          <div class="callout">
+            <strong>📋 Définition de travail</strong><br>
+            L'intelligence artificielle désigne un <strong>ensemble de techniques informatiques</strong>
+            permettant à des machines de <strong>réaliser des tâches</strong> qui, si elles étaient effectuées
+            par un humain, nécessiteraient de <em>l'intelligence</em> : reconnaître des images, comprendre
+            du texte, prendre des décisions, jouer à des jeux, etc.
+          </div>
+
+          <p>
+            Notez bien : il s'agit de <strong>simuler un comportement intelligent</strong>,
+            pas d'être réellement intelligent. La nuance est cruciale.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🚫 Les mythes les plus courants</h3>
+
+          <div class="callout pink">
+            <strong>❌ MYTHE :</strong> « L'IA comprend ce qu'elle fait »<br>
+            <strong>✅ RÉALITÉ :</strong> L'IA calcule des probabilités statistiques sur des données.
+            Elle ne « comprend » rien au sens humain. ChatGPT ne sait pas qu'il parle français —
+            il prédit le mot le plus probable après le précédent.
+          </div>
+
+          <div class="callout pink">
+            <strong>❌ MYTHE :</strong> « L'IA pense de façon autonome »<br>
+            <strong>✅ RÉALITÉ :</strong> Chaque IA est conçue par des humains, entraînée sur des données
+            choisies par des humains, et exécute des algorithmes écrits par des humains.
+            Il n'y a pas de pensée autonome.
+          </div>
+
+          <div class="callout pink">
+            <strong>❌ MYTHE :</strong> « L'IA va bientôt devenir consciente »<br>
+            <strong>✅ RÉALITÉ :</strong> Aucune IA actuelle ne possède de conscience, d'émotions ou de
+            volonté propre. Les chercheurs ne savent même pas exactement ce qu'est la conscience humaine,
+            encore moins comment la reproduire.
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note pour l'analyste DECODE</strong><br>
+            NovaMind Corp présente ATLAS comme une « IA consciente ». Gardez ces mythes en tête —
+            ils seront utiles lors de votre analyse finale.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 2 ===== -->
+        <div class="lesson" id="lesson-1">
+          <h2 class="module-title">02 — Aux origines : de Turing à Dartmouth</h2>
+
+          <p class="module-kicker">
+            Pour comprendre ce qu'est vraiment l'IA aujourd'hui, il faut remonter à ses origines.
+            L'IA n'est pas née avec ChatGPT — elle a plus de 70 ans.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🧪 1950 — Alan Turing pose LA question</h3>
+          <p>
+            Le mathématicien britannique <strong>Alan Turing</strong> publie un article fondateur :
+            <em>« Computing Machinery and Intelligence »</em>.
+            Il y pose une question provocante :
+          </p>
+
+          <div class="callout blue">
+            <strong>« Les machines peuvent-elles penser ? »</strong><br><br>
+            Pour y répondre, Turing propose un test : si un humain, en discutant par écrit avec une machine,
+            ne parvient pas à distinguer celle-ci d'un autre humain, alors la machine peut être considérée
+            comme « intelligente ».<br><br>
+            C'est le fameux <strong>Test de Turing</strong>, toujours discuté aujourd'hui.
+          </div>
+
+          <p>
+            Turing ne dit pas que la machine <em>pense réellement</em>. Il propose simplement un critère
+            pratique : si le comportement est indiscernable, la question de la « vraie » pensée
+            devient secondaire.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🏛️ 1956 — La conférence de Dartmouth</h3>
+          <p>
+            En été 1956, un petit groupe de chercheurs se réunit au <strong>Dartmouth College</strong>
+            (États-Unis) pour un workshop de 8 semaines. Parmi eux :
+          </p>
+          <ul>
+            <li><strong>John McCarthy</strong> — qui invente le terme « Artificial Intelligence »</li>
+            <li><strong>Marvin Minsky</strong> — futur cofondateur du MIT AI Lab</li>
+            <li><strong>Claude Shannon</strong> — père de la théorie de l'information</li>
+            <li><strong>Herbert Simon</strong> — futur prix Nobel d'économie</li>
+          </ul>
+
+          <div class="callout">
+            <strong>📋 Acte de naissance</strong><br>
+            La conférence de Dartmouth est considérée comme l'<strong>acte de naissance officiel</strong>
+            de l'intelligence artificielle en tant que discipline scientifique. C'est là que le mot « IA » est né.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>⏪ Avant Dartmouth : les précurseurs</h3>
+          <ul>
+            <li><strong>1943</strong> — McCulloch & Pitts publient un modèle mathématique du <em>neurone artificiel</em>, inspiré du cerveau biologique</li>
+            <li><strong>1948</strong> — Norbert Wiener fonde la <em>cybernétique</em> : l'étude des systèmes auto-régulés (machines et vivants)</li>
+            <li><strong>1950</strong> — Turing publie son article et imagine le Test de Turing</li>
+          </ul>
+
+          <div class="callout warn">
+            <strong>⚠️ Point clé pour l'analyste</strong><br>
+            L'IA est un domaine de recherche de <strong>plus de 70 ans</strong>, pas une invention récente.
+            Quand une entreprise comme NovaMind prétend avoir « inventé » quelque chose de radicalement nouveau,
+            un bon analyste vérifie d'abord ce qui existait <em>avant</em>.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 3 ===== -->
+        <div class="lesson" id="lesson-2">
+          <h2 class="module-title">03 — L'IA symbolique : le cerveau logique</h2>
+
+          <p class="module-kicker">
+            Historiquement, la première grande approche de l'IA repose sur des <strong>règles explicites</strong>
+            programmées par des humains. On l'appelle l'<em>IA symbolique</em>.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>⚙️ Le principe : SI… ALORS</h3>
+          <p>
+            L'IA symbolique fonctionne comme un livre de recettes géant. Des experts humains formalisent
+            leurs connaissances sous forme de règles logiques :
+          </p>
+
+          <div class="callout blue">
+            <strong>Exemple médical (système MYCIN, 1976)</strong><br><br>
+            <span style="font-family: 'Space Mono', monospace; font-size: 0.9em;">
+              SI le patient a de la fièvre<br>
+              ET une infection bactérienne est suspectée<br>
+              ET le germe est gram-positif<br>
+              ALORS prescrire Pénicilline (confiance : 0.8)
+            </span><br><br>
+            MYCIN contenait environ <strong>600 règles</strong> de ce type et rivalisait avec
+            les médecins spécialistes pour le diagnostic d'infections sanguines.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>🏆 Les succès historiques</h3>
+          <ul>
+            <li><strong>MYCIN (1976)</strong> — diagnostic d'infections bactériennes (~600 règles)</li>
+            <li><strong>DENDRAL (1965)</strong> — identification de structures moléculaires en chimie</li>
+            <li><strong>Deep Blue (1997)</strong> — bat le champion du monde d'échecs Garry Kasparov grâce à des règles + force de calcul brute</li>
+            <li><strong>Systèmes experts bancaires</strong> — évaluation de crédit basée sur des critères formels</li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <h3>✅ Forces de l'IA symbolique</h3>
+          <div class="callout">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🔍 <strong>Explicable</strong> — On peut tracer exactement pourquoi une décision a été prise</li>
+              <li>🎯 <strong>Prévisible</strong> — Mêmes entrées = mêmes sorties, toujours</li>
+              <li>📋 <strong>Auditable</strong> — Essentiel dans les domaines réglementés (médecine, justice, finance)</li>
+              <li>🧑‍💻 <strong>Contrôlable</strong> — Les humains peuvent modifier chaque règle individuellement</li>
+            </ul>
+          </div>
+
+          <h3>❌ Limites de l'IA symbolique</h3>
+          <div class="callout pink">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🧱 <strong>Rigide</strong> — Incapable de gérer les cas non prévus par les règles</li>
+              <li>🏗️ <strong>Coûteuse à construire</strong> — Il faut des experts pour formuler chaque règle (« goulot d'étranglement de la connaissance »)</li>
+              <li>🌫️ <strong>Fragile face à l'incertain</strong> — Données incomplètes ou bruitées = échec</li>
+              <li>📈 <strong>Ne passe pas à l'échelle</strong> — 1 000 règles = gérable. 1 000 000 = chaos</li>
+            </ul>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Si le produit ATLAS repose sur des règles explicites, il sera explicable mais fragile.
+            Gardez en tête ces forces et limites pour votre analyse.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 4 ===== -->
+        <div class="lesson" id="lesson-3">
+          <h2 class="module-title">04 — L'IA connexionniste : le cerveau qui apprend</h2>
+
+          <p class="module-kicker">
+            La seconde grande approche de l'IA ne repose pas sur des règles écrites par des humains,
+            mais sur l'<strong>apprentissage à partir de données</strong>. C'est l'approche dominante aujourd'hui.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🧠 Le principe : apprendre par l'exemple</h3>
+          <p>
+            Au lieu de programmer des règles, on donne à la machine des <strong>milliers (ou millions)
+            d'exemples</strong> et on la laisse découvrir elle-même les régularités.
+          </p>
+
+          <div class="callout blue">
+            <strong>Analogie</strong><br>
+            Imaginez que vous apprenez à un enfant à reconnaître un chat. Vous ne lui donnez pas une liste
+            de règles (« SI 4 pattes ET moustaches ET oreilles pointues ALORS chat »). Vous lui montrez
+            des <em>centaines de photos</em> de chats, et il finit par « comprendre » ce qu'est un chat —
+            sans pouvoir forcément expliquer comment.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>📈 Les trois vagues de l'IA connexionniste</h3>
+
+          <div class="callout">
+            <strong>Vague 1 : Le Perceptron (1957-1969)</strong><br>
+            Frank Rosenblatt crée le premier neurone artificiel capable d'apprendre. Enthousiasme immense…
+            puis déception quand on découvre ses limites (il ne peut résoudre que des problèmes linéaires simples).
+          </div>
+
+          <div class="callout blue">
+            <strong>Vague 2 : Rétropropagation (1986-2000)</strong><br>
+            Geoffrey Hinton et ses collègues popularisent un algorithme permettant d'entraîner des réseaux
+            à plusieurs couches. Progrès significatifs, mais les ordinateurs de l'époque sont trop lents
+            et les données trop rares.
+          </div>
+
+          <div class="callout purple">
+            <strong>Vague 3 : Deep Learning (2012-aujourd'hui)</strong><br>
+            La convergence de trois facteurs déclenche une révolution :<br>
+            • <strong>Données massives</strong> (Internet, réseaux sociaux)<br>
+            • <strong>Puissance de calcul</strong> (GPU, cloud computing)<br>
+            • <strong>Algorithmes améliorés</strong> (nouvelles architectures de réseaux)<br><br>
+            En 2012, AlexNet pulvérise les records en reconnaissance d'images. Le Deep Learning s'impose partout.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>✅ Forces de l'IA connexionniste</h3>
+          <div class="callout">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🖼️ <strong>Excelle sur les données complexes</strong> — images, audio, texte, vidéo</li>
+              <li>🔄 <strong>Généralise</strong> — Reconnaît des chats jamais vus après apprentissage</li>
+              <li>📊 <strong>Pas besoin d'experts du domaine</strong> — Les données « parlent » d'elles-mêmes</li>
+              <li>🚀 <strong>Performances surhumaines</strong> — dans certaines tâches spécifiques (imagerie médicale, Go, traduction)</li>
+            </ul>
+          </div>
+
+          <h3>❌ Limites de l'IA connexionniste</h3>
+          <div class="callout pink">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🔲 <strong>Boîte noire</strong> — Impossible d'expliquer pourquoi une décision est prise</li>
+              <li>📦 <strong>Gourmande en données</strong> — Il faut des millions d'exemples étiquetés</li>
+              <li>💰 <strong>Coût énorme</strong> — L'entraînement de GPT-4 a coûté plus de 100 millions de dollars</li>
+              <li>⚖️ <strong>Biais des données</strong> — Si les données sont biaisées, l'IA reproduit ces biais</li>
+              <li>🎭 <strong>Pas de compréhension réelle</strong> — Elle ne « sait » pas ce qu'elle fait, elle calcule des corrélations</li>
+            </ul>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Si ATLAS est une IA connexionniste, elle sera puissante mais opaque. Et si NovaMind dit
+            qu'elle « comprend véritablement » ses patients, c'est un signal d'alerte.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 5 ===== -->
+        <div class="lesson" id="lesson-4">
+          <h2 class="module-title">05 — La hiérarchie des concepts</h2>
+
+          <p class="module-kicker">
+            On entend souvent « IA », « Machine Learning », « Deep Learning », « Transformers »
+            utilisés comme synonymes. Ce sont en réalité des <strong>poupées russes</strong> —
+            chaque concept est contenu dans le précédent.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🪆 Les 4 niveaux d'emboîtement</h3>
+
+          <div style="display: flex; flex-direction: column; gap: 0; margin: 20px 0;">
+            <div style="background: rgba(0, 255, 136, 0.08); border: 2px solid rgba(0, 255, 136, 0.4); border-radius: 16px; padding: 20px; position: relative;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <span class="pill">NIVEAU 1 — LE PLUS LARGE</span>
+              </div>
+              <h3 style="color: var(--neon-green); margin-top: 0;">🤖 Intelligence Artificielle (IA)</h3>
+              <p style="margin-bottom: 8px;">
+                <strong>Toutes les techniques</strong> permettant à une machine de réaliser des tâches
+                « intelligentes ». Inclut les systèmes à règles, la robotique, la planification,
+                le traitement du langage, etc.
+              </p>
+
+              <div style="background: rgba(0, 212, 255, 0.08); border: 2px solid rgba(0, 212, 255, 0.4); border-radius: 14px; padding: 18px; margin-top: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                  <span class="pill blue">NIVEAU 2</span>
+                </div>
+                <h3 style="color: var(--neon-blue); margin-top: 0;">📊 Machine Learning (ML)</h3>
+                <p style="margin-bottom: 8px;">
+                  Sous-ensemble de l'IA où la machine <strong>apprend à partir de données</strong>
+                  au lieu d'être programmée explicitement. Inclut arbres de décision,
+                  forêts aléatoires, SVM, réseaux de neurones…
+                </p>
+
+                <div style="background: rgba(168, 85, 247, 0.08); border: 2px solid rgba(168, 85, 247, 0.4); border-radius: 12px; padding: 16px; margin-top: 12px;">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span class="pill pink">NIVEAU 3</span>
+                  </div>
+                  <h3 style="color: var(--neon-purple); margin-top: 0;">🧠 Deep Learning (DL)</h3>
+                  <p style="margin-bottom: 8px;">
+                    Sous-ensemble du ML utilisant des <strong>réseaux de neurones profonds</strong>
+                    (nombreuses couches). Excelle en vision, langage, audio.
+                  </p>
+
+                  <div style="background: rgba(255, 0, 128, 0.08); border: 2px solid rgba(255, 0, 128, 0.4); border-radius: 10px; padding: 14px; margin-top: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                      <span class="pill pink">NIVEAU 4 — LE PLUS SPÉCIFIQUE</span>
+                    </div>
+                    <h3 style="color: var(--neon-pink); margin-top: 0;">⚡ Transformers</h3>
+                    <p style="margin-bottom: 0;">
+                      Architecture révolutionnaire (<strong>2017</strong>) basée sur le mécanisme
+                      d'<em>attention</em>. C'est la technologie derrière ChatGPT, Claude, Gemini,
+                      Mistral, DALL-E, Midjourney…
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>📋 À retenir</strong><br>
+            Quand on parle de ChatGPT, on parle d'une IA qui est du Machine Learning,
+            plus précisément du Deep Learning, encore plus précisément un <strong>Transformer</strong>.<br><br>
+            <span style="font-family: 'Space Mono', monospace;">
+              IA ⊃ ML ⊃ DL ⊃ Transformers
+            </span>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Quand NovaMind décrit ATLAS, vérifiez à quel niveau de cette hiérarchie le produit se situe.
+            Le marketing utilise souvent le terme le plus impressionnant (« IA ») sans préciser la technique réelle.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 6 ===== -->
+        <div class="lesson" id="lesson-5">
+          <h2 class="module-title">06 — 75 ans d'IA : les dates qui ont tout changé</h2>
+
+          <p class="module-kicker">
+            L'intelligence artificielle a traversé des périodes d'euphorie et des « hivers »
+            de désillusion. Voici les jalons essentiels.
+          </p>
+
+          <div class="divider"></div>
+
+          <div style="position: relative; padding-left: 40px; margin: 20px 0;">
+            <!-- Ligne verticale -->
+            <div style="position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--neon-green), var(--neon-blue), var(--neon-purple), var(--neon-pink));"></div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green);"></div>
+              <span class="pill">1950</span>
+              <h3 style="margin-top: 8px;">🧪 Test de Turing</h3>
+              <p>Alan Turing publie <em>« Computing Machinery and Intelligence »</em> et propose son célèbre test.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green);"></div>
+              <span class="pill">1956</span>
+              <h3 style="margin-top: 8px;">🏛️ Conférence de Dartmouth</h3>
+              <p>Naissance officielle de l'IA comme discipline. John McCarthy invente le terme.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+              <span class="pill blue">1966-1974</span>
+              <h3 style="margin-top: 8px;">❄️ Premier hiver de l'IA</h3>
+              <p>Les promesses non tenues provoquent une chute des financements. Les machines sont trop limitées.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+              <span class="pill blue">1980s</span>
+              <h3 style="margin-top: 8px;">📋 Ère des systèmes experts</h3>
+              <p>L'IA symbolique connaît un âge d'or avec des systèmes comme MYCIN, DENDRAL. L'industrie investit massivement.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+              <span class="pill blue">1987-1993</span>
+              <h3 style="margin-top: 8px;">❄️ Deuxième hiver de l'IA</h3>
+              <p>Les systèmes experts montrent leurs limites. Nouvelle vague de désillusion et de coupes budgétaires.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-purple); border-radius: 50%; box-shadow: 0 0 10px var(--neon-purple);"></div>
+              <span class="pill pink">1997</span>
+              <h3 style="margin-top: 8px;">♟️ Deep Blue bat Kasparov</h3>
+              <p>La machine d'IBM bat le champion du monde d'échecs. Moment symbolique pour le grand public.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-purple); border-radius: 50%; box-shadow: 0 0 10px var(--neon-purple);"></div>
+              <span class="pill pink">2012</span>
+              <h3 style="margin-top: 8px;">🚀 Explosion du Deep Learning</h3>
+              <p>AlexNet pulvérise les records en reconnaissance d'images. Le Deep Learning entre dans une ère de progrès exponentiels.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-pink); border-radius: 50%; box-shadow: 0 0 10px var(--neon-pink);"></div>
+              <span class="pill pink">2017</span>
+              <h3 style="margin-top: 8px;">⚡ Invention des Transformers</h3>
+              <p>Google publie <em>« Attention Is All You Need »</em>. Cette architecture va révolutionner le traitement du langage.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-pink); border-radius: 50%; box-shadow: 0 0 10px var(--neon-pink);"></div>
+              <span class="pill pink">2022</span>
+              <h3 style="margin-top: 8px;">💬 ChatGPT — le moment viral</h3>
+              <p>OpenAI lance ChatGPT, qui atteint 100 millions d'utilisateurs en 2 mois. L'IA entre dans le quotidien de tous.</p>
+            </div>
+
+            <div style="margin-bottom: 10px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-pink); border-radius: 50%; box-shadow: 0 0 10px var(--neon-pink);"></div>
+              <span class="pill pink">2024-2025</span>
+              <h3 style="margin-top: 8px;">🌍 Course mondiale à l'IA</h3>
+              <p>Mistral (France), Claude (Anthropic), Gemini (Google), Llama (Meta)… La concurrence s'intensifie. L'Europe adopte l'AI Act, premier cadre réglementaire mondial.</p>
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Remarquez le pattern historique : chaque vague d'enthousiasme excessif a été suivie
+            d'un « hiver ». Quand NovaMind annonce une révolution, un bon analyste se souvient
+            que l'histoire de l'IA est jalonnée de promesses non tenues.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 7 ===== -->
+        <div class="lesson" id="lesson-6">
+          <h2 class="module-title">07 — Ce que l'IA fait… et ne fait PAS</h2>
+
+          <p class="module-kicker">
+            Pour évaluer les affirmations de NovaMind, vous devez connaître précisément
+            les <strong>capacités réelles</strong> de l'IA actuelle — et ses <strong>limites absolues</strong>.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>✅ Ce que l'IA fait très bien</h3>
+          <div class="callout">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🖼️ <strong>Reconnaître des images</strong> — Identifier des objets, visages, tumeurs sur des radios (précision > 95 % depuis 2015)</li>
+              <li>🌐 <strong>Traduire des textes</strong> — DeepL, Google Translate gèrent plus de 100 langues</li>
+              <li>💬 <strong>Générer du texte</strong> — Rédiger, résumer, reformuler avec une fluidité impressionnante</li>
+              <li>🎨 <strong>Créer des images</strong> — DALL-E, Midjourney, Stable Diffusion produisent des visuels à partir de descriptions textuelles</li>
+              <li>🎯 <strong>Prédire</strong> — Météo, cours de bourse (tendances), demande énergétique</li>
+              <li>🧬 <strong>Résoudre des problèmes scientifiques</strong> — AlphaFold2 a prédit la structure 3D de 200 millions de protéines</li>
+              <li>♟️ <strong>Jouer</strong> — Échecs, Go, StarCraft, Dota 2 à un niveau surhumain</li>
+            </ul>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>❌ Ce que l'IA ne fait PAS (malgré les apparences)</h3>
+          <div class="callout pink">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🧠 <strong>Comprendre</strong> — Elle manipule des symboles sans saisir leur sens. ChatGPT ne « sait » pas qu'il parle de la Tour Eiffel.</li>
+              <li>💭 <strong>Avoir conscience d'elle-même</strong> — Aucune IA n'a de conscience, de volonté, ni d'émotions</li>
+              <li>🤔 <strong>Raisonner causalement</strong> — Elle détecte des corrélations, pas des causalités (« le coq chante avant le lever du soleil » ≠ « le coq fait lever le soleil »)</li>
+              <li>🧩 <strong>Faire preuve de bon sens</strong> — Elle peut affirmer qu'un éléphant entre dans un réfrigérateur si les données le suggèrent</li>
+              <li>🔄 <strong>Apprendre en continu</strong> — Un modèle est « gelé » après son entraînement (sauf réentraînement explicite)</li>
+              <li>🌍 <strong>Généraliser entre domaines</strong> — Une IA de radiologie ne sait pas diagnostiquer une panne de voiture</li>
+            </ul>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>🔀 Le paradoxe de Moravec</h3>
+          <div class="callout purple">
+            <strong>Ce qui est facile pour un humain est difficile pour l'IA, et inversement.</strong><br><br>
+            <ul>
+              <li>L'IA bat les meilleurs joueurs d'échecs… mais ne peut pas saisir délicatement un œuf sans le casser.</li>
+              <li>L'IA traduit 100 langues… mais ne comprend pas l'ironie dans « Super, encore un lundi ! ».</li>
+              <li>L'IA génère des textes fluides… mais ne peut pas expliquer <em>pourquoi</em> elle a écrit telle phrase.</li>
+            </ul>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>⚠️ L'effet ELIZA : l'illusion de compréhension</h3>
+          <p>
+            En 1966, Joseph Weizenbaum crée <strong>ELIZA</strong>, un programme qui simule un psychothérapeute
+            en reformulant les phrases de l'utilisateur. Résultat : les utilisateurs lui attribuaient
+            de véritables émotions et capacités de compréhension.
+          </p>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE — Signal d'alerte majeur</strong><br>
+            L'effet ELIZA est le piège numéro 1 : nous projetons de l'intelligence sur
+            des machines qui n'en ont pas. Quand NovaMind affirme qu'ATLAS « comprend véritablement »
+            ses utilisateurs, ils exploitent probablement cet effet.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 8 ===== -->
+        <div class="lesson" id="lesson-7">
+          <h2 class="module-title">08 — Mission DECODE : Opération ATLAS</h2>
+
+          <p class="module-kicker">
+            Analyste, votre formation est terminée. Il est temps de passer à l'action.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="callout blue" style="border-width: 2px;">
+            <h3 style="color: var(--neon-blue); margin-top: 0;">📡 TRANSMISSION SÉCURISÉE — Directrice DECODE</h3>
+            <div class="divider"></div>
+            <p style="font-style: italic; color: #aabbcc;">
+              « Analyste, nous avons intercepté les communications marketing de NovaMind Corp
+              concernant leur produit ATLAS. Leur campagne fait des déclarations extraordinaires :
+              <strong style="color: var(--neon-pink);">IA consciente</strong>,
+              <strong style="color: var(--neon-pink);">compréhension véritable</strong>,
+              <strong style="color: var(--neon-pink);">révolution médicale</strong>.
+            </p>
+            <p style="font-style: italic; color: #aabbcc;">
+              Nous avons rassemblé 6 pièces à conviction dans le dossier ATLAS.
+              Votre mission : examiner chaque preuve, croiser les informations,
+              et répondre aux 3 questions d'analyse pour compléter votre rapport. »
+            </p>
+            <p style="font-style: italic; color: var(--neon-green); margin-bottom: 0;">
+              — Directrice R. Chen, DECODE
+            </p>
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>📋 Votre mission en 3 étapes</h3>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0;">
+            <div class="callout" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 10px;">🔍</div>
+              <strong>Étape 1</strong><br>
+              <span style="color: var(--muted);">Consulter les 6 pièces à conviction</span>
+            </div>
+            <div class="callout blue" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 10px;">🧠</div>
+              <strong>Étape 2</strong><br>
+              <span style="color: var(--muted);">Répondre aux 3 questions d'analyse</span>
+            </div>
+            <div class="callout purple" style="text-align: center;">
+              <div style="font-size: 2em; margin-bottom: 10px;">📝</div>
+              <strong>Étape 3</strong><br>
+              <span style="color: var(--muted);">Soumettre votre rapport</span>
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <strong>🎯 Rappel</strong><br>
+            Utilisez tout ce que vous avez appris dans les fichiers 01 à 07 pour analyser les preuves.
+            Chaque indice peut contenir un signal d'alerte… ou une information légitime.
+            Soyez critique !
+          </div>
+
+          <div style="text-align: center; margin-top: 30px;">
+            <button class="briefing-btn primary" onclick="startMission()" style="font-size: 1.1em; padding: 16px 40px;">
+              🎯 Lancer la mission ATLAS
+            </button>
+          </div>
+        </div>
+
+      </div><!-- fin briefing-content -->
+    </div><!-- fin briefing-body -->
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
+        ← Précédent
+      </button>
+      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
+        Suivant →
+      </button>
+    </div>
+  </div>
+
   <script>
+    /* ==================== NAVIGATION BRIEFING ==================== */
+    const TOTAL_LESSONS = 8;
+    let currentLesson = 0;
+    let visitedLessons = new Set([0]);
+
     function startModule() {
       document.getElementById('title-screen').classList.add('hidden');
-      // La suite sera ajoutée dans les prochaines étapes
+      document.getElementById('briefing-screen').classList.add('active');
+    }
+
+    function goToLesson(index) {
+      if (index < 0 || index >= TOTAL_LESSONS) return;
+
+      // Masquer la leçon actuelle
+      const current = document.getElementById('lesson-' + currentLesson);
+      if (current) current.classList.remove('active');
+
+      // Afficher la nouvelle
+      currentLesson = index;
+      visitedLessons.add(index);
+      const next = document.getElementById('lesson-' + index);
+      if (next) next.classList.add('active');
+
+      // Scroll en haut
+      document.getElementById('briefing-content').scrollTop = 0;
+
+      updateNav();
+    }
+
+    function nextLesson() {
+      if (currentLesson < TOTAL_LESSONS - 1) {
+        goToLesson(currentLesson + 1);
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) {
+        goToLesson(currentLesson - 1);
+      }
+    }
+
+    function updateNav() {
+      // Barre de progression
+      const pct = ((currentLesson + 1) / TOTAL_LESSONS * 100).toFixed(1);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = 'Fichier ' + (currentLesson + 1) + '/' + TOTAL_LESSONS;
+
+      // Boutons prev/next
+      document.getElementById('btn-prev').disabled = (currentLesson === 0);
+      const btnNext = document.getElementById('btn-next');
+      if (currentLesson === TOTAL_LESSONS - 1) {
+        btnNext.textContent = '🎯 Lancer la mission';
+        btnNext.onclick = startMission;
+      } else {
+        btnNext.innerHTML = 'Suivant →';
+        btnNext.onclick = nextLesson;
+      }
+
+      // Items sidebar
+      const items = document.querySelectorAll('.briefing-nav-item');
+      items.forEach((item, i) => {
+        item.classList.remove('active', 'completed');
+        if (i === currentLesson) {
+          item.classList.add('active');
+        } else if (visitedLessons.has(i)) {
+          item.classList.add('completed');
+        }
+      });
+    }
+
+    function startMission() {
+      document.getElementById('briefing-screen').classList.remove('active');
+      document.getElementById('mission-screen').classList.add('active');
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN MISSION ==================== -->
+  <div id="mission-screen">
+    <div class="mission-header">
+      <div class="mission-header-title">
+        🔍 DECODE — Opération ATLAS
+      </div>
+      <div class="mission-phase-indicator">
+        <span style="color: var(--muted); font-size: 0.85em; margin-right: 8px;">Phase :</span>
+        <div class="phase-dot active" id="phase-dot-0"></div>
+        <div class="phase-dot" id="phase-dot-1"></div>
+        <div class="phase-dot" id="phase-dot-2"></div>
+      </div>
+    </div>
+
+    <div class="mission-body">
+
+      <!-- PHASE 1 : COLLECTE DES PREUVES -->
+      <div class="mission-phase active" id="mission-phase-0">
+        <h2 style="font-family: 'Space Mono', monospace; color: var(--neon-blue); margin-bottom: 8px;">
+          Phase 1 : Collecte des preuves
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 20px;">
+          Consultez chaque pièce à conviction. Lisez attentivement — les détails comptent.
+        </p>
+
+        <div class="evidence-grid">
+          <div class="evidence-card" onclick="openEvidence(0)">
+            <div class="evidence-icon">📰</div>
+            <div class="evidence-label">PIÈCE N°1</div>
+            <div class="evidence-name">Communiqué de presse NovaMind</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(1)">
+            <div class="evidence-icon">📋</div>
+            <div class="evidence-label">PIÈCE N°2</div>
+            <div class="evidence-name">Fiche technique ATLAS</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(2)">
+            <div class="evidence-icon">🧑‍🔬</div>
+            <div class="evidence-label">PIÈCE N°3</div>
+            <div class="evidence-name">Témoignage d'un ex-ingénieur</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(3)">
+            <div class="evidence-icon">📊</div>
+            <div class="evidence-label">PIÈCE N°4</div>
+            <div class="evidence-name">Rapport de tests indépendants</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(4)">
+            <div class="evidence-icon">💬</div>
+            <div class="evidence-label">PIÈCE N°5</div>
+            <div class="evidence-name">Extrait de conversation ATLAS</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(5)">
+            <div class="evidence-icon">📄</div>
+            <div class="evidence-label">PIÈCE N°6</div>
+            <div class="evidence-name">Brevet déposé par NovaMind</div>
+          </div>
+        </div>
+
+        <div class="evidence-counter">
+          Preuves consultées : <strong id="evidence-count">0</strong> / 6
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="mission-next-btn" id="btn-to-phase2" onclick="goToMissionPhase(1)" disabled style="opacity: 0.5;">
+            Passer à l'analyse →
+          </button>
+          <p style="color: var(--muted); font-size: 0.85em; margin-top: 10px;" id="evidence-hint">
+            Consultez les 6 preuves pour débloquer l'analyse
+          </p>
+        </div>
+      </div>
+
+      <!-- PHASE 2 : ANALYSE -->
+      <div class="mission-phase" id="mission-phase-1">
+        <h2 style="font-family: 'Space Mono', monospace; color: var(--neon-blue); margin-bottom: 8px;">
+          Phase 2 : Analyse critique
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 25px;">
+          Sur la base des preuves collectées, répondez aux 3 questions suivantes.
+        </p>
+
+        <!-- Question 1 -->
+        <div class="analysis-question" id="aq-0">
+          <h3>❓ Question 1 — Type d'IA</h3>
+          <p>D'après les pièces à conviction, ATLAS repose principalement sur quel type d'IA ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(0, 0)">
+              <strong>A.</strong> IA symbolique (système à règles)
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(0, 1)">
+              <strong>B.</strong> IA connexionniste (apprentissage automatique)
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(0, 2)">
+              <strong>C.</strong> IA générale consciente (AGI)
+            </div>
+          </div>
+          <div class="analysis-explanation" id="aq-expl-0"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="analysis-question" id="aq-1">
+          <h3>❓ Question 2 — Principale faiblesse</h3>
+          <p>Quel est le principal risque ou limite d'ATLAS identifié dans le dossier ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(1, 0)">
+              <strong>A.</strong> Il consomme trop d'énergie
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(1, 1)">
+              <strong>B.</strong> Il est trop rigide et échoue face aux cas imprévus
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(1, 2)">
+              <strong>C.</strong> Il est trop lent pour un usage médical
+            </div>
+          </div>
+          <div class="analysis-explanation" id="aq-expl-1"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="analysis-question" id="aq-2">
+          <h3>❓ Question 3 — Signal d'alerte marketing</h3>
+          <p>Quel élément du communiqué de presse constitue le signal d'alerte le plus flagrant ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(2, 0)">
+              <strong>A.</strong> « ATLAS comprend véritablement les patients »
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(2, 1)">
+              <strong>B.</strong> « ATLAS utilise 50 000 règles médicales »
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(2, 2)">
+              <strong>C.</strong> « ATLAS a été développé en 3 ans »
+            </div>
+          </div>
+          <div class="analysis-explanation" id="aq-expl-2"></div>
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="mission-next-btn" id="btn-submit-report" onclick="submitReport()" disabled style="opacity: 0.5;">
+            📝 Soumettre le rapport
+          </button>
+          <p style="color: var(--muted); font-size: 0.85em; margin-top: 10px;" id="analysis-hint">
+            Répondez aux 3 questions pour soumettre votre rapport
+          </p>
+        </div>
+      </div>
+
+      <!-- PHASE 3 : RÉSULTAT -->
+      <div class="mission-phase" id="mission-phase-2">
+        <div class="mission-result" id="mission-result">
+          <!-- Contenu injecté par JS -->
+        </div>
+      </div>
+
+    </div><!-- fin mission-body -->
+  </div>
+
+  <!-- MODAL PREUVE -->
+  <div class="modal-overlay" id="evidence-modal">
+    <div class="modal-card">
+      <h3 id="evidence-modal-title"></h3>
+      <div id="evidence-modal-body"></div>
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="modal-close-btn" onclick="closeEvidence()">Fermer le dossier</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== DONNÉES MISSION ==================== */
+    const evidenceData = [
+      {
+        title: '📰 Pièce N°1 — Communiqué de presse NovaMind',
+        body: `
+          <div class="callout pink">
+            <p style="font-size: 1.05em; font-weight: 600; color: var(--neon-pink);">
+              « ATLAS : LA PREMIÈRE IA VÉRITABLEMENT CONSCIENTE AU SERVICE DE LA MÉDECINE »
+            </p>
+          </div>
+          <p>NovaMind Corp annonce aujourd'hui le lancement d'ATLAS, <strong style="color: var(--neon-pink);">une super IA révolutionnaire</strong>
+          qui <strong style="color: var(--neon-pink);">comprend véritablement</strong> les patients et peut établir des diagnostics
+          médicaux avec une précision « sans précédent ».</p>
+          <p>« ATLAS ne se contente pas d'analyser des données — elle comprend réellement la souffrance
+          humaine et adapte ses recommandations avec empathie », déclare le PDG de NovaMind, Viktor Leroy.</p>
+          <p>Le système serait capable de diagnostiquer plus de 200 pathologies avec
+          « une fiabilité supérieure à celle de n'importe quel médecin humain ».</p>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indices à noter :</strong> les termes « consciente », « comprend véritablement »,
+            « super IA révolutionnaire », « empathie ».
+          </div>
+        `
+      },
+      {
+        title: '📋 Pièce N°2 — Fiche technique ATLAS',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Spécifications techniques (document interne intercepté) :</strong></p>
+          <ul>
+            <li><strong>Architecture :</strong> Système à base de règles (rule-based expert system)</li>
+            <li><strong>Base de connaissances :</strong> 50 000 règles médicales SI/ALORS</li>
+            <li><strong>Moteur d'inférence :</strong> Chaînage avant et arrière</li>
+            <li><strong>Sources :</strong> Protocoles médicaux validés, guidelines OMS</li>
+            <li><strong>Couverture :</strong> 200 pathologies, 3 spécialités (cardiologie, pneumologie, dermatologie)</li>
+            <li><strong>Explicabilité :</strong> Trace de raisonnement complète pour chaque diagnostic</li>
+          </ul>
+          <div class="callout" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> ATLAS est un <strong>système expert à règles</strong> (IA symbolique),
+            pas un réseau de neurones ni un modèle de langage.
+          </div>
+        `
+      },
+      {
+        title: '🧑‍🔬 Pièce N°3 — Témoignage d\'un ex-ingénieur',
+        body: `
+          <div class="callout blue">
+            <p style="font-style: italic;">
+              « J'ai travaillé 18 mois chez NovaMind sur ATLAS. C'est un bon système expert,
+              bien conçu, avec des règles médicales solides. Mais ce n'est absolument pas
+              une IA qui "comprend" quoi que ce soit. »
+            </p>
+            <p style="font-style: italic;">
+              « Le problème principal, c'est que le système est <strong>très rigide</strong>.
+              Quand un patient présente des symptômes inhabituels ou combinés qui ne correspondent
+              à aucune de nos 50 000 règles, ATLAS ne sait pas quoi faire. Il dit simplement
+              "diagnostic impossible" ou, pire, force un diagnostic erroné. »
+            </p>
+            <p style="font-style: italic;">
+              « J'ai quitté l'entreprise quand le marketing a commencé à parler de "conscience".
+              C'est du mensonge pur. ATLAS n'a pas plus de conscience qu'une calculatrice. »
+            </p>
+            <p style="font-style: italic; color: var(--neon-blue);">
+              — Témoignage anonyme, ancien ingénieur NovaMind (vérifié par DECODE)
+            </p>
+          </div>
+        `
+      },
+      {
+        title: '📊 Pièce N°4 — Rapport de tests indépendants',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Tests réalisés par le Laboratoire HealthCheck (indépendant) :</strong></p>
+          <div class="callout">
+            <p><strong>Cas standards (symptômes classiques) :</strong></p>
+            <p style="font-size: 1.2em; color: var(--neon-green);">✅ Précision : 94.2 %</p>
+            <p style="color: var(--muted);">Excellent résultat, comparable aux meilleurs médecins spécialistes.</p>
+          </div>
+          <div class="callout pink">
+            <p><strong>Cas atypiques (symptômes inhabituels ou combinés) :</strong></p>
+            <p style="font-size: 1.2em; color: var(--danger);">❌ Précision : 31.7 %</p>
+            <p style="color: var(--muted);">Résultat catastrophique. Le système échoue massivement
+            dès que les cas sortent de ses règles prédéfinies.</p>
+          </div>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> Cet écart de performance (94% → 31%) est typique
+            d'un système à règles rigide — excellent dans son domaine, mais incapable d'adaptation.
+          </div>
+        `
+      },
+      {
+        title: '💬 Pièce N°5 — Extrait de conversation ATLAS',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Transcription d'une session de démonstration :</strong></p>
+          <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 18px; margin: 12px 0; font-family: 'Space Mono', monospace; font-size: 0.88em; line-height: 1.8;">
+            <p><span style="color: var(--neon-green);">Patient :</span> J'ai mal à la poitrine depuis 3 jours et j'ai du mal à respirer.</p>
+            <p><span style="color: var(--neon-blue);">ATLAS :</span> Je comprends votre inquiétude. D'après vos symptômes, voici les diagnostics possibles :</p>
+            <p style="padding-left: 20px; color: #aabbcc;">
+              — Angine de poitrine (probabilité : 0.72)<br>
+              — Pneumothorax (probabilité : 0.15)<br>
+              — Anxiété (probabilité : 0.13)
+            </p>
+            <p><span style="color: var(--neon-green);">Patient :</span> Est-ce que ça pourrait être lié au fait que je sois tombé d'une échelle hier ?</p>
+            <p><span style="color: var(--neon-blue);">ATLAS :</span> Je comprends votre inquiétude. D'après vos symptômes, voici les diagnostics possibles :</p>
+            <p style="padding-left: 20px; color: #aabbcc;">
+              [Mêmes résultats identiques — la chute n'est pas prise en compte]
+            </p>
+          </div>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> ATLAS répète la même phrase d'empathie scriptée
+            (« Je comprends votre inquiétude ») et ignore le contexte de la chute — preuve
+            qu'il ne « comprend » pas, il exécute des règles prédéfinies.
+          </div>
+        `
+      },
+      {
+        title: '📄 Pièce N°6 — Brevet déposé par NovaMind',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Extrait du brevet N° EP-2024-ATLAS-0847 :</strong></p>
+          <div class="callout blue">
+            <p style="font-style: italic;">
+              « Le présent brevet décrit un <strong>système expert médical à base de règles</strong>
+              utilisant un moteur d'inférence avec chaînage avant et arrière.
+              Le système comprend une base de connaissances de règles de production
+              de la forme SI [conditions] ALORS [conclusions] avec des facteurs de certitude associés. »
+            </p>
+          </div>
+          <p>Le brevet confirme sans ambiguïté la nature du système : c'est de l'<strong>IA symbolique classique</strong>,
+          une technologie qui existe depuis les années 1970.</p>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> Le brevet contredit directement le marketing.
+            Aucune mention de « conscience », de « compréhension » ni d'apprentissage automatique.
+            C'est un système à règles, ni plus ni moins.
+          </div>
+        `
+      }
+    ];
+
+    const analysisQuestions = [
+      {
+        correct: 0,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> La fiche technique et le brevet confirment qu\'ATLAS est un système expert à base de 50 000 règles SI/ALORS — c\'est de l\'IA symbolique classique. Ce n\'est ni du Machine Learning, ni une IA consciente.',
+          wrong: '❌ Les preuves montrent clairement qu\'ATLAS est un <strong>système à règles</strong> (IA symbolique). La fiche technique mentionne « 50 000 règles SI/ALORS » et le brevet décrit un « système expert à base de règles ». Ce n\'est pas du connexionnisme, et l\'IA générale consciente n\'existe pas encore.'
+        }
+      },
+      {
+        correct: 1,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> Le rapport de tests montre un effondrement de 94 % à 31 % sur les cas atypiques, et l\'ex-ingénieur confirme que le système est « très rigide ». C\'est la limite classique de l\'IA symbolique.',
+          wrong: '❌ Le principal risque identifié est la <strong>rigidité</strong>. Le rapport de tests montre un effondrement spectaculaire (de 94 % à 31 %) sur les cas atypiques. L\'ex-ingénieur confirme : ATLAS échoue quand les symptômes sortent de ses règles prédéfinies.'
+        }
+      },
+      {
+        correct: 0,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> Affirmer qu\'une IA « comprend véritablement » est un signal d\'alerte majeur. Aucune IA actuelle ne comprend quoi que ce soit au sens humain — elle calcule des probabilités. C\'est de l\'anthropomorphisme marketing (effet ELIZA).',
+          wrong: '❌ Le signal d\'alerte le plus flagrant est <strong>« comprend véritablement les patients »</strong>. Aucune IA actuelle ne comprend quoi que ce soit — et encore moins un système à règles. C\'est l\'exploitation de l\'effet ELIZA à des fins marketing.'
+        }
+      }
+    ];
+
+    let evidenceViewed = new Set();
+    let analysisAnswers = [null, null, null];
+    let analysisLocked = [false, false, false];
+    let missionScore = 0;
+
+    function openEvidence(index) {
+      evidenceViewed.add(index);
+      document.querySelectorAll('.evidence-card')[index].classList.add('viewed');
+      document.getElementById('evidence-count').textContent = evidenceViewed.size;
+
+      document.getElementById('evidence-modal-title').innerHTML = evidenceData[index].title;
+      document.getElementById('evidence-modal-body').innerHTML = evidenceData[index].body;
+      document.getElementById('evidence-modal').classList.add('show');
+
+      if (evidenceViewed.size === 6) {
+        const btn = document.getElementById('btn-to-phase2');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        document.getElementById('evidence-hint').textContent = '✅ Toutes les preuves consultées — vous pouvez passer à l\'analyse';
+        document.getElementById('evidence-hint').style.color = 'var(--neon-green)';
+      }
+    }
+
+    function closeEvidence() {
+      document.getElementById('evidence-modal').classList.remove('show');
+    }
+
+    function goToMissionPhase(phase) {
+      document.querySelectorAll('.mission-phase').forEach(p => p.classList.remove('active'));
+      document.getElementById('mission-phase-' + phase).classList.add('active');
+
+      document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+        dot.classList.remove('active', 'done');
+        if (i < phase) dot.classList.add('done');
+        if (i === phase) dot.classList.add('active');
+      });
+
+      document.querySelector('.mission-body').scrollTop = 0;
+    }
+
+    function selectAnalysis(qIndex, optionIndex) {
+      if (analysisLocked[qIndex]) return;
+      analysisLocked[qIndex] = true;
+      analysisAnswers[qIndex] = optionIndex;
+
+      const q = analysisQuestions[qIndex];
+      const isCorrect = optionIndex === q.correct;
+      if (isCorrect) missionScore++;
+
+      const options = document.querySelectorAll('#aq-' + qIndex + ' .analysis-option');
+      options.forEach((opt, i) => {
+        opt.style.cursor = 'default';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
+      });
+
+      const expl = document.getElementById('aq-expl-' + qIndex);
+      expl.innerHTML = isCorrect ? q.explanations.correct : q.explanations.wrong;
+      expl.classList.add('show', isCorrect ? 'correct-expl' : 'wrong-expl');
+
+      const allAnswered = analysisAnswers.every(a => a !== null);
+      if (allAnswered) {
+        const btn = document.getElementById('btn-submit-report');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        document.getElementById('analysis-hint').textContent = '✅ Toutes les questions traitées — soumettez votre rapport';
+        document.getElementById('analysis-hint').style.color = 'var(--neon-green)';
+      }
+    }
+
+    function submitReport() {
+      goToMissionPhase(2);
+
+      const resultDiv = document.getElementById('mission-result');
+      const perfect = missionScore === 3;
+
+      resultDiv.innerHTML = `
+        <div class="mission-result-icon">${perfect ? '🏆' : '📋'}</div>
+        <h2 style="color: ${perfect ? 'var(--neon-green)' : 'var(--neon-blue)'};">
+          ${perfect ? 'RAPPORT EXEMPLAIRE' : 'RAPPORT SOUMIS'}
+        </h2>
+        <div class="mission-result-score" style="color: ${perfect ? 'var(--neon-green)' : 'var(--warn)'};">
+          ${missionScore} / 3
+        </div>
+        <p style="color: var(--muted); max-width: 600px; margin: 0 auto 15px; line-height: 1.7;">
+          ${perfect
+            ? 'Excellent travail, analyste ! Vous avez correctement identifié qu\'ATLAS est un système expert symbolique, que sa rigidité est son principal défaut, et que le marketing exploite l\'effet ELIZA. La directrice Chen est impressionnée.'
+            : 'Votre rapport contient des analyses pertinentes, mais certaines conclusions méritent d\'être affinées. Relisez les preuves et les leçons pour renforcer votre esprit critique.'}
+        </p>
+        <div class="callout" style="max-width: 600px; margin: 20px auto; text-align: left;">
+          <strong>📋 Conclusion DECODE sur ATLAS :</strong><br>
+          ATLAS est un <strong>système expert classique</strong> (IA symbolique) performant sur les cas standards
+          mais <strong>rigide et limité</strong> face aux situations imprévues. Les affirmations de « conscience »
+          et de « compréhension véritable » sont du <strong>marketing trompeur</strong> exploitant l'anthropomorphisme.
+        </div>
+        <button class="mission-next-btn" onclick="startQuiz()">
+          Passer au quiz de certification →
+        </button>
+      `;
+    }
+
+    function startQuiz() {
+      document.getElementById('mission-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      renderQuizQuestion();
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN QUIZ ==================== -->
+  <div id="quiz-screen">
+    <div class="quiz-header">
+      <div class="quiz-header-title">
+        📝 Quiz de certification — Module 1
+      </div>
+      <div class="quiz-progress-info">
+        <span id="quiz-progress-text">Question 1/8</span>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-body">
+      <div class="quiz-card" id="quiz-card">
+        <!-- Contenu injecté par JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== QUIZ DE CERTIFICATION ==================== */
+    const quizQuestions = [
+      {
+        q: 'Quelle est la principale différence entre l\'IA actuelle et l\'intelligence humaine ?',
+        options: [
+          'L\'IA est plus intelligente que les humains dans tous les domaines',
+          'L\'IA excelle dans des tâches spécifiques mais n\'a ni conscience ni compréhension réelle',
+          'L\'IA comprend le monde comme un humain mais plus rapidement',
+          'L\'IA apprend sans avoir besoin de données'
+        ],
+        correct: 1,
+        explanation: 'L\'IA actuelle est spécialisée : elle peut surpasser l\'humain sur certaines tâches précises (jeu d\'échecs, reconnaissance d\'images) mais elle n\'a aucune conscience, aucune compréhension et aucune capacité de généralisation comme un humain.'
+      },
+      {
+        q: 'Qu\'est-ce qui caractérise l\'IA symbolique ?',
+        options: [
+          'Elle apprend à partir d\'exemples',
+          'Elle utilise des règles logiques explicites programmées par des humains',
+          'Elle fonctionne uniquement avec des réseaux de neurones',
+          'Elle s\'adapte automatiquement aux nouvelles situations'
+        ],
+        correct: 1,
+        explanation: 'L\'IA symbolique repose sur des règles SI/ALORS écrites par des experts humains. C\'est l\'approche des systèmes experts comme MYCIN (médecine) ou Deep Blue (échecs). Elle est explicable mais rigide.'
+      },
+      {
+        q: 'Quelle est la principale limite de l\'IA symbolique ?',
+        options: [
+          'C\'est une boîte noire impossible à comprendre',
+          'Elle nécessite trop de données d\'entraînement',
+          'Elle est trop rigide et échoue face aux situations imprévues',
+          'Elle consomme trop d\'énergie'
+        ],
+        correct: 2,
+        explanation: 'L\'IA symbolique est limitée aux cas prévus par ses règles. Dès qu\'une situation sort du cadre, elle ne peut pas s\'adapter. C\'est le « goulot d\'étranglement de la connaissance » : il faudrait prévoir une règle pour chaque cas possible, ce qui est impossible.'
+      },
+      {
+        q: 'Comment fonctionne l\'IA connexionniste (Machine Learning) ?',
+        options: [
+          'Elle utilise des règles explicites programmées à la main',
+          'Elle apprend des patterns à partir de grandes quantités de données',
+          'Elle n\'a besoin d\'aucune donnée d\'entraînement',
+          'Elle explique facilement chacune de ses décisions'
+        ],
+        correct: 1,
+        explanation: 'L\'IA connexionniste apprend en analysant des milliers ou millions d\'exemples pour en extraire des patterns statistiques. Elle ne suit pas de règles écrites par des humains — elle les découvre elle-même dans les données.'
+      },
+      {
+        q: 'Quel est le bon ordre d\'emboîtement des concepts ?',
+        options: [
+          'Machine Learning ⊃ IA ⊃ Deep Learning ⊃ Transformers',
+          'IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers',
+          'Transformers ⊃ Deep Learning ⊃ Machine Learning ⊃ IA',
+          'IA ⊃ Deep Learning ⊃ Machine Learning ⊃ Transformers'
+        ],
+        correct: 1,
+        explanation: 'L\'IA est le domaine le plus large, qui inclut le Machine Learning, qui inclut le Deep Learning (réseaux profonds), qui inclut les Transformers (architecture derrière ChatGPT, Claude, etc.).'
+      },
+      {
+        q: 'Dans quelle situation le Deep Learning est-il le plus adapté ?',
+        options: [
+          'Appliquer des règles médicales strictes et traçables',
+          'Résoudre des calculs mathématiques simples',
+          'Reconnaître des images complexes ou traiter du langage naturel',
+          'Suivre une procédure légale sans ambiguïté'
+        ],
+        correct: 2,
+        explanation: 'Le Deep Learning excelle dans le traitement de données complexes et non structurées : images, audio, texte. C\'est la technologie derrière la reconnaissance faciale, la traduction automatique, et les modèles de langage comme ChatGPT.'
+      },
+      {
+        q: 'Quel est le signe d\'un marketing trompeur autour de l\'IA ?',
+        options: [
+          'Publier les résultats de tests indépendants',
+          'Mentionner les limites connues du système',
+          'Utiliser des termes comme « super IA », « comprend véritablement », « révolutionnaire »',
+          'Décrire précisément la technologie utilisée'
+        ],
+        correct: 2,
+        explanation: 'Les termes vagues et grandiloquents (« super IA », « comprend véritablement », « révolutionnaire ») sont des signaux d\'alerte classiques. Un acteur sérieux décrit sa technologie avec précision et mentionne ses limites.'
+      },
+      {
+        q: 'Quelle affirmation sur l\'IA actuelle est correcte ?',
+        options: [
+          'L\'IA peut comprendre véritablement le sens de ce qu\'elle traite',
+          'L\'IA est consciente d\'elle-même depuis 2022',
+          'L\'IA excelle sur des tâches spécifiques mais ne possède ni compréhension ni conscience',
+          'L\'IA apprend de manière autonome sans aucune donnée humaine'
+        ],
+        correct: 2,
+        explanation: 'L\'IA actuelle est un outil puissant pour des tâches spécifiques, mais elle ne comprend pas, ne ressent pas et n\'est pas consciente. Elle calcule des probabilités statistiques sur des données fournies par des humains.'
+      }
+    ];
+
+    let quizCurrent = 0;
+    let quizScore = 0;
+    let quizLocked = false;
+
+    function renderQuizQuestion() {
+      if (quizCurrent >= quizQuestions.length) {
+        showQuizResult();
+        return;
+      }
+
+      const q = quizQuestions[quizCurrent];
+      const pct = ((quizCurrent + 1) / quizQuestions.length * 100).toFixed(1);
+      document.getElementById('quiz-progress-fill').style.width = pct + '%';
+      document.getElementById('quiz-progress-text').textContent = 'Question ' + (quizCurrent + 1) + '/' + quizQuestions.length;
+
+      quizLocked = false;
+
+      let html = `
+        <div class="quiz-question-number">QUESTION ${quizCurrent + 1} / ${quizQuestions.length}</div>
+        <div class="quiz-question-text">${q.q}</div>
+        <div class="quiz-options">
+      `;
+
+      q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(65 + i);
+        html += `<div class="quiz-option" onclick="answerQuiz(${i})"><strong>${letter}.</strong> ${opt}</div>`;
+      });
+
+      html += `
+        </div>
+        <div class="quiz-explanation" id="quiz-expl"></div>
+        <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuizQuestion()">
+          ${quizCurrent < quizQuestions.length - 1 ? 'Question suivante →' : 'Voir le résultat →'}
+        </button>
+      `;
+
+      document.getElementById('quiz-card').innerHTML = html;
+    }
+
+    function answerQuiz(optionIndex) {
+      if (quizLocked) return;
+      quizLocked = true;
+
+      const q = quizQuestions[quizCurrent];
+      const isCorrect = optionIndex === q.correct;
+      if (isCorrect) quizScore++;
+
+      const options = document.querySelectorAll('.quiz-option');
+      options.forEach((opt, i) => {
+        opt.style.cursor = 'default';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
+      });
+
+      const expl = document.getElementById('quiz-expl');
+      expl.innerHTML = (isCorrect ? '✅ ' : '❌ ') + q.explanation;
+      expl.classList.add('show');
+      expl.style.borderLeftColor = isCorrect ? 'var(--neon-green)' : 'var(--danger)';
+      expl.style.background = isCorrect ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 77, 77, 0.06)';
+
+      document.getElementById('quiz-next-btn').classList.add('show');
+    }
+
+    function nextQuizQuestion() {
+      quizCurrent++;
+      renderQuizQuestion();
+      document.querySelector('.quiz-body').scrollTop = 0;
+    }
+
+    function showQuizResult() {
+      const pct = Math.round(quizScore / quizQuestions.length * 100);
+      const passed = pct >= 70;
+
+      document.getElementById('quiz-progress-fill').style.width = '100%';
+      document.getElementById('quiz-progress-text').textContent = 'Terminé !';
+
+      document.getElementById('quiz-card').innerHTML = `
+        <div class="quiz-result">
+          <div class="quiz-result-icon">${passed ? '🎓' : '📖'}</div>
+          <h2 style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
+            ${passed ? 'CERTIFICATION RÉUSSIE !' : 'SCORE INSUFFISANT'}
+          </h2>
+          <div class="quiz-score-display" style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
+            ${quizScore} / ${quizQuestions.length}
+          </div>
+          <div class="quiz-score-bar-container">
+            <div class="quiz-score-bar-fill" style="width: ${pct}%; background: ${passed ? 'linear-gradient(90deg, var(--neon-green), var(--neon-blue))' : 'linear-gradient(90deg, var(--warn), var(--danger))'};">
+            </div>
+          </div>
+          <p style="color: var(--muted); font-size: 1.1em; margin-top: 10px;">${pct}% — Seuil requis : 70%</p>
+          <p style="color: var(--muted); margin-top: 15px; line-height: 1.6;">
+            ${passed
+              ? 'Félicitations, analyste ! Vous avez démontré une solide compréhension des fondamentaux de l\'IA. Vous pouvez maintenant télécharger votre attestation de réussite.'
+              : 'Vous n\'avez pas atteint le seuil de 70%. Relisez les leçons et retentez le quiz pour obtenir votre attestation.'}
+          </p>
+          ${passed
+            ? '<button class="mission-next-btn" onclick="showAttestation()" style="margin-top: 25px;">🎓 Obtenir mon attestation</button>'
+            : '<button class="mission-next-btn" onclick="retryQuiz()" style="margin-top: 25px; background: var(--warn); border-color: var(--warn); color: var(--dark-bg);">🔄 Retenter le quiz</button>'}
+        </div>
+      `;
+
+      setTimeout(() => {
+        const bar = document.querySelector('.quiz-score-bar-fill');
+        if (bar) bar.style.width = pct + '%';
+      }, 100);
+    }
+
+    function retryQuiz() {
+      quizCurrent = 0;
+      quizScore = 0;
+      renderQuizQuestion();
+    }
+
+    function showAttestation() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('attestation-screen').classList.add('active');
+      document.getElementById('attestation-score').textContent = Math.round(quizScore / quizQuestions.length * 100) + '%';
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN ATTESTATION ==================== -->
+  <div id="attestation-screen">
+    <div class="attestation-card">
+      <div class="attestation-icon">🎓</div>
+      <h2>Attestation de réussite</h2>
+      <p style="color: var(--muted); margin-bottom: 8px;">Vous avez validé le micro-module</p>
+      <p class="attestation-module-name">
+        <strong>« Démystifier l'Intelligence Artificielle »</strong>
+      </p>
+
+      <div class="attestation-score-box">
+        <p style="margin-bottom: 10px;">Score obtenu :</p>
+        <p style="font-family: 'Space Mono', monospace; font-size: 1.8em; color: var(--neon-green); margin: 0;" id="attestation-score">0%</p>
+      </div>
+
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label style="display: block; margin-bottom: 8px; color: var(--neon-blue); font-size: 0.9em;">
+          Votre nom (pour l'attestation) :
+        </label>
+        <input type="text" id="certificate-name" placeholder="Prénom NOM"
+               class="attestation-name-input">
+      </div>
+
+      <button class="attestation-download-btn" onclick="downloadCertificate()">
+        📥 Télécharger l'attestation
+      </button>
+
+      <br>
+      <a href="modules.html" class="attestation-back-link">← Retour à la liste des modules</a>
+    </div>
+  </div>
+
+  <script>
+    function downloadCertificate() {
+      const name = document.getElementById('certificate-name').value.trim() || 'Participant';
+      const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const score = Math.round(quizScore / quizQuestions.length * 100);
+      const refId = 'IA-DECODE-' + Date.now().toString(36).toUpperCase();
+
+      const certificateHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attestation - Démystifier l'IA - ${name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: #0a1628;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #e0f0ff;
+  }
+  .certificate {
+    background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
+    border: 3px solid #00ff88;
+    border-radius: 20px;
+    padding: 50px 60px;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+  }
+  .certificate::before {
+    content: '';
+    position: absolute;
+    top: 15px; left: 15px; right: 15px; bottom: 15px;
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 15px;
+    pointer-events: none;
+  }
+  .header { text-align: center; margin-bottom: 40px; }
+  .logo { font-size: 3em; margin-bottom: 10px; }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    background: linear-gradient(90deg, #00ff88, #00d4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 5px;
+  }
+  .subtitle-cert {
+    color: #00d4ff;
+    font-size: 1.1em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .content { text-align: center; }
+  .certifies { color: #8899aa; font-size: 1em; margin-bottom: 5px; }
+  .name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    color: #ffffff;
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid rgba(0,212,255,0.3);
+    border-bottom: 1px solid rgba(0,212,255,0.3);
+  }
+  .module-box {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+  }
+  .module-box-title {
+    font-family: 'Space Mono', monospace;
+    color: #00ff88;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  .score-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #0a1628;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  .skill {
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    color: #00d4ff;
+  }
+  .footer-cert {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0,212,255,0.2);
+  }
+  .footer-item { text-align: center; }
+  .footer-label { color: #888; font-size: 0.85em; margin-bottom: 5px; }
+  .footer-value { color: #00d4ff; font-weight: 600; }
+  .provider {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,212,255,0.15);
+    color: #8899aa;
+    font-size: 0.9em;
+  }
+  .provider a { color: #00d4ff; text-decoration: none; }
+  @media print {
+    body { background: white; }
+    .certificate { box-shadow: none; border-width: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="certificate">
+  <div class="header">
+    <div class="logo">🔍🤖</div>
+    <div class="title">Attestation de Réussite</div>
+    <div class="subtitle-cert">Formation IA Responsable</div>
+  </div>
+  <div class="content">
+    <p class="certifies">Cette attestation certifie que</p>
+    <div class="name">${name}</div>
+    <p>a complété avec succès le micro-module</p>
+    <div class="module-box">
+      <div class="module-box-title">🔍 Démystifier l'Intelligence Artificielle</div>
+      <p>via la mission immersive "DECODE : Mission Vérité"</p>
+      <div class="score-badge">Score : ${score}%</div>
+    </div>
+    <p>Compétences validées :</p>
+    <div class="skills">
+      <span class="skill">🧠 IA vs Intelligence Humaine</span>
+      <span class="skill">📜 Origines de l'IA (1950-2025)</span>
+      <span class="skill">⚙️ IA Symbolique vs Connexionniste</span>
+      <span class="skill">📊 Hiérarchie IA ⊃ ML ⊃ DL</span>
+      <span class="skill">🔍 Analyse critique</span>
+      <span class="skill">🛡️ Démystification marketing</span>
+    </div>
+  </div>
+  <div class="footer-cert">
+    <div class="footer-item">
+      <div class="footer-label">Date d'obtention</div>
+      <div class="footer-value">${date}</div>
+    </div>
+    <div class="footer-item">
+      <div class="footer-label">Programme</div>
+      <div class="footer-value">IA Responsable</div>
+    </div>
+    <div class="footer-item">
+      <div class="footer-label">Référence</div>
+      <div class="footer-value">${refId}</div>
+    </div>
+  </div>
+  <div class="provider">
+    Formation proposée par <a href="https://www.profexpress.com" target="_blank">Prof Express</a>
+  </div>
+</div>
+</body>
+</html>`;
+
+      const blob = new Blob([certificateHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Attestation_IA_Demystifier_' + name.replace(/\\s+/g, '_') + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 
