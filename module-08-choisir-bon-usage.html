@@ -475,6 +475,104 @@
       line-height: 1.7;
     }
 
+    /* ==================== QUIZ ==================== */
+    #quiz-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 997;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #quiz-screen.active { display: flex; }
+
+    .q-card {
+      background: rgba(10,20,40,0.85);
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 12px;
+      padding: 28px 30px;
+      margin-bottom: 20px;
+    }
+    .q-head { margin-bottom: 10px; }
+    .q-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-cyan);
+      letter-spacing: 2px;
+    }
+    .q-text {
+      font-size: 1.05em;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
+    .q-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+    .q-opt {
+      padding: 13px 18px;
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #cfe9ff;
+      line-height: 1.5;
+    }
+    .q-opt:hover { background: rgba(78,205,196,0.08); border-color: rgba(78,205,196,0.4); }
+    .q-opt.selected { background: rgba(78,205,196,0.12); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+    .q-opt.opt-correct { background: rgba(0,60,30,0.5) !important; border-color: var(--neon-green) !important; color: var(--neon-green) !important; }
+    .q-opt.opt-wrong { background: rgba(60,10,10,0.5) !important; border-color: var(--danger) !important; color: var(--danger) !important; }
+
+    .q-explain {
+      display: none;
+      background: rgba(0,20,40,0.6);
+      border-left: 3px solid var(--neon-cyan);
+      padding: 14px 18px;
+      color: #aabbcc;
+      font-size: 0.93em;
+      line-height: 1.7;
+      border-radius: 0 8px 8px 0;
+    }
+    .q-explain.show { display: block; }
+
+    .quiz-result-box {
+      border-radius: 14px;
+      padding: 30px;
+      text-align: center;
+      margin: 10px 0 30px;
+    }
+    .quiz-result-box.res-ok { background: rgba(0,60,30,0.4); border: 1px solid rgba(0,255,136,0.4); }
+    .quiz-result-box.res-warn { background: rgba(60,50,0,0.4); border: 1px solid rgba(255,204,0,0.4); }
+    .btn-unlock {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 35px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: var(--neon-cyan);
+      color: var(--dark-bg);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+    .btn-unlock:hover { background: var(--neon-green); transform: scale(1.04); }
+
+    /* ==================== CERT SCREEN ==================== */
+    #cert-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 996;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #cert-screen.active { display: flex; }
+
     /* ==================== TRIAGE CENTER ==================== */
     #triage-screen {
       position: fixed;
@@ -1541,11 +1639,175 @@
     document.getElementById('triage-bar-fill').style.width = '10%';
   }
 
+  /* =========================================================
+     QUIZ : DONNÉES DES 10 QUESTIONS
+  ========================================================= */
+  const quizQuestions = [
+    {
+      q: "Quel protocole s'applique à la rédaction d'un brouillon de post pour les réseaux sociaux ?",
+      opts: ["Protocole Rouge — données potentiellement sensibles", "Protocole Ambre — vérification humaine obligatoire", "Protocole Vert — tâche créative à faible enjeu", "Aucun protocole — l'IA est interdite pour ce type de contenu"],
+      correct: 2,
+      explain: "Rédiger un brouillon de contenu marketing ou créatif est un usage Vert idéal. L'enjeu est faible, il n'y a pas de données sensibles, et l'utilisateur relit et adapte le résultat final."
+    },
+    {
+      q: "Qu'est-ce que l'agentivité face à l'IA ?",
+      opts: ["La capacité de l'IA à agir de façon autonome", "La capacité de l'utilisateur à rester acteur conscient de ses décisions", "La vitesse à laquelle l'IA répond à nos demandes", "Le fait de confier toutes les tâches répétitives à l'IA"],
+      correct: 1,
+      explain: "L'agentivité (agency), c'est votre capacité à agir intentionnellement et à assumer vos choix. Face à l'IA, c'est rester la personne qui décide — pas celle qui subit ou applique automatiquement."
+    },
+    {
+      q: "Quel est le critère le plus déterminant pour classer une demande en Protocole Rouge ?",
+      opts: ["Le texte est long ou complexe", "Il s'agit d'un sujet technique", "L'enjeu en cas d'erreur est élevé ou critique pour une personne", "La demande dépasse 100 mots"],
+      correct: 2,
+      explain: "Le critère clé du Protocole Rouge est l'enjeu humain en cas d'erreur : décisions médicales, juridiques, disciplinaires ou de sécurité où une erreur peut avoir des conséquences graves et irréversibles."
+    },
+    {
+      q: "Pourquoi ne doit-on pas utiliser un chatbot IA grand public pour vérifier des faits sur un événement récent ?",
+      opts: ["Les chatbots sont trop lents pour ce type de requête", "L'IA a une date limite de connaissance et peut inventer des informations récentes", "Les chatbots refusent toujours de parler d'actualité", "C'est trop coûteux en calcul pour le serveur"],
+      correct: 1,
+      explain: "Les modèles d'IA ont une date limite de connaissance (cutoff). Ils n'ont pas accès aux événements récents et peuvent halluciner des 'faits' convaincants en répondant à des questions sur l'actualité qu'ils ne connaissent pas."
+    },
+    {
+      q: "Que signifie précisément le Protocole Ambre ?",
+      opts: ["L'IA est interdite pour cette tâche", "L'IA peut être utilisée sans vérification si le résultat paraît correct", "L'IA peut aider, mais une vérification et une prise de responsabilité humaine sont indispensables", "L'IA remplace entièrement le travail humain dans ce cas"],
+      correct: 2,
+      explain: "Le Protocole Ambre signifie 'usage avec précautions'. L'IA produit un travail utile mais le résultat ne peut jamais être utilisé tel quel : il doit être relu, vérifié, contextualisé, et la personne doit en assumer la responsabilité finale."
+    },
+    {
+      q: "Quel est le principal risque de la délégation excessive à l'IA au fil du temps ?",
+      opts: ["L'IA devient plus chère à utiliser", "L'IA finit par refuser d'aider", "On perd des compétences essentielles et la capacité d'assumer la responsabilité des résultats", "La connexion internet devient trop lente"],
+      correct: 2,
+      explain: "Déléguer systématiquement les mêmes tâches à l'IA peut entraîner une atrophie des compétences correspondantes. Un étudiant qui ne rédige plus, un développeur qui ne code plus — leurs compétences régressent, les rendant dépendants et incapables d'évaluer la qualité des sorties."
+    },
+    {
+      q: "Parmi ces situations, laquelle justifie un Protocole Rouge strict ?",
+      opts: ["Générer 10 slogans pour une campagne publicitaire", "Résumer les 20 premières pages d'un roman", "Décider seul d'une mise en détention provisoire sur la base d'un score IA", "Créer une liste d'idées de noms pour un projet personnel"],
+      correct: 2,
+      explain: "Décider de la liberté d'une personne sur la base d'un algorithme est un cas emblématique de Protocole Rouge (référence au système COMPAS aux USA). Les décisions judiciaires engageant la liberté des individus doivent rester sous contrôle humain total, avec transparence et possibilité de recours."
+    },
+    {
+      q: "Pourquoi l'IA ne doit-elle pas être le seul soutien d'une personne en crise psychologique sérieuse ?",
+      opts: ["Parce que les chatbots sont souvent hors ligne", "Parce qu'elle simule l'empathie sans la ressentir et peut répondre de façon inadaptée ou dangereuse", "Parce que les conversations sont trop courtes", "Parce que l'IA parle uniquement en anglais"],
+      correct: 1,
+      explain: "L'IA peut paraître empathique, mais elle simule sans ressentir. En situation de crise réelle, une réponse inadaptée peut être dangereuse. L'IA crée aussi une dépendance qui retarde une prise en charge professionnelle. En France, le 3114 est le numéro national de prévention du suicide."
+    },
+    {
+      q: "Quelle est la 'checklist de l'agent NEXUS' — les 3 questions à se poser avant d'utiliser l'IA ?",
+      opts: [
+        "L'IA est-elle gratuite ? Ai-je internet ? Mon ordinateur est-il assez puissant ?",
+        "Quel protocole s'applique ? Y a-t-il des données sensibles ? Vais-je vérifier et assumer le résultat ?",
+        "L'IA connaît-elle le sujet ? La réponse sera-t-elle longue ? Ai-je le temps de la lire ?",
+        "Ai-je essayé Google avant ? L'IA m'a-t-elle déjà aidé ? Le sujet est-il populaire ?"
+      ],
+      correct: 1,
+      explain: "La checklist en 3 questions : 1) Quel protocole s'applique (Vert, Ambre, Rouge) ? 2) Y a-t-il des données sensibles à ne pas partager ? 3) Vais-je vérifier, adapter et assumer le résultat final ? Si oui à tout, l'usage est responsable."
+    },
+    {
+      q: "Quel terme désigne le phénomène où l'IA affirme avec confiance des informations fausses ou inventées ?",
+      opts: ["Le bug cognitif", "L'hallucination", "La surchauffe sémantique", "Le biais de confirmation"],
+      correct: 1,
+      explain: "L'hallucination (ou confabulation) est le phénomène par lequel un modèle de langage génère des informations fausses, inexistantes ou incorrectes avec la même assurance que des informations vraies. C'est l'une des limites fondamentales des LLMs actuels — et une raison clé pour toujours vérifier."
+    }
+  ];
+
+  /* =========================================================
+     QUIZ : ÉTAT ET LOGIQUE
+  ========================================================= */
+  let quizAnswers = {};
+  let finalScore = 0;
+  let certUnlocked = false;
+
   function startQuiz() {
-    // Phase 4 — à venir
-    alert('Quiz de certification en cours de développement… (Phase 4 à venir)');
+    document.getElementById('triage-screen').classList.remove('active');
+    document.getElementById('quiz-screen').classList.add('active');
+    renderQuiz();
+  }
+
+  function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = quizQuestions.map((q, i) => `
+      <div class="q-card" id="q-card-${i}">
+        <div class="q-head"><span class="q-num">Q${i+1}/${quizQuestions.length}</span></div>
+        <div class="q-text">${q.q}</div>
+        <div class="q-opts">
+          ${q.opts.map((o, j) => `
+            <div class="q-opt" data-q="${i}" data-o="${j}" onclick="selectAnswer(${i},${j})">${o}</div>
+          `).join('')}
+        </div>
+        <div class="q-explain" id="qexplain-${i}">${q.explain}</div>
+      </div>
+    `).join('');
+  }
+
+  function selectAnswer(qIdx, oIdx) {
+    quizAnswers[qIdx] = oIdx;
+    document.querySelectorAll(`.q-opt[data-q="${qIdx}"]`).forEach(el => {
+      el.classList.remove('selected');
+      if (parseInt(el.dataset.o) === oIdx) el.classList.add('selected');
+    });
+  }
+
+  function submitQuiz() {
+    let score = 0;
+    quizQuestions.forEach((q, i) => {
+      const ans = quizAnswers[i];
+      document.querySelectorAll(`.q-opt[data-q="${i}"]`).forEach(el => {
+        el.style.pointerEvents = 'none';
+        const oIdx = parseInt(el.dataset.o);
+        if (oIdx === q.correct) el.classList.add('opt-correct');
+        if (oIdx === ans && ans !== q.correct) el.classList.add('opt-wrong');
+      });
+      if (ans === q.correct) score++;
+      document.getElementById('qexplain-' + i).classList.add('show');
+    });
+
+    const pct = Math.round(score / quizQuestions.length * 100);
+    finalScore = pct;
+    document.getElementById('quiz-submit').style.display = 'none';
+
+    const resEl = document.getElementById('quiz-result');
+    resEl.innerHTML = `
+      <div class="quiz-result-box ${pct >= 70 ? 'res-ok' : 'res-warn'}">
+        <h3 style="color:${pct >= 70 ? 'var(--neon-green)' : 'var(--warn)'};margin-bottom:12px">
+          ${pct >= 70 ? '🎉 Félicitations !' : '📚 Score insuffisant'}
+        </h3>
+        <p style="font-size:1.4em;margin-bottom:10px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
+        <p style="line-height:1.7;color:#aabbcc">
+          ${pct >= 70
+            ? 'Vous maîtrisez les protocoles NEXUS. Votre attestation de certification est débloquée !'
+            : 'Il faut au moins 70% pour valider. Relisez le dossier de protocole et retentez.'}
+        </p>
+        ${pct >= 70 ? '<button class="btn-unlock" onclick="showCertificate()">🎓 Télécharger mon attestation</button>' : ''}
+      </div>
+    `;
+    resEl.scrollIntoView({ behavior: 'smooth' });
+
+    if (pct >= 70) certUnlocked = true;
+  }
+
+  function showCertificate() {
+    document.getElementById('quiz-screen').classList.remove('active');
+    document.getElementById('cert-screen').classList.add('active');
   }
   </script>
+
+  <!-- ==================== QUIZ ==================== -->
+  <div id="quiz-screen">
+    <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
+      <div class="briefing-title" style="color:var(--neon-cyan)">Quiz de Certification — NEXUS DÉCISION</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)">Score minimum : 70%</div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:40px;max-width:860px;margin:0 auto;width:100%">
+      <div id="quiz-container"></div>
+      <div style="text-align:center;margin:30px 0">
+        <button id="quiz-submit" class="briefing-btn primary" style="font-size:1.1em;padding:15px 40px" onclick="submitQuiz()">
+          ✅ Valider mes réponses
+        </button>
+      </div>
+      <div id="quiz-result"></div>
+    </div>
+  </div>
 
 </body>
 </html>
