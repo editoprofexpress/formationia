@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DECODE : Mission Vérité — Module 1 (Démystifier l'IA)</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root {
+      --neon-green: #00ff88;
+      --neon-blue: #00d4ff;
+      --neon-pink: #ff0080;
+      --neon-purple: #a855f7;
+      --dark-bg: #0a0e17;
+      --panel-bg: rgba(10, 20, 40, 0.95);
+      --text: #e0f0ff;
+      --muted: #8899aa;
+      --danger: #ff4d4d;
+      --warn: #ffcc00;
+      --ok: #00ff88;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ==================== ÉCRAN TITRE ==================== */
+    #title-screen {
+      position: fixed; inset: 0;
+      background:
+        url('images/module1-title-bg.png') center/cover no-repeat,
+        linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 1000;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+
+    #title-screen::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(10, 14, 23, 0.72);
+      z-index: -1;
+    }
+
+    #title-screen.hidden {
+      opacity: 0; visibility: hidden; pointer-events: none;
+    }
+
+    /* Grille cyberpunk */
+    #title-screen::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: -1;
+    }
+
+    .back-link-title {
+      position: absolute;
+      top: 20px; left: 20px;
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #8899aa;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link-title:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #aabbcc;
+    }
+
+    .title-logo {
+      font-size: 4.5em;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .title-badge {
+      display: inline-block;
+      padding: 6px 18px;
+      background: rgba(0, 255, 136, 0.08);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      border-radius: 30px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--neon-green);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      animation: pulse-border 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(0, 255, 136, 0.4); box-shadow: 0 0 10px rgba(0, 255, 136, 0.1); }
+      50% { border-color: rgba(0, 255, 136, 0.8); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+    }
+
+    .main-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 3.2em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 1.25em;
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+      text-align: center;
+    }
+
+    .intro-text {
+      max-width: 780px;
+      text-align: center;
+      line-height: 1.85;
+      margin: 0 20px 40px;
+      color: #aabbcc;
+      font-size: 1.05em;
+    }
+
+    .intro-text strong {
+      color: var(--neon-blue);
+    }
+
+    .intro-text em {
+      color: var(--neon-pink);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .start-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      padding: 18px 55px;
+      background: transparent;
+      border: 2px solid var(--neon-green);
+      color: var(--neon-green);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      transition: all .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .start-btn::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+      transition: left .5s;
+    }
+
+    .start-btn:hover::before { left: 100%; }
+
+    .start-btn:hover {
+      background: rgba(0, 255, 136, 0.08);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 30px rgba(0, 255, 136, 0.08);
+      transform: scale(1.05);
+    }
+
+    .title-footer {
+      margin-top: 45px;
+      opacity: 0.7;
+      text-align: center;
+    }
+
+    .title-footer p {
+      color: #8899aa;
+      font-size: 0.85em;
+      margin-bottom: 8px;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 768px) {
+      .main-title { font-size: 1.9em; letter-spacing: 2px; }
+      .subtitle { font-size: 1em; }
+      .intro-text { font-size: 0.95em; margin: 0 15px 30px; }
+      .start-btn { font-size: 0.95em; padding: 15px 35px; }
+      .title-logo { font-size: 3em; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== ÉCRAN TITRE ==================== -->
+  <section id="title-screen">
+    <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+      <span>←</span>
+      <span>Modules</span>
+    </a>
+
+    <div class="title-logo">🔍</div>
+    <div class="title-badge">Module 1 — Fondations IA</div>
+    <h1 class="main-title">DECODE<br>Mission Vérité</h1>
+    <p class="subtitle">Démystifier l'Intelligence Artificielle</p>
+
+    <p class="intro-text">
+      Bienvenue à l'agence <strong>DECODE</strong> — Division d'Évaluation Critique et d'Observation
+      des technologies Émergentes.<br><br>
+      L'entreprise <em>NovaMind Corp</em> vient de lancer une campagne massive autour de son produit
+      <em>« ATLAS »</em>, présenté comme une <em>« IA consciente et révolutionnaire »</em>.<br><br>
+      Votre mission : vous former aux fondamentaux de l'IA, analyser les preuves,
+      et rédiger votre rapport d'évaluation critique.
+    </p>
+
+    <button class="start-btn" onclick="startModule()">Ouvrir le dossier</button>
+
+    <div class="title-footer">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height: 30px; object-fit: contain;">
+      </a>
+    </div>
+  </section>
+
+  <script>
+    function startModule() {
+      document.getElementById('title-screen').classList.add('hidden');
+      // La suite sera ajoutée dans les prochaines étapes
+    }
+  </script>
+
+</body>
+</html>
