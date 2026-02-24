@@ -626,6 +626,149 @@
         .game-next-btn.show { display: block; }
         .game-next-btn:hover { background: var(--neon-green); box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.03); }
 
+        /* ==================== OVERLAY RÉSULTATS DU JEU ==================== */
+        #results-overlay {
+            position: fixed; inset: 0; z-index: 1100;
+            background: rgba(7,16,26,0.97);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 30px;
+        }
+        #results-overlay.active { display: flex; }
+
+        .results-card {
+            max-width: 600px; width: 100%;
+            background: rgba(10,20,40,0.98);
+            border: 1px solid rgba(0,229,204,0.35);
+            border-radius: 16px; padding: 44px 48px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0,229,204,0.12);
+        }
+        .results-icon { font-size: 4em; margin-bottom: 16px; }
+        .results-title {
+            font-family: 'Space Mono', monospace; font-size: 1.6em;
+            color: var(--neon-teal); margin-bottom: 10px; letter-spacing: 2px;
+        }
+        .results-subtitle { color: var(--muted); margin-bottom: 32px; font-size: 0.95em; }
+        .results-score-wrap { display: flex; justify-content: center; gap: 48px; margin-bottom: 32px; }
+        .results-score-item { text-align: center; }
+        .results-score-num {
+            font-family: 'Space Mono', monospace; font-size: 2.8em; font-weight: 700;
+            line-height: 1;
+        }
+        .results-score-label { font-size: 0.8em; color: var(--muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .results-btn {
+            font-family: 'Space Mono', monospace; padding: 16px 44px;
+            background: var(--neon-teal); color: var(--dark-bg); border: none;
+            cursor: pointer; font-size: 1em; font-weight: 700;
+            letter-spacing: 2px; border-radius: 6px; transition: all 0.3s;
+            text-transform: uppercase; margin: 6px;
+        }
+        .results-btn:hover { background: var(--neon-green); box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.03); }
+        .results-btn.secondary {
+            background: transparent; border: 2px solid var(--muted); color: var(--muted);
+        }
+        .results-btn.secondary:hover { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: none; }
+
+        /* ==================== QUIZ SCREEN ==================== */
+        #quiz-screen {
+            position: fixed; inset: 0; z-index: 1050;
+            background: linear-gradient(135deg, #0a0e17 0%, #0d1520 50%, #0a0e17 100%);
+            display: none; flex-direction: column; overflow: hidden;
+        }
+        #quiz-screen.active { display: flex; }
+
+        .quiz-header {
+            background: rgba(10,20,40,0.97);
+            border-bottom: 1px solid rgba(0,229,204,0.25);
+            padding: 14px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .quiz-header-title {
+            font-family: 'Space Mono', monospace; font-size: 1em;
+            color: var(--neon-teal); letter-spacing: 2px;
+        }
+        .quiz-progress-wrap { display: flex; align-items: center; gap: 10px; }
+        .quiz-progress-bar {
+            width: 180px; height: 6px;
+            background: rgba(0,229,204,0.1); border-radius: 3px; overflow: hidden;
+        }
+        .quiz-progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
+            transition: width 0.4s; border-radius: 3px;
+        }
+        .quiz-counter { font-family: 'Space Mono', monospace; font-size: 0.82em; color: var(--muted); }
+
+        .quiz-body { flex: 1; overflow-y: auto; padding: 40px 60px; }
+        .quiz-body::-webkit-scrollbar { width: 6px; }
+        .quiz-body::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.2); border-radius: 3px; }
+
+        .quiz-question-block {
+            max-width: 740px; margin: 0 auto;
+        }
+        .quiz-question-text {
+            font-size: 1.15em; line-height: 1.7; color: var(--text);
+            background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 12px; padding: 22px 26px; margin-bottom: 22px;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 11px; }
+        .quiz-option {
+            padding: 14px 20px; border-radius: 10px;
+            background: rgba(10,25,45,0.85); border: 2px solid rgba(0,229,204,0.2);
+            color: var(--text); font-size: 0.95em; text-align: left;
+            cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 14px;
+            font-family: 'Exo 2', sans-serif;
+        }
+        .quiz-option:hover:not(:disabled) {
+            border-color: rgba(0,229,204,0.5); background: rgba(0,229,204,0.07);
+        }
+        .quiz-option:disabled { cursor: default; }
+        .quiz-option.correct { border-color: var(--neon-green) !important; background: rgba(0,255,136,0.1) !important; }
+        .quiz-option.wrong   { border-color: var(--neon-pink)  !important; background: rgba(255,0,128,0.1) !important; }
+        .quiz-option-letter {
+            font-family: 'Space Mono', monospace; font-size: 0.88em;
+            color: var(--neon-teal); background: rgba(0,229,204,0.1);
+            border: 1px solid rgba(0,229,204,0.3); border-radius: 4px;
+            width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-weight: 700;
+        }
+
+        .quiz-feedback-bar {
+            max-width: 740px; margin: 14px auto 0;
+            padding: 12px 18px; border-radius: 8px; font-size: 0.88em; line-height: 1.5;
+            display: none; animation: fadeIn 0.3s ease;
+        }
+        .quiz-feedback-bar.show { display: block; }
+        .quiz-feedback-bar.correct { background: rgba(0,255,136,0.08); border-left: 3px solid var(--neon-green); color: #aaffcc; }
+        .quiz-feedback-bar.wrong   { background: rgba(255,0,128,0.08); border-left: 3px solid var(--neon-pink);  color: #ffaad4; }
+
+        /* Résultats quiz */
+        .quiz-results-block {
+            max-width: 600px; margin: 0 auto; text-align: center; padding: 20px 0;
+        }
+        .quiz-final-score {
+            font-family: 'Space Mono', monospace; font-size: 3.5em; font-weight: 700;
+            line-height: 1; margin: 20px 0 6px;
+        }
+        .quiz-score-label { font-size: 0.9em; color: var(--muted); margin-bottom: 28px; }
+        .quiz-result-box {
+            border-radius: 14px; padding: 24px 28px; margin: 20px 0; line-height: 1.7;
+        }
+        .quiz-result-box.passed { background: rgba(0,255,136,0.08); border: 2px solid var(--neon-green); }
+        .quiz-result-box.failed { background: rgba(255,0,128,0.08); border: 2px solid var(--neon-pink); }
+
+        /* Champ nom attestation */
+        .cert-name-input {
+            width: 100%; padding: 13px 16px;
+            background: rgba(0,50,100,0.35); border: 2px solid rgba(0,229,204,0.35);
+            border-radius: 8px; color: white; font-size: 1em;
+            font-family: 'Exo 2', sans-serif; margin: 14px 0;
+            transition: border-color 0.3s;
+        }
+        .cert-name-input:focus { outline: none; border-color: var(--neon-teal); box-shadow: 0 0 12px rgba(0,229,204,0.2); }
+        .cert-name-input::placeholder { color: #556677; }
+
         /* Responsive */
         @media (max-width: 900px) {
             .client-panel { width: 250px; }
@@ -638,6 +781,7 @@
             .clients-preview { grid-template-columns: repeat(3, 1fr); }
             .game-main { flex-direction: column; }
             .client-panel { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 14px; gap: 12px; }
+            .quiz-body { padding: 20px; }
         }
 
     </style>
@@ -673,6 +817,44 @@
         <div class="stat-divider"></div>
         <div class="stat-item"><div class="stat-value">70%</div><div class="stat-label">Score mini</div></div>
     </div>
+</div>
+
+<!-- ==================== OVERLAY RÉSULTATS DU JEU ==================== -->
+<div id="results-overlay">
+    <div class="results-card">
+        <div class="results-icon" id="results-icon">⚙️</div>
+        <div class="results-title" id="results-title">Journée terminée !</div>
+        <div class="results-subtitle" id="results-subtitle">Voici le bilan de vos conseils chez ARIA</div>
+        <div class="results-score-wrap">
+            <div class="results-score-item">
+                <div class="results-score-num" id="results-pts" style="color:var(--neon-teal)">0</div>
+                <div class="results-score-label">Points gagnés</div>
+            </div>
+            <div class="results-score-item">
+                <div class="results-score-num" id="results-pct" style="color:var(--neon-green)">0%</div>
+                <div class="results-score-label">Performance</div>
+            </div>
+        </div>
+        <p style="color:var(--muted);font-size:0.9em;margin-bottom:24px;" id="results-message"></p>
+        <div>
+            <button class="results-btn" onclick="startQuiz()">📜 Passer le quiz →</button>
+            <button class="results-btn secondary" onclick="restartGame()">↺ Rejouer</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== QUIZ SCREEN ==================== -->
+<div id="quiz-screen">
+    <div class="quiz-header">
+        <div class="quiz-header-title">⚙️ QUIZ DE CERTIFICATION — SHIFT</div>
+        <div class="quiz-progress-wrap">
+            <div class="quiz-counter" id="quiz-counter">1 / 10</div>
+            <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+    <div class="quiz-body" id="quiz-body"></div>
 </div>
 
 <!-- ==================== BUREAU ARIA - JEU ==================== -->
@@ -1745,10 +1927,362 @@ function nextClient() {
 }
 
 function goToQuiz() {
-    // Phase 4 — à venir
     document.getElementById('game-container').classList.remove('active');
-    alert(`Jeu terminé ! Score : ${gameState.score} / ${gameState.totalPoints}\n\nLe quiz arrive en Phase 4 !`);
+    const pct = Math.round(gameState.score / gameState.totalPoints * 100);
+    document.getElementById('results-pts').textContent = `${gameState.score}/${gameState.totalPoints}`;
+    document.getElementById('results-pct').textContent = pct + '%';
+    document.getElementById('results-pct').style.color = pct >= 70 ? 'var(--neon-green)' : 'var(--neon-amber)';
+
+    let msg = '';
+    if (pct === 100)     msg = '🏆 Performance parfaite ! Vous êtes un·e expert·e de la reconversion IA.';
+    else if (pct >= 80)  msg = '🎯 Excellents conseils ! Vos clients repartent avec de solides perspectives.';
+    else if (pct >= 60)  msg = '✅ Bon début pour un·e navigateur·trice novice. Vous avez aidé la plupart de vos clients.';
+    else                 msg = '💡 Quelques clients ont été mal orientés. Complétez le quiz pour valider quand même votre formation.';
+    document.getElementById('results-message').textContent = msg;
+    document.getElementById('results-overlay').classList.add('active');
+}
+
+function restartGame() {
+    document.getElementById('results-overlay').classList.remove('active');
+    gameState.score = 0;
+    gameState.currentClient = 0;
     document.getElementById('game-container').classList.add('active');
+    buildDots();
+    loadClient(0);
+}
+
+// ==================== QUESTIONS DU QUIZ ====================
+const quizQuestions = [
+    {
+        question: "Selon le célèbre rapport d'Oxford (Frey & Osborne, 2013), quel pourcentage des emplois américains présentait un risque d'automatisation ?",
+        options: ['12%', '47%', '78%', '31%'],
+        correct: 1,
+        explanation: '47% est le chiffre marquant de cette étude pionnière qui a lancé le débat mondial sur l'IA et l'emploi.'
+    },
+    {
+        question: "Qu'est-ce qu'un emploi « augmenté » par l'IA ?",
+        options: [
+            'Un emploi entièrement réalisé par l'IA sans intervention humaine',
+            'Un emploi mieux rémunéré grâce à l'IA',
+            'Un emploi où l'IA assiste l'humain qui garde le contrôle et la décision finale',
+            'Un emploi créé spécifiquement pour programmer des IA'
+        ],
+        correct: 2,
+        explanation: 'L'augmentation signifie que l'humain reste maître du processus et bénéficie des capacités de l'IA comme d'un outil, sans être remplacé.'
+    },
+    {
+        question: "Lequel de ces métiers présente le risque d'automatisation le PLUS FAIBLE ?",
+        options: ['Opérateur de saisie de données', 'Caissier·ère de supermarché', 'Travailleur·se social·e', 'Téléopérateur·trice'],
+        correct: 2,
+        explanation: 'Le travail social requiert empathie authentique, jugement complexe en situations imprévisibles et lien humain — des compétences que l'IA ne peut pas reproduire.'
+    },
+    {
+        question: "Que désigne le concept de « New Collar Jobs » popularisé par IBM ?",
+        options: [
+            'Des emplois réservés aux ingénieurs ayant un master en IA',
+            'Des emplois techniques accessibles sans diplôme universitaire traditionnel, via des formations courtes',
+            'Des emplois dans les cols blancs reconvertis au numérique',
+            'Des postes d'encadrement créés pour superviser les IA'
+        ],
+        correct: 1,
+        explanation: 'Les New Collar Jobs ouvrent des opportunités à des travailleurs en reconversion sans passer par une longue formation académique.'
+    },
+    {
+        question: "Un « Prompt Engineer » est un·e professionnel·le qui :",
+        options: [
+            'Répare les pannes matérielles des serveurs IA',
+            'Conçoit les circuits électroniques des puces IA',
+            'Rédige des instructions optimisées pour obtenir les meilleures sorties des modèles d'IA',
+            'Traduit les langages de programmation vers d'autres langages'
+        ],
+        correct: 2,
+        explanation: 'Le Prompt Engineering est une compétence nouvelle qui peut atteindre 80 000 à 150 000 € de salaire annuel en 2024, preuve que l'IA crée aussi des métiers à forte valeur ajoutée.'
+    },
+    {
+        question: "L'histoire des distributeurs automatiques (ATM) est souvent citée dans les débats sur l'emploi et l'IA car :",
+        options: [
+            'Elle prouve que l'IA supprime toujours les emplois sur le long terme',
+            'Les ATM ont fait disparaître tous les guichetiers de banque en 10 ans',
+            'Malgré les prédictions, le nombre de guichetiers a augmenté après l'introduction des ATM',
+            'Les ATM ont été la première IA véritablement opérationnelle'
+        ],
+        correct: 2,
+        explanation: 'Les ATM ont réduit le coût d'une agence, permettant d'en ouvrir davantage. Les guichetiers ont évolué vers du conseil. Un exemple classique d'augmentation plutôt que de remplacement.'
+    },
+    {
+        question: "Qu'est-ce qui distingue fondamentalement l'IA générative (GPT, Claude…) des précédentes vagues d'automatisation ?",
+        options: [
+            'Elle est moins coûteuse à déployer que les robots industriels',
+            'Elle s'attaque au travail cognitif et créatif, pas seulement aux tâches physiques répétitives',
+            'Elle ne peut affecter que les emplois peu qualifiés',
+            'Elle nécessite un opérateur humain permanent pour fonctionner'
+        ],
+        correct: 1,
+        explanation: 'L'IA générative franchit une frontière inédite : elle peut rédiger, raisonner, créer — des capacités jusqu'ici réservées aux travailleurs qualifiés.'
+    },
+    {
+        question: "Selon le Forum Économique Mondial (rapport 2023), quelle compétence humaine sera la plus demandée dans un monde dominé par l'IA ?",
+        options: [
+            'La vitesse de frappe et saisie informatique',
+            'La mémorisation de grandes quantités d'informations',
+            'La pensée analytique et la créativité',
+            'La connaissance des langages de programmation IA'
+        ],
+        correct: 2,
+        explanation: 'Pensée analytique, créativité et intelligence émotionnelle arrivent en tête des compétences recherchées selon le WEF — précisément parce que l'IA y excelle le moins.'
+    },
+    {
+        question: "La « taxe sur les robots » est une proposition visant à :",
+        options: [
+            'Rendre les robots plus chers pour freiner leur adoption',
+            'Taxer les entreprises qui automatisent pour financer la reconversion des travailleurs déplacés',
+            'Interdire l'usage de l'IA dans les secteurs à risque',
+            'Imposer les revenus des développeurs d'IA'
+        ],
+        correct: 1,
+        explanation: 'Cette mesure, débattue en Europe et aux USA, cherche à faire contribuer ceux qui captent les gains de productivité au financement de la transition sociale.'
+    },
+    {
+        question: "Qu'est-ce que le modèle du « travailleur centaure » ?",
+        options: [
+            'Un travailleur mi-humain mi-robot dans une usine 4.0',
+            'Un profil hybride où l'humain et l'IA collaborent, dépassant les performances de chacun séparément',
+            'Un contrat de travail partagé entre un humain et une IA',
+            'Un poste qui n'existera que dans 50 ans'
+        ],
+        correct: 1,
+        explanation: 'Inspiré des joueurs d'échecs "centaures", ce modèle montre que Humain + IA > IA seule. La clé n'est pas de battre l'IA, mais de savoir quand lui faire confiance et quand la corriger.'
+    }
+];
+
+// ==================== ÉTAT QUIZ ====================
+let quizState = { current: 0, score: 0, answered: false };
+let finalQuizScore = 0;
+
+// ==================== DÉMARRER LE QUIZ ====================
+function startQuiz() {
+    document.getElementById('results-overlay').classList.remove('active');
+    quizState = { current: 0, score: 0, answered: false };
+    document.getElementById('quiz-screen').classList.add('active');
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    const q = quizQuestions[quizState.current];
+    const pct = Math.round(quizState.current / quizQuestions.length * 100);
+    document.getElementById('quiz-counter').textContent = `${quizState.current + 1} / ${quizQuestions.length}`;
+    document.getElementById('quiz-progress-fill').style.width = pct + '%';
+    quizState.answered = false;
+
+    document.getElementById('quiz-body').innerHTML = `
+        <div class="quiz-question-block">
+            <div class="quiz-question-text">${q.question}</div>
+            <div class="quiz-options" id="quiz-options">
+                ${q.options.map((opt, i) => `
+                    <button class="quiz-option" onclick="answerQuiz(${i})" id="qopt-${i}">
+                        <span class="quiz-option-letter">${String.fromCharCode(65+i)}</span>
+                        ${opt}
+                    </button>`).join('')}
+            </div>
+            <div class="quiz-feedback-bar" id="quiz-fb"></div>
+        </div>`;
+}
+
+function answerQuiz(selected) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    const q = quizQuestions[quizState.current];
+    const correct = selected === q.correct;
+    if (correct) quizState.score++;
+
+    document.querySelectorAll('.quiz-option').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === selected && !correct) btn.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('quiz-fb');
+    fb.className = 'quiz-feedback-bar show ' + (correct ? 'correct' : 'wrong');
+    fb.innerHTML = (correct ? '✅ Bonne réponse ! ' : '❌ Incorrect. ') + q.explanation;
+
+    setTimeout(() => {
+        quizState.current++;
+        if (quizState.current < quizQuestions.length) renderQuizQuestion();
+        else showQuizResults();
+    }, 1800);
+}
+
+function showQuizResults() {
+    finalQuizScore = Math.round(quizState.score / quizQuestions.length * 100);
+    const passed = finalQuizScore >= 70;
+    document.getElementById('quiz-counter').textContent = 'Résultats';
+    document.getElementById('quiz-progress-fill').style.width = '100%';
+
+    document.getElementById('quiz-body').innerHTML = `
+        <div class="quiz-results-block">
+            <div style="font-size:3.5em;margin-bottom:12px;">${passed ? '🎓' : '📚'}</div>
+            <h2 class="module-title" style="text-align:center;">${passed ? 'Quiz validé !' : 'Résultat insuffisant'}</h2>
+            <div class="quiz-final-score" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
+                ${quizState.score}/${quizQuestions.length}
+            </div>
+            <div class="quiz-score-label">${finalQuizScore}% de bonnes réponses</div>
+
+            <div class="quiz-result-box ${passed ? 'passed' : 'failed'}">
+                ${passed
+                    ? `<strong style="color:var(--neon-green)">Félicitations !</strong> Vous avez validé le module <strong>"IA & Emploi"</strong>. Votre attestation est prête.`
+                    : `Vous devez obtenir au moins <strong>70%</strong> pour valider. Rejouez la mission ou retentez le quiz pour progresser.`
+                }
+            </div>
+
+            ${passed ? `
+                <div style="margin-top:24px;">
+                    <p style="color:var(--muted);margin-bottom:14px;font-size:0.9em;">Entrez votre nom pour personnaliser votre attestation :</p>
+                    <input type="text" class="cert-name-input" id="cert-name" placeholder="Prénom NOM">
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+                        <button class="results-btn" onclick="downloadCertificate()">📥 Télécharger l'attestation</button>
+                        <button class="results-btn secondary" onclick="location.reload()">↺ Rejouer</button>
+                    </div>
+                </div>` : `
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+                    <button class="results-btn" onclick="retryQuiz()">🔄 Retenter le quiz</button>
+                    <button class="results-btn secondary" onclick="location.reload()">↺ Rejouer la mission</button>
+                </div>`
+            }
+        </div>`;
+}
+
+function retryQuiz() {
+    quizState = { current: 0, score: 0, answered: false };
+    renderQuizQuestion();
+}
+
+// ==================== ATTESTATION ====================
+function downloadCertificate() {
+    const name = (document.getElementById('cert-name').value.trim()) || 'Participant·e';
+    const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const gameScorePct = Math.round(gameState.score / gameState.totalPoints * 100);
+    const ref = 'IA-EMPL-' + Date.now().toString(36).toUpperCase();
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Attestation - IA & Emploi — SHIFT</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Open Sans',sans-serif;
+            background:linear-gradient(135deg,#0a1628 0%,#1a2d4a 100%);
+            min-height:100vh; display:flex;
+            justify-content:center; align-items:center; padding:20px;
+        }
+        .certificate {
+            background:linear-gradient(180deg,#0d1f35 0%,#162840 100%);
+            border:3px solid #00e5cc; border-radius:20px;
+            padding:50px 60px; max-width:800px; width:100%;
+            position:relative;
+            box-shadow:0 0 60px rgba(0,229,204,0.3), inset 0 0 60px rgba(0,212,255,0.08);
+        }
+        .certificate::before {
+            content:''; position:absolute;
+            top:15px; left:15px; right:15px; bottom:15px;
+            border:1px solid rgba(0,212,255,0.3); border-radius:15px; pointer-events:none;
+        }
+        .header { text-align:center; margin-bottom:40px; }
+        .logo { font-size:3em; margin-bottom:10px; }
+        .title {
+            font-family:'Playfair Display',serif; font-size:2.5em;
+            background:linear-gradient(90deg,#00e5cc,#00d4ff);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text; margin-bottom:5px;
+        }
+        .subtitle-cert { color:#00d4ff; font-size:1.1em; letter-spacing:3px; text-transform:uppercase; }
+        .content { text-align:center; color:#e0e0e0; line-height:1.8; }
+        .certifies { font-size:1.1em; margin:30px 0 15px; }
+        .name-cert {
+            font-family:'Playfair Display',serif; font-size:2.2em;
+            color:#ffffff; margin:20px 0; padding:15px 0;
+            border-top:1px solid rgba(0,212,255,0.3); border-bottom:1px solid rgba(0,212,255,0.3);
+        }
+        .module-cert {
+            background:rgba(0,229,204,0.08); border:1px solid rgba(0,229,204,0.3);
+            border-radius:10px; padding:20px; margin:30px 0;
+        }
+        .module-cert-title { color:#00e5cc; font-size:1.3em; font-weight:600; margin-bottom:10px; }
+        .score-cert {
+            display:inline-block; background:linear-gradient(135deg,#00e5cc,#00d4ff);
+            color:#0a1628; padding:8px 25px; border-radius:20px; font-weight:600; margin-top:10px;
+        }
+        .footer-cert {
+            display:flex; justify-content:space-between;
+            margin-top:40px; padding-top:30px; border-top:1px solid rgba(0,212,255,0.2);
+        }
+        .footer-cert-item { text-align:center; }
+        .footer-cert-label { color:#888; font-size:0.85em; margin-bottom:5px; }
+        .footer-cert-value { color:#00d4ff; font-weight:600; }
+        .skills-cert { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:15px; }
+        .skill-cert {
+            background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3);
+            padding:5px 15px; border-radius:15px; font-size:0.85em; color:#00d4ff;
+        }
+        .profexpress { margin-top:30px; padding-top:20px; border-top:1px solid rgba(0,212,255,0.2); text-align:center; color:#556677; font-size:0.85em; }
+        @media print { body { background:white; } .certificate { box-shadow:none; border-width:2px; } }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <div class="logo">⚙️🎓</div>
+            <div class="title">Attestation de Réussite</div>
+            <div class="subtitle-cert">Formation IA Responsable</div>
+        </div>
+        <div class="content">
+            <p class="certifies">Cette attestation certifie que</p>
+            <div class="name-cert">${name}</div>
+            <p>a complété avec succès le micro-module</p>
+            <div class="module-cert">
+                <div class="module-cert-title">⚙️ IA & Emploi — La Transformation du Travail</div>
+                <p>via la simulation immersive "SHIFT — Bureau ARIA"</p>
+                <div class="score-cert">Quiz : ${finalQuizScore}% · Navigation : ${gameScorePct}%</div>
+            </div>
+            <p>Compétences validées :</p>
+            <div class="skills-cert">
+                <span class="skill-cert">⚠️ Métiers à risque</span>
+                <span class="skill-cert">🤝 IA & augmentation</span>
+                <span class="skill-cert">🚀 Nouveaux métiers</span>
+                <span class="skill-cert">🧠 Atouts humains</span>
+                <span class="skill-cert">⚖️ Enjeux sociaux</span>
+            </div>
+        </div>
+        <div class="footer-cert">
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Date d'obtention</div>
+                <div class="footer-cert-value">${date}</div>
+            </div>
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Référence</div>
+                <div class="footer-cert-value">${ref}</div>
+            </div>
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Validité</div>
+                <div class="footer-cert-value">Permanente</div>
+            </div>
+        </div>
+        <div class="profexpress">
+            Proposé par <strong>Prof Express</strong> · profexpress.com · Formation IA Citoyenne
+        </div>
+    </div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `attestation-ia-emploi-${name.replace(/\s+/g,'-').toLowerCase()}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
 }
 </script>
 
