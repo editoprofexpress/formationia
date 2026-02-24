@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signal Falsifié — Module 11 (Détection de Deepfakes)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root{
+      --neon-green:#00ff88;
+      --neon-blue:#00d4ff;
+      --neon-pink:#ff0080;
+      --neon-purple:#a855f7;
+      --neon-yellow:#ffe66d;
+      --dark-bg:#0a0e17;
+      --panel-bg:rgba(10,20,40,0.95);
+      --text:#e0f0ff;
+      --muted:#8899aa;
+      --danger:#ff4d4d;
+      --warn:#ffcc00;
+      --ok:#00ff88;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+    body{
+      font-family:'Exo 2',sans-serif;
+      background:var(--dark-bg);
+      color:var(--text);
+      overflow:hidden;
+      height:100vh;
+    }
+
+    /* ==================== TITRE ==================== */
+    #title-screen{
+      position:fixed;inset:0;
+      background:url('images/module11-title-bg.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#1a1500 50%,#0a0e17 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:1000;
+      transition:opacity .5s,visibility .5s;
+    }
+    #title-screen::before{
+      content:'';position:absolute;inset:0;
+      background:rgba(10,14,23,0.72);z-index:-1;
+    }
+    #title-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+
+    /* Grille cyberpunk en fond */
+    #title-screen::after{
+      content:'';position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(255,230,109,0.03) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,230,109,0.03) 1px,transparent 1px);
+      background-size:50px 50px;
+      z-index:-1;
+      animation:gridPulse 4s ease-in-out infinite;
+    }
+    @keyframes gridPulse{
+      0%,100%{opacity:0.4}
+      50%{opacity:1}
+    }
+
+    .badge-domain{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      letter-spacing:3px;text-transform:uppercase;
+      color:var(--neon-yellow);
+      border:1px solid rgba(255,230,109,0.4);
+      padding:6px 18px;border-radius:3px;
+      background:rgba(255,230,109,0.07);
+      margin-bottom:22px;
+    }
+
+    .title-logo{
+      font-size:4em;margin-bottom:18px;
+      animation:float 3s ease-in-out infinite;
+      filter:drop-shadow(0 0 18px rgba(255,230,109,0.7));
+    }
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+
+    .main-title{
+      font-family:'Space Mono',monospace;
+      font-size:2.8em;font-weight:700;text-transform:uppercase;letter-spacing:6px;
+      background:linear-gradient(90deg,var(--neon-yellow),var(--neon-blue),var(--neon-yellow));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+      margin-bottom:8px;text-align:center;
+      animation:titleGlow 3s ease-in-out infinite;
+    }
+    @keyframes titleGlow{
+      0%,100%{filter:drop-shadow(0 0 15px rgba(255,230,109,0.5))}
+      50%{filter:drop-shadow(0 0 35px rgba(255,230,109,0.9))}
+    }
+
+    .subtitle{
+      font-size:1.15em;color:#8899aa;margin-bottom:12px;
+      font-weight:300;text-align:center;letter-spacing:2px;
+    }
+
+    .module-tag{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      color:var(--neon-blue);margin-bottom:35px;
+      display:flex;align-items:center;gap:10px;
+    }
+    .module-tag::before,.module-tag::after{
+      content:'';flex:1;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(0,212,255,0.5));
+      max-width:80px;
+    }
+    .module-tag::after{
+      background:linear-gradient(90deg,rgba(0,212,255,0.5),transparent);
+    }
+
+    .intro-text{
+      max-width:720px;text-align:center;line-height:1.9;
+      margin:0 20px 40px;color:#aabbcc;font-size:1em;
+    }
+    .intro-text strong{color:var(--neon-yellow);}
+
+    .start-btn{
+      font-family:'Space Mono',monospace;font-size:1.1em;
+      padding:18px 55px;background:transparent;
+      border:2px solid var(--neon-yellow);color:var(--neon-yellow);
+      cursor:pointer;text-transform:uppercase;letter-spacing:3px;
+      transition:all .3s;position:relative;overflow:hidden;
+    }
+    .start-btn::before{
+      content:'';position:absolute;top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,230,109,.3),transparent);
+      transition:left .5s;
+    }
+    .start-btn:hover::before{left:100%}
+    .start-btn:hover{
+      background:rgba(255,230,109,.08);
+      box-shadow:0 0 30px rgba(255,230,109,.5),inset 0 0 30px rgba(255,230,109,.08);
+      transform:scale(1.05);
+    }
+
+    .stats-row{
+      display:flex;gap:30px;margin-top:30px;
+      font-family:'Space Mono',monospace;font-size:0.78em;color:#8899aa;
+    }
+    .stat{display:flex;align-items:center;gap:7px}
+    .stat-dot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--neon-yellow);
+      box-shadow:0 0 8px var(--neon-yellow);
+    }
+
+    /* ==================== LIENS RETOUR ==================== */
+    .back-link-title{
+      position:absolute;top:20px;left:20px;
+      display:flex;align-items:center;gap:8px;
+      padding:10px 16px;
+      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);
+      border-radius:6px;color:#8899aa;text-decoration:none;
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      text-transform:uppercase;letter-spacing:1px;transition:all .3s;
+    }
+    .back-link-title:hover{
+      background:rgba(255,255,255,0.1);
+      border-color:rgba(255,255,255,0.3);color:#aabbcc;
+    }
+
+    /* Scan line animé */
+    .scan-line{
+      position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,rgba(255,230,109,0.6),transparent);
+      animation:scan 6s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes scan{
+      0%{top:-2px;opacity:0}
+      10%{opacity:1}
+      90%{opacity:1}
+      100%{top:100%;opacity:0}
+    }
+
+    /* Coins décoratifs */
+    .corner{position:absolute;width:25px;height:25px;border-color:rgba(255,230,109,0.5);border-style:solid}
+    .corner-tl{top:15px;left:15px;border-width:2px 0 0 2px}
+    .corner-tr{top:15px;right:15px;border-width:2px 2px 0 0}
+    .corner-bl{bottom:15px;left:15px;border-width:0 0 2px 2px}
+    .corner-br{bottom:15px;right:15px;border-width:0 2px 2px 0}
+
+  </style>
+</head>
+<body>
+
+<!-- ======================== ÉCRAN TITRE ======================== -->
+<div id="title-screen">
+  <div class="scan-line"></div>
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <a href="modules.html" class="back-link-title">← Modules</a>
+
+  <div class="badge-domain">Limites &amp; Esprit Critique — Module 11</div>
+
+  <div class="title-logo">🎭</div>
+
+  <h1 class="main-title">Signal Falsifié</h1>
+  <p class="subtitle">L'Enquêteur de Deepfakes</p>
+
+  <div class="module-tag">Unité VERITAS · Cellule Forensique Numérique</div>
+
+  <p class="intro-text">
+    Une série de contenus suspects circule sur les réseaux. Vidéos truquées,<br>
+    voix clonées, images synthétiques… La désinformation IA n'a jamais été<br>
+    aussi convaincante. <strong>Votre mission :</strong> intégrer l'Unité VERITAS,<br>
+    maîtriser les techniques de détection, et authentifier 6 dossiers<br>
+    avant qu'ils ne contaminent l'opinion publique.
+  </p>
+
+  <button class="start-btn" onclick="startModule()">▶ Accepter la mission</button>
+
+  <div class="stats-row">
+    <div class="stat"><span class="stat-dot"></span>15–20 min</div>
+    <div class="stat"><span class="stat-dot"></span>6 dossiers à analyser</div>
+    <div class="stat"><span class="stat-dot"></span>Score 70 % requis</div>
+  </div>
+</div>
+
+<script>
+function startModule(){
+  // Phase 2 — à implémenter
+  document.getElementById('title-screen').classList.add('hidden');
+  alert('Phase suivante bientôt disponible…');
+  document.getElementById('title-screen').classList.remove('hidden');
+}
+</script>
+</body>
+</html>
