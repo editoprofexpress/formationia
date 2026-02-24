@@ -748,6 +748,155 @@
           </div>
         </div>
 
+        <!-- ===== LEÇON 3 ===== -->
+        <div class="lesson" id="lesson-2">
+          <h2 class="module-title">03 — L'IA symbolique : le cerveau logique</h2>
+
+          <p class="module-kicker">
+            Historiquement, la première grande approche de l'IA repose sur des <strong>règles explicites</strong>
+            programmées par des humains. On l'appelle l'<em>IA symbolique</em>.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>⚙️ Le principe : SI… ALORS</h3>
+          <p>
+            L'IA symbolique fonctionne comme un livre de recettes géant. Des experts humains formalisent
+            leurs connaissances sous forme de règles logiques :
+          </p>
+
+          <div class="callout blue">
+            <strong>Exemple médical (système MYCIN, 1976)</strong><br><br>
+            <span style="font-family: 'Space Mono', monospace; font-size: 0.9em;">
+              SI le patient a de la fièvre<br>
+              ET une infection bactérienne est suspectée<br>
+              ET le germe est gram-positif<br>
+              ALORS prescrire Pénicilline (confiance : 0.8)
+            </span><br><br>
+            MYCIN contenait environ <strong>600 règles</strong> de ce type et rivalisait avec
+            les médecins spécialistes pour le diagnostic d'infections sanguines.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>🏆 Les succès historiques</h3>
+          <ul>
+            <li><strong>MYCIN (1976)</strong> — diagnostic d'infections bactériennes (~600 règles)</li>
+            <li><strong>DENDRAL (1965)</strong> — identification de structures moléculaires en chimie</li>
+            <li><strong>Deep Blue (1997)</strong> — bat le champion du monde d'échecs Garry Kasparov grâce à des règles + force de calcul brute</li>
+            <li><strong>Systèmes experts bancaires</strong> — évaluation de crédit basée sur des critères formels</li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <h3>✅ Forces de l'IA symbolique</h3>
+          <div class="callout">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🔍 <strong>Explicable</strong> — On peut tracer exactement pourquoi une décision a été prise</li>
+              <li>🎯 <strong>Prévisible</strong> — Mêmes entrées = mêmes sorties, toujours</li>
+              <li>📋 <strong>Auditable</strong> — Essentiel dans les domaines réglementés (médecine, justice, finance)</li>
+              <li>🧑‍💻 <strong>Contrôlable</strong> — Les humains peuvent modifier chaque règle individuellement</li>
+            </ul>
+          </div>
+
+          <h3>❌ Limites de l'IA symbolique</h3>
+          <div class="callout pink">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🧱 <strong>Rigide</strong> — Incapable de gérer les cas non prévus par les règles</li>
+              <li>🏗️ <strong>Coûteuse à construire</strong> — Il faut des experts pour formuler chaque règle (« goulot d'étranglement de la connaissance »)</li>
+              <li>🌫️ <strong>Fragile face à l'incertain</strong> — Données incomplètes ou bruitées = échec</li>
+              <li>📈 <strong>Ne passe pas à l'échelle</strong> — 1 000 règles = gérable. 1 000 000 = chaos</li>
+            </ul>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Si le produit ATLAS repose sur des règles explicites, il sera explicable mais fragile.
+            Gardez en tête ces forces et limites pour votre analyse.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 4 ===== -->
+        <div class="lesson" id="lesson-3">
+          <h2 class="module-title">04 — L'IA connexionniste : le cerveau qui apprend</h2>
+
+          <p class="module-kicker">
+            La seconde grande approche de l'IA ne repose pas sur des règles écrites par des humains,
+            mais sur l'<strong>apprentissage à partir de données</strong>. C'est l'approche dominante aujourd'hui.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🧠 Le principe : apprendre par l'exemple</h3>
+          <p>
+            Au lieu de programmer des règles, on donne à la machine des <strong>milliers (ou millions)
+            d'exemples</strong> et on la laisse découvrir elle-même les régularités.
+          </p>
+
+          <div class="callout blue">
+            <strong>Analogie</strong><br>
+            Imaginez que vous apprenez à un enfant à reconnaître un chat. Vous ne lui donnez pas une liste
+            de règles (« SI 4 pattes ET moustaches ET oreilles pointues ALORS chat »). Vous lui montrez
+            des <em>centaines de photos</em> de chats, et il finit par « comprendre » ce qu'est un chat —
+            sans pouvoir forcément expliquer comment.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>📈 Les trois vagues de l'IA connexionniste</h3>
+
+          <div class="callout">
+            <strong>Vague 1 : Le Perceptron (1957-1969)</strong><br>
+            Frank Rosenblatt crée le premier neurone artificiel capable d'apprendre. Enthousiasme immense…
+            puis déception quand on découvre ses limites (il ne peut résoudre que des problèmes linéaires simples).
+          </div>
+
+          <div class="callout blue">
+            <strong>Vague 2 : Rétropropagation (1986-2000)</strong><br>
+            Geoffrey Hinton et ses collègues popularisent un algorithme permettant d'entraîner des réseaux
+            à plusieurs couches. Progrès significatifs, mais les ordinateurs de l'époque sont trop lents
+            et les données trop rares.
+          </div>
+
+          <div class="callout purple">
+            <strong>Vague 3 : Deep Learning (2012-aujourd'hui)</strong><br>
+            La convergence de trois facteurs déclenche une révolution :<br>
+            • <strong>Données massives</strong> (Internet, réseaux sociaux)<br>
+            • <strong>Puissance de calcul</strong> (GPU, cloud computing)<br>
+            • <strong>Algorithmes améliorés</strong> (nouvelles architectures de réseaux)<br><br>
+            En 2012, AlexNet pulvérise les records en reconnaissance d'images. Le Deep Learning s'impose partout.
+          </div>
+
+          <div class="divider"></div>
+
+          <h3>✅ Forces de l'IA connexionniste</h3>
+          <div class="callout">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🖼️ <strong>Excelle sur les données complexes</strong> — images, audio, texte, vidéo</li>
+              <li>🔄 <strong>Généralise</strong> — Reconnaît des chats jamais vus après apprentissage</li>
+              <li>📊 <strong>Pas besoin d'experts du domaine</strong> — Les données « parlent » d'elles-mêmes</li>
+              <li>🚀 <strong>Performances surhumaines</strong> — dans certaines tâches spécifiques (imagerie médicale, Go, traduction)</li>
+            </ul>
+          </div>
+
+          <h3>❌ Limites de l'IA connexionniste</h3>
+          <div class="callout pink">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <li>🔲 <strong>Boîte noire</strong> — Impossible d'expliquer pourquoi une décision est prise</li>
+              <li>📦 <strong>Gourmande en données</strong> — Il faut des millions d'exemples étiquetés</li>
+              <li>💰 <strong>Coût énorme</strong> — L'entraînement de GPT-4 a coûté plus de 100 millions de dollars</li>
+              <li>⚖️ <strong>Biais des données</strong> — Si les données sont biaisées, l'IA reproduit ces biais</li>
+              <li>🎭 <strong>Pas de compréhension réelle</strong> — Elle ne « sait » pas ce qu'elle fait, elle calcule des corrélations</li>
+            </ul>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Si ATLAS est une IA connexionniste, elle sera puissante mais opaque. Et si NovaMind dit
+            qu'elle « comprend véritablement » ses patients, c'est un signal d'alerte.
+          </div>
+        </div>
+
       </div><!-- fin briefing-content -->
     </div><!-- fin briefing-body -->
 
