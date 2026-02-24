@@ -476,6 +476,422 @@
       100% { opacity: 0; transform: translateY(-20px) scale(1.5); }
     }
 
+    /* ==================== ÉCRAN JEU ==================== */
+    #game-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d0a1a 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #game-screen.active { display: flex; }
+
+    .game-header {
+      background: rgba(10,20,40,0.97);
+      border-bottom: 1px solid rgba(255,159,67,0.3);
+      padding: 12px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .game-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1em;
+      color: var(--neon-orange);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .game-score-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .score-val { font-size: 1.3em; font-weight: 700; }
+
+    /* Level tabs */
+    .level-tabs {
+      display: flex;
+      gap: 0;
+      background: rgba(10,14,23,0.8);
+      border-bottom: 1px solid rgba(255,159,67,0.15);
+      flex-shrink: 0;
+    }
+    .level-tab {
+      flex: 1;
+      padding: 14px 20px;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all .3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .level-tab.active { color: var(--neon-orange); border-bottom-color: var(--neon-orange); background: rgba(255,159,67,0.05); }
+    .level-tab.done { color: var(--neon-green); }
+    .level-tab.done::after { content: ' ✓'; }
+    .level-tab.locked { opacity: 0.4; cursor: default; }
+
+    /* Game body */
+    .game-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px 50px;
+    }
+    .game-body::-webkit-scrollbar { width: 5px; }
+    .game-body::-webkit-scrollbar-thumb { background: rgba(255,159,67,0.3); border-radius: 3px; }
+
+    /* Level panels */
+    .level-panel { display: none; }
+    .level-panel.active { display: block; }
+
+    .level-intro {
+      background: rgba(255,159,67,0.05);
+      border: 1px solid rgba(255,159,67,0.3);
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 25px;
+    }
+    .level-intro h2 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-orange);
+      font-size: 1.2em;
+      margin-bottom: 8px;
+    }
+    .level-intro p { color: #cfe9ff; line-height: 1.7; font-size: 0.95em; }
+
+    /* ---- NIVEAU 1 : Sois le modèle ---- */
+    .prediction-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255,107,107,0.25);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      transition: border-color .3s;
+    }
+    .prediction-card.done { border-color: rgba(0,255,136,0.4); }
+    .prediction-card.done-wrong { border-color: rgba(255,0,128,0.4); }
+
+    .prediction-context {
+      font-size: 1.1em;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .prediction-context .blank {
+      display: inline-block;
+      min-width: 100px;
+      border-bottom: 2px dashed var(--neon-orange);
+      color: var(--neon-orange);
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 8px;
+      transition: all .3s;
+    }
+    .prediction-context .blank.filled-correct { color: var(--neon-green); border-bottom-color: var(--neon-green); }
+    .prediction-context .blank.filled-wrong { color: var(--neon-pink); border-bottom-color: var(--neon-pink); }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .choice-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      padding: 12px 16px;
+      background: rgba(255,107,107,0.05);
+      border: 1px solid rgba(255,107,107,0.3);
+      color: var(--text);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all .25s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .choice-btn:hover:not(:disabled) { background: rgba(255,107,107,0.15); border-color: var(--neon-red); transform: translateX(3px); }
+    .choice-btn.correct { background: rgba(0,255,136,0.1); border-color: var(--neon-green); color: var(--neon-green); }
+    .choice-btn.wrong { background: rgba(255,0,128,0.1); border-color: var(--neon-pink); color: var(--neon-pink); }
+    .choice-btn.revealed { background: rgba(0,255,136,0.05); border-color: rgba(0,255,136,0.3); color: var(--neon-green); opacity: 0.7; }
+    .choice-btn:disabled { cursor: default; }
+    .choice-letter {
+      background: rgba(255,107,107,0.2);
+      color: var(--neon-red);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 0.8em;
+      flex-shrink: 0;
+    }
+    .choice-btn.correct .choice-letter { background: rgba(0,255,136,0.2); color: var(--neon-green); }
+    .choice-btn.wrong .choice-letter { background: rgba(255,0,128,0.2); color: var(--neon-pink); }
+
+    /* Probability bars after answer */
+    .prob-reveal {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 14px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+    }
+    .prob-reveal.show { display: flex; }
+    .prob-row-r { display: flex; align-items: center; gap: 10px; font-size: 0.85em; }
+    .prob-word-r { font-family: 'Space Mono', monospace; width: 110px; color: var(--text); flex-shrink: 0; }
+    .prob-bar-outer-r { flex: 1; height: 16px; background: rgba(255,255,255,0.04); border-radius: 3px; overflow: hidden; }
+    .prob-bar-inner-r { height: 100%; border-radius: 3px; animation: barGrow .6s ease forwards; transform-origin: left; }
+    @keyframes barGrow { from { width: 0 !important; } }
+    .prob-pct-r { font-family: 'Space Mono', monospace; font-size: 0.8em; width: 36px; text-align: right; color: var(--muted); flex-shrink: 0; }
+    .feedback-msg {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    .feedback-msg.good { background: rgba(0,255,136,0.1); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.3); }
+    .feedback-msg.bad { background: rgba(255,0,128,0.1); color: var(--neon-pink); border: 1px solid rgba(255,0,128,0.3); }
+
+    /* ---- NIVEAU 2 : Température ---- */
+    .temp-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .temp-slider-block {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255,159,67,0.3);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+    .temp-slider-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .temp-slider-label span {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-orange);
+      font-size: 0.9em;
+    }
+    .temp-value-big {
+      font-family: 'Space Mono', monospace;
+      font-size: 2em;
+      color: var(--neon-orange);
+      font-weight: 700;
+    }
+    input[type=range].temp-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-green), var(--neon-orange), var(--neon-pink));
+      border-radius: 4px;
+      outline: none;
+      margin: 10px 0;
+    }
+    input[type=range].temp-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      background: var(--neon-orange);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255,159,67,0.5);
+      transition: box-shadow .2s;
+    }
+    input[type=range].temp-slider::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 20px rgba(255,159,67,0.8);
+    }
+    .temp-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75em;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .temp-prompt {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      color: var(--neon-blue);
+    }
+    .temp-prompt::before { content: '> Prompt : '; color: var(--muted); }
+
+    .temp-output {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 18px 22px;
+      min-height: 90px;
+      line-height: 1.75;
+      color: var(--text);
+      font-size: 0.95em;
+      transition: all .4s;
+      position: relative;
+    }
+    .temp-output::before {
+      content: 'SYNTHÈSE génère…';
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .temp-mode-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7em;
+      padding: 3px 9px;
+      border-radius: 10px;
+    }
+
+    .temp-insight {
+      background: rgba(255,159,67,0.06);
+      border: 1px solid rgba(255,159,67,0.25);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      line-height: 1.7;
+      font-size: 0.9em;
+      color: #cfe9ff;
+    }
+    .temp-insight strong { color: var(--neon-orange); }
+
+    /* ---- NIVEAU 3 : Turing inversé ---- */
+    .turing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .turing-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all .3s;
+      position: relative;
+    }
+    .turing-card:hover:not(.answered) { border-color: rgba(0,212,255,0.5); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,212,255,0.1); }
+    .turing-card.answered { cursor: default; }
+    .turing-card.correct-human { border-color: var(--neon-green); background: rgba(0,255,136,0.05); }
+    .turing-card.correct-ai { border-color: var(--neon-blue); background: rgba(0,212,255,0.05); }
+    .turing-card.wrong-answer { border-color: var(--neon-pink); background: rgba(255,0,128,0.05); }
+
+    .turing-text {
+      font-size: 0.9em;
+      line-height: 1.7;
+      color: #cfe9ff;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+    .turing-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .turing-btn {
+      flex: 1;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid;
+      transition: all .2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .turing-btn.human-btn { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.4); color: var(--neon-green); }
+    .turing-btn.human-btn:hover:not(:disabled) { background: rgba(0,255,136,0.15); }
+    .turing-btn.ai-btn { background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.4); color: var(--neon-blue); }
+    .turing-btn.ai-btn:hover:not(:disabled) { background: rgba(0,212,255,0.15); }
+    .turing-btn:disabled { cursor: default; }
+
+    .turing-verdict {
+      display: none;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    .turing-verdict.show { display: block; }
+    .turing-verdict.good { background: rgba(0,255,136,0.1); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.3); }
+    .turing-verdict.bad { background: rgba(255,0,128,0.1); color: var(--neon-pink); border: 1px solid rgba(255,0,128,0.3); }
+
+    .turing-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7em;
+      padding: 3px 10px;
+      border-radius: 10px;
+      display: none;
+    }
+    .turing-tag.show-human { display: block; background: rgba(0,255,136,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.4); }
+    .turing-tag.show-ai { display: block; background: rgba(0,212,255,0.15); color: var(--neon-blue); border: 1px solid rgba(0,212,255,0.4); }
+
+    /* Bouton passer au niveau suivant / quiz */
+    .level-next-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      padding: 14px 35px;
+      background: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,159,67,0.2));
+      border: 2px solid var(--neon-orange);
+      color: var(--neon-orange);
+      cursor: pointer;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all .3s;
+      margin-top: 20px;
+      display: block;
+    }
+    .level-next-btn:hover { box-shadow: 0 0 20px rgba(255,159,67,0.4); transform: scale(1.03); }
+    .level-next-btn:disabled { opacity: 0.3; cursor: default; transform: none; box-shadow: none; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(10,20,40,0.95);
+      border: 1px solid rgba(0,255,136,0.4);
+      color: var(--neon-green);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 12px 25px;
+      border-radius: 8px;
+      z-index: 9999;
+      transition: transform .4s ease;
+      box-shadow: 0 0 20px rgba(0,255,136,0.2);
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.error { border-color: rgba(255,0,128,0.4); color: var(--neon-pink); box-shadow: 0 0 20px rgba(255,0,128,0.2); }
+
   </style>
 </head>
 <body>
@@ -575,10 +991,105 @@
 
   </div><!-- /briefing-screen -->
 
-  <!-- ==================== PLACEHOLDER jeu ==================== -->
-  <div id="game-screen" style="display:none;position:fixed;inset:0;background:var(--dark-bg);z-index:998;align-items:center;justify-content:center;flex-direction:column;">
-    <p style="font-family:'Space Mono',monospace;color:var(--neon-orange);font-size:1.5em;">⚙ Simulation en cours de construction…</p>
-  </div>
+  <!-- ==================== ÉCRAN JEU ==================== -->
+  <div id="game-screen">
+
+    <!-- Game header -->
+    <div class="game-header">
+      <div class="game-title">🎮 SIMULATION SYNTHÈSE</div>
+      <div class="game-score-display">Score : <span class="score-val" id="score-display">0</span></div>
+    </div>
+
+    <!-- Level tabs -->
+    <div class="level-tabs">
+      <div class="level-tab active" id="tab-0" onclick="switchLevel(0)">Niveau 1 — Sois le modèle</div>
+      <div class="level-tab locked" id="tab-1">Niveau 2 — Température</div>
+      <div class="level-tab locked" id="tab-2">Niveau 3 — Turing inversé</div>
+    </div>
+
+    <!-- Game body -->
+    <div class="game-body">
+
+      <!-- ====== NIVEAU 1 ====== -->
+      <div class="level-panel active" id="level-0">
+        <div class="level-intro">
+          <h2>🎯 Niveau 1 : Sois le modèle</h2>
+          <p>Tu es maintenant SYNTHÈSE. À chaque étape, tu dois prédire le prochain token le plus probable pour compléter la phrase. Comme un vrai LLM, tu n'as pas accès au "sens" global — seulement aux probabilités. Après chaque choix, tu verras la vraie distribution de probabilités.</p>
+        </div>
+
+        <div id="pred-cards"></div>
+
+        <button class="level-next-btn" id="lvl1-next" onclick="unlockLevel(1)" disabled>
+          Passer au Niveau 2 — Jouer avec la Température →
+        </button>
+      </div><!-- /level-0 -->
+
+      <!-- ====== NIVEAU 2 ====== -->
+      <div class="level-panel" id="level-1">
+        <div class="level-intro">
+          <h2>🌡️ Niveau 2 : Joue avec la température</h2>
+          <p>Déplace le curseur pour changer la température de SYNTHÈSE et observe comment le même prompt produit des textes radicalement différents. Température basse = précis mais prévisible. Haute = créatif mais incohérent.</p>
+        </div>
+
+        <div class="temp-container">
+          <div class="temp-slider-block">
+            <div class="temp-slider-label">
+              <span>Température de SYNTHÈSE</span>
+              <span class="temp-value-big" id="temp-val-display">0.7</span>
+            </div>
+            <input type="range" class="temp-slider" id="temp-slider" min="1" max="20" value="7" oninput="updateTemp(this.value)">
+            <div class="temp-labels">
+              <span>🥶 0.1 — Précis/Répétitif</span>
+              <span>🌡️ 1.0 — Équilibré</span>
+              <span>🔥 2.0 — Créatif/Incohérent</span>
+            </div>
+          </div>
+
+          <div class="temp-prompt" id="temp-prompt-text">Continue cette phrase : "L'intelligence artificielle va bientôt…"</div>
+
+          <div class="temp-output" id="temp-output-text">
+            <span class="temp-mode-badge" id="temp-mode-badge" style="background:rgba(0,255,136,0.15);color:var(--neon-green);border:1px solid rgba(0,255,136,0.4)">ÉQUILIBRÉ</span>
+            Changer le monde du travail en automatisant les tâches répétitives, permettant aux humains de se concentrer sur la créativité et la prise de décision stratégique.
+          </div>
+
+          <div class="temp-insight" id="temp-insight-text">
+            <strong>📊 À température 0.7</strong> — Le modèle choisit des tokens probables mais pas systématiquement les plus fréquents. Le résultat est fluide et naturel, fidèle aux patterns appris lors de l'entraînement.
+          </div>
+
+          <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="level-next-btn" style="margin-top:0;flex:1;min-width:200px" onclick="switchPrompt()">
+              🔄 Changer de prompt
+            </button>
+            <button class="level-next-btn" style="margin-top:0;flex:1;min-width:200px" onclick="unlockLevel(2)">
+              Passer au Niveau 3 — Turing inversé →
+            </button>
+          </div>
+        </div>
+      </div><!-- /level-1 -->
+
+      <!-- ====== NIVEAU 3 ====== -->
+      <div class="level-panel" id="level-2">
+        <div class="level-intro">
+          <h2>🔍 Niveau 3 : Le Turing inversé</h2>
+          <p>Grâce à ce que tu viens d'apprendre sur la génération statistique, peux-tu repérer quels textes ont été <strong style="color:var(--neon-blue)">générés par une IA</strong> et lesquels ont été <strong style="color:var(--neon-green)">écrits par un humain</strong> ? Clique sur ta réponse pour chaque extrait.</p>
+        </div>
+
+        <div class="turing-grid" id="turing-grid"></div>
+
+        <div id="turing-result" style="display:none;background:rgba(255,159,67,0.06);border:1px solid rgba(255,159,67,0.3);border-radius:12px;padding:20px 25px;margin-top:20px">
+          <h3 style="font-family:'Space Mono',monospace;color:var(--neon-orange);margin-bottom:10px">Résultat du Turing inversé</h3>
+          <p id="turing-result-text" style="color:#cfe9ff;line-height:1.7"></p>
+        </div>
+
+        <button class="level-next-btn" id="lvl3-next" onclick="startQuiz()" disabled>
+          Passer au Quiz final →
+        </button>
+      </div><!-- /level-2 -->
+
+    </div><!-- /game-body -->
+  </div><!-- /game-screen -->
+
+  <div id="toast"></div>
 
   <script>
     // ==================== PARTICULES ====================
@@ -938,8 +1449,343 @@
 
     function launchGame() {
       document.getElementById('briefing-screen').classList.remove('active');
-      const gameScreen = document.getElementById('game-screen');
-      gameScreen.style.display = 'flex';
+      document.getElementById('game-screen').classList.add('active');
+      buildLevel1();
+      buildLevel3();
+    }
+
+    // ==================== SCORE ====================
+    let totalScore = 0;
+    function addScore(pts) {
+      totalScore += pts;
+      document.getElementById('score-display').textContent = totalScore;
+    }
+
+    // ==================== LEVEL SWITCHING ====================
+    let currentLevel = 0;
+    function switchLevel(idx) {
+      document.querySelectorAll('.level-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+      document.querySelectorAll('.level-tab').forEach((t, i) => {
+        t.classList.remove('active');
+        if (i === idx) t.classList.add('active');
+      });
+      currentLevel = idx;
+    }
+
+    function unlockLevel(idx) {
+      const tab = document.getElementById(`tab-${idx}`);
+      tab.classList.remove('locked');
+      switchLevel(idx);
+      showToast(`Niveau ${idx + 1} débloqué ! +50 pts`, false);
+      addScore(50);
+    }
+
+    // ==================== TOAST ====================
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = isError ? 'error' : '';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ==================== NIVEAU 1 : Prédiction ====================
+    const predQuestions = [
+      {
+        before: 'La capitale de la France est',
+        options: ['Paris', 'une ville', 'depuis', 'Lyon'],
+        correct: 0,
+        probs: [72, 10, 5, 13],
+        colors: ['var(--neon-green)', 'var(--neon-blue)', 'var(--muted)', 'var(--neon-orange)'],
+        feedbackGood: '✓ Exactement ! "Paris" obtient 72% de probabilité dans ce contexte. Le modèle avait la même réponse.',
+        feedbackBad: '✗ Le modèle aurait choisi "Paris" (72%). Les probabilités reflètent la fréquence dans les données d\'entraînement.'
+      },
+      {
+        before: 'Pour apprendre à nager, il faut d\'abord',
+        options: ['voler', 'acheter', 'pratiquer', 'chanter'],
+        correct: 2,
+        probs: [3, 15, 68, 14],
+        colors: ['var(--neon-pink)', 'var(--neon-blue)', 'var(--neon-green)', 'var(--neon-orange)'],
+        feedbackGood: '✓ Bien joué ! "pratiquer" est le token le plus probable (68%) dans ce contexte d\'apprentissage.',
+        feedbackBad: '✗ Le modèle aurait choisi "pratiquer" (68%). C\'est le mot statistiquement dominant après "il faut d\'abord" dans un contexte d\'apprentissage.'
+      },
+      {
+        before: 'Les étoiles brillent la nuit parce qu\'elles',
+        options: ['dorment', 'émettent de la lumière', 'mangent', 'parlent'],
+        correct: 1,
+        probs: [5, 74, 2, 19],
+        colors: ['var(--neon-pink)', 'var(--neon-green)', 'var(--neon-pink)', 'var(--neon-orange)'],
+        feedbackGood: '✓ Parfait ! "émettent de la lumière" (74%) — le modèle connaît ce pattern scientifique par cœur.',
+        feedbackBad: '✗ "émettent de la lumière" (74%) aurait été choisi. Notez que "parlent" arrive à 19% — le modèle a vu des textes poétiques attribuant des paroles aux étoiles !'
+      },
+      {
+        before: 'Je n\'ai pas pu dormir cette nuit, j\'ai',
+        options: ['nagé', 'réfléchi toute la nuit', 'construit', 'telefonné'],
+        correct: 1,
+        probs: [4, 62, 8, 26],
+        colors: ['var(--muted)', 'var(--neon-green)', 'var(--muted)', 'var(--neon-blue)'],
+        feedbackGood: '✓ Correct ! "réfléchi toute la nuit" est la suite la plus cohérente (62%). Le contexte émotionnel oriente les probabilités.',
+        feedbackBad: '✗ "réfléchi toute la nuit" (62%). Curieusement, "telefonné" arrive à 26% — probable dans des textes narratifs !'
+      },
+      {
+        before: 'Un réseau de neurones artificiels est inspiré du',
+        options: ['ciel', 'cerveau humain', 'système solaire', 'moteur électrique'],
+        correct: 1,
+        probs: [5, 81, 4, 10],
+        colors: ['var(--muted)', 'var(--neon-green)', 'var(--muted)', 'var(--neon-blue)'],
+        feedbackGood: '✓ Évident pour toi maintenant ! "cerveau humain" (81%) — ce pattern est omniprésent dans les textes sur l\'IA.',
+        feedbackBad: '✗ "cerveau humain" (81%) est la réponse du modèle. Ce n\'est pas une coïncidence — c\'est statistiquement dominant dans tous les textes sur l\'IA.'
+      }
+    ];
+
+    let pred1Done = 0;
+
+    function buildLevel1() {
+      const container = document.getElementById('pred-cards');
+      container.innerHTML = '';
+      predQuestions.forEach((q, qi) => {
+        const card = document.createElement('div');
+        card.className = 'prediction-card';
+        card.id = `pred-card-${qi}`;
+
+        const letters = ['A', 'B', 'C', 'D'];
+        const choiceHTML = q.options.map((opt, oi) => `
+          <button class="choice-btn" id="choice-${qi}-${oi}" onclick="chooseToken(${qi}, ${oi})">
+            <span class="choice-letter">${letters[oi]}</span>${opt}
+          </button>
+        `).join('');
+
+        const probHTML = q.options.map((opt, oi) => `
+          <div class="prob-row-r">
+            <span class="prob-word-r">${opt}</span>
+            <div class="prob-bar-outer-r">
+              <div class="prob-bar-inner-r" style="width:${q.probs[oi]}%;background:${q.colors[oi]}"></div>
+            </div>
+            <span class="prob-pct-r">${q.probs[oi]}%</span>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="prediction-context">
+            ${q.before} <span class="blank" id="blank-${qi}">___</span>
+          </div>
+          <div class="choice-grid">${choiceHTML}</div>
+          <div class="prob-reveal" id="prob-${qi}">${probHTML}</div>
+          <div class="feedback-msg" id="fb-${qi}" style="display:none"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function chooseToken(qi, oi) {
+      const q = predQuestions[qi];
+      const blank = document.getElementById(`blank-${qi}`);
+      const card = document.getElementById(`pred-card-${qi}`);
+      const fb = document.getElementById(`fb-${qi}`);
+      const probDiv = document.getElementById(`prob-${qi}`);
+      const letters = ['A', 'B', 'C', 'D'];
+
+      // Disable all buttons
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`choice-${qi}-${i}`);
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === oi && oi !== q.correct) btn.classList.add('wrong');
+        else btn.classList.add('revealed');
+      }
+
+      const isCorrect = (oi === q.correct);
+      blank.textContent = q.options[oi];
+      blank.className = 'blank ' + (isCorrect ? 'filled-correct' : 'filled-wrong');
+      card.className = 'prediction-card ' + (isCorrect ? 'done' : 'done-wrong');
+
+      fb.style.display = 'block';
+      fb.className = 'feedback-msg ' + (isCorrect ? 'good' : 'bad');
+      fb.textContent = isCorrect ? q.feedbackGood : q.feedbackBad;
+
+      probDiv.classList.add('show');
+
+      if (isCorrect) addScore(20);
+      pred1Done++;
+      if (pred1Done === predQuestions.length) {
+        document.getElementById('lvl1-next').disabled = false;
+        showToast('Niveau 1 terminé ! 🎉 Tous les tokens prédits.');
+      }
+    }
+
+    // ==================== NIVEAU 2 : Température ====================
+    const tempPrompts = [
+      {
+        text: 'Continue cette phrase : "L\'intelligence artificielle va bientôt…"',
+        outputs: {
+          cold:     'transformer les emplois dans de nombreux secteurs, selon les experts du domaine économique.',
+          balanced: 'changer le monde du travail en automatisant les tâches répétitives, permettant aux humains de se concentrer sur la créativité et la prise de décision stratégique.',
+          warm:     'être utilisée pour améliorer les systèmes de santé, d\'éducation et de transport dans les villes intelligentes, tout en soulevant des questions éthiques complexes.',
+          hot:      'révolutionner nos rêves, traversant les murs de la perception ordinaire comme un poisson multicolore dans l\'océan des possibilités quantiques… et aussi faire du café.'
+        }
+      },
+      {
+        text: 'Continue cette phrase : "Cette nuit-là, dans la ville endormie…"',
+        outputs: {
+          cold:     'personne ne s\'attendait à ce qui allait se passer dans les rues.',
+          balanced: 'les lumières des néons se reflétaient sur le sol mouillé et une silhouette traversait rapidement le pont désert.',
+          warm:     'les derniers cafés fermaient leurs volets tandis qu\'un homme au chapeau froissé vérifiait pour la troisième fois le numéro inscrit sur le papier chiffonné dans sa poche.',
+          hot:      'les horloges refusèrent de tourner, les pigeons parlèrent en morse et la lune se dégonfla légèrement, comme un pneu trop longtemps oublié sur un trottoir philosophique.'
+        }
+      },
+      {
+        text: 'Continue cette phrase : "Pour bien apprendre, il faut…"',
+        outputs: {
+          cold:     'travailler régulièrement et réviser les leçons.',
+          balanced: 'être curieux, pratiquer régulièrement et accepter de faire des erreurs, car c\'est en se trompant qu\'on comprend vraiment.',
+          warm:     'allier la théorie à la pratique, cultiver sa curiosité naturelle, trouver ses propres méthodes et ne pas craindre le jugement des autres face à ses questions.',
+          hot:      'danser avec ses neurones, chanter les équations, sentir les concepts comme un parfum nouveau, et parfois dormir avec un manuel sur la tête pour en absorber les vibrations mathématiques.'
+        }
+      }
+    ];
+
+    let currentPromptIdx = 0;
+
+    function updateTemp(val) {
+      const t = parseFloat(val) / 10;
+      document.getElementById('temp-val-display').textContent = t.toFixed(1);
+
+      const p = tempPrompts[currentPromptIdx];
+      let outputText, badgeText, badgeStyle;
+
+      if (t <= 0.4) {
+        outputText = p.outputs.cold;
+        badgeText = 'PRÉCIS';
+        badgeStyle = 'background:rgba(0,212,255,0.15);color:var(--neon-blue);border:1px solid rgba(0,212,255,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🥶 À température ${t.toFixed(1)}</strong> — Le modèle choisit quasi-systématiquement le token le plus probable. Résultat : texte cohérent mais <strong>prévisible et court</strong>. Peu de surprise, peu de créativité.`;
+      } else if (t <= 1.0) {
+        outputText = p.outputs.balanced;
+        badgeText = 'ÉQUILIBRÉ';
+        badgeStyle = 'background:rgba(0,255,136,0.15);color:var(--neon-green);border:1px solid rgba(0,255,136,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🌡️ À température ${t.toFixed(1)}</strong> — Bon équilibre entre cohérence et variété. Le modèle explore des tokens moins fréquents tout en restant <strong>cohérent</strong>. C'est la valeur par défaut de la plupart des applications.`;
+      } else if (t <= 1.5) {
+        outputText = p.outputs.warm;
+        badgeText = 'CRÉATIF';
+        badgeStyle = 'background:rgba(255,159,67,0.15);color:var(--neon-orange);border:1px solid rgba(255,159,67,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🌶️ À température ${t.toFixed(1)}</strong> — Le modèle diversifie davantage ses choix. Résultat : texte <strong>plus riche et plus détaillé</strong>, mais au risque de dériver légèrement du sujet initial.`;
+      } else {
+        outputText = p.outputs.hot;
+        badgeText = 'CHAOS';
+        badgeStyle = 'background:rgba(255,0,128,0.15);color:var(--neon-pink);border:1px solid rgba(255,0,128,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🔥 À température ${t.toFixed(1)}</strong> — Le modèle pioche dans des tokens très improbables. Le texte devient <strong>surréaliste, incohérent</strong> — révélant que la "créativité" peut rapidement basculer dans le non-sens absolu.`;
+      }
+
+      const output = document.getElementById('temp-output-text');
+      const badge = document.getElementById('temp-mode-badge');
+      badge.textContent = badgeText;
+      badge.style.cssText = `position:absolute;top:10px;right:12px;font-family:'Space Mono',monospace;font-size:0.7em;padding:3px 9px;border-radius:10px;${badgeStyle}`;
+      output.childNodes[output.childNodes.length - 1].textContent = outputText;
+    }
+
+    function switchPrompt() {
+      currentPromptIdx = (currentPromptIdx + 1) % tempPrompts.length;
+      const p = tempPrompts[currentPromptIdx];
+      document.getElementById('temp-prompt-text').textContent = p.text;
+      updateTemp(document.getElementById('temp-slider').value);
+      showToast('Nouveau prompt chargé !');
+    }
+
+    // ==================== NIVEAU 3 : Turing inversé ====================
+    const turingExamples = [
+      {
+        text: '"Le matin, je me réveille toujours avec cette impression étrange que la journée m\'appartient, avant que la réalité ne vienne doucement m\'en convaincre du contraire."',
+        isAI: false,
+        explanation: '✓ Texte humain ! La construction légèrement paradoxale et l\'ironie douce sont des marques d\'un style personnel. Un LLM aurait tendance à être plus direct et moins ambigu dans la formulation.'
+      },
+      {
+        text: '"L\'intelligence artificielle représente une avancée technologique majeure qui transforme de nombreux secteurs de l\'économie mondiale, notamment la santé, l\'éducation et les transports."',
+        isAI: true,
+        explanation: '🤖 Texte IA ! Les indices : structure très généraliste, accumulation prévisible de secteurs ("santé, éducation, transports"), formulation sans opinion personnelle ni tournure originale — typique d\'un LLM générant du texte "neutre".'
+      },
+      {
+        text: '"Hier j\'ai raté mon bus à cause d\'un pigeon. Je dis bien à cause d\'un pigeon. Il était là, planté au milieu du trottoir, me fixant avec cet air de propriétaire qu\'ont parfois les pigeons."',
+        isAI: false,
+        explanation: '✓ Texte humain ! L\'humour absurde, la répétition intentionnelle ("à cause d\'un pigeon. Je dis bien..."), et la personnification décalée sont difficiles à imiter pour un LLM sans être trop mécanique.'
+      },
+      {
+        text: '"La photosynthèse est un processus biologique fondamental par lequel les plantes convertissent l\'énergie solaire en énergie chimique stockée sous forme de glucose, en utilisant le dioxyde de carbone et l\'eau."',
+        isAI: true,
+        explanation: '🤖 Texte IA ! Définition encyclopédique parfaite, syntaxe complexe mais sans ambiguïté, vocabulaire technique prévisible ("processus biologique fondamental", "énergie chimique"). C\'est exactement le type de texte très représenté dans les données d\'entraînement.'
+      },
+      {
+        text: '"Je n\'arrive pas à finir ce roman. Chaque soir je lis dix pages, pose le livre et reste les yeux au plafond à penser à des gens qui n\'existent pas."',
+        isAI: false,
+        explanation: '✓ Texte humain ! L\'introspection personnelle, la simplicité volontaire et l\'image finale ("penser à des gens qui n\'existent pas") ont une authenticité émotionnelle que les LLMs reproduisent rarement sans être trop lisses.'
+      },
+      {
+        text: '"Pour réussir dans la vie professionnelle, il est essentiel de développer plusieurs compétences clés, notamment la communication, le leadership, la gestion du temps et l\'adaptabilité aux changements."',
+        isAI: true,
+        explanation: '🤖 Texte IA ! Structure de liste prévisible ("notamment X, Y, Z et W"), vocabulaire de développement personnel très fréquent dans les corpus d\'entraînement, ton générique sans point de vue. Ce type de contenu est hyper-représenté dans les textes sur lesquels les LLMs sont entraînés.'
+      }
+    ];
+
+    let turingAnswered = 0;
+
+    function buildLevel3() {
+      const grid = document.getElementById('turing-grid');
+      grid.innerHTML = '';
+      turingExamples.forEach((ex, ei) => {
+        const card = document.createElement('div');
+        card.className = 'turing-card';
+        card.id = `turing-${ei}`;
+        card.innerHTML = `
+          <div class="turing-text">${ex.text}</div>
+          <div class="turing-btns">
+            <button class="turing-btn human-btn" onclick="turingGuess(${ei}, false)">👤 Humain</button>
+            <button class="turing-btn ai-btn" onclick="turingGuess(${ei}, true)">🤖 IA</button>
+          </div>
+          <div class="turing-verdict" id="tv-${ei}"></div>
+          <div class="turing-tag" id="tt-${ei}"></div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function turingGuess(ei, guessedAI) {
+      const ex = turingExamples[ei];
+      const card = document.getElementById(`turing-${ei}`);
+      const verdict = document.getElementById(`tv-${ei}`);
+      const tag = document.getElementById(`tt-${ei}`);
+
+      card.classList.add('answered');
+      card.querySelectorAll('.turing-btn').forEach(b => b.disabled = true);
+
+      const correct = (guessedAI === ex.isAI);
+      if (correct) {
+        addScore(30);
+        card.classList.add(ex.isAI ? 'correct-ai' : 'correct-human');
+        verdict.className = 'turing-verdict show good';
+      } else {
+        card.classList.add('wrong-answer');
+        verdict.className = 'turing-verdict show bad';
+      }
+      verdict.textContent = ex.explanation;
+
+      tag.className = 'turing-tag ' + (ex.isAI ? 'show-ai' : 'show-human');
+      tag.textContent = ex.isAI ? '🤖 IA' : '👤 Humain';
+
+      turingAnswered++;
+      if (turingAnswered === turingExamples.length) {
+        const btn = document.getElementById('lvl3-next');
+        btn.disabled = false;
+        const pct = Math.round((totalScore / (5*20 + 2*50 + 6*30)) * 100);
+        document.getElementById('turing-result').style.display = 'block';
+        document.getElementById('turing-result-text').innerHTML =
+          `Tu as répondu à tous les extraits ! Score actuel : <strong style="color:var(--neon-orange)">${totalScore} pts</strong>.<br/>
+          Le Turing inversé révèle quelque chose d'important : <strong style="color:var(--neon-red)">même les humains sont parfois trompés</strong>. La frontière entre texte humain et texte généré s'amincit — c'est pourquoi comprendre le mécanisme de génération est crucial.`;
+        showToast('Niveau 3 terminé ! Place au quiz final 🏆');
+      }
+    }
+
+    function startQuiz() {
+      document.getElementById('game-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      buildQuiz();
     }
   </script>
 
