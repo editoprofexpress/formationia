@@ -897,6 +897,179 @@
           </div>
         </div>
 
+        <!-- ===== LEÇON 5 ===== -->
+        <div class="lesson" id="lesson-4">
+          <h2 class="module-title">05 — La hiérarchie des concepts</h2>
+
+          <p class="module-kicker">
+            On entend souvent « IA », « Machine Learning », « Deep Learning », « Transformers »
+            utilisés comme synonymes. Ce sont en réalité des <strong>poupées russes</strong> —
+            chaque concept est contenu dans le précédent.
+          </p>
+
+          <div class="divider"></div>
+
+          <h3>🪆 Les 4 niveaux d'emboîtement</h3>
+
+          <div style="display: flex; flex-direction: column; gap: 0; margin: 20px 0;">
+            <div style="background: rgba(0, 255, 136, 0.08); border: 2px solid rgba(0, 255, 136, 0.4); border-radius: 16px; padding: 20px; position: relative;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <span class="pill">NIVEAU 1 — LE PLUS LARGE</span>
+              </div>
+              <h3 style="color: var(--neon-green); margin-top: 0;">🤖 Intelligence Artificielle (IA)</h3>
+              <p style="margin-bottom: 8px;">
+                <strong>Toutes les techniques</strong> permettant à une machine de réaliser des tâches
+                « intelligentes ». Inclut les systèmes à règles, la robotique, la planification,
+                le traitement du langage, etc.
+              </p>
+
+              <div style="background: rgba(0, 212, 255, 0.08); border: 2px solid rgba(0, 212, 255, 0.4); border-radius: 14px; padding: 18px; margin-top: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                  <span class="pill blue">NIVEAU 2</span>
+                </div>
+                <h3 style="color: var(--neon-blue); margin-top: 0;">📊 Machine Learning (ML)</h3>
+                <p style="margin-bottom: 8px;">
+                  Sous-ensemble de l'IA où la machine <strong>apprend à partir de données</strong>
+                  au lieu d'être programmée explicitement. Inclut arbres de décision,
+                  forêts aléatoires, SVM, réseaux de neurones…
+                </p>
+
+                <div style="background: rgba(168, 85, 247, 0.08); border: 2px solid rgba(168, 85, 247, 0.4); border-radius: 12px; padding: 16px; margin-top: 12px;">
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span class="pill pink">NIVEAU 3</span>
+                  </div>
+                  <h3 style="color: var(--neon-purple); margin-top: 0;">🧠 Deep Learning (DL)</h3>
+                  <p style="margin-bottom: 8px;">
+                    Sous-ensemble du ML utilisant des <strong>réseaux de neurones profonds</strong>
+                    (nombreuses couches). Excelle en vision, langage, audio.
+                  </p>
+
+                  <div style="background: rgba(255, 0, 128, 0.08); border: 2px solid rgba(255, 0, 128, 0.4); border-radius: 10px; padding: 14px; margin-top: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                      <span class="pill pink">NIVEAU 4 — LE PLUS SPÉCIFIQUE</span>
+                    </div>
+                    <h3 style="color: var(--neon-pink); margin-top: 0;">⚡ Transformers</h3>
+                    <p style="margin-bottom: 0;">
+                      Architecture révolutionnaire (<strong>2017</strong>) basée sur le mécanisme
+                      d'<em>attention</em>. C'est la technologie derrière ChatGPT, Claude, Gemini,
+                      Mistral, DALL-E, Midjourney…
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>📋 À retenir</strong><br>
+            Quand on parle de ChatGPT, on parle d'une IA qui est du Machine Learning,
+            plus précisément du Deep Learning, encore plus précisément un <strong>Transformer</strong>.<br><br>
+            <span style="font-family: 'Space Mono', monospace;">
+              IA ⊃ ML ⊃ DL ⊃ Transformers
+            </span>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Quand NovaMind décrit ATLAS, vérifiez à quel niveau de cette hiérarchie le produit se situe.
+            Le marketing utilise souvent le terme le plus impressionnant (« IA ») sans préciser la technique réelle.
+          </div>
+        </div>
+
+        <!-- ===== LEÇON 6 ===== -->
+        <div class="lesson" id="lesson-5">
+          <h2 class="module-title">06 — 75 ans d'IA : les dates qui ont tout changé</h2>
+
+          <p class="module-kicker">
+            L'intelligence artificielle a traversé des périodes d'euphorie et des « hivers »
+            de désillusion. Voici les jalons essentiels.
+          </p>
+
+          <div class="divider"></div>
+
+          <div style="position: relative; padding-left: 40px; margin: 20px 0;">
+            <!-- Ligne verticale -->
+            <div style="position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--neon-green), var(--neon-blue), var(--neon-purple), var(--neon-pink));"></div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green);"></div>
+              <span class="pill">1950</span>
+              <h3 style="margin-top: 8px;">🧪 Test de Turing</h3>
+              <p>Alan Turing publie <em>« Computing Machinery and Intelligence »</em> et propose son célèbre test.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 10px var(--neon-green);"></div>
+              <span class="pill">1956</span>
+              <h3 style="margin-top: 8px;">🏛️ Conférence de Dartmouth</h3>
+              <p>Naissance officielle de l'IA comme discipline. John McCarthy invente le terme.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+              <span class="pill blue">1966-1974</span>
+              <h3 style="margin-top: 8px;">❄️ Premier hiver de l'IA</h3>
+              <p>Les promesses non tenues provoquent une chute des financements. Les machines sont trop limitées.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+              <span class="pill blue">1980s</span>
+              <h3 style="margin-top: 8px;">📋 Ère des systèmes experts</h3>
+              <p>L'IA symbolique connaît un âge d'or avec des systèmes comme MYCIN, DENDRAL. L'industrie investit massivement.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-blue); border-radius: 50%; box-shadow: 0 0 10px var(--neon-blue);"></div>
+              <span class="pill blue">1987-1993</span>
+              <h3 style="margin-top: 8px;">❄️ Deuxième hiver de l'IA</h3>
+              <p>Les systèmes experts montrent leurs limites. Nouvelle vague de désillusion et de coupes budgétaires.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-purple); border-radius: 50%; box-shadow: 0 0 10px var(--neon-purple);"></div>
+              <span class="pill pink">1997</span>
+              <h3 style="margin-top: 8px;">♟️ Deep Blue bat Kasparov</h3>
+              <p>La machine d'IBM bat le champion du monde d'échecs. Moment symbolique pour le grand public.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-purple); border-radius: 50%; box-shadow: 0 0 10px var(--neon-purple);"></div>
+              <span class="pill pink">2012</span>
+              <h3 style="margin-top: 8px;">🚀 Explosion du Deep Learning</h3>
+              <p>AlexNet pulvérise les records en reconnaissance d'images. Le Deep Learning entre dans une ère de progrès exponentiels.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-pink); border-radius: 50%; box-shadow: 0 0 10px var(--neon-pink);"></div>
+              <span class="pill pink">2017</span>
+              <h3 style="margin-top: 8px;">⚡ Invention des Transformers</h3>
+              <p>Google publie <em>« Attention Is All You Need »</em>. Cette architecture va révolutionner le traitement du langage.</p>
+            </div>
+
+            <div style="margin-bottom: 25px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-pink); border-radius: 50%; box-shadow: 0 0 10px var(--neon-pink);"></div>
+              <span class="pill pink">2022</span>
+              <h3 style="margin-top: 8px;">💬 ChatGPT — le moment viral</h3>
+              <p>OpenAI lance ChatGPT, qui atteint 100 millions d'utilisateurs en 2 mois. L'IA entre dans le quotidien de tous.</p>
+            </div>
+
+            <div style="margin-bottom: 10px; position: relative;">
+              <div style="position: absolute; left: -33px; top: 5px; width: 12px; height: 12px; background: var(--neon-pink); border-radius: 50%; box-shadow: 0 0 10px var(--neon-pink);"></div>
+              <span class="pill pink">2024-2025</span>
+              <h3 style="margin-top: 8px;">🌍 Course mondiale à l'IA</h3>
+              <p>Mistral (France), Claude (Anthropic), Gemini (Google), Llama (Meta)… La concurrence s'intensifie. L'Europe adopte l'AI Act, premier cadre réglementaire mondial.</p>
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <strong>⚠️ Note DECODE</strong><br>
+            Remarquez le pattern historique : chaque vague d'enthousiasme excessif a été suivie
+            d'un « hiver ». Quand NovaMind annonce une révolution, un bon analyste se souvient
+            que l'histoire de l'IA est jalonnée de promesses non tenues.
+          </div>
+        </div>
+
       </div><!-- fin briefing-content -->
     </div><!-- fin briefing-body -->
 
