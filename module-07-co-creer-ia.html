@@ -534,6 +534,355 @@
     }
     .rights-table tr:hover td { background: rgba(78,205,196,0.03); }
 
+    /* ==================== ATELIER SCREEN ==================== */
+    #atelier-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2a 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #atelier-screen.active { display: flex; }
+
+    .atelier-header {
+      background: rgba(10,20,40,0.95);
+      border-bottom: 1px solid rgba(78,205,196,0.3);
+      padding: 14px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 16px;
+    }
+    .atelier-header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: var(--neon-cyan);
+      display: flex; align-items: center; gap: 12px;
+      white-space: nowrap;
+    }
+    .atelier-score-bar {
+      display: flex; gap: 14px; align-items: center;
+      font-family: 'Space Mono', monospace; font-size: 0.82em;
+    }
+    .a-score-item { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+    .a-score-val { font-weight: 700; color: var(--neon-cyan); font-size: 1.1em; }
+
+    /* Sélecteur d'ateliers */
+    #atelier-selector {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      overflow-y: auto;
+    }
+    .selector-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      color: var(--neon-cyan);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .selector-subtitle {
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 1em;
+    }
+    .atelier-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 860px;
+      width: 100%;
+    }
+    .atelier-card {
+      background: rgba(10,20,40,0.85);
+      border: 2px solid rgba(78,205,196,0.2);
+      border-radius: 16px;
+      padding: 30px 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .atelier-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(78,205,196,0.08), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .atelier-card:hover::before { opacity: 1; }
+    .atelier-card:hover {
+      border-color: rgba(78,205,196,0.6);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(78,205,196,0.15);
+    }
+    .atelier-card.done {
+      border-color: rgba(0,255,136,0.5);
+      background: rgba(0,40,20,0.4);
+    }
+    .atelier-card.done::after {
+      content: '✓ TERMINÉ';
+      position: absolute;
+      top: 14px; right: 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7em;
+      color: var(--neon-green);
+      letter-spacing: 2px;
+      background: rgba(0,255,136,0.15);
+      border: 1px solid rgba(0,255,136,0.4);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .ac-emoji { font-size: 2.8em; margin-bottom: 14px; }
+    .ac-ia-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: var(--neon-cyan);
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+    .ac-title {
+      font-size: 1em;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .ac-desc-card { font-size: 0.88em; color: #aabbcc; line-height: 1.6; }
+    .ac-tag {
+      display: inline-block; margin-top: 12px;
+      font-family: 'Space Mono', monospace; font-size: 0.7em;
+      padding: 4px 10px; border-radius: 20px;
+      background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.3);
+      color: var(--neon-cyan); letter-spacing: 1px;
+    }
+
+    /* Zone de travail d'un atelier */
+    #atelier-workspace {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #atelier-workspace.active { display: flex; }
+
+    .workspace-body {
+      flex: 1; display: flex; overflow: hidden;
+    }
+    .workspace-left {
+      flex: 1; padding: 30px 40px;
+      overflow-y: auto;
+      border-right: 1px solid rgba(78,205,196,0.15);
+    }
+    .workspace-right {
+      width: 380px; display: flex; flex-direction: column;
+      background: rgba(5,15,30,0.6);
+      flex-shrink: 0;
+    }
+
+    /* Header de l'IA */
+    .ia-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(78,205,196,0.2);
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(10,20,40,0.9);
+    }
+    .ia-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--neon-cyan);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8em;
+      background: rgba(78,205,196,0.1);
+      box-shadow: 0 0 16px rgba(78,205,196,0.3);
+    }
+    .ia-info .ia-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 1em; color: var(--neon-cyan);
+      letter-spacing: 2px; margin-bottom: 4px;
+    }
+    .ia-info .ia-status {
+      font-size: 0.8em; color: var(--neon-green);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ia-info .ia-status::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--neon-green); border-radius: 50%;
+      box-shadow: 0 0 6px var(--neon-green);
+      animation: blink 1.5s infinite;
+    }
+
+    /* Chat IA simulé */
+    .ia-chat {
+      flex: 1; overflow-y: auto; padding: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .ia-chat::-webkit-scrollbar { width: 4px; }
+    .ia-chat::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 2px; }
+
+    .chat-bubble {
+      max-width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.6;
+      font-size: 0.9em;
+      animation: fadeUp 0.3s ease;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .chat-bubble.ia {
+      background: rgba(78,205,196,0.08);
+      border: 1px solid rgba(78,205,196,0.2);
+      color: #cfe9ff;
+      border-bottom-left-radius: 4px;
+    }
+    .chat-bubble.user {
+      background: rgba(168,85,247,0.1);
+      border: 1px solid rgba(168,85,247,0.25);
+      color: #e0ccff;
+      border-bottom-right-radius: 4px;
+      align-self: flex-end;
+    }
+    .chat-bubble.ia-thinking {
+      background: rgba(78,205,196,0.05);
+      border: 1px dashed rgba(78,205,196,0.2);
+      color: var(--muted);
+      font-style: italic;
+      font-size: 0.85em;
+    }
+
+    /* Brief de la mission */
+    .mission-brief {
+      background: rgba(0,20,40,0.6);
+      border: 1px solid rgba(78,205,196,0.25);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .mission-brief .mb-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72em; color: var(--neon-cyan);
+      letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mission-brief .mb-label::before {
+      content: ''; display: block; width: 6px; height: 6px;
+      background: var(--neon-cyan); border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+    .mission-brief h3 { color: var(--text); font-size: 1.15em; margin-bottom: 10px; }
+    .mission-brief p { color: #aabbcc; line-height: 1.7; font-size: 0.95em; margin-bottom: 10px; }
+    .mission-brief p:last-child { margin-bottom: 0; }
+
+    /* Choix de prompt */
+    .prompt-choices { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+    .prompt-choice {
+      padding: 16px 20px;
+      background: rgba(10,20,40,0.7);
+      border: 1px solid rgba(78,205,196,0.2);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.92em;
+      color: #cfe9ff;
+      line-height: 1.6;
+      position: relative;
+    }
+    .prompt-choice:hover { background: rgba(78,205,196,0.08); border-color: rgba(78,205,196,0.4); }
+    .prompt-choice.selected { background: rgba(78,205,196,0.12); border-color: var(--neon-cyan); color: var(--neon-cyan); }
+    .prompt-choice.best { border-color: rgba(0,255,136,0.5); }
+    .prompt-choice.best::after {
+      content: '★ OPTIMAL'; position: absolute; top: 10px; right: 12px;
+      font-family: 'Space Mono', monospace; font-size: 0.65em;
+      color: var(--neon-green); letter-spacing: 1px;
+    }
+    .prompt-choice.weak { border-color: rgba(255,77,77,0.3); }
+    .prompt-choice.weak::after {
+      content: '⚠ TROP VAGUE'; position: absolute; top: 10px; right: 12px;
+      font-family: 'Space Mono', monospace; font-size: 0.65em;
+      color: var(--warn); letter-spacing: 1px;
+    }
+    .prompt-choice.medium::after {
+      content: '◆ CORRECT'; position: absolute; top: 10px; right: 12px;
+      font-family: 'Space Mono', monospace; font-size: 0.65em;
+      color: var(--neon-blue); letter-spacing: 1px;
+    }
+
+    .result-panel {
+      display: none;
+      background: rgba(0,20,40,0.7);
+      border: 1px solid rgba(78,205,196,0.25);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin-top: 20px;
+    }
+    .result-panel.show { display: block; animation: fadeUp 0.4s ease; }
+    .result-panel .rp-label {
+      font-family: 'Space Mono', monospace; font-size: 0.72em;
+      color: var(--neon-cyan); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .result-panel .rp-result {
+      font-size: 0.95em; color: #cfe9ff;
+      line-height: 1.8; font-style: italic;
+      border-left: 2px solid var(--neon-cyan);
+      padding-left: 16px; margin-bottom: 16px;
+    }
+    .result-panel .rp-feedback {
+      font-size: 0.88em; color: #aabbcc; line-height: 1.7;
+    }
+    .result-panel .rp-score {
+      display: flex; align-items: center; gap: 12px; margin-top: 14px;
+    }
+    .rp-score .score-val {
+      font-family: 'Space Mono', monospace; font-size: 1.3em;
+      font-weight: 700;
+    }
+    .rp-score .score-val.ok { color: var(--neon-green); }
+    .rp-score .score-val.med { color: var(--warn); }
+    .rp-score .score-val.low { color: var(--danger); }
+
+    .workspace-footer {
+      border-top: 1px solid rgba(78,205,196,0.2);
+      padding: 18px 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,20,40,0.9); flex-shrink: 0;
+    }
+    .ws-btn {
+      font-family: 'Space Mono', monospace; padding: 12px 28px;
+      border: 2px solid var(--neon-cyan); background: transparent;
+      color: var(--neon-cyan); cursor: pointer; font-size: 0.95em;
+      transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .ws-btn:hover { background: rgba(78,205,196,0.1); box-shadow: 0 0 20px rgba(78,205,196,0.3); }
+    .ws-btn.primary { background: var(--neon-cyan); color: var(--dark-bg); font-weight: 700; }
+    .ws-btn.primary:hover { background: var(--neon-green); border-color: var(--neon-green); }
+    .ws-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Score final ateliers */
+    #atelier-complete {
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      flex: 1; padding: 40px; text-align: center;
+    }
+    #atelier-complete.show { display: flex; }
+    .complete-icon { font-size: 5em; margin-bottom: 24px; animation: float 3s ease-in-out infinite; }
+    .complete-title {
+      font-family: 'Space Mono', monospace; font-size: 2em;
+      color: var(--neon-cyan); margin-bottom: 10px;
+    }
+    .complete-sub { color: #aabbcc; margin-bottom: 30px; font-size: 1.05em; }
+    .complete-score {
+      font-family: 'Space Mono', monospace; font-size: 3em;
+      color: var(--neon-green); margin-bottom: 30px;
+    }
+
   </style>
 </head>
 <body>
@@ -977,6 +1326,107 @@
   </div>
 </div>
 
+<!-- ==================== ATELIERS ==================== -->
+<div id="atelier-screen">
+  <div class="atelier-header">
+    <div class="atelier-header-title">🎨 SYNAPSE STUDIO — Ateliers</div>
+    <div class="atelier-score-bar">
+      <div class="a-score-item">⭐ Score : <span class="a-score-val" id="total-score">0</span></div>
+      <div class="a-score-item">✅ Complétés : <span class="a-score-val" id="ateliers-done">0</span>/4</div>
+    </div>
+    <a href="modules.html" style="color:#8899aa;text-decoration:none;font-family:'Space Mono',monospace;font-size:0.8em;padding:8px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;">← Modules</a>
+  </div>
+
+  <!-- Sélecteur d'ateliers -->
+  <div id="atelier-selector">
+    <h2 class="selector-title">Choisis ton atelier</h2>
+    <p class="selector-subtitle">4 IA t'attendent pour co-créer ensemble. Complète-les tous pour accéder au quiz.</p>
+    <div class="atelier-grid">
+
+      <div class="atelier-card" id="card-0" onclick="openAtelier(0)">
+        <div class="ac-emoji">✍️</div>
+        <div class="ac-ia-name">LYRA</div>
+        <div class="ac-title">Atelier Texte</div>
+        <p class="ac-desc-card">Rédige le slogan et le synopsis de la campagne SYNAPSE en choisissant les bons prompts pour guider l'IA rédactrice.</p>
+        <span class="ac-tag">Rédaction · Prompting</span>
+      </div>
+
+      <div class="atelier-card" id="card-1" onclick="openAtelier(1)">
+        <div class="ac-emoji">🎨</div>
+        <div class="ac-ia-name">PRISM</div>
+        <div class="ac-title">Atelier Visuel</div>
+        <p class="ac-desc-card">Compose un prompt image pour créer l'affiche de la campagne. Apprends à décrire l'invisible pour guider l'IA visuelle.</p>
+        <span class="ac-tag">Prompt image · Composition</span>
+      </div>
+
+      <div class="atelier-card" id="card-2" onclick="openAtelier(2)">
+        <div class="ac-emoji">🎵</div>
+        <div class="ac-ia-name">ECHO</div>
+        <div class="ac-title">Atelier Musical</div>
+        <p class="ac-desc-card">Choisis les bons descripteurs pour créer l'ambiance sonore parfaite pour le pitch. Genre, émotion, tempo : tu orchestres.</p>
+        <span class="ac-tag">Musique générative · Descripteurs</span>
+      </div>
+
+      <div class="atelier-card" id="card-3" onclick="openAtelier(3)">
+        <div class="ac-emoji">💻</div>
+        <div class="ac-ia-name">VOLT</div>
+        <div class="ac-title">Atelier Code</div>
+        <p class="ac-desc-card">Guide l'IA pour développer une mini-fonctionnalité de l'appli de présentation. Formule les specs, corrige les erreurs.</p>
+        <span class="ac-tag">Code assisté · Débogage</span>
+      </div>
+
+    </div>
+
+    <!-- Bouton quiz quand tout fini -->
+    <button class="ws-btn primary" id="btn-go-quiz" style="display:none;margin-top:30px;font-size:1em;padding:16px 40px;" onclick="startQuiz()">
+      🏆 TOUS LES ATELIERS TERMINÉS — LANCER LE QUIZ
+    </button>
+  </div>
+
+  <!-- Zone de travail d'un atelier -->
+  <div id="atelier-workspace">
+
+    <!-- Header de l'IA -->
+    <div class="ia-header">
+      <div class="ia-avatar" id="ia-avatar">✍️</div>
+      <div class="ia-info">
+        <div class="ia-name" id="ia-name">LYRA</div>
+        <div class="ia-status" id="ia-status">En ligne — prête à co-créer</div>
+      </div>
+    </div>
+
+    <div class="workspace-body">
+      <!-- Contenu de l'atelier -->
+      <div class="workspace-left" id="workspace-left">
+        <!-- Injecté dynamiquement -->
+      </div>
+
+      <!-- Chat IA -->
+      <div class="workspace-right">
+        <div class="ia-chat" id="ia-chat"></div>
+      </div>
+    </div>
+
+    <div class="workspace-footer">
+      <button class="ws-btn" onclick="backToSelector()">← Retour aux ateliers</button>
+      <span id="ws-step-label" style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)">Étape 1/3</span>
+      <button class="ws-btn primary" id="ws-validate-btn" onclick="validateStep()" disabled>Valider →</button>
+    </div>
+  </div>
+
+  <!-- Écran complétion ateliers -->
+  <div id="atelier-complete">
+    <div class="complete-icon">🎉</div>
+    <h2 class="complete-title">MISSION ACCOMPLIE !</h2>
+    <p class="complete-sub">Tu as complété les 4 ateliers créatifs de SYNAPSE STUDIO.</p>
+    <div class="complete-score" id="final-atelier-score">0 pts</div>
+    <button class="ws-btn primary" style="font-size:1.05em;padding:16px 40px;" onclick="startQuiz()">
+      🏆 PASSER AU QUIZ DE CERTIFICATION
+    </button>
+  </div>
+
+</div>
+
 <script>
   // ==================== PARTICULES ==================
   (function createParticles() {
@@ -1062,9 +1512,392 @@
 
   function startAtelier() {
     document.getElementById('briefing-screen').classList.remove('active');
-    // Phase 3 — ateliers — sera ajoutée bientôt
-    alert('🚧 Les ateliers arrivent bientôt !');
-    document.getElementById('briefing-screen').classList.add('active');
+    document.getElementById('atelier-screen').classList.add('active');
+    showAtelierSelector();
+  }
+
+  // ==================== ATELIERS ==================
+  const atelierState = {
+    current: -1,
+    step: 0,
+    scores: [0, 0, 0, 0],
+    done: [false, false, false, false],
+    selected: null,
+  };
+
+  const ATELIERS = [
+    // ATELIER 0 — LYRA (Texte)
+    {
+      id: 0, name: 'LYRA', emoji: '✍️', domain: 'Rédaction',
+      steps: [
+        {
+          title: 'Mission Texte — Étape 1 : Le slogan',
+          brief: "La campagne SYNAPSE porte sur l'IA créative au service des humains. Tu dois créer un <strong>slogan percutant</strong> pour l'affiche principale. Guide LYRA avec le bon prompt.",
+          choices: [
+            { text: '🎯 "Écris un slogan publicitaire de 6 mots max pour une campagne sur l\'IA créative. Ton : inspirant et humain. Cible : professionnels créatifs 25-40 ans."', quality: 'best', points: 30 },
+            { text: '💬 "Donne-moi un slogan pour l\'intelligence artificielle."', quality: 'weak', points: 10 },
+            { text: '📝 "Crée un slogan sur l\'IA et la créativité, en français."', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '"Humains + IA : la créativité sans limites." ✨ (Avec ce prompt précis, LYRA a ciblé exactement l\'émotion et le format voulus.)',
+            weak: '"L\'IA, c\'est l\'avenir !" 😐 (Trop générique. Sans contexte ni contrainte, le résultat est banal.)',
+            medium: '"Créez autrement avec l\'IA." 💡 (Correct mais manque de punch. Le brief plus précis aurait donné mieux.)',
+          },
+          feedbacks: {
+            best: 'Excellent ! Tu as fourni le contexte (campagne IA créative), le ton (inspirant, humain), la cible et la contrainte (6 mots max). Résultat : un slogan sur-mesure.',
+            weak: 'Un prompt trop vague donne un résultat générique. L\'IA n\'a aucune information sur le contexte, la cible ou le ton souhaité.',
+            medium: 'Mieux, mais sans préciser le format ni la cible, l\'IA produit quelque chose de standard. Les contraintes créatives font la différence.',
+          },
+        },
+        {
+          title: 'Mission Texte — Étape 2 : Le synopsis',
+          brief: "Parfait ! Maintenant LYRA doit rédiger le <strong>synopsis de la campagne</strong> (3 phrases max) qui sera lu en introduction du pitch. Comment tu lui demandes ?",
+          choices: [
+            { text: '🎯 "Rédige un synopsis de 3 phrases max pour présenter une campagne intitulée \'Humains + IA : la créativité sans limites\'. Contexte : agence créative SYNAPSE. Ton : professionnel mais accessible."', quality: 'best', points: 30 },
+            { text: '💬 "Écris un texte de présentation."', quality: 'weak', points: 10 },
+            { text: '📝 "Rédige une intro pour notre campagne IA en 3 phrases."', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '"La campagne SYNAPSE explore une nouvelle ère de la créativité, là où l\'intelligence humaine et l\'IA fusionnent pour produire l\'impensable. Destinée aux professionnels créatifs, elle démontre que l\'IA n\'est pas un rival mais un catalyseur de talent. SYNAPSE : quand la technologie amplifie ce que vous êtes." 🎯',
+            weak: '"Voici notre présentation de la campagne sur l\'intelligence artificielle." 😶 (L\'IA ne sait pas ce qu\'elle doit présenter.)',
+            medium: '"Notre campagne IA montre comment les créatifs peuvent travailler avec l\'IA pour aller plus loin. Elle s\'adresse à tous les professionnels du domaine." 💭 (Correct mais trop générique.)',
+          },
+          feedbacks: {
+            best: 'Parfait ! En reliant le titre de la campagne, le contexte (SYNAPSE) et le ton, tu as donné à LYRA toutes les clés pour produire un synopsis cohérent et professionnel.',
+            weak: 'Sans contexte ni sujet précis, l\'IA invente... ce qui n\'existe pas. Il faut toujours ancrer le prompt dans la réalité du projet.',
+            medium: 'Presque ! En mentionnant "notre campagne IA" sans plus de détail, le résultat reste générique. Nommer la campagne et ses objectifs aurait fait la différence.',
+          },
+        },
+      ],
+    },
+    // ATELIER 1 — PRISM (Visuel)
+    {
+      id: 1, name: 'PRISM', emoji: '🎨', domain: 'Création visuelle',
+      steps: [
+        {
+          title: 'Mission Visuelle — Étape 1 : L\'affiche',
+          brief: "PRISM a besoin d'un <strong>prompt image précis</strong> pour créer l'affiche de la campagne. L'ambiance voulue : futuriste, humaine, inspirante. Quel prompt choisis-tu ?",
+          choices: [
+            { text: '🎯 "A human hand and a glowing digital hand reaching toward each other, cyberpunk aesthetic, neon cyan and purple lights, dark background, ultra detailed, cinematic composition, 8K quality, no text"', quality: 'best', points: 30 },
+            { text: '💬 "Une affiche sur l\'intelligence artificielle"', quality: 'weak', points: 10 },
+            { text: '📝 "A futuristic image of AI and humans working together, digital art style"', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '🖼️ PRISM génère : Deux mains se rejoignant dans un halo de lumière cyan et violette, sur fond sombre. Les détails numériques de la main IA contrastent avec la chaleur de la main humaine. Composition centrale, effet néon dramatique. ✨',
+            weak: '🖼️ PRISM génère : Une image floue d\'un robot devant un ordinateur... 😅 Sans style, éclairage, composition ni contraintes, le résultat est imprévisible.',
+            medium: '🖼️ PRISM génère : Deux silhouettes dans un bureau futuriste. Correct mais générique — le style "digital art" seul laisse trop de liberté. 💭',
+          },
+          feedbacks: {
+            best: 'Excellent prompt visuel ! Tu as précisé le sujet (mains), l\'esthétique (cyberpunk), l\'éclairage (neon cyan/purple), le fond, la qualité et un négatif (no text). Résultat professionnel.',
+            weak: 'Trop vague. L\'IA image a besoin de style, d\'ambiance, d\'éclairage, de composition. Un prompt court produit du hasard, pas de la créativité dirigée.',
+            medium: 'Bien mieux qu\'un prompt vague, mais sans préciser l\'éclairage, la composition ni la qualité, le résultat est standard. Les détails font la magie.',
+          },
+        },
+        {
+          title: 'Mission Visuelle — Étape 2 : La retouche',
+          brief: "PRISM a généré l'affiche, mais tu trouves que les mains sont trop proches — tu veux plus de <strong>tension dramatique</strong> dans la composition. Comment tu guides PRISM ?",
+          choices: [
+            { text: '🎯 "Refais l\'image mais avec les deux mains à 20cm de distance, comme sur le plafond de la Sixtine. Gardez le même style neon cyberpunk. Intensifiez l\'éclairage autour des doigts."', quality: 'best', points: 30 },
+            { text: '💬 "C\'est pas terrible, refais mieux"', quality: 'weak', points: 10 },
+            { text: '📝 "Modifie l\'image pour que les mains soient plus éloignées et l\'ambiance plus dramatique."', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '🖼️ PRISM génère (v2) : La composition rappelle maintenant la Création d\'Adam — une distance calculée entre les deux mains, un halo lumineux intense sur les doigts, le vide entre eux chargé de tension. L\'image porte une narration. 🎨',
+            weak: '🖼️ PRISM génère une image aléatoire différente... 😐 "Mieux" n\'est pas une instruction. L\'IA ne sait pas ce que tu juges insatisfaisant.',
+            medium: '🖼️ PRISM génère : Les mains sont plus éloignées et l\'éclairage est plus sombre. Correct, mais sans la référence à la Sixtine, la composition manque de narration. 💭',
+          },
+          feedbacks: {
+            best: 'Bravo ! En citant une référence artistique connue (la Sixtine), tu as donné à PRISM une intention narrative précise. C\'est exactement ça le prompt créatif de haut niveau.',
+            weak: 'L\'IA n\'a aucun moyen de comprendre ce que tu n\'aimes pas ni ce que tu veux à la place. La critique doit être constructive et précise.',
+            medium: 'Bien ! Préciser la distance et l\'ambiance est efficace. La référence artistique aurait elevé le résultat d\'un cran supplémentaire.',
+          },
+        },
+      ],
+    },
+    // ATELIER 2 — ECHO (Musique)
+    {
+      id: 2, name: 'ECHO', emoji: '🎵', domain: 'Musique générative',
+      steps: [
+        {
+          title: 'Mission Musicale — Étape 1 : L\'ambiance du pitch',
+          brief: "ECHO doit créer la <strong>musique d'ambiance du pitch</strong>. Le moment est crucial : les clients découvrent la campagne pour la première fois. Quelle ambiance veux-tu ?",
+          choices: [
+            { text: '🎯 "Dark cinematic orchestral, building tension, slow crescendo, strings and synth bass, melancholic yet hopeful, 80 BPM, no vocals, professional quality"', quality: 'best', points: 30 },
+            { text: '💬 "Musique pour une présentation"', quality: 'weak', points: 10 },
+            { text: '📝 "Musique cinématique pour un pitch créatif, ambiance inspirante"', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '🎵 ECHO génère : Un morceau orchestral sombre avec des cordes graves qui montent progressivement, une basse synthétique pulsante, et une ligne de violons qui apporte une note d\'espoir vers la fin. Parfait pour créer l\'attente avant un grand reveal. ✨',
+            weak: '🎵 ECHO génère : De la musique de fond générique, neutre, qui pourrait illustrer n\'importe quelle présentation PowerPoint. 😐',
+            medium: '🎵 ECHO génère : Un morceau cinématique correct, avec des violons et une progression inspirante. Manque de tension dramatique — le tempo et les instruments précis auraient orienté davantage. 💭',
+          },
+          feedbacks: {
+            best: 'Excellent ! Genre + ambiance + progression (crescendo) + instruments + tempo + contrainte (no vocals) : ECHO a tous les paramètres pour créer quelque chose de précis et d\'efficace.',
+            weak: 'Sans genre, ambiance, instruments ni tempo, ECHO produit quelque chose de générique. La musique IA est puissante quand on lui donne une direction claire.',
+            medium: 'Bien ! L\'ambiance inspirante oriente ECHO dans le bon sens. En ajoutant le tempo, les instruments et la progression, le résultat serait encore plus précis.',
+          },
+        },
+        {
+          title: 'Mission Musicale — Étape 2 : La signature sonore',
+          brief: "Le pitch a besoin d'une <strong>signature sonore</strong> — un jingle de 5 secondes qui s'entend au début et à la fin, reconnaissable. C'est l'identité sonore de SYNAPSE. Comment tu demandes à ECHO ?",
+          choices: [
+            { text: '🎯 "5-second sonic logo, ascending 4-note piano motif ending on a bright synth chord, futuristic tech vibe, clean and memorable, no percussion, slight reverb"', quality: 'best', points: 30 },
+            { text: '💬 "Crée un son pour notre marque SYNAPSE"', quality: 'weak', points: 10 },
+            { text: '📝 "Jingle court de 5 secondes, style futuriste, avec piano et synthétiseur"', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '🎵 ECHO génère : Quatre notes de piano montantes (do-ré-sol-si), suivies d\'un accord de synthétiseur brillant qui s\'ouvre comme un éclair de lumière. Simple, mémorable, technologique. Identité sonore parfaite. ⭐',
+            weak: '🎵 ECHO génère une courte mélodie aléatoire sans caractère particulier. Sans durée, style ni instrument définis, c\'est une loterie créative. 😅',
+            medium: '🎵 ECHO génère : Un jingle de piano + synth plaisant, de bonne durée. Bien ! Mais sans préciser le nombre de notes, la progression et l\'absence de percussions, c\'est moins précis. 💭',
+          },
+          feedbacks: {
+            best: 'Parfait ! En spécifiant la durée (5s), le motif (4 notes, ascendant), les instruments, la couleur sonore et ce qu\'il ne faut pas (no percussion), ECHO crée une identité sonore, pas juste une note de musique.',
+            weak: 'Créer une identité sonore demande des paramètres précis. Sans durée, instruments ni style définis, le résultat est impossible à contrôler.',
+            medium: 'Bien cadré ! La durée et les instruments sont précisés. Ajouter la structure mélodique (montant, descend, etc.) et les détails d\'arrangement aurait affiné davantage.',
+          },
+        },
+      ],
+    },
+    // ATELIER 3 — VOLT (Code)
+    {
+      id: 3, name: 'VOLT', emoji: '💻', domain: 'Code assisté',
+      steps: [
+        {
+          title: 'Mission Code — Étape 1 : La fonctionnalité',
+          brief: "L'appli de présentation du pitch doit afficher un <strong>compteur de mots en temps réel</strong> dans une zone de texte. VOLT peut coder ça. Comment formules-tu ta demande ?",
+          choices: [
+            { text: '🎯 "Écris une fonction JavaScript qui compte les mots dans un textarea en temps réel et affiche le résultat dans un span avec l\'id \'word-count\'. Utilise l\'événement input. Gère le cas où le champ est vide (affiche 0)."', quality: 'best', points: 30 },
+            { text: '💬 "Fais-moi un compteur de mots en JavaScript"', quality: 'weak', points: 10 },
+            { text: '📝 "Crée une fonction JavaScript pour compter les mots dans un textarea et les afficher quelque part."', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '```javascript\ndocument.querySelector("textarea").addEventListener("input", function() {\n  const text = this.value.trim();\n  const count = text === "" ? 0 : text.split(/\\s+/).length;\n  document.getElementById("word-count").textContent = count;\n});\n```\n✅ Précis, testé, gérant les cas limites. VOLT a livré exactement ce qu\'on attendait.',
+            weak: '```javascript\nfunction countWords(text) {\n  return text.split(" ").length;\n}\n```\n😐 Fonctionnel mais incomplet : pas d\'événement, pas de liaison au DOM, pas de gestion des espaces multiples.',
+            medium: '```javascript\ndocument.querySelector("textarea").addEventListener("input", function() {\n  document.getElementById("result").textContent = this.value.split(" ").length;\n});\n```\n💭 Presque ! Mais l\'id "result" ne correspond pas à "word-count", et les espaces multiples peuvent gonfler le compte.',
+          },
+          feedbacks: {
+            best: 'Excellent brief technique ! Tu as précisé le langage, le comportement (temps réel), l\'événement (input), l\'identifiant cible, et le cas limite (champ vide). VOLT a pu livrer un code robuste.',
+            weak: 'La fonction existe mais n\'est pas connectée à l\'interface. Sans préciser l\'événement, le sélecteur et l\'ID de sortie, tu reçois du code qui ne fonctionne pas tel quel.',
+            medium: 'Bon début ! L\'événement input est là. Mais sans l\'ID précis ("word-count") et sans mentionner la gestion des espaces, il faut corriger le code avant de l\'utiliser.',
+          },
+        },
+        {
+          title: 'Mission Code — Étape 2 : Le bug',
+          brief: "VOLT a livré le code, mais il y a un bug : quand on appuie sur Espace plusieurs fois, le compteur affiche un nombre trop élevé. Tu dois <strong>reporter le bug précisément</strong> à VOLT.",
+          choices: [
+            { text: '🎯 "Le compteur compte les espaces multiples comme des mots distincts. Si l\'utilisateur tape \'bonjour   monde\' (3 espaces), il affiche 4 mots au lieu de 2. Utilise text.trim().split(/\\s+/) au lieu de text.split(\' \') pour corriger."', quality: 'best', points: 30 },
+            { text: '💬 "Ça marche pas, répare le bug"', quality: 'weak', points: 10 },
+            { text: '📝 "Le compteur est faux quand il y a plusieurs espaces. Peux-tu corriger la fonction split ?"', quality: 'medium', points: 20 },
+          ],
+          iaResponses: {
+            best: '✅ Correction : `text.trim().split(/\\s+/).filter(w => w.length > 0).length` — Le trim() supprime les espaces en début/fin, le regex /\\s+/ gère les espaces multiples. Bug résolu proprement. 🎯',
+            weak: 'VOLT génère une réécriture complète de la fonction... qui peut introduire de nouveaux bugs. Sans diagnostic précis, la correction devient un tir dans le vide. 🎲',
+            medium: 'Correction : `text.split(/\\s+/).length` — mieux ! Mais sans le trim() initial, un espace en début de texte créerait quand même une fausse entrée. Presque parfait. 💭',
+          },
+          feedbacks: {
+            best: 'Rapport de bug parfait ! Tu as décrit le symptôme exact (spaces multiples comptés), donné un exemple reproductible (\'bonjour   monde\') et même proposé la solution. C\'est la méthode professionnelle.',
+            weak: 'Un rapport de bug sans contexte oblige l\'IA à deviner. "Ça marche pas" peut signifier mille choses. Le diagnostic précis est la compétence clé du développeur.',
+            medium: 'Bon rapport ! Tu identifies le problème (espaces multiples) et la zone à corriger (split). Ajouter un exemple reproductible et le comportement attendu aurait permis une correction complète du premier coup.',
+          },
+        },
+      ],
+    },
+  ];
+
+  const IA_COLORS = {
+    LYRA: { color: '#a855f7', emoji: '✍️' },
+    PRISM: { color: '#00d4ff', emoji: '🎨' },
+    ECHO: { color: '#ff0080', emoji: '🎵' },
+    VOLT: { color: '#00ff88', emoji: '💻' },
+  };
+
+  function showAtelierSelector() {
+    document.getElementById('atelier-selector').style.display = 'flex';
+    document.getElementById('atelier-workspace').style.display = 'none';
+    document.getElementById('atelier-complete').classList.remove('show');
+    // Mettre à jour les cartes
+    atelierState.done.forEach((d, i) => {
+      const card = document.getElementById('card-' + i);
+      if (d) card.classList.add('done');
+    });
+    // Score total
+    const total = atelierState.scores.reduce((a, b) => a + b, 0);
+    document.getElementById('total-score').textContent = total;
+    document.getElementById('ateliers-done').textContent = atelierState.done.filter(Boolean).length;
+    // Bouton quiz
+    if (atelierState.done.every(Boolean)) {
+      document.getElementById('btn-go-quiz').style.display = 'inline-block';
+    }
+  }
+
+  function openAtelier(idx) {
+    atelierState.current = idx;
+    atelierState.step = 0;
+    atelierState.selected = null;
+
+    const atelier = ATELIERS[idx];
+    document.getElementById('atelier-selector').style.display = 'none';
+    document.getElementById('atelier-workspace').style.display = 'flex';
+
+    // IA header
+    document.getElementById('ia-avatar').textContent = atelier.emoji;
+    document.getElementById('ia-name').textContent = atelier.name;
+    document.getElementById('ia-status').textContent = 'En ligne — ' + atelier.domain;
+
+    renderStep(idx, 0);
+  }
+
+  function renderStep(atelierIdx, stepIdx) {
+    const atelier = ATELIERS[atelierIdx];
+    const step = atelier.steps[stepIdx];
+    atelierState.step = stepIdx;
+    atelierState.selected = null;
+
+    const totalSteps = atelier.steps.length;
+    document.getElementById('ws-step-label').textContent = `Étape ${stepIdx + 1}/${totalSteps}`;
+    document.getElementById('ws-validate-btn').disabled = true;
+
+    // Chat initial
+    const chat = document.getElementById('ia-chat');
+    chat.innerHTML = '';
+    addChatBubble('ia', `Bonjour ! Je suis <strong>${atelier.name}</strong>, ton IA spécialisée en ${atelier.domain.toLowerCase()}. Prêt·e à co-créer ensemble ?`);
+    setTimeout(() => {
+      addChatBubble('ia-thinking', `Analyse du brief en cours...`);
+      setTimeout(() => {
+        document.querySelector('.chat-bubble.ia-thinking')?.remove();
+        addChatBubble('ia', `J'attends tes instructions. Comment veux-tu me guider pour cette mission ?`);
+      }, 1200);
+    }, 800);
+
+    // Contenu workspace
+    document.getElementById('workspace-left').innerHTML = `
+      <div class="mission-brief">
+        <div class="mb-label">Mission en cours</div>
+        <h3>${step.title}</h3>
+        <p>${step.brief}</p>
+      </div>
+      <p style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--neon-cyan);margin-bottom:14px;letter-spacing:2px;">
+        CHOISIS TON PROMPT →
+      </p>
+      <div class="prompt-choices" id="prompt-choices">
+        ${step.choices.map((c, i) => `
+          <div class="prompt-choice ${c.quality}" onclick="selectPrompt(${i})" id="choice-${i}">
+            ${c.text}
+          </div>
+        `).join('')}
+      </div>
+      <div class="result-panel" id="result-panel"></div>
+    `;
+
+    // Bouton suivant
+    const btnNext = document.getElementById('ws-validate-btn');
+    btnNext.textContent = stepIdx < totalSteps - 1 ? 'Étape suivante →' : 'Terminer l\'atelier ✓';
+    btnNext.onclick = validateStep;
+  }
+
+  function selectPrompt(choiceIdx) {
+    const atelier = ATELIERS[atelierState.current];
+    const step = atelier.steps[atelierState.step];
+    atelierState.selected = choiceIdx;
+
+    // Highlight
+    document.querySelectorAll('.prompt-choice').forEach((el, i) => {
+      el.classList.toggle('selected', i === choiceIdx);
+    });
+
+    const choice = step.choices[choiceIdx];
+    const iaKey = choice.quality;
+
+    // Réponse IA dans le chat
+    const chat = document.getElementById('ia-chat');
+    addChatBubble('user', choice.text.substring(2)); // retire l'émoji de qualité
+    setTimeout(() => {
+      addChatBubble('ia-thinking', 'Traitement en cours...');
+      setTimeout(() => {
+        document.querySelector('.chat-bubble.ia-thinking')?.remove();
+        addChatBubble('ia', step.iaResponses[iaKey]);
+      }, 1500);
+    }, 400);
+
+    document.getElementById('ws-validate-btn').disabled = false;
+  }
+
+  function validateStep() {
+    if (atelierState.selected === null) return;
+
+    const atelier = ATELIERS[atelierState.current];
+    const step = atelier.steps[atelierState.step];
+    const choice = step.choices[atelierState.selected];
+    const points = choice.points;
+
+    // Afficher le résultat + feedback
+    const scoreClass = points >= 28 ? 'ok' : (points >= 18 ? 'med' : 'low');
+    const resultPanel = document.getElementById('result-panel');
+    resultPanel.innerHTML = `
+      <div class="rp-label">Résultat de l'IA</div>
+      <div class="rp-result">${step.iaResponses[choice.quality]}</div>
+      <div class="rp-feedback">${step.feedbacks[choice.quality]}</div>
+      <div class="rp-score">
+        <span class="score-val ${scoreClass}">+${points} pts</span>
+        <span style="color:var(--muted);font-size:0.85em">${choice.quality === 'best' ? '⭐ Optimal !' : (choice.quality === 'medium' ? '💡 Correct' : '⚠️ Trop vague')}</span>
+      </div>
+    `;
+    resultPanel.classList.add('show');
+
+    // Ajouter les points
+    atelierState.scores[atelierState.current] += points;
+    const total = atelierState.scores.reduce((a, b) => a + b, 0);
+    document.getElementById('total-score').textContent = total;
+
+    // Prochaine étape ou fin
+    const nextStep = atelierState.step + 1;
+    const btnNext = document.getElementById('ws-validate-btn');
+
+    if (nextStep < atelier.steps.length) {
+      btnNext.textContent = 'Étape suivante →';
+      btnNext.disabled = false;
+      btnNext.onclick = () => renderStep(atelierState.current, nextStep);
+    } else {
+      // Atelier terminé
+      atelierState.done[atelierState.current] = true;
+      const doneCount = atelierState.done.filter(Boolean).length;
+      document.getElementById('ateliers-done').textContent = doneCount;
+
+      btnNext.textContent = 'Retour aux ateliers →';
+      btnNext.disabled = false;
+      btnNext.onclick = () => {
+        backToSelector();
+        // Si tous terminés, afficher écran complet
+        if (atelierState.done.every(Boolean)) {
+          showAtelierComplete();
+        }
+      };
+      addChatBubble('ia', `🎉 Atelier terminé ! Tu as gagné <strong>${atelierState.scores[atelierState.current]} points</strong> avec moi. Au prochain atelier !`);
+    }
+  }
+
+  function backToSelector() {
+    showAtelierSelector();
+    if (atelierState.done.every(Boolean)) {
+      showAtelierComplete();
+    }
+  }
+
+  function showAtelierComplete() {
+    document.getElementById('atelier-selector').style.display = 'none';
+    document.getElementById('atelier-workspace').style.display = 'none';
+    const total = atelierState.scores.reduce((a, b) => a + b, 0);
+    document.getElementById('final-atelier-score').textContent = total + ' pts';
+    document.getElementById('atelier-complete').classList.add('show');
+  }
+
+  function addChatBubble(type, text) {
+    const chat = document.getElementById('ia-chat');
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble ' + type;
+    bubble.innerHTML = text;
+    chat.appendChild(bubble);
+    chat.scrollTop = chat.scrollHeight;
   }
 </script>
 
