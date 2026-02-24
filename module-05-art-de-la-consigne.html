@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARIA-7 — L'Art de la Consigne — Module 05</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --neon-green: #00ff88;
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --neon-cyan: #4ecdc4;
+            --neon-purple: #a855f7;
+            --dark-bg: #0a0e17;
+            --panel-bg: rgba(10, 20, 40, 0.95);
+            --text: #e0f0ff;
+            --muted: #8899aa;
+            --danger: #ff4d4d;
+            --warn: #ffcc00;
+            --ok: #00ff88;
+            /* Couleur du domaine Interaction Raisonnée */
+            --domain-color: #4ecdc4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ==================== GRILLE DE FOND ==================== */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(78, 205, 196, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(78, 205, 196, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ==================== ÉCRAN TITRE ==================== */
+        #title-screen {
+            position: fixed;
+            inset: 0;
+            background:
+                url('images/module5-title-bg.png') center/cover no-repeat,
+                linear-gradient(135deg, #050c18 0%, #0d1f35 40%, #051420 70%, #0a0e17 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow: hidden;
+        }
+
+        #title-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 12, 24, 0.72);
+            z-index: 0;
+        }
+
+        /* Scanline effect */
+        #title-screen::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(78, 205, 196, 0.015) 2px,
+                rgba(78, 205, 196, 0.015) 4px
+            );
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #title-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #title-screen > * { position: relative; z-index: 2; }
+
+        /* Retour modules */
+        .back-link {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: rgba(78, 205, 196, 0.07);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 6px;
+            color: var(--domain-color);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78em;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            background: rgba(78, 205, 196, 0.15);
+            box-shadow: 0 0 15px rgba(78, 205, 196, 0.3);
+        }
+
+        /* Badge domaine */
+        .domain-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75em;
+            letter-spacing: 2px;
+            color: var(--domain-color);
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.4);
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        /* Logo flottant */
+        .title-logo {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(78, 205, 196, 0.6));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Titre principal */
+        .main-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        /* Nom de code */
+        .codename {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95em;
+            color: var(--domain-color);
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        /* Sous-titre */
+        .subtitle {
+            font-size: 1.15em;
+            color: #8899aa;
+            margin-bottom: 35px;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* Texte intro */
+        .intro-text {
+            max-width: 660px;
+            text-align: center;
+            line-height: 1.85;
+            margin-bottom: 40px;
+            color: #aabbcc;
+            font-size: 1em;
+        }
+
+        .intro-text strong { color: var(--domain-color); }
+
+        /* Infos mission */
+        .mission-info {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mission-chip {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78em;
+            padding: 7px 16px;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 4px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .mission-chip span { color: var(--domain-color); }
+
+        /* Bouton démarrer */
+        .start-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1em;
+            padding: 18px 55px;
+            background: transparent;
+            border: 2px solid var(--domain-color);
+            color: var(--domain-color);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(78, 205, 196, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before { left: 100%; }
+
+        .start-btn:hover {
+            background: rgba(78, 205, 196, 0.1);
+            box-shadow: 0 0 30px rgba(78, 205, 196, 0.5), inset 0 0 30px rgba(78, 205, 196, 0.08);
+            transform: scale(1.05);
+        }
+
+        /* Particules déco */
+        .particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--domain-color);
+            border-radius: 50%;
+            animation: particle-float linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes particle-float {
+            0%   { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10%  { opacity: 0.6; }
+            90%  { opacity: 0.6; }
+            100% { transform: translateY(-50px) translateX(30px); opacity: 0; }
+        }
+
+        /* Ligne de statut terminal */
+        .terminal-status {
+            position: absolute;
+            bottom: 30px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72em;
+            color: rgba(78, 205, 196, 0.5);
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .blink {
+            animation: blink 1.2s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* ==================== PLACEHOLDER BRIEFING (Phase suivante) ==================== */
+        #briefing-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--dark-bg);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #briefing-screen.active {
+            display: flex;
+        }
+
+        .placeholder-msg {
+            font-family: 'Space Mono', monospace;
+            color: var(--domain-color);
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .placeholder-sub {
+            color: var(--muted);
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Particules de fond -->
+    <div class="particles" id="particles"></div>
+
+    <!-- ==================== ÉCRAN TITRE ==================== -->
+    <div id="title-screen">
+
+        <!-- Retour -->
+        <a href="modules.html" class="back-link">← Modules</a>
+
+        <!-- Badge domaine -->
+        <div class="domain-badge">⚡ Module 05 — Interaction Raisonnée</div>
+
+        <!-- Logo -->
+        <div class="title-logo">🤖</div>
+
+        <!-- Nom de code -->
+        <div class="codename">ARIA-7</div>
+
+        <!-- Titre -->
+        <h1 class="main-title">L'Art de la Consigne</h1>
+
+        <!-- Sous-titre -->
+        <p class="subtitle">Escape Room des Prompts • Reactivation Protocol</p>
+
+        <!-- Texte d'intro -->
+        <p class="intro-text">
+            L'IA du laboratoire, <strong>ARIA-7</strong>, a été corrompue par une cyberattaque.
+            Ses réponses sont devenues incohérentes — les anciens opérateurs formulaient leurs instructions n'importe comment.
+            Ta mission : traverser les <strong>5 salles sécurisées</strong> du lab en prouvant
+            que tu maîtrises l'art des consignes efficaces.
+            Seules des instructions bien structurées peuvent débloquer chaque porte.
+        </p>
+
+        <!-- Infos mission -->
+        <div class="mission-info">
+            <div class="mission-chip">⏱ <span>15 min</span></div>
+            <div class="mission-chip">🔐 <span>5 Salles</span></div>
+            <div class="mission-chip">🎯 <span>Niveau : Débutant</span></div>
+            <div class="mission-chip">📜 <span>Attestation</span></div>
+        </div>
+
+        <!-- Bouton démarrer -->
+        <button class="start-btn" onclick="startMission()">
+            ▶ Activer ARIA-7
+        </button>
+
+        <!-- Statut terminal -->
+        <div class="terminal-status">
+            ARIA_LAB :: ACCÈS OPÉRATEUR REQUIS :: <span class="blink">█</span>
+        </div>
+    </div>
+
+    <!-- ==================== PLACEHOLDER — PHASES SUIVANTES ==================== -->
+    <div id="briefing-screen">
+        <p class="placeholder-msg">⚙️ Chargement du briefing...</p>
+        <p class="placeholder-sub">Phase 2 en cours de développement</p>
+        <button onclick="document.getElementById('briefing-screen').classList.remove('active'); document.getElementById('title-screen').classList.remove('hidden');"
+            style="margin-top:20px;font-family:'Space Mono',monospace;padding:10px 30px;border:1px solid #4ecdc4;background:transparent;color:#4ecdc4;cursor:pointer;">
+            ← Retour titre
+        </button>
+    </div>
+
+    <script>
+        // ==================== PARTICULES ====================
+        (function spawnParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = (Math.random() * 10) + 's';
+                p.style.width = p.style.height = (1 + Math.random() * 3) + 'px';
+                container.appendChild(p);
+            }
+        })();
+
+        // ==================== DÉMARRAGE ====================
+        function startMission() {
+            const titleScreen = document.getElementById('title-screen');
+            const briefingScreen = document.getElementById('briefing-screen');
+            titleScreen.classList.add('hidden');
+            setTimeout(() => {
+                briefingScreen.classList.add('active');
+            }, 400);
+        }
+    </script>
+
+</body>
+</html>
