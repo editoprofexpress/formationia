@@ -322,6 +322,223 @@
     .badge.blue{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--neon-blue)}
     .badge.yellow{background:rgba(255,230,109,0.1);border-color:rgba(255,230,109,0.3);color:var(--neon-yellow)}
 
+    /* ==================== SALLE D'ANALYSE (PHASE 3) ==================== */
+    #game-screen{
+      position:fixed;inset:0;
+      background:url('images/module11-lab.png') center/cover no-repeat,
+                 linear-gradient(135deg,#0a0e17 0%,#0d1a0d 50%,#0a0e17 100%);
+      z-index:998;display:none;flex-direction:column;overflow:hidden;
+    }
+    #game-screen::before{
+      content:'';position:absolute;inset:0;
+      background:rgba(10,14,23,0.82);z-index:0;
+    }
+    #game-screen.active{display:flex}
+    #game-screen > *{position:relative;z-index:1}
+
+    .game-header{
+      background:rgba(10,20,40,0.97);
+      border-bottom:1px solid rgba(255,230,109,0.3);
+      padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
+      flex-shrink:0;
+    }
+    .game-header-title{
+      font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-yellow);
+      display:flex;align-items:center;gap:12px;
+    }
+    .game-score-bar{display:flex;align-items:center;gap:20px;font-family:'Space Mono',monospace;font-size:0.85em}
+    .game-score-val{color:var(--neon-green);font-size:1.1em}
+    .game-dossier-counter{color:var(--muted)}
+
+    .game-body{
+      flex:1;overflow:hidden;display:flex;flex-direction:column;
+      padding:20px 30px;gap:16px;
+    }
+
+    /* Grille des dossiers */
+    #dossier-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+    }
+    .dossier-card{
+      background:rgba(10,20,40,0.88);
+      border:1px solid rgba(255,230,109,0.25);border-radius:12px;
+      padding:18px;cursor:pointer;transition:all .3s;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .dossier-card:hover{
+      border-color:var(--neon-yellow);
+      box-shadow:0 0 20px rgba(255,230,109,0.2);
+      transform:translateY(-3px);
+    }
+    .dossier-card.done-correct{
+      border-color:rgba(0,255,136,0.5);
+      background:rgba(0,255,136,0.06);
+      cursor:default;transform:none;
+    }
+    .dossier-card.done-wrong{
+      border-color:rgba(255,77,77,0.5);
+      background:rgba(255,77,77,0.06);
+      cursor:default;transform:none;
+    }
+    .dossier-num{
+      font-family:'Space Mono',monospace;font-size:0.72em;
+      color:var(--neon-yellow);letter-spacing:2px;
+    }
+    .dossier-type-icon{font-size:2em}
+    .dossier-title{font-weight:700;font-size:0.95em;color:var(--text)}
+    .dossier-status{
+      font-family:'Space Mono',monospace;font-size:0.75em;
+      color:var(--muted);display:flex;align-items:center;gap:6px;
+    }
+    .dossier-status.correct{color:var(--neon-green)}
+    .dossier-status.wrong{color:var(--danger)}
+
+    /* Vue détail d'un dossier */
+    #dossier-detail{display:none;flex-direction:column;height:100%;overflow:hidden}
+    #dossier-detail.active{display:flex}
+
+    .detail-header{
+      display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-shrink:0;
+    }
+    .detail-back{
+      font-family:'Space Mono',monospace;font-size:0.8em;
+      background:transparent;border:1px solid rgba(255,230,109,0.3);
+      color:var(--neon-yellow);padding:8px 14px;border-radius:6px;cursor:pointer;
+      transition:all .3s;
+    }
+    .detail-back:hover{background:rgba(255,230,109,0.1);border-color:var(--neon-yellow)}
+    .detail-title{
+      font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-yellow);
+      flex:1;
+    }
+    .detail-progress-dots{display:flex;gap:8px}
+    .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,230,109,0.2);transition:all .3s}
+    .dot.used{background:var(--neon-yellow);box-shadow:0 0 8px var(--neon-yellow)}
+
+    .detail-body{display:flex;gap:16px;flex:1;overflow:hidden;min-height:0}
+
+    /* Panneau média (gauche) */
+    .media-panel{
+      width:340px;flex-shrink:0;
+      background:rgba(0,0,0,0.4);border:1px solid rgba(255,230,109,0.2);
+      border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px;
+      overflow-y:auto;
+    }
+    .media-panel::-webkit-scrollbar{width:4px}
+    .media-panel::-webkit-scrollbar-thumb{background:rgba(255,230,109,0.2);border-radius:2px}
+    .media-preview{
+      background:rgba(0,0,0,0.5);border-radius:10px;
+      aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+      border:1px dashed rgba(255,230,109,0.2);position:relative;overflow:hidden;
+    }
+    .media-preview-icon{font-size:3.5em;opacity:0.7}
+    .media-preview-overlay{
+      position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(transparent,rgba(0,0,0,0.8));
+      padding:10px;font-family:'Space Mono',monospace;font-size:0.7em;
+      color:rgba(255,230,109,0.7);
+    }
+    .media-description{
+      font-size:0.88em;line-height:1.7;color:#b0c4de;
+      background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;
+      border-left:3px solid rgba(255,230,109,0.3);
+      user-select:text;
+    }
+    .media-metadata{
+      display:flex;flex-direction:column;gap:6px;
+    }
+    .meta-row{
+      display:flex;justify-content:space-between;
+      font-size:0.8em;padding:5px 8px;
+      background:rgba(0,0,0,0.3);border-radius:5px;
+    }
+    .meta-key{color:var(--muted);font-family:'Space Mono',monospace;font-size:0.85em}
+    .meta-val{color:var(--text)}
+
+    /* Panneau outils (droite) */
+    .tools-panel{
+      flex:1;display:flex;flex-direction:column;gap:12px;overflow-y:auto;
+      min-width:0;
+    }
+    .tools-panel::-webkit-scrollbar{width:4px}
+    .tools-panel::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.2);border-radius:2px}
+
+    .tools-label{
+      font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);
+      letter-spacing:2px;text-transform:uppercase;
+      display:flex;align-items:center;gap:10px;flex-shrink:0;
+    }
+    .tools-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1)}
+
+    .tool-btn{
+      background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.25);
+      border-radius:10px;padding:14px 18px;cursor:pointer;transition:all .3s;
+      display:flex;align-items:center;gap:14px;text-align:left;
+      font-family:'Exo 2',sans-serif;
+      flex-shrink:0;
+    }
+    .tool-btn:hover{border-color:var(--neon-blue);background:rgba(0,212,255,0.12);transform:translateX(4px)}
+    .tool-btn.used{border-color:rgba(0,255,136,0.35);background:rgba(0,255,136,0.06);cursor:default;transform:none}
+    .tool-btn .tool-icon{font-size:1.6em;flex-shrink:0}
+    .tool-btn .tool-text{flex:1}
+    .tool-btn .tool-name{font-weight:700;font-size:0.9em;color:var(--neon-blue);margin-bottom:3px}
+    .tool-btn.used .tool-name{color:var(--neon-green)}
+    .tool-btn .tool-desc{font-size:0.82em;color:var(--muted)}
+
+    .tool-result{
+      background:rgba(0,0,0,0.3);border-left:3px solid var(--neon-blue);
+      border-radius:0 8px 8px 0;padding:12px 14px;margin-top:6px;
+      font-size:0.87em;line-height:1.6;color:#b0c4de;display:none;
+    }
+    .tool-result.show{display:block;animation:fadeIn .3s ease}
+    .tool-result.suspicious{border-left-color:var(--neon-pink)}
+    .tool-result.clear{border-left-color:var(--neon-green)}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Verdict */
+    .verdict-zone{
+      flex-shrink:0;
+      background:rgba(10,20,40,0.9);border:1px solid rgba(255,230,109,0.2);
+      border-radius:12px;padding:16px 20px;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .verdict-label{
+      font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);
+    }
+    .verdict-btns{display:flex;gap:12px}
+    .verdict-btn{
+      font-family:'Space Mono',monospace;font-size:0.9em;
+      padding:12px 28px;border:2px solid;border-radius:8px;cursor:pointer;
+      transition:all .3s;letter-spacing:1px;
+    }
+    .verdict-btn.authentic{
+      border-color:rgba(0,255,136,0.5);color:var(--neon-green);background:rgba(0,255,136,0.08);
+    }
+    .verdict-btn.authentic:hover{background:rgba(0,255,136,0.2);box-shadow:0 0 16px rgba(0,255,136,0.3)}
+    .verdict-btn.fake{
+      border-color:rgba(255,0,128,0.5);color:var(--neon-pink);background:rgba(255,0,128,0.08);
+    }
+    .verdict-btn.fake:hover{background:rgba(255,0,128,0.2);box-shadow:0 0 16px rgba(255,0,128,0.3)}
+    .verdict-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+
+    .verdict-result{
+      display:none;padding:14px 20px;border-radius:10px;
+      font-family:'Space Mono',monospace;font-size:0.9em;
+      text-align:center;flex:1;
+    }
+    .verdict-result.show{display:block;animation:fadeIn .4s ease}
+    .verdict-result.correct{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:var(--neon-green)}
+    .verdict-result.wrong{background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.3);color:var(--danger)}
+
+    /* Récapitulatif */
+    #game-summary{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:20px}
+    #game-summary.show{display:flex}
+    .summary-score{
+      font-family:'Space Mono',monospace;font-size:3.5em;
+      color:var(--neon-green);text-align:center;
+    }
+    .summary-label{font-family:'Space Mono',monospace;color:var(--muted);font-size:0.9em}
+
     /* ==================== TOAST ==================== */
     #toast{
       position:fixed;bottom:30px;right:30px;z-index:9999;
@@ -446,6 +663,51 @@
     <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
     <span id="footer-info" style="font-family:'Space Mono',monospace;font-size:0.8em;color:#8899aa"></span>
     <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
+  </div>
+</div>
+
+<!-- ======================== SALLE D'ANALYSE (PHASE 3) ======================== -->
+<div id="game-screen">
+  <div class="game-header">
+    <div class="game-header-title">🔍 SALLE D'ANALYSE — Unité VERITAS</div>
+    <div class="game-score-bar">
+      <span class="game-dossier-counter" id="g-counter">Dossier 0/6 traité</span>
+      <span style="color:var(--muted)">|</span>
+      <span>Score : <span class="game-score-val" id="g-score">0</span>/6</span>
+    </div>
+  </div>
+
+  <div class="game-body">
+
+    <!-- GRILLE DES 6 DOSSIERS -->
+    <div id="dossier-grid"></div>
+
+    <!-- DÉTAIL D'UN DOSSIER -->
+    <div id="dossier-detail">
+      <div class="detail-header">
+        <button class="detail-back" onclick="backToGrid()">← Grille</button>
+        <div class="detail-title" id="detail-title-text">DOSSIER #1</div>
+        <div class="detail-progress-dots" id="detail-dots"></div>
+      </div>
+      <div class="detail-body">
+        <!-- Panneau média -->
+        <div class="media-panel" id="media-panel"></div>
+        <!-- Panneau outils + verdict -->
+        <div class="tools-panel" id="tools-panel"></div>
+      </div>
+    </div>
+
+    <!-- RÉCAPITULATIF FINAL -->
+    <div id="game-summary">
+      <div style="font-size:3em">🏆</div>
+      <div class="summary-score" id="summary-score-text">0/6</div>
+      <div class="summary-label">dossiers correctement authentifiés</div>
+      <div id="summary-msg" style="font-family:'Space Mono',monospace;font-size:0.9em;color:var(--muted);text-align:center;max-width:400px;line-height:1.6"></div>
+      <button class="briefing-btn primary" onclick="goToQuiz()" style="margin-top:10px;font-size:1em;padding:14px 35px">
+        📋 Passer au Quiz →
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -793,7 +1055,342 @@ function goToGame(){
     toast('📖 Lisez d\'abord toutes les sections de formation !');
     return;
   }
-  toast('🔍 Salle d\'analyse — Phase 3 bientôt disponible…');
+  document.getElementById('briefing-screen').classList.remove('active');
+  document.getElementById('game-screen').classList.add('active');
+  initGame();
+}
+
+/* =========================================================
+   PHASE 3 — SALLE D'ANALYSE FORENSIQUE
+========================================================= */
+
+const dossiers = [
+  {
+    id:1,
+    type:'📹',
+    typeLabel:'Vidéo',
+    title:'Allocution du Ministre',
+    description:'Une vidéo circule sur les réseaux sociaux : le ministre de l\'Économie y annonce la suppression des retraites pour les moins de 50 ans à partir du 1er janvier. Durée : 45 secondes. La vidéo est de bonne qualité, tournée dans ce qui ressemble à un bureau officiel.',
+    meta:[
+      {k:'Source',v:'Compte Twitter @InfosNation — 12 000 abonnés'},
+      {k:'Date',v:'Il y a 2 heures'},
+      {k:'Vues',v:'847 000'},
+      {k:'Vérification officielle',v:'Aucune confirmation du ministère'},
+    ],
+    tools:[
+      {icon:'🔬',name:'Analyse des pixels',desc:'Examiner les zones de transition',result:'Zone autour du cou et des oreilles : <strong style="color:var(--neon-pink)">halo lumineux détecté</strong>. Résolution du visage supérieure au reste du cadre (artifact de compositing). Cheveux aux tempes : flou artificiel caractéristique d\'un face-swap.',suspicious:true},
+      {icon:'👁️',name:'Analyse des yeux',desc:'Clignements et cohérence des reflets',result:'<strong style="color:var(--neon-pink)">Clignements : 0 en 45 secondes</strong> (norme humaine : 15-20/min). Reflets dans les pupilles incohérents entre l\'œil gauche et droit. Léger tremblement de la paupière droite toutes les 8 secondes : signature typique de GAN.',suspicious:true},
+      {icon:'🔍',name:'Vérification source',desc:'Recouper avec les sources officielles',result:'Le ministère de l\'Économie n\'a émis <strong>aucun communiqué</strong> sur ce sujet. Le compte Twitter @InfosNation a été créé il y a 3 jours. Aucun grand média ne reprend cette information. La video n\'est pas dans les archives officielles de la chaîne YouTube du ministère.',suspicious:true},
+    ],
+    answer:'fake',
+    explanation:'C\'est un deepfake. Les trois outils révèlent l\'absence de clignements (signature GAN), le halo de compositing autour du visage, et l\'absence totale de confirmation officielle. Le compte source très récent est aussi un signal d\'alarme.',
+  },
+  {
+    id:2,
+    type:'🖼️',
+    typeLabel:'Image',
+    title:'Photo de catastrophe',
+    description:'Une photographie choc montre une ville entière inondée. Des immeubles à moitié submergés, des gens sur les toits. La légende indique : "Catastrophe à Lyon, 50 000 personnes évacuées, situation hors de contrôle." Elle est partagée avec le hashtag #InondationLyon.',
+    meta:[
+      {k:'Source',v:'Post Instagram @AlerteMeteo_FR'},
+      {k:'Date',v:'Ce matin'},
+      {k:'Géolocalisation',v:'Absente'},
+      {k:'Résolution',v:'4096 x 2304 px (très haute)'},
+    ],
+    tools:[
+      {icon:'🔎',name:'Recherche inversée',desc:'Retrouver la source originale de l\'image',result:'<strong style="color:var(--neon-pink)">Aucune correspondance trouvée</strong> sur TinEye ou Google Images. L\'image n\'apparaît dans aucune archive médiatique. La résolution extrêmement élevée (4K) est atypique pour une photo prise en urgence sur un smartphone.',suspicious:true},
+      {icon:'🏙️',name:'Analyse de l\'architecture',desc:'Identifier la ville sur l\'image',result:'Les bâtiments visibles ne correspondent à <strong style="color:var(--neon-pink)">aucun quartier lyonnais connu</strong>. Les enseignes de commerces sont illisibles ou inexistantes. L\'architecture mélange des styles incohérents (haussmannien + brutalisme + buildings modernes). Artefact détecté : reflet de l\'eau non physique sur 3 bâtiments.',suspicious:true},
+      {icon:'📡',name:'Vérification terrain',desc:'Croiser avec les médias locaux et météo',result:'<strong style="color:var(--neon-green)">Aucune alerte inondation</strong> en cours à Lyon selon Météo-France, les pompiers du Rhône, et la préfecture. Radio Lyon confirme : la ville est normale ce matin. Le compte Instagram @AlerteMeteo_FR ne figure pas dans la liste des comptes officiels reconnus.',suspicious:true},
+    ],
+    answer:'fake',
+    explanation:'Image entièrement synthétique générée par IA. L\'architecture irréelle, l\'absence de résultat en recherche inversée, et le démenti des autorités locales le confirment. Ce type d\'image est conçu pour provoquer la panique et se propager rapidement.',
+  },
+  {
+    id:3,
+    type:'🎤',
+    typeLabel:'Audio',
+    title:'Message vocal du PDG',
+    description:'Une entreprise reçoit un message vocal urgent de son PDG parti en déplacement à l\'étranger. Il demande à la comptable de réaliser un virement exceptionnel de 85 000 € avant 18h, pour finaliser une acquisition confidentielle. "Ne passez pas par les canaux habituels, c\'est trop urgent."',
+    meta:[
+      {k:'Canal',v:'WhatsApp (numéro inconnu du PDG)'},
+      {k:'Durée',v:'1 min 12 sec'},
+      {k:'Qualité',v:'Bonne — légère compression'},
+      {k:'Urgence déclarée',v:'Virement avant 18h'},
+    ],
+    tools:[
+      {icon:'🎵',name:'Analyse spectrale',desc:'Examiner les fréquences audio',result:'Détection d\'un <strong style="color:var(--neon-pink)">artefact de clonage vocal</strong> : les fréquences entre 8kHz et 12kHz présentent une coupure nette non naturelle. La respiration entre les phrases est absente sur 9 des 12 pauses. Transition consonnes → voyelles trop nette (synthèse TTS).',suspicious:true},
+      {icon:'🗣️',name:'Analyse de la prosodie',desc:'Rythme, intonation, hésitations',result:'Le discours est <strong style="color:var(--neon-pink)">parfaitement fluide sans aucune hésitation</strong>, atypique pour une conversation spontanée et urgente. L\'intonation finale des phrases est systématiquement descendante (pattern TTS). Aucun bruit de fond cohérent avec un déplacement à l\'étranger.',suspicious:true},
+      {icon:'📞',name:'Vérification d\'identité',desc:'Contacter le PDG par un canal connu',result:'Rappel du PDG sur son numéro professionnel habituel : <strong style="color:var(--neon-green)">il ne sait pas de quoi on parle</strong>, il n\'a envoyé aucun message vocal. Il est bien à l\'étranger mais n\'a fait aucune demande de virement. Arnaque confirmée.',suspicious:true},
+    ],
+    answer:'fake',
+    explanation:'Arnaque au "faux PDG" utilisant un clone vocal IA. Les artefacts spectraux, l\'absence de prosodie naturelle, et la confirmation directe avec le vrai PDG le démontrent. Ces attaques ciblent des PME et causent des millions d\'euros de pertes chaque année en France.',
+  },
+  {
+    id:4,
+    type:'📹',
+    typeLabel:'Vidéo',
+    title:'Interview du climatologue',
+    description:'Une vidéo de 3 minutes présente une interview du professeur Renaud, climatologue à l\'INRAE. Il explique les mécanismes des vagues de chaleur amplifiées par le changement climatique, dans un langage accessible. La vidéo est issue de la chaîne YouTube officielle de l\'INRAE.',
+    meta:[
+      {k:'Source',v:'YouTube / INRAE officiel (590 000 abonnés)'},
+      {k:'Date',v:'Publiée il y a 3 semaines'},
+      {k:'Vues',v:'42 000'},
+      {k:'Commentaires',v:'890, modérés par l\'INRAE'},
+    ],
+    tools:[
+      {icon:'🔬',name:'Analyse des pixels',desc:'Examiner les zones de transition',result:'<strong style="color:var(--neon-green)">Aucun artefact détecté.</strong> La texture de peau présente un grain naturel homogène. Les transitions cheveux/peau sont nettes et cohérentes. La résolution est uniforme sur tout le cadre. Pas de halo de compositing autour du visage.',suspicious:false},
+      {icon:'👁️',name:'Analyse des yeux',desc:'Clignements et cohérence des reflets',result:'<strong style="color:var(--neon-green)">Clignements normaux</strong> : 14 en 3 minutes (≈ 4,7/min, légèrement inférieur à la normale car il lit des notes, cohérent). Les reflets lumineux sont identiques dans les deux yeux. Micro-mouvements oculaires naturels présents.',suspicious:false},
+      {icon:'🔍',name:'Vérification source',desc:'Confirmer l\'authenticité de la source',result:'La chaîne YouTube INRAE est <strong style="color:var(--neon-green)">vérifiée avec la coche officielle</strong>. Le Pr. Renaud figure bien dans l\'annuaire des chercheurs INRAE. La vidéo est référencée dans les actualités du site inrae.fr. D\'autres interviews de ce chercheur sont disponibles et cohérentes.',suspicious:false},
+    ],
+    answer:'authentic',
+    explanation:'Ce contenu est authentique. La chaîne YouTube officielle et vérifiée, l\'absence de tout artefact visuel, des clignements normaux et une source croisée avec le site institutionnel le confirment. Tous les signaux pointent vers un contenu légitime.',
+  },
+  {
+    id:5,
+    type:'📰',
+    typeLabel:'Article',
+    title:'Déclaration du Prix Nobel',
+    description:'Un article largement partagé cite le professeur Haruto Sato, Prix Nobel de chimie 2022, qui affirme : "L\'eau du robinet en Europe contient des nanoparticules d\'IA capables de modifier le comportement humain." L\'article est publié sur le site ScienceAlert-Today.com.',
+    meta:[
+      {k:'Site',v:'ScienceAlert-Today.com'},
+      {k:'Auteur',v:'"Rédaction Science"'},
+      {k:'Date',v:'Hier'},
+      {k:'Liens',v:'Aucune source citée'},
+    ],
+    tools:[
+      {icon:'👤',name:'Vérification de l\'auteur',desc:'Le prix Nobel a-t-il réellement dit ça ?',result:'<strong style="color:var(--neon-pink)">Le professeur Sato n\'a fait aucune déclaration de ce type.</strong> Son profil sur le site de l\'Université de Tokyo ne mentionne pas de travaux sur ce sujet. L\'AFP a publié un démenti : il ne se souvient pas de cet "entretien". Le concept de "nanoparticules d\'IA" n\'existe pas scientifiquement.',suspicious:true},
+      {icon:'🌐',name:'Analyse du site',desc:'Vérifier la crédibilité de la source',result:'ScienceAlert-Today.com est <strong style="color:var(--neon-pink)">enregistré il y a 47 jours</strong>. Aucune équipe éditoriale identifiable. Le design copie celui de ScienceAlert.com (site légitime australien). Aucun article sur ce site n\'est repris par des médias reconnus. Whois : domaine enregistré anonymement.',suspicious:true},
+      {icon:'📝',name:'Analyse du texte',desc:'Tester si le texte est généré par IA',result:'<strong style="color:var(--neon-pink)">Score GPTZero : 94 % de probabilité IA</strong>. Le texte présente une "perplexité" très basse (structure trop prévisible) et une "burstiness" nulle (aucune variation de longueur de phrases). Le champ lexical mélange jargon scientifique et affirmations non falsifiables — technique rhétorique typique de la désinformation.',suspicious:true},
+    ],
+    answer:'fake',
+    explanation:'Article de désinformation entièrement généré par IA. La citation est inventée, le site est un clone frauduleux créé récemment, et l\'analyse textuelle révèle une rédaction IA à 94%. Le concept cité ("nanoparticules d\'IA dans l\'eau") est scientifiquement absurde.',
+  },
+  {
+    id:6,
+    type:'🖼️',
+    typeLabel:'Image',
+    title:'Manifestation place de la République',
+    description:'Une photographie montre une grande manifestation place de la République à Paris. Des milliers de personnes, banderoles syndicales visibles, présence de CRS en arrière-plan. La photo est diffusée par l\'AFP avec légende géolocalisée.',
+    meta:[
+      {k:'Source',v:'AFP — Agence France-Presse'},
+      {k:'Photographe',v:'Marco Bertorello / AFP'},
+      {k:'Date',v:'03/02/2025 — 14h22'},
+      {k:'Crédits',v:'© AFP 2025'},
+    ],
+    tools:[
+      {icon:'🔎',name:'Recherche inversée',desc:'Retrouver la source originale',result:'<strong style="color:var(--neon-green)">Image trouvée dans la base AFP</strong> avec les mêmes métadonnées. Elle apparaît dans plusieurs articles de presse : Le Monde, Libération, Le Figaro. Aucune version antérieure identique trouvée (exclut le recyclage d\'une ancienne photo).',suspicious:false},
+      {icon:'🏙️',name:'Vérification géographique',desc:'Confirmer le lieu photographié',result:'<strong style="color:var(--neon-green)">Architecture confirmée</strong> : la colonne de Juillet, les immeubles haussmanniens et la fontaine Molière sont bien ceux de la place de la République. Les enseignes visibles (pharmacie, restaurant) correspondent aux commerces répertoriés sur Google Street View à cette date.',suspicious:false},
+      {icon:'🔬',name:'Analyse de cohérence',desc:'Vérifier la physique et les détails',result:'<strong style="color:var(--neon-green)">Aucun artefact IA</strong> : les visages en arrière-plan sont flous de manière cohérente (profondeur de champ réelle). Les ombres sont uniformes et correspondent à une heure du jour en février. Le grain photographique est cohérent avec un capteur Canon EOS R5 (matériel courant AFP).',suspicious:false},
+    ],
+    answer:'authentic',
+    explanation:'Photo authentique de l\'AFP. La crédibilité de l\'agence, la présence dans plusieurs sources de presse reconnues, la géolocalisation confirmée et l\'absence de tout artefact IA le prouvent. Face à une source AFP avec crédit photographe identifié, le niveau de confiance est élevé.',
+  },
+];
+
+/* --- État du jeu --- */
+const gameState = {
+  verdicts:{},       // dossier id → 'correct'|'wrong'
+  toolsUsed:{},      // dossier id → Set d'index d'outils utilisés
+  currentDossier:null,
+  score:0,
+  done:0,
+};
+
+function initGame(){
+  // Initialiser l'état
+  dossiers.forEach(d=>{
+    gameState.toolsUsed[d.id] = new Set();
+  });
+  renderGrid();
+}
+
+/* --- Grille des dossiers --- */
+function renderGrid(){
+  const grid = document.getElementById('dossier-grid');
+  document.getElementById('dossier-detail').classList.remove('active');
+  document.getElementById('game-summary').classList.remove('show');
+  grid.style.display = 'grid';
+
+  grid.innerHTML = dossiers.map(d=>{
+    const verdict = gameState.verdicts[d.id];
+    let cardClass = 'dossier-card';
+    let statusHtml = '<span class="dossier-status">⬜ En attente d\'analyse</span>';
+    if(verdict==='correct'){
+      cardClass += ' done-correct';
+      statusHtml = '<span class="dossier-status correct">✓ Verdict correct</span>';
+    } else if(verdict==='wrong'){
+      cardClass += ' done-wrong';
+      statusHtml = '<span class="dossier-status wrong">✗ Verdict incorrect</span>';
+    }
+    const toolCount = gameState.toolsUsed[d.id]?.size || 0;
+    const toolProgress = toolCount>0 ? `<span class="dossier-status">${toolCount}/3 outils utilisés</span>` : '';
+    return `<div class="${cardClass}" onclick="${verdict?'':'openDossier('+d.id+')'}">
+      <div class="dossier-num">DOSSIER #${d.id} · ${d.typeLabel}</div>
+      <div class="dossier-type-icon">${d.type}</div>
+      <div class="dossier-title">${d.title}</div>
+      ${verdict ? statusHtml : (toolProgress || statusHtml)}
+    </div>`;
+  }).join('');
+
+  updateScoreBar();
+}
+
+/* --- Ouvrir un dossier --- */
+function openDossier(id){
+  const d = dossiers.find(x=>x.id===id);
+  if(!d) return;
+  gameState.currentDossier = id;
+
+  document.getElementById('dossier-grid').style.display = 'none';
+  const detail = document.getElementById('dossier-detail');
+  detail.classList.add('active');
+
+  document.getElementById('detail-title-text').textContent = `DOSSIER #${d.id} — ${d.title}`;
+
+  // Dots de progression outils
+  const dotsEl = document.getElementById('detail-dots');
+  dotsEl.innerHTML = d.tools.map((_,i)=>`<div class="dot ${gameState.toolsUsed[id].has(i)?'used':''}" id="dot-${id}-${i}"></div>`).join('');
+
+  // Panneau média
+  const mediaPanel = document.getElementById('media-panel');
+  mediaPanel.innerHTML = `
+    <div class="media-preview">
+      <div class="media-preview-icon">${d.type}</div>
+      <div class="media-preview-overlay">${d.typeLabel} · Dossier VERITAS-${String(id).padStart(3,'0')}</div>
+    </div>
+    <div class="media-description">${d.description}</div>
+    <div class="media-metadata">
+      ${d.meta.map(m=>`<div class="meta-row"><span class="meta-key">${m.k}</span><span class="meta-val">${m.v}</span></div>`).join('')}
+    </div>`;
+
+  // Panneau outils + verdict
+  const allUsed = gameState.toolsUsed[id].size >= d.tools.length;
+  const alreadyVerdicted = gameState.verdicts[id];
+
+  document.getElementById('tools-panel').innerHTML = `
+    <div class="tools-label">🛠 Outils d'analyse disponibles</div>
+    ${d.tools.map((t,i)=>{
+      const used = gameState.toolsUsed[id].has(i);
+      return `<div>
+        <div class="tool-btn ${used?'used':''}" id="tool-btn-${id}-${i}" onclick="${used?'':'useTool('+id+','+i+')'}">
+          <span class="tool-icon">${t.icon}</span>
+          <div class="tool-text">
+            <div class="tool-name">${used?'✓ ':''}${t.name}</div>
+            <div class="tool-desc">${t.desc}</div>
+          </div>
+        </div>
+        <div class="tool-result ${used?'show':''} ${used && t.suspicious?'suspicious':used?'clear':''}" id="tool-result-${id}-${i}">
+          ${used ? t.result : ''}
+        </div>
+      </div>`;
+    }).join('')}
+
+    <div class="verdict-zone" id="verdict-zone">
+      ${alreadyVerdicted ? `
+        <div class="verdict-result ${alreadyVerdicted==='correct'?'correct':'wrong'} show" style="flex:1">
+          ${alreadyVerdicted==='correct'
+            ? '✓ Verdict correct ! '+d.explanation
+            : '✗ Verdict incorrect. '+d.explanation}
+        </div>
+      ` : `
+        <div class="verdict-label">Votre verdict :</div>
+        <div class="verdict-btns">
+          <button class="verdict-btn authentic" ${allUsed?'':'disabled'} onclick="renderVerdict(${id},'authentic')">✓ AUTHENTIQUE</button>
+          <button class="verdict-btn fake" ${allUsed?'':'disabled'} onclick="renderVerdict(${id},'fake')">✗ DEEPFAKE</button>
+        </div>
+        ${!allUsed?'<div style="font-family:\'Space Mono\',monospace;font-size:0.75em;color:var(--muted)">Utilisez les 3 outils avant de trancher</div>':''}
+      `}
+    </div>`;
+}
+
+/* --- Utiliser un outil --- */
+function useTool(dossierId, toolIdx){
+  const d = dossiers.find(x=>x.id===dossierId);
+  if(!d) return;
+  const t = d.tools[toolIdx];
+
+  gameState.toolsUsed[dossierId].add(toolIdx);
+
+  // Mettre à jour le bouton outil
+  const btn = document.getElementById('tool-btn-'+dossierId+'-'+toolIdx);
+  if(btn){ btn.classList.add('used'); btn.onclick = null; btn.querySelector('.tool-name').textContent = '✓ '+t.name; }
+
+  // Afficher le résultat
+  const res = document.getElementById('tool-result-'+dossierId+'-'+toolIdx);
+  if(res){ res.innerHTML = t.result; res.classList.add('show'); res.classList.add(t.suspicious?'suspicious':'clear'); }
+
+  // Mettre à jour le dot
+  const dot = document.getElementById('dot-'+dossierId+'-'+toolIdx);
+  if(dot) dot.classList.add('used');
+
+  // Débloquer le verdict si tous les outils utilisés
+  if(gameState.toolsUsed[dossierId].size >= d.tools.length){
+    const vz = document.getElementById('verdict-zone');
+    if(vz){
+      vz.querySelectorAll('.verdict-btn').forEach(b=>b.disabled=false);
+      const hint = vz.querySelector('[style*="Utilisez les 3"]');
+      if(hint) hint.remove();
+    }
+    toast('🔓 Tous les outils utilisés — rendez votre verdict !');
+  }
+}
+
+/* --- Rendre le verdict --- */
+function renderVerdict(dossierId, choice){
+  const d = dossiers.find(x=>x.id===dossierId);
+  if(!d || gameState.verdicts[dossierId]) return;
+
+  const isCorrect = (choice === d.answer);
+  gameState.verdicts[dossierId] = isCorrect ? 'correct' : 'wrong';
+  if(isCorrect) gameState.score++;
+  gameState.done++;
+
+  // Mettre à jour zone verdict
+  const vz = document.getElementById('verdict-zone');
+  if(vz){
+    vz.innerHTML = `<div class="verdict-result ${isCorrect?'correct':'wrong'} show" style="flex:1">
+      ${isCorrect ? '✓ Correct ! ' : '✗ Incorrect. '}${d.explanation}
+    </div>`;
+  }
+
+  updateScoreBar();
+
+  // Vérifier si tous les dossiers traités
+  if(gameState.done >= dossiers.length){
+    setTimeout(showSummary, 2500);
+  } else {
+    setTimeout(()=>{ toast(isCorrect?'✅ Bien joué ! Prochain dossier.':'❌ Raté. Analysez les autres dossiers.',3000); }, 400);
+  }
+}
+
+/* --- Récapitulatif --- */
+function showSummary(){
+  document.getElementById('dossier-grid').style.display = 'none';
+  document.getElementById('dossier-detail').classList.remove('active');
+  const sum = document.getElementById('game-summary');
+  sum.classList.add('show');
+  const pct = Math.round(gameState.score/dossiers.length*100);
+  document.getElementById('summary-score-text').textContent = gameState.score+'/'+dossiers.length;
+  document.getElementById('summary-score-text').style.color = gameState.score>=4?'var(--neon-green)':'var(--neon-pink)';
+  let msg = '';
+  if(gameState.score===6) msg = '🏆 Score parfait ! Vous êtes un expert de la détection de deepfakes.';
+  else if(gameState.score>=4) msg = '✅ Bon score ! Vous avez les compétences de base pour détecter les deepfakes.';
+  else msg = '⚠️ Entraînez-vous encore. Relisez le briefing et réessayez.';
+  document.getElementById('summary-msg').textContent = msg;
+}
+
+function updateScoreBar(){
+  document.getElementById('g-score').textContent = gameState.score;
+  document.getElementById('g-counter').textContent = 'Dossier '+gameState.done+'/6 traité'+(gameState.done>1?'s':'');
+}
+
+function backToGrid(){
+  renderGrid();
+  document.getElementById('game-summary').classList.remove('show');
+}
+
+function goToQuiz(){
+  toast('📋 Quiz — Phase 4 bientôt disponible…');
 }
 
 /* =========================================================
