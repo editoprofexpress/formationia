@@ -959,6 +959,105 @@
       transition: width 1s ease;
     }
 
+    /* ==================== ATTESTATION ==================== */
+    #attestation-screen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2d 50%, #0a0e17 100%);
+      z-index: 996;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 40px 20px;
+    }
+
+    #attestation-screen.active { display: flex; }
+
+    .attestation-card {
+      max-width: 550px;
+      width: 100%;
+      background: rgba(10, 20, 50, 0.95);
+      border: 2px solid var(--neon-green);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 60px rgba(0, 255, 136, 0.2);
+      text-align: center;
+    }
+
+    .attestation-icon { font-size: 4em; margin-bottom: 20px; }
+
+    .attestation-card h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      color: var(--neon-green);
+      margin-bottom: 10px;
+    }
+
+    .attestation-module-name {
+      font-size: 1.15em;
+      color: var(--neon-blue);
+      margin-bottom: 25px;
+    }
+
+    .attestation-score-box {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .attestation-name-input {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(0, 50, 100, 0.4);
+      border: 2px solid rgba(0, 212, 255, 0.4);
+      border-radius: 8px;
+      color: white;
+      font-size: 1em;
+      font-family: 'Exo 2', sans-serif;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    .attestation-name-input:focus {
+      outline: none;
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    .attestation-name-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+    .attestation-download-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.05em;
+      padding: 14px 35px;
+      border: 2px solid var(--neon-green);
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.25), rgba(0, 212, 255, 0.2));
+      color: var(--neon-green);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 15px;
+    }
+
+    .attestation-download-btn:hover {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.4), rgba(0, 212, 255, 0.3));
+      box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .attestation-back-link {
+      display: inline-block;
+      margin-top: 25px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: color 0.3s;
+    }
+
+    .attestation-back-link:hover { color: var(--neon-blue); }
+
     /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .main-title { font-size: 1.9em; letter-spacing: 2px; }
@@ -971,6 +1070,8 @@
       .module-title { font-size: 1.3em; }
       .briefing-footer { flex-direction: column; gap: 10px; }
       .briefing-btn { width: 100%; justify-content: center; }
+      .attestation-card { padding: 25px; }
+      .evidence-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -2431,7 +2532,233 @@
 
     function showAttestation() {
       document.getElementById('quiz-screen').classList.remove('active');
-      // L'attestation sera implémentée dans le prochain commit
+      document.getElementById('attestation-screen').classList.add('active');
+      document.getElementById('attestation-score').textContent = Math.round(quizScore / quizQuestions.length * 100) + '%';
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN ATTESTATION ==================== -->
+  <div id="attestation-screen">
+    <div class="attestation-card">
+      <div class="attestation-icon">🎓</div>
+      <h2>Attestation de réussite</h2>
+      <p style="color: var(--muted); margin-bottom: 8px;">Vous avez validé le micro-module</p>
+      <p class="attestation-module-name">
+        <strong>« Démystifier l'Intelligence Artificielle »</strong>
+      </p>
+
+      <div class="attestation-score-box">
+        <p style="margin-bottom: 10px;">Score obtenu :</p>
+        <p style="font-family: 'Space Mono', monospace; font-size: 1.8em; color: var(--neon-green); margin: 0;" id="attestation-score">0%</p>
+      </div>
+
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label style="display: block; margin-bottom: 8px; color: var(--neon-blue); font-size: 0.9em;">
+          Votre nom (pour l'attestation) :
+        </label>
+        <input type="text" id="certificate-name" placeholder="Prénom NOM"
+               class="attestation-name-input">
+      </div>
+
+      <button class="attestation-download-btn" onclick="downloadCertificate()">
+        📥 Télécharger l'attestation
+      </button>
+
+      <br>
+      <a href="modules.html" class="attestation-back-link">← Retour à la liste des modules</a>
+    </div>
+  </div>
+
+  <script>
+    function downloadCertificate() {
+      const name = document.getElementById('certificate-name').value.trim() || 'Participant';
+      const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const score = Math.round(quizScore / quizQuestions.length * 100);
+      const refId = 'IA-DECODE-' + Date.now().toString(36).toUpperCase();
+
+      const certificateHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attestation - Démystifier l'IA - ${name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: #0a1628;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #e0f0ff;
+  }
+  .certificate {
+    background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
+    border: 3px solid #00ff88;
+    border-radius: 20px;
+    padding: 50px 60px;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+  }
+  .certificate::before {
+    content: '';
+    position: absolute;
+    top: 15px; left: 15px; right: 15px; bottom: 15px;
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 15px;
+    pointer-events: none;
+  }
+  .header { text-align: center; margin-bottom: 40px; }
+  .logo { font-size: 3em; margin-bottom: 10px; }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    background: linear-gradient(90deg, #00ff88, #00d4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 5px;
+  }
+  .subtitle-cert {
+    color: #00d4ff;
+    font-size: 1.1em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .content { text-align: center; }
+  .certifies { color: #8899aa; font-size: 1em; margin-bottom: 5px; }
+  .name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    color: #ffffff;
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid rgba(0,212,255,0.3);
+    border-bottom: 1px solid rgba(0,212,255,0.3);
+  }
+  .module-box {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+  }
+  .module-box-title {
+    font-family: 'Space Mono', monospace;
+    color: #00ff88;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  .score-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #0a1628;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  .skill {
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    color: #00d4ff;
+  }
+  .footer-cert {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0,212,255,0.2);
+  }
+  .footer-item { text-align: center; }
+  .footer-label { color: #888; font-size: 0.85em; margin-bottom: 5px; }
+  .footer-value { color: #00d4ff; font-weight: 600; }
+  .provider {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,212,255,0.15);
+    color: #8899aa;
+    font-size: 0.9em;
+  }
+  .provider a { color: #00d4ff; text-decoration: none; }
+  @media print {
+    body { background: white; }
+    .certificate { box-shadow: none; border-width: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="certificate">
+  <div class="header">
+    <div class="logo">🔍🤖</div>
+    <div class="title">Attestation de Réussite</div>
+    <div class="subtitle-cert">Formation IA Responsable</div>
+  </div>
+  <div class="content">
+    <p class="certifies">Cette attestation certifie que</p>
+    <div class="name">${name}</div>
+    <p>a complété avec succès le micro-module</p>
+    <div class="module-box">
+      <div class="module-box-title">🔍 Démystifier l'Intelligence Artificielle</div>
+      <p>via la mission immersive "DECODE : Mission Vérité"</p>
+      <div class="score-badge">Score : ${score}%</div>
+    </div>
+    <p>Compétences validées :</p>
+    <div class="skills">
+      <span class="skill">🧠 IA vs Intelligence Humaine</span>
+      <span class="skill">📜 Origines de l'IA (1950-2025)</span>
+      <span class="skill">⚙️ IA Symbolique vs Connexionniste</span>
+      <span class="skill">📊 Hiérarchie IA ⊃ ML ⊃ DL</span>
+      <span class="skill">🔍 Analyse critique</span>
+      <span class="skill">🛡️ Démystification marketing</span>
+    </div>
+  </div>
+  <div class="footer-cert">
+    <div class="footer-item">
+      <div class="footer-label">Date d'obtention</div>
+      <div class="footer-value">${date}</div>
+    </div>
+    <div class="footer-item">
+      <div class="footer-label">Programme</div>
+      <div class="footer-value">IA Responsable</div>
+    </div>
+    <div class="footer-item">
+      <div class="footer-label">Référence</div>
+      <div class="footer-value">${refId}</div>
+    </div>
+  </div>
+  <div class="provider">
+    Formation proposée par <a href="https://www.profexpress.com" target="_blank">Prof Express</a>
+  </div>
+</div>
+</body>
+</html>`;
+
+      const blob = new Blob([certificateHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Attestation_IA_Demystifier_' + name.replace(/\\s+/g, '_') + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 
