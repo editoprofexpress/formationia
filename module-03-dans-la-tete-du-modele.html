@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEURONAUT — Module 3 : Dans la tête d'un modèle</title>
+  <title>NEURONAUTE — Module 3 : Dans la tête d'un modèle</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
@@ -548,7 +548,7 @@
       background-clip: text;
       margin-bottom: 8px;
     }
-    .zone-desc { color: #aabbcc; font-size: 1em; line-height: 1.7; }
+    .zone-desc { color: #ddeeff; font-size: 1em; line-height: 1.7; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
 
     /* Challenges tokens */
     .challenge-card {
@@ -736,10 +736,10 @@
     </a>
     <div class="particles" id="particles"></div>
     <div class="title-logo">
-      <img src="images/module3-neuronaut.png" alt="Neuronaut"
+      <img src="images/module3-neuronaut.png" alt="Neuronaute"
            style="height:120px;filter:drop-shadow(0 0 20px rgba(255,107,107,0.7)) drop-shadow(0 0 40px rgba(0,212,255,0.4))">
     </div>
-    <h1 class="main-title">NEURONAUT</h1>
+    <h1 class="main-title">NEURONAUTE</h1>
     <p class="subtitle">Module 3 — Voyage au Cœur du Modèle</p>
     <p class="intro-text">
       Comment une IA lit-elle un texte, en comprend-elle le sens, et prédit-elle la suite ?
@@ -762,7 +762,7 @@
 
     <!-- Header -->
     <div class="briefing-header">
-      <div class="briefing-title">🧠 NEURONAUT — Dossier de Préparation</div>
+      <div class="briefing-title">🧠 NEURONAUTE — Dossier de Préparation</div>
       <div class="briefing-progress">
         <span id="progress-text">Section 1/6</span>
         <div class="briefing-progress-bar">
@@ -808,18 +808,18 @@
         <div style="border-top:1px solid rgba(255,107,107,0.2);margin:15px 0 10px;padding-top:10px">
           <div class="briefing-nav-item" onclick="showLesson(5)" id="nav-5">
             <span class="nav-icon">🚀</span>
-            <span>Exploration NEURONAUT</span>
+            <span>Exploration NEURONAUTE</span>
             <span class="nav-number" style="background:rgba(255,107,107,0.2)">▶</span>
           </div>
           <div class="briefing-nav-item" id="quiz-nav-item"
                onclick="showQuizInBriefing()"
-               style="opacity:0.45;pointer-events:none;cursor:not-allowed">
+               style="display:none">
             <span class="nav-icon">📜</span>
             <span>Quiz de certification</span>
           </div>
           <div class="briefing-nav-item" id="cert-nav-item"
                onclick="showCertInBriefing()"
-               style="opacity:0.45;pointer-events:none;cursor:not-allowed">
+               style="display:none">
             <span class="nav-icon">🔒</span>
             <span>Attestation de réussite</span>
           </div>
@@ -1275,7 +1275,7 @@
       </div>`,
 
       // ---- Section 5 : Mission ----
-      `<div class="lesson-title">🚀 Mission NEURONAUT</div>
+      `<div class="lesson-title">🚀 Mission NEURONAUTE</div>
       <div class="lesson-kicker">Tu es prêt à plonger dans l'IA</div>
       <div class="divider"></div>
       <div class="callout" style="text-align:center;padding:30px">
@@ -1288,7 +1288,7 @@
       </div>
 
       <div class="divider"></div>
-      <h3 style="margin-bottom:20px;color:var(--neon-orange)">Ton parcours NEURONAUT</h3>
+      <h3 style="margin-bottom:20px;color:var(--neon-orange)">Ton parcours NEURONAUTE</h3>
 
       <div class="info-card" style="border-color:rgba(255,107,107,0.4)">
         <span class="info-card-icon">⚙️</span>
@@ -1421,7 +1421,7 @@
       document.getElementById('briefing-screen').classList.add('active');
       // Débloquer l'item quiz dans la sidebar
       const qNav = document.getElementById('quiz-nav-item');
-      if (qNav) { qNav.style.opacity = '1'; qNav.style.pointerEvents = 'auto'; qNav.style.cursor = 'pointer'; }
+      if (qNav) { qNav.style.display = ''; }
       showQuizInBriefing();
     }
 
@@ -1449,7 +1449,7 @@
     function renderQuizHTML() {
       let html = `
         <div style="text-align:center;margin-bottom:30px">
-          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);letter-spacing:3px;margin-bottom:8px">CERTIFICATION NEURONAUT</div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);letter-spacing:3px;margin-bottom:8px">CERTIFICATION NEURONAUTE</div>
           <h2 style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-red);margin-bottom:8px">Quiz de Certification</h2>
           <p style="color:#8899aa;line-height:1.7">Réponds aux ${quizQuestions.length} questions pour valider ta mission.<br>Score minimum : <strong style="color:var(--neon-red)">70%</strong> pour obtenir ton attestation.</p>
         </div>
@@ -1550,9 +1550,7 @@
       certificateUnlocked = true;
       const cNav = document.getElementById('cert-nav-item');
       if (cNav) {
-        cNav.style.opacity = '1';
-        cNav.style.pointerEvents = 'auto';
-        cNav.style.cursor = 'pointer';
+        cNav.style.display = '';
         cNav.querySelector('.nav-icon').textContent = '🎓';
       }
       showCertInBriefing();
@@ -1577,9 +1575,9 @@
       document.getElementById('briefing-content').innerHTML = `
         <div style="text-align:center;margin-bottom:35px">
           <div style="font-size:3em;margin-bottom:12px">🎓</div>
-          <h2 style="font-family:'Space Mono',monospace;color:var(--neon-green);margin-bottom:10px">Félicitations, Neuronaut !</h2>
+          <h2 style="font-family:'Space Mono',monospace;color:var(--neon-green);margin-bottom:10px">Félicitations, Neuronaute !</h2>
           <p style="color:#aabbcc;line-height:1.8;max-width:500px;margin:0 auto">
-            Tu as complété le <strong>Module 3 — NEURONAUT</strong> avec un score de
+            Tu as complété le <strong>Module 3 — NEURONAUTE</strong> avec un score de
             <strong style="color:var(--neon-green);font-size:1.2em">${finalQuizScore}%</strong>.
           </p>
         </div>
@@ -1727,7 +1725,7 @@
       const body = document.getElementById('game-body');
       let html = `
         <div style="position:relative;border-radius:14px;overflow:hidden;margin-bottom:25px;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end;background:url('images/room-tokens.png') center/cover no-repeat">
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,23,0.96) 0%,rgba(10,14,23,0.6) 55%,rgba(10,14,23,0.25) 100%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,23,0.98) 0%,rgba(10,14,23,0.88) 55%,rgba(10,14,23,0.72) 100%)"></div>
           <div style="position:relative;z-index:1;padding:22px 28px;text-align:center">
             <div class="zone-number">ZONE 01 · TOKENISATION</div>
             <div class="zone-title">⚙️ La Forge des Tokens</div>
@@ -1804,26 +1802,10 @@
       const correct = Object.values(z1Answers).filter(v => v).length;
       gameState.zone1Score = correct;
       gameState.zonesCompleted[0] = true;
-
       document.getElementById('dot-1').classList.remove('active');
       document.getElementById('dot-1').classList.add('done');
-
-      const body = document.getElementById('game-body');
-      body.scrollTop = 0;
-      const banner = document.createElement('div');
-      banner.className = 'zone-complete-banner';
-      banner.style.marginBottom = '20px';
-      banner.innerHTML = `
-        <h3>⚙️ Zone 1 complétée !</h3>
-        <p>Tu as maîtrisé la tokenisation : <strong>${correct}/${tokenChallenges.length}</strong> réponses correctes.<br>
-        Tu sais maintenant comment l'IA découpe le texte avant de le traiter.<br>
-        Prochaine étape : comment l'IA représente le <em>sens</em> de ces tokens ?</p>
-        <button class="zone-btn" style="max-width:420px;margin:0 auto;" onclick="loadZone(2)">
-          🌌 Entrer dans la Galaxie Sémantique →
-        </button>
-      `;
-      body.insertBefore(banner, body.firstChild);
-      toast('🎉 Zone 1 terminée ! Score : ' + correct + '/' + tokenChallenges.length, 4000);
+      toast('⚙️ Zone 1 terminée ! ' + correct + '/' + tokenChallenges.length + ' correctes — passage à la Zone 2 !', 3500);
+      loadZone(2);
     }
 
     // ==================== ZONE 2 — LA GALAXIE SÉMANTIQUE ====================
@@ -2041,27 +2023,10 @@
       gameState.zone2Score = z2State.foundPairs.length + anCorrect;
       gameState.zone2Total = 4 + analogies.length;
       gameState.zonesCompleted[1] = true;
-
       document.getElementById('dot-2').classList.remove('active');
       document.getElementById('dot-2').classList.add('done');
-
-      const body = document.getElementById('game-body');
-      body.scrollTop = 0;
-      const banner = document.createElement('div');
-      banner.className = 'zone-complete-banner';
-      banner.style.marginBottom = '20px';
-      banner.innerHTML = `
-        <h3>🌌 Zone 2 complétée !</h3>
-        <p>Tu as exploré la galaxie sémantique : <strong>${z2State.foundPairs.length}/4</strong> paires
-        et <strong>${anCorrect}/${analogies.length}</strong> analogies réussies.<br>
-        Tu comprends maintenant pourquoi l'IA peut "raisonner" par analogie — c'est du calcul vectoriel !<br>
-        Dernière zone : comment l'IA <em>génère</em> réellement du texte ?</p>
-        <button class="zone-btn" style="max-width:420px;margin:0 auto;" onclick="loadZone(3)">
-          🔮 Entrer dans l'Oracle Probabiliste →
-        </button>
-      `;
-      body.insertBefore(banner, body.firstChild);
-      toast('🎉 Zone 2 terminée !', 4000);
+      toast('🌌 Zone 2 terminée ! ' + z2State.foundPairs.length + '/4 paires + ' + anCorrect + '/' + analogies.length + ' analogies — passage à la Zone 3 !', 3500);
+      loadZone(3);
     }
 
     // ==================== ZONE 3 — L'ORACLE PROBABILISTE ====================
@@ -2339,7 +2304,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Attestation — Module 3 NEURONAUT</title>
+  <title>Attestation — Module 3 NEURONAUTE</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
     *{margin:0;padding:0;box-sizing:border-box}
@@ -2378,7 +2343,7 @@
       <p>a complété avec succès le</p>
       <div class="mod">
         <div class="mod-t">Module 3 : Dans la tête d'un modèle</div>
-        <div class="mod-s">NEURONAUT — Voyage au Cœur du Modèle</div>
+        <div class="mod-s">NEURONAUTE — Voyage au Cœur du Modèle</div>
         <p style="color:#b0b0b0;font-size:.9em">Tokenisation · Embeddings · Attention · Prédiction Probabiliste</p>
         <div class="sc">Score : ${finalQuizScore}%</div>
       </div>
@@ -2406,7 +2371,7 @@
       const url  = URL.createObjectURL(blob);
       const a    = document.createElement('a');
       a.href     = url;
-      a.download = `Attestation_Module3_NEURONAUT_${name.replace(/\s+/g, '_')}.html`;
+      a.download = `Attestation_Module3_NEURONAUTE_${name.replace(/\s+/g, '_')}.html`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
