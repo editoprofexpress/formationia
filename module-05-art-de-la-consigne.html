@@ -53,183 +53,126 @@
             inset: 0;
             background:
                 url('images/module5-title-bg.png') center/cover no-repeat,
-                linear-gradient(135deg, #050c18 0%, #0d1f35 40%, #051420 70%, #0a0e17 100%);
+                linear-gradient(135deg, #0a0e17 0%, #0d1f35 50%, #0a0e17 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-            overflow: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
         }
-
-        #title-screen::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(5, 12, 24, 0.72);
-            z-index: 0;
-        }
-
-        /* Scanline effect */
-        #title-screen::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(78, 205, 196, 0.015) 2px,
-                rgba(78, 205, 196, 0.015) 4px
-            );
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        #title-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        #title-screen > * { position: relative; z-index: 2; }
-
-        /* Retour modules */
-        .back-link {
-            position: absolute;
-            top: 25px;
-            left: 25px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            background: rgba(78, 205, 196, 0.07);
-            border: 1px solid rgba(78, 205, 196, 0.3);
-            border-radius: 6px;
-            color: var(--domain-color);
-            text-decoration: none;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.78em;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-        }
-        .back-link:hover {
-            background: rgba(78, 205, 196, 0.15);
-            box-shadow: 0 0 15px rgba(78, 205, 196, 0.3);
-        }
-
-        /* Badge domaine */
-        .domain-badge {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75em;
-            letter-spacing: 2px;
-            color: var(--domain-color);
-            background: rgba(78, 205, 196, 0.1);
-            border: 1px solid rgba(78, 205, 196, 0.4);
-            padding: 6px 18px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-        }
+        #title-screen::before { content: ''; position: absolute; inset: 0; background: rgba(10,14,23,0.7); z-index: -1; }
+        #title-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
         /* Logo flottant */
         .title-logo {
-            font-size: 5em;
+            font-size: 4em;
             margin-bottom: 20px;
             animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(78, 205, 196, 0.6));
         }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Titre principal */
+        /* Titre principal — gradient standard (vert → bleu → rose) */
         .main-title {
             font-family: 'Space Mono', monospace;
             font-size: 2.8em;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue), var(--neon-green));
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 8px;
+            text-shadow: 0 0 50px rgba(0,255,136,0.5);
+            margin-bottom: 10px;
             text-align: center;
-        }
-
-        /* Nom de code */
-        .codename {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.95em;
-            color: var(--domain-color);
-            letter-spacing: 4px;
-            margin-bottom: 8px;
-            opacity: 0.8;
         }
 
         /* Sous-titre */
         .subtitle {
-            font-size: 1.15em;
+            font-size: 1.3em;
             color: #8899aa;
-            margin-bottom: 35px;
+            margin-bottom: 50px;
             font-weight: 300;
             text-align: center;
-            letter-spacing: 1px;
         }
 
         /* Texte intro */
         .intro-text {
-            max-width: 660px;
+            max-width: 820px;
             text-align: center;
-            line-height: 1.85;
-            margin-bottom: 40px;
+            line-height: 1.8;
+            margin: 0 20px 35px;
             color: #aabbcc;
-            font-size: 1em;
         }
 
-        .intro-text strong { color: var(--domain-color); }
-
-        /* Infos mission */
-        .mission-info {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .mission-chip {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.78em;
-            padding: 7px 16px;
-            border: 1px solid rgba(78, 205, 196, 0.3);
-            border-radius: 4px;
-            color: var(--muted);
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .mission-chip span { color: var(--domain-color); }
-
-        /* Bouton démarrer */
+        /* Bouton démarrer — couleur standard neon-green */
         .start-btn {
             font-family: 'Space Mono', monospace;
             font-size: 1.1em;
             padding: 18px 55px;
             background: transparent;
-            border: 2px solid var(--domain-color);
-            color: var(--domain-color);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 3px;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+        }
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,136,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .start-btn:hover::before { left: 100%; }
+        .start-btn:hover {
+            background: rgba(0,255,136,0.08);
+            box-shadow: 0 0 30px rgba(0,255,136,0.5), inset 0 0 30px rgba(0,255,136,0.08);
+            transform: scale(1.05);
+        }
+
+        /* Lien retour — style module 2 */
+        .back-link-title {
+            position: absolute;
+            top: 20px; left: 20px;
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            color: #8899aa;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .back-link-title:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #aabbcc; }
+
+        /* Lien retour sidebar briefing */
+        .back-link-sidebar {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 15px; margin: 0 15px 20px;
+            background: rgba(78,205,196,0.05);
+            border: 1px solid rgba(78,205,196,0.3);
+            border-radius: 8px;
+            color: var(--domain-color);
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .back-link-sidebar:hover { background: rgba(78,205,196,0.15); border-color: var(--domain-color); transform: translateX(-3px); }
+
+
         }
 
         .start-btn::before {
@@ -277,20 +220,7 @@
             100% { transform: translateY(-50px) translateX(30px); opacity: 0; }
         }
 
-        /* Ligne de statut terminal */
-        .terminal-status {
-            position: absolute;
-            bottom: 30px;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.72em;
-            color: rgba(78, 205, 196, 0.5);
-            letter-spacing: 2px;
-            text-align: center;
-        }
-
-        .blink {
-            animation: blink 1.2s step-end infinite;
-        }
+        .blink { animation: blink 1.2s step-end infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
         /* ==================== BRIEFING ==================== */
@@ -306,7 +236,7 @@
 
         .briefing-header {
             background: rgba(10, 20, 40, 0.95);
-            border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
             padding: 15px 30px;
             display: flex;
             align-items: center;
@@ -315,22 +245,23 @@
         }
         .briefing-title {
             font-family: 'Space Mono', monospace;
-            font-size: 1.1em;
-            color: var(--domain-color);
+            font-size: 1.3em;
+            color: var(--neon-green);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
-        .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.85em; }
-        .briefing-progress-bar { width: 180px; height: 5px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
-        .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--domain-color), var(--neon-blue)); transition: width 0.4s; }
+        .briefing-title::before { content: '🤖'; font-size: 1.5em; }
+        .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.9em; }
+        .briefing-progress-bar { width: 200px; height: 6px; background: rgba(0,255,136,0.1); border-radius: 3px; overflow: hidden; }
+        .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-green), var(--neon-blue)); transition: width 0.3s; }
 
         .briefing-body { display: flex; flex: 1; overflow: hidden; }
 
         .briefing-nav {
-            width: 270px;
+            width: 280px;
             background: rgba(10, 20, 40, 0.9);
-            border-right: 1px solid rgba(78, 205, 196, 0.2);
+            border-right: 1px solid rgba(0, 255, 136, 0.2);
             padding: 20px 0;
             overflow-y: auto;
             flex-shrink: 0;
@@ -338,23 +269,23 @@
         .briefing-nav-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 20px;
+            gap: 12px;
+            padding: 15px 20px;
             cursor: pointer;
             border-left: 3px solid transparent;
             transition: all 0.3s;
             color: #8899aa;
-            font-size: 0.9em;
         }
-        .briefing-nav-item:hover { background: rgba(78,205,196,0.05); color: var(--text); }
-        .briefing-nav-item.active { border-left-color: var(--domain-color); background: rgba(78,205,196,0.1); color: var(--domain-color); }
+        .briefing-nav-item:hover { background: rgba(0,255,136,0.05); color: var(--text); }
+        .briefing-nav-item.active { border-left-color: var(--neon-green); background: rgba(0,255,136,0.1); color: var(--neon-green); }
         .briefing-nav-item.completed { color: var(--neon-blue); }
-        .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); font-size: 0.9em; }
+        .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); }
+        .nav-icon { font-size: 1.2em; width: 30px; text-align: center; }
         .nav-num {
             font-family: 'Space Mono', monospace;
-            font-size: 0.75em;
-            background: rgba(78,205,196,0.15);
-            padding: 2px 7px;
+            font-size: 0.8em;
+            background: rgba(0,255,136,0.2);
+            padding: 2px 8px;
             border-radius: 3px;
             flex-shrink: 0;
         }
@@ -363,17 +294,17 @@
             flex: 1;
             overflow-y: auto;
             padding: 40px 60px;
-            max-width: 880px;
+            max-width: 900px;
             margin: 0 auto;
         }
-        .briefing-content::-webkit-scrollbar { width: 6px; }
-        .briefing-content::-webkit-scrollbar-track { background: rgba(78,205,196,0.05); }
-        .briefing-content::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 3px; }
+        .briefing-content::-webkit-scrollbar { width: 8px; }
+        .briefing-content::-webkit-scrollbar-track { background: rgba(0,255,136,0.05); }
+        .briefing-content::-webkit-scrollbar-thumb { background: rgba(0,255,136,0.3); border-radius: 4px; }
 
         .briefing-footer {
             background: rgba(10,20,40,0.95);
-            border-top: 1px solid rgba(78,205,196,0.3);
-            padding: 18px 30px;
+            border-top: 1px solid rgba(0,255,136,0.3);
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -381,21 +312,21 @@
         }
         .briefing-btn {
             font-family: 'Space Mono', monospace;
-            padding: 11px 28px;
-            border: 2px solid var(--domain-color);
+            padding: 12px 30px;
+            border: 2px solid var(--neon-green);
             background: transparent;
-            color: var(--domain-color);
+            color: var(--neon-green);
             cursor: pointer;
-            font-size: 0.95em;
+            font-size: 1em;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-        .briefing-btn:hover { background: rgba(78,205,196,0.1); box-shadow: 0 0 15px rgba(78,205,196,0.3); }
-        .briefing-btn.primary { background: var(--domain-color); color: var(--dark-bg); font-weight: 700; }
+        .briefing-btn:hover { background: rgba(0,255,136,0.1); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+        .briefing-btn.primary { background: var(--neon-green); color: var(--dark-bg); }
         .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
-        .briefing-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .briefing-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* ---- Contenu cours ---- */
         .section-title {
@@ -578,6 +509,7 @@
             overflow: hidden;
             position: relative;
             z-index: 1;
+            background: rgba(5, 12, 24, 0.60);
         }
 
         /* Zone principale challenge */
@@ -1065,49 +997,37 @@
     <!-- ==================== ÉCRAN TITRE ==================== -->
     <div id="title-screen">
 
-        <!-- Retour -->
-        <a href="modules.html" class="back-link">← Modules</a>
+        <!-- Retour — style module 2 -->
+        <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
+            <span>←</span><span>Modules</span>
+        </a>
 
-        <!-- Badge domaine -->
-        <div class="domain-badge">⚡ Module 05 — Interaction Raisonnée</div>
-
-        <!-- Logo -->
+        <!-- Logo flottant -->
         <div class="title-logo">🤖</div>
 
-        <!-- Nom de code -->
-        <div class="codename">ARIA-7</div>
-
-        <!-- Titre -->
+        <!-- Titre principal -->
         <h1 class="main-title">L'Art de la Consigne</h1>
 
         <!-- Sous-titre -->
-        <p class="subtitle">Escape Room des Prompts • Reactivation Protocol</p>
+        <p class="subtitle">Module 05 — Escape Room des Prompts ARIA-7</p>
 
         <!-- Texte d'intro -->
         <p class="intro-text">
-            L'IA du laboratoire, <strong>ARIA-7</strong>, a été corrompue par une cyberattaque.
-            Ses réponses sont devenues incohérentes — les anciens opérateurs formulaient leurs instructions n'importe comment.
-            Ta mission : traverser les <strong>5 salles sécurisées</strong> du lab en prouvant
-            que tu maîtrises l'art des consignes efficaces.
-            Seules des instructions bien structurées peuvent débloquer chaque porte.
+            <strong>ARIA Lab — Protocole de réactivation.</strong> L'IA du laboratoire, ARIA-7, a été corrompue par une cyberattaque.
+            Ses réponses sont devenues incohérentes — les anciens opérateurs formulaient leurs consignes n'importe comment.
+            Votre mission : traverser les 5 salles sécurisées du lab en prouvant que vous maîtrisez
+            l'art des consignes efficaces. Seules des instructions bien structurées peuvent débloquer chaque porte.
         </p>
 
-        <!-- Infos mission -->
-        <div class="mission-info">
-            <div class="mission-chip">⏱ <span>15 min</span></div>
-            <div class="mission-chip">🔐 <span>5 Salles</span></div>
-            <div class="mission-chip">🎯 <span>Niveau : Débutant</span></div>
-            <div class="mission-chip">📜 <span>Attestation</span></div>
-        </div>
-
         <!-- Bouton démarrer -->
-        <button class="start-btn" onclick="startMission()">
-            ▶ Activer ARIA-7
-        </button>
+        <button class="start-btn" onclick="startMission()">Accéder au Lab</button>
 
-        <!-- Statut terminal -->
-        <div class="terminal-status">
-            ARIA_LAB :: ACCÈS OPÉRATEUR REQUIS :: <span class="blink">█</span>
+        <!-- Logo Prof Express — style module 2 -->
+        <div style="margin-top:40px;opacity:0.7;">
+            <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px;text-align:center;">Une formation proposée par</p>
+            <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+                <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain;display:block;margin:0 auto;">
+            </a>
         </div>
     </div>
 
@@ -1116,11 +1036,9 @@
 
         <!-- En-tête -->
         <div class="briefing-header">
-            <div class="briefing-title">
-                🤖 ARIA-7 — Briefing Opérateur
-            </div>
+            <div class="briefing-title">ARIA-7 // L'ART DE LA CONSIGNE</div>
             <div class="briefing-progress">
-                <span id="progress-label">Section 1/6</span>
+                <span id="progress-label">Dossier 1/6</span>
                 <div class="briefing-progress-bar">
                     <div class="briefing-progress-fill" id="progress-fill" style="width:16.6%"></div>
                 </div>
@@ -1130,25 +1048,28 @@
         <!-- Corps -->
         <div class="briefing-body">
 
-            <!-- Nav latérale -->
+            <!-- Nav latérale — style module 2 avec emoji icons -->
             <nav class="briefing-nav" id="briefing-nav">
+                <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+                    <span>←</span><span>Tous les modules</span>
+                </a>
                 <div class="briefing-nav-item active" data-section="0" onclick="goToSection(0)">
-                    <span class="nav-num">01</span> La consigne, c'est quoi ?
+                    <span class="nav-icon">💬</span><span class="nav-num">01</span>La consigne, c'est quoi ?
                 </div>
                 <div class="briefing-nav-item" data-section="1" onclick="goToSection(1)">
-                    <span class="nav-num">02</span> Les 4 piliers RCTF
+                    <span class="nav-icon">🏗️</span><span class="nav-num">02</span>Les 4 piliers RCTF
                 </div>
                 <div class="briefing-nav-item" data-section="2" onclick="goToSection(2)">
-                    <span class="nav-num">03</span> Le Rôle
+                    <span class="nav-icon">🎭</span><span class="nav-num">03</span>Le Rôle
                 </div>
                 <div class="briefing-nav-item" data-section="3" onclick="goToSection(3)">
-                    <span class="nav-num">04</span> Le Contexte
+                    <span class="nav-icon">📍</span><span class="nav-num">04</span>Le Contexte
                 </div>
                 <div class="briefing-nav-item" data-section="4" onclick="goToSection(4)">
-                    <span class="nav-num">05</span> La Tâche précise
+                    <span class="nav-icon">🎯</span><span class="nav-num">05</span>La Tâche précise
                 </div>
                 <div class="briefing-nav-item" data-section="5" onclick="goToSection(5)">
-                    <span class="nav-num">06</span> Le Format
+                    <span class="nav-icon">📐</span><span class="nav-num">06</span>Le Format
                 </div>
             </nav>
 
@@ -1641,7 +1562,7 @@
             // Progress
             const pct = ((index + 1) / TOTAL_SECTIONS * 100).toFixed(1);
             document.getElementById('progress-fill').style.width = pct + '%';
-            document.getElementById('progress-label').textContent = `Section ${index + 1}/${TOTAL_SECTIONS}`;
+            document.getElementById('progress-label').textContent = `Dossier ${index + 1}/${TOTAL_SECTIONS}`;
 
             // Buttons
             document.getElementById('prev-btn').disabled = (index === 0);
@@ -1730,8 +1651,22 @@
             }
         }
 
+        const roomBg = [
+            '',
+            'images/room-lab-entrance.png',
+            'images/room-analysis.png',
+            'images/room-repair-station.png',
+            'images/room-server-ranking.png',
+            'images/room-master-chamber.png'
+        ];
+
         function renderRoom(n) {
             updateRoomHeader(n);
+            // Image de fond selon la salle
+            const gs = document.getElementById('game-screen');
+            gs.style.backgroundImage = `url('${roomBg[n]}'), linear-gradient(135deg,#050c18 0%,#0c1c2e 50%,#050c18 100%)`;
+            gs.style.backgroundSize = 'cover, cover';
+            gs.style.backgroundPosition = 'center, center';
             const fns = [null, renderRoom1, renderRoom2, renderRoom3, renderRoom4, renderRoom5];
             fns[n]();
         }
