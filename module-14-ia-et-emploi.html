@@ -19,12 +19,7 @@
             --muted: #8899aa;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 
         body {
             font-family: 'Exo 2', sans-serif;
@@ -34,372 +29,2262 @@
             height: 100vh;
         }
 
-        /* ==================== ÉCRAN TITRE ==================== */
-        #title-screen {
-            position: fixed;
-            inset: 0;
-            background: url('images/module14-title-bg.png') center/cover no-repeat,
-                        linear-gradient(135deg, #0a0e17 0%, #0a1a2a 50%, #0a0e17 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+        /* ==================== SCANLINE ==================== */
+        .scanline {
+            position: fixed; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(transparent, rgba(0,229,204,0.08), transparent);
+            animation: scanline 6s linear infinite;
+            pointer-events: none; z-index: 9999;
         }
-
-        #title-screen::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(10, 14, 23, 0.72);
-            z-index: -1;
-        }
-
-        /* Grille cyberpunk en fond */
-        #title-screen::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0, 229, 204, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 229, 204, 0.04) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-        }
-
-        #title-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* Lien retour sur l'écran titre */
-        .back-link-title {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 8px;
-            color: var(--neon-blue);
-            text-decoration: none;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75em;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            z-index: 10;
-        }
-
-        .back-link-title:hover {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-        }
-
-        /* Badge module */
-        .module-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 8px 18px;
-            background: rgba(0, 229, 204, 0.1);
-            border: 1px solid rgba(0, 229, 204, 0.4);
-            border-radius: 20px;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75em;
-            color: var(--neon-teal);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* Icône principale flottante */
-        .title-logo {
-            font-size: 5em;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(0, 229, 204, 0.6));
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Titre principal */
-        .main-title {
-            font-family: 'Space Mono', monospace;
-            font-size: 4.5em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 12px;
-            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue), var(--neon-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(0, 229, 204, 0.4));
-            margin-bottom: 8px;
-            text-align: center;
-            animation: titlePulse 4s ease-in-out infinite;
-        }
-
-        @keyframes titlePulse {
-            0%, 100% { filter: drop-shadow(0 0 30px rgba(0, 229, 204, 0.4)); }
-            50% { filter: drop-shadow(0 0 50px rgba(0, 229, 204, 0.7)); }
-        }
-
-        .title-tagline {
-            font-family: 'Space Mono', monospace;
-            font-size: 1em;
-            color: var(--neon-teal);
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            opacity: 0.8;
-        }
-
-        .subtitle {
-            font-size: 1.15em;
-            color: var(--muted);
-            margin-bottom: 45px;
-            font-weight: 300;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-
-        /* Texte d'intro narratif */
-        .intro-text {
-            max-width: 650px;
-            text-align: center;
-            line-height: 1.9;
-            margin-bottom: 45px;
-            color: #aabbcc;
-            font-size: 1em;
-            padding: 25px 30px;
-            background: rgba(0, 229, 204, 0.04);
-            border: 1px solid rgba(0, 229, 204, 0.15);
-            border-radius: 8px;
-        }
-
-        .intro-text strong {
-            color: var(--neon-teal);
-        }
-
-        /* Bouton démarrer */
-        .start-btn {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.1em;
-            padding: 18px 60px;
-            background: transparent;
-            border: 2px solid var(--neon-teal);
-            color: var(--neon-teal);
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            border-radius: 4px;
-        }
-
-        .start-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 229, 204, 0.25), transparent);
-            transition: left 0.5s;
-        }
-
-        .start-btn:hover::before {
-            left: 100%;
-        }
-
-        .start-btn:hover {
-            background: rgba(0, 229, 204, 0.1);
-            box-shadow: 0 0 35px rgba(0, 229, 204, 0.5), inset 0 0 30px rgba(0, 229, 204, 0.08);
-            transform: scale(1.04);
-        }
-
-        /* Stats rapides */
-        .quick-stats {
-            position: absolute;
-            bottom: 30px;
-            display: flex;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.4em;
-            color: var(--neon-teal);
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.75em;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-divider {
-            width: 1px;
-            height: 40px;
-            background: rgba(0, 229, 204, 0.3);
-        }
-
-        /* Effet scanline */
         @keyframes scanline {
             0% { transform: translateY(-100%); }
             100% { transform: translateY(100vh); }
         }
 
-        .scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(transparent, rgba(0, 229, 204, 0.08), transparent);
-            animation: scanline 6s linear infinite;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        /* Particules décoratives */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
+        .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
         .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--neon-teal);
-            border-radius: 50%;
-            animation: particleRise linear infinite;
-            opacity: 0;
+            position: absolute; width: 2px; height: 2px;
+            background: var(--neon-teal); border-radius: 50%;
+            animation: particleRise linear infinite; opacity: 0;
+        }
+        @keyframes particleRise {
+            0%   { transform: translateY(100vh); opacity: 0; }
+            10%  { opacity: 0.6; }
+            90%  { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
         }
 
-        @keyframes particleRise {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+        /* ==================== ÉCRAN TITRE ==================== */
+        #title-screen {
+            position: fixed; inset: 0;
+            background: url('images/module14-title-bg.png') center/cover no-repeat,
+                        linear-gradient(135deg, #0a0e17 0%, #0a1a2a 50%, #0a0e17 100%);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 1000; transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        #title-screen::before {
+            content: ''; position: absolute; inset: 0;
+            background: rgba(10,14,23,0.72); z-index: -1;
+        }
+        #title-screen::after {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,229,204,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,204,0.04) 1px, transparent 1px);
+            background-size: 50px 50px; z-index: -1;
+        }
+        #title-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .back-link-title {
+            position: absolute; top: 20px; left: 20px;
+            display: flex; align-items: center; gap: 8px;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 8px;
+            color: var(--neon-blue); text-decoration: none;
+            font-family: 'Space Mono', monospace; font-size: 0.75em;
+            letter-spacing: 1px; transition: all 0.3s; z-index: 10;
+        }
+        .back-link-title:hover {
+            background: rgba(0,212,255,0.1); border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0,212,255,0.3);
+        }
+        .module-badge {
+            position: absolute; top: 20px; right: 20px;
+            padding: 8px 18px;
+            background: rgba(0,229,204,0.1); border: 1px solid rgba(0,229,204,0.4);
+            border-radius: 20px; font-family: 'Space Mono', monospace;
+            font-size: 0.75em; color: var(--neon-teal);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .title-logo {
+            font-size: 5em; margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0,229,204,0.6));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .main-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 4.5em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 12px;
+            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(0,229,204,0.4));
+            margin-bottom: 8px; text-align: center;
+            animation: titlePulse 4s ease-in-out infinite;
+        }
+        @keyframes titlePulse {
+            0%, 100% { filter: drop-shadow(0 0 30px rgba(0,229,204,0.4)); }
+            50%       { filter: drop-shadow(0 0 50px rgba(0,229,204,0.7)); }
+        }
+        .title-tagline {
+            font-family: 'Space Mono', monospace; font-size: 1em;
+            color: var(--neon-teal); letter-spacing: 6px;
+            text-transform: uppercase; margin-bottom: 5px; opacity: 0.8;
+        }
+        .subtitle {
+            font-size: 1.15em; color: var(--muted); margin-bottom: 45px;
+            font-weight: 300; text-align: center; letter-spacing: 1px;
+        }
+        .intro-text {
+            max-width: 650px; text-align: center; line-height: 1.9;
+            margin-bottom: 45px; color: #aabbcc; font-size: 1em;
+            padding: 25px 30px;
+            background: rgba(0,229,204,0.04); border: 1px solid rgba(0,229,204,0.15);
+            border-radius: 8px;
+        }
+        .intro-text strong { color: var(--neon-teal); }
+        .start-btn {
+            font-family: 'Space Mono', monospace; font-size: 1.1em;
+            padding: 18px 60px; background: transparent;
+            border: 2px solid var(--neon-teal); color: var(--neon-teal);
+            cursor: pointer; text-transform: uppercase; letter-spacing: 4px;
+            transition: all 0.3s; position: relative; overflow: hidden; border-radius: 4px;
+        }
+        .start-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,229,204,0.25), transparent);
+            transition: left 0.5s;
+        }
+        .start-btn:hover::before { left: 100%; }
+        .start-btn:hover {
+            background: rgba(0,229,204,0.1);
+            box-shadow: 0 0 35px rgba(0,229,204,0.5), inset 0 0 30px rgba(0,229,204,0.08);
+            transform: scale(1.04);
+        }
+        .quick-stats {
+            position: absolute; bottom: 30px;
+            display: flex; gap: 40px; align-items: center;
+        }
+        .stat-item { text-align: center; }
+        .stat-value {
+            font-family: 'Space Mono', monospace; font-size: 1.4em;
+            color: var(--neon-teal); font-weight: 700;
+        }
+        .stat-label { font-size: 0.75em; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-divider { width: 1px; height: 40px; background: rgba(0,229,204,0.3); }
+
+        /* ==================== BRIEFING ==================== */
+        #briefing-screen {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #0a0e17 0%, #0d1520 50%, #0a0e17 100%);
+            z-index: 999; display: none; flex-direction: column; overflow: hidden;
+        }
+        #briefing-screen.active { display: flex; }
+
+        .briefing-header {
+            background: rgba(10,20,40,0.97);
+            border-bottom: 1px solid rgba(0,229,204,0.3);
+            padding: 15px 30px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .briefing-title {
+            font-family: 'Space Mono', monospace; font-size: 1.1em;
+            color: var(--neon-teal);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .briefing-title::before { content: '⚙️'; font-size: 1.4em; }
+        .briefing-progress { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.9em; }
+        .briefing-progress-bar { width: 200px; height: 6px; background: rgba(0,229,204,0.1); border-radius: 3px; overflow: hidden; }
+        .briefing-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
+            transition: width 0.4s ease; border-radius: 3px;
+        }
+
+        .briefing-body { display: flex; flex: 1; overflow: hidden; }
+
+        .briefing-nav {
+            width: 270px; background: rgba(10,20,40,0.92);
+            border-right: 1px solid rgba(0,229,204,0.15);
+            padding: 20px 0; overflow-y: auto; flex-shrink: 0;
+        }
+        .briefing-nav::-webkit-scrollbar { width: 4px; }
+        .briefing-nav::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.3); border-radius: 2px; }
+
+        .back-link-sidebar {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 20px; margin: 0 15px 15px;
+            background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.25);
+            border-radius: 8px; color: var(--neon-blue); text-decoration: none;
+            font-family: 'Space Mono', monospace; font-size: 0.75em;
+            text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
+        }
+        .back-link-sidebar:hover {
+            background: rgba(0,212,255,0.12); border-color: var(--neon-blue);
+            transform: translateX(-3px);
+        }
+
+        .briefing-nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 20px; cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.25s; color: var(--muted); font-size: 0.88em;
+        }
+        .briefing-nav-item:hover { background: rgba(0,229,204,0.05); color: var(--text); }
+        .briefing-nav-item.active {
+            border-left-color: var(--neon-teal);
+            background: rgba(0,229,204,0.08); color: var(--neon-teal);
+        }
+        .briefing-nav-item.completed { color: var(--neon-blue); }
+        .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); font-weight: 700; }
+        .nav-icon { font-size: 1.2em; width: 28px; text-align: center; flex-shrink: 0; }
+
+        .briefing-content {
+            flex: 1; overflow-y: auto;
+            padding: 40px 60px; max-width: 900px; margin: 0 auto; width: 100%;
+        }
+        .briefing-content::-webkit-scrollbar { width: 8px; }
+        .briefing-content::-webkit-scrollbar-track { background: rgba(0,229,204,0.03); }
+        .briefing-content::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.25); border-radius: 4px; }
+
+        .briefing-footer {
+            background: rgba(10,20,40,0.97);
+            border-top: 1px solid rgba(0,229,204,0.25);
+            padding: 18px 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0;
+        }
+        .briefing-btn {
+            font-family: 'Space Mono', monospace; padding: 12px 28px;
+            border: 2px solid var(--neon-teal); background: transparent;
+            color: var(--neon-teal); cursor: pointer; font-size: 0.9em;
+            transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+            border-radius: 4px;
+        }
+        .briefing-btn:hover { background: rgba(0,229,204,0.1); box-shadow: 0 0 20px rgba(0,229,204,0.3); }
+        .briefing-btn.primary { background: var(--neon-teal); color: var(--dark-bg); font-weight: 700; }
+        .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
+        .briefing-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ==================== CONTENU LEÇONS ==================== */
+        .module-title {
+            font-family: 'Space Mono', monospace; font-size: 1.7em;
+            color: var(--neon-teal); margin-bottom: 25px; padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,229,204,0.25);
+        }
+        .module-kicker { color: var(--muted); margin-bottom: 20px; line-height: 1.6; font-size: 1.05em; }
+
+        .section-content h3 {
+            font-family: 'Space Mono', monospace; color: var(--neon-blue);
+            margin: 28px 0 14px; font-size: 1.1em;
+        }
+        .section-content p { line-height: 1.85; margin-bottom: 14px; color: #cfe9ff; }
+        .section-content ul, .section-content ol { margin: 14px 0; padding-left: 25px; }
+        .section-content li { line-height: 1.75; margin-bottom: 8px; color: #cfe9ff; }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,212,255,0.4), transparent);
+            margin: 22px 0;
+        }
+
+        .callout {
+            background: rgba(0,229,204,0.06); border: 1px solid rgba(0,229,204,0.22);
+            padding: 16px 18px; border-radius: 10px;
+            box-shadow: 0 0 18px rgba(0,229,204,0.12);
+            margin: 14px 0; line-height: 1.7; color: #cfe9ff;
+        }
+        .callout.warn {
+            background: rgba(255,183,0,0.07); border-color: rgba(255,183,0,0.28);
+            box-shadow: 0 0 14px rgba(255,183,0,0.14);
+        }
+        .callout.danger {
+            background: rgba(255,0,128,0.07); border-color: rgba(255,0,128,0.28);
+            box-shadow: 0 0 14px rgba(255,0,128,0.14);
+        }
+        .callout.info {
+            background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.25);
+            box-shadow: 0 0 14px rgba(0,212,255,0.12);
+        }
+        .callout strong { color: var(--neon-teal); }
+        .callout.warn strong { color: var(--neon-amber); }
+        .callout.danger strong { color: var(--neon-pink); }
+        .callout.info strong { color: var(--neon-blue); }
+
+        .pill {
+            display: inline-block; padding: 4px 11px;
+            border: 1px solid rgba(0,229,204,0.5); border-radius: 999px;
+            font-family: 'Space Mono', monospace; font-size: 0.78em;
+            color: var(--neon-teal); background: rgba(0,229,204,0.06);
+            margin-right: 6px; margin-bottom: 6px;
+        }
+        .pill.red { border-color: rgba(255,0,128,0.5); color: var(--neon-pink); background: rgba(255,0,128,0.06); }
+        .pill.amber { border-color: rgba(255,183,0,0.5); color: var(--neon-amber); background: rgba(255,183,0,0.06); }
+        .pill.blue { border-color: rgba(0,212,255,0.5); color: var(--neon-blue); background: rgba(0,212,255,0.06); }
+        .pill.green { border-color: rgba(0,255,136,0.5); color: var(--neon-green); background: rgba(0,255,136,0.06); }
+
+        .stat-table {
+            width: 100%; border-collapse: collapse; margin: 16px 0;
+        }
+        .stat-table th {
+            background: rgba(0,229,204,0.12); padding: 10px 14px;
+            text-align: left; font-family: 'Space Mono', monospace;
+            font-size: 0.82em; color: var(--neon-teal);
+            border: 1px solid rgba(0,229,204,0.2);
+        }
+        .stat-table td { padding: 10px 14px; border: 1px solid rgba(0,212,255,0.12); color: #cfe9ff; }
+        .stat-table tr:nth-child(even) { background: rgba(0,212,255,0.04); }
+
+        /* Barre de risque colorée */
+        .risk-bar { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+        .risk-track {
+            flex: 1; height: 8px; background: rgba(255,255,255,0.08);
+            border-radius: 4px; overflow: hidden;
+        }
+        .risk-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+        .risk-fill.high   { background: linear-gradient(90deg, #ff0080, #ff4040); }
+        .risk-fill.medium { background: linear-gradient(90deg, #ffb700, #ffdd00); }
+        .risk-fill.low    { background: linear-gradient(90deg, #00ff88, #00e5cc); }
+        .risk-label { font-size: 0.8em; color: var(--muted); min-width: 70px; }
+        .risk-pct { font-family: 'Space Mono', monospace; font-size: 0.82em; color: var(--text); min-width: 38px; text-align: right; }
+
+        /* Cards de compétences */
+        .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 18px 0; }
+        .skill-card {
+            padding: 16px; border-radius: 8px;
+            background: rgba(0,229,204,0.05); border: 1px solid rgba(0,229,204,0.18);
+            transition: all 0.25s;
+        }
+        .skill-card:hover { background: rgba(0,229,204,0.1); border-color: rgba(0,229,204,0.4); transform: translateY(-2px); }
+        .skill-card-icon { font-size: 1.8em; margin-bottom: 8px; }
+        .skill-card-title { font-family: 'Space Mono', monospace; font-size: 0.88em; color: var(--neon-teal); margin-bottom: 6px; }
+        .skill-card-desc { font-size: 0.85em; color: var(--muted); line-height: 1.5; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 30px; margin: 20px 0; }
+        .timeline::before {
+            content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(180deg, var(--neon-teal), var(--neon-blue));
+        }
+        .timeline-item { position: relative; margin-bottom: 22px; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -26px; top: 6px;
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--neon-teal); box-shadow: 0 0 10px rgba(0,229,204,0.6);
+        }
+        .timeline-year { font-family: 'Space Mono', monospace; font-size: 0.8em; color: var(--neon-amber); margin-bottom: 4px; }
+        .timeline-text { color: #cfe9ff; line-height: 1.6; font-size: 0.95em; }
+
+        /* Highlight box pour transition vers le jeu */
+        .mission-box {
+            background: linear-gradient(135deg, rgba(0,229,204,0.08), rgba(0,212,255,0.06));
+            border: 1px solid rgba(0,229,204,0.35);
+            border-radius: 12px; padding: 28px;
+            margin: 24px 0; text-align: center;
+            box-shadow: 0 0 30px rgba(0,229,204,0.15);
+        }
+        .mission-box-title {
+            font-family: 'Space Mono', monospace; font-size: 1.4em;
+            color: var(--neon-teal); margin-bottom: 14px; letter-spacing: 2px;
+        }
+        .mission-box p { color: #cfe9ff; line-height: 1.8; }
+        .mission-box strong { color: var(--neon-teal); }
+
+        /* Client preview cards */
+        .clients-preview { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 20px 0; }
+        .client-preview-card {
+            text-align: center; padding: 14px 8px;
+            background: rgba(0,229,204,0.04); border: 1px solid rgba(0,229,204,0.15);
+            border-radius: 8px; cursor: default;
+        }
+        .client-preview-img {
+            width: 60px; height: 60px; border-radius: 50%;
+            object-fit: cover; margin: 0 auto 8px;
+            border: 2px solid rgba(0,229,204,0.35);
+            display: block;
+        }
+        .client-preview-name { font-family: 'Space Mono', monospace; font-size: 0.72em; color: var(--neon-teal); margin-bottom: 3px; }
+        .client-preview-job { font-size: 0.75em; color: var(--muted); }
+
+        /* ==================== BUREAU ARIA - JEU ==================== */
+        #game-container {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #07101a 0%, #0d1a28 50%, #07101a 100%);
+            display: none; flex-direction: column;
+            z-index: 998; overflow: hidden;
+        }
+        #game-container.active { display: flex; }
+
+        /* Grille en fond du jeu */
+        #game-container::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,229,204,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,229,204,0.03) 1px, transparent 1px);
+            background-size: 40px 40px; pointer-events: none; z-index: 0;
+        }
+
+        /* Topbar */
+        .game-topbar {
+            background: rgba(7,16,26,0.97);
+            border-bottom: 1px solid rgba(0,229,204,0.25);
+            padding: 0 24px; height: 58px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0; position: relative; z-index: 2;
+        }
+        .game-topbar-left { display: flex; align-items: center; gap: 16px; }
+        .game-topbar-title {
+            font-family: 'Space Mono', monospace; font-size: 0.95em;
+            color: var(--neon-teal); letter-spacing: 2px;
+        }
+        .client-progress {
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'Space Mono', monospace; font-size: 0.8em; color: var(--muted);
+        }
+        .client-dots { display: flex; gap: 6px; }
+        .client-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(0,229,204,0.3);
+            transition: all 0.3s;
+        }
+        .client-dot.done { background: var(--neon-green); border-color: var(--neon-green); box-shadow: 0 0 8px rgba(0,255,136,0.5); }
+        .client-dot.current { background: var(--neon-teal); border-color: var(--neon-teal); box-shadow: 0 0 8px rgba(0,229,204,0.6); }
+
+        .game-score-display {
+            font-family: 'Space Mono', monospace; font-size: 0.95em;
+            color: var(--neon-teal);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .score-value {
+            font-size: 1.3em; font-weight: 700;
+            color: var(--neon-green);
+            text-shadow: 0 0 12px rgba(0,255,136,0.5);
+        }
+
+        /* Zone principale du jeu */
+        .game-main {
+            flex: 1; display: flex; gap: 0;
+            overflow: hidden; position: relative; z-index: 1;
+        }
+
+        /* Panneau gauche : profil client */
+        .client-panel {
+            width: 320px; flex-shrink: 0;
+            background: rgba(10,20,38,0.92);
+            border-right: 1px solid rgba(0,229,204,0.15);
+            display: flex; flex-direction: column;
+            padding: 28px 24px; gap: 20px;
+            overflow-y: auto;
+        }
+        .client-panel::-webkit-scrollbar { width: 4px; }
+        .client-panel::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.25); }
+
+        .client-avatar-wrap {
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .client-avatar {
+            width: 120px; height: 120px; border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(0,229,204,0.4);
+            box-shadow: 0 0 25px rgba(0,229,204,0.2);
+            transition: border-color 0.4s, box-shadow 0.4s;
+        }
+        .client-avatar.good  { border-color: rgba(0,255,136,0.7); box-shadow: 0 0 25px rgba(0,255,136,0.3); }
+        .client-avatar.bad   { border-color: rgba(255,0,128,0.7); box-shadow: 0 0 25px rgba(255,0,128,0.3); }
+        .client-avatar.ok    { border-color: rgba(255,183,0,0.7); box-shadow: 0 0 25px rgba(255,183,0,0.3); }
+
+        .client-name {
+            font-family: 'Space Mono', monospace; font-size: 1.3em;
+            color: var(--neon-teal); text-align: center;
+        }
+        .client-meta {
+            text-align: center; font-size: 0.85em; color: var(--muted);
+            line-height: 1.5;
+        }
+        .client-tag {
+            display: inline-block; padding: 4px 12px;
+            background: rgba(0,229,204,0.08); border: 1px solid rgba(0,229,204,0.25);
+            border-radius: 12px; font-size: 0.75em; color: var(--neon-teal);
+            font-family: 'Space Mono', monospace; margin-top: 4px;
+        }
+        .client-risk {
+            width: 100%; padding: 12px;
+            background: rgba(255,0,128,0.07); border: 1px solid rgba(255,0,128,0.2);
+            border-radius: 8px; font-size: 0.82em; color: #ffaad4; line-height: 1.5;
+        }
+        .client-risk strong { color: var(--neon-pink); }
+
+        .client-speech {
+            padding: 14px; border-radius: 8px;
+            background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.18);
+            font-size: 0.88em; color: #cfe9ff; line-height: 1.7;
+            font-style: italic; position: relative;
+        }
+        .client-speech::before {
+            content: '"'; position: absolute; top: -6px; left: 10px;
+            font-size: 2.5em; color: rgba(0,212,255,0.3);
+            font-family: Georgia, serif; line-height: 1;
+        }
+
+        /* Panneau droit : stratégies */
+        .strategies-panel {
+            flex: 1; display: flex; flex-direction: column;
+            padding: 28px 32px; gap: 18px; overflow-y: auto;
+        }
+        .strategies-panel::-webkit-scrollbar { width: 6px; }
+        .strategies-panel::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.2); }
+
+        .strategies-title {
+            font-family: 'Space Mono', monospace; font-size: 1em;
+            color: var(--neon-teal); letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .strategies-subtitle { font-size: 0.88em; color: var(--muted); margin-bottom: 8px; }
+
+        .strategy-cards { display: flex; flex-direction: column; gap: 14px; }
+
+        .strategy-card {
+            padding: 20px 22px; border-radius: 10px;
+            background: rgba(10,25,45,0.85);
+            border: 1px solid rgba(0,229,204,0.2);
+            cursor: pointer; transition: all 0.25s;
+            display: flex; align-items: flex-start; gap: 16px;
+        }
+        .strategy-card:hover {
+            background: rgba(0,229,204,0.07);
+            border-color: rgba(0,229,204,0.5);
+            transform: translateX(4px);
+            box-shadow: 0 0 20px rgba(0,229,204,0.15);
+        }
+        .strategy-card.selected-good {
+            background: rgba(0,255,136,0.08);
+            border-color: rgba(0,255,136,0.5);
+            box-shadow: 0 0 20px rgba(0,255,136,0.2);
+            cursor: default;
+        }
+        .strategy-card.selected-bad {
+            background: rgba(255,0,128,0.08);
+            border-color: rgba(255,0,128,0.4);
+            box-shadow: 0 0 20px rgba(255,0,128,0.15);
+            cursor: default;
+        }
+        .strategy-card.selected-ok {
+            background: rgba(255,183,0,0.07);
+            border-color: rgba(255,183,0,0.4);
+            box-shadow: 0 0 20px rgba(255,183,0,0.15);
+            cursor: default;
+        }
+        .strategy-card.revealed-good {
+            background: rgba(0,255,136,0.05);
+            border-color: rgba(0,255,136,0.3);
+            cursor: default;
+        }
+        .strategy-card.disabled { cursor: default; opacity: 0.55; }
+
+        .strategy-letter {
+            font-family: 'Space Mono', monospace; font-size: 1.1em;
+            color: var(--neon-teal); background: rgba(0,229,204,0.1);
+            border: 1px solid rgba(0,229,204,0.3); border-radius: 6px;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-weight: 700; transition: all 0.25s;
+        }
+        .strategy-card:hover .strategy-letter { background: rgba(0,229,204,0.2); }
+        .strategy-card.selected-good .strategy-letter { background: rgba(0,255,136,0.2); border-color: var(--neon-green); color: var(--neon-green); }
+        .strategy-card.selected-bad  .strategy-letter { background: rgba(255,0,128,0.15); border-color: var(--neon-pink); color: var(--neon-pink); }
+        .strategy-card.selected-ok   .strategy-letter { background: rgba(255,183,0,0.15); border-color: var(--neon-amber); color: var(--neon-amber); }
+
+        .strategy-body { flex: 1; }
+        .strategy-title { font-weight: 700; color: var(--text); margin-bottom: 5px; font-size: 0.95em; }
+        .strategy-desc  { font-size: 0.84em; color: var(--muted); line-height: 1.55; }
+
+        .strategy-result {
+            display: none; margin-top: 8px; padding: 8px 12px;
+            border-radius: 6px; font-size: 0.82em; line-height: 1.5;
+        }
+        .strategy-result.show { display: block; }
+        .strategy-result.good   { background: rgba(0,255,136,0.1); color: #aaffcc; border-left: 3px solid var(--neon-green); }
+        .strategy-result.bad    { background: rgba(255,0,128,0.1); color: #ffaad4; border-left: 3px solid var(--neon-pink); }
+        .strategy-result.ok     { background: rgba(255,183,0,0.1); color: #ffd980; border-left: 3px solid var(--neon-amber); }
+
+        /* Feedback global après choix */
+        .global-feedback {
+            display: none; padding: 16px 20px; border-radius: 10px;
+            font-size: 0.9em; line-height: 1.7;
+            border-left: 4px solid var(--neon-teal);
+            background: rgba(0,229,204,0.06); color: #cfe9ff;
+            animation: fadeIn 0.4s ease;
+        }
+        .global-feedback.show { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+        /* Bouton suivant */
+        .game-next-btn {
+            display: none; font-family: 'Space Mono', monospace;
+            padding: 14px 36px; background: var(--neon-teal); color: var(--dark-bg);
+            border: none; cursor: pointer; font-size: 0.95em; font-weight: 700;
+            letter-spacing: 2px; border-radius: 6px;
+            transition: all 0.3s; align-self: flex-end;
+            text-transform: uppercase;
+        }
+        .game-next-btn.show { display: block; }
+        .game-next-btn:hover { background: var(--neon-green); box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.03); }
+
+        /* ==================== OVERLAY RÉSULTATS DU JEU ==================== */
+        #results-overlay {
+            position: fixed; inset: 0; z-index: 1100;
+            background: rgba(7,16,26,0.97);
+            display: none; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 30px;
+        }
+        #results-overlay.active { display: flex; }
+
+        .results-card {
+            max-width: 600px; width: 100%;
+            background: rgba(10,20,40,0.98);
+            border: 1px solid rgba(0,229,204,0.35);
+            border-radius: 16px; padding: 44px 48px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0,229,204,0.12);
+        }
+        .results-icon { font-size: 4em; margin-bottom: 16px; }
+        .results-title {
+            font-family: 'Space Mono', monospace; font-size: 1.6em;
+            color: var(--neon-teal); margin-bottom: 10px; letter-spacing: 2px;
+        }
+        .results-subtitle { color: var(--muted); margin-bottom: 32px; font-size: 0.95em; }
+        .results-score-wrap { display: flex; justify-content: center; gap: 48px; margin-bottom: 32px; }
+        .results-score-item { text-align: center; }
+        .results-score-num {
+            font-family: 'Space Mono', monospace; font-size: 2.8em; font-weight: 700;
+            line-height: 1;
+        }
+        .results-score-label { font-size: 0.8em; color: var(--muted); margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .results-btn {
+            font-family: 'Space Mono', monospace; padding: 16px 44px;
+            background: var(--neon-teal); color: var(--dark-bg); border: none;
+            cursor: pointer; font-size: 1em; font-weight: 700;
+            letter-spacing: 2px; border-radius: 6px; transition: all 0.3s;
+            text-transform: uppercase; margin: 6px;
+        }
+        .results-btn:hover { background: var(--neon-green); box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.03); }
+        .results-btn.secondary {
+            background: transparent; border: 2px solid var(--muted); color: var(--muted);
+        }
+        .results-btn.secondary:hover { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: none; }
+
+        /* ==================== QUIZ SCREEN ==================== */
+        #quiz-screen {
+            position: fixed; inset: 0; z-index: 1050;
+            background: linear-gradient(135deg, #0a0e17 0%, #0d1520 50%, #0a0e17 100%);
+            display: none; flex-direction: column; overflow: hidden;
+        }
+        #quiz-screen.active { display: flex; }
+
+        .quiz-header {
+            background: rgba(10,20,40,0.97);
+            border-bottom: 1px solid rgba(0,229,204,0.25);
+            padding: 14px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .quiz-header-title {
+            font-family: 'Space Mono', monospace; font-size: 1em;
+            color: var(--neon-teal); letter-spacing: 2px;
+        }
+        .quiz-progress-wrap { display: flex; align-items: center; gap: 10px; }
+        .quiz-progress-bar {
+            width: 180px; height: 6px;
+            background: rgba(0,229,204,0.1); border-radius: 3px; overflow: hidden;
+        }
+        .quiz-progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--neon-teal), var(--neon-blue));
+            transition: width 0.4s; border-radius: 3px;
+        }
+        .quiz-counter { font-family: 'Space Mono', monospace; font-size: 0.82em; color: var(--muted); }
+
+        .quiz-body { flex: 1; overflow-y: auto; padding: 40px 60px; }
+        .quiz-body::-webkit-scrollbar { width: 6px; }
+        .quiz-body::-webkit-scrollbar-thumb { background: rgba(0,229,204,0.2); border-radius: 3px; }
+
+        .quiz-question-block {
+            max-width: 740px; margin: 0 auto;
+        }
+        .quiz-question-text {
+            font-size: 1.15em; line-height: 1.7; color: var(--text);
+            background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 12px; padding: 22px 26px; margin-bottom: 22px;
+        }
+        .quiz-options { display: flex; flex-direction: column; gap: 11px; }
+        .quiz-option {
+            padding: 14px 20px; border-radius: 10px;
+            background: rgba(10,25,45,0.85); border: 2px solid rgba(0,229,204,0.2);
+            color: var(--text); font-size: 0.95em; text-align: left;
+            cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 14px;
+            font-family: 'Exo 2', sans-serif;
+        }
+        .quiz-option:hover:not(:disabled) {
+            border-color: rgba(0,229,204,0.5); background: rgba(0,229,204,0.07);
+        }
+        .quiz-option:disabled { cursor: default; }
+        .quiz-option.correct { border-color: var(--neon-green) !important; background: rgba(0,255,136,0.1) !important; }
+        .quiz-option.wrong   { border-color: var(--neon-pink)  !important; background: rgba(255,0,128,0.1) !important; }
+        .quiz-option-letter {
+            font-family: 'Space Mono', monospace; font-size: 0.88em;
+            color: var(--neon-teal); background: rgba(0,229,204,0.1);
+            border: 1px solid rgba(0,229,204,0.3); border-radius: 4px;
+            width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-weight: 700;
+        }
+
+        .quiz-feedback-bar {
+            max-width: 740px; margin: 14px auto 0;
+            padding: 12px 18px; border-radius: 8px; font-size: 0.88em; line-height: 1.5;
+            display: none; animation: fadeIn 0.3s ease;
+        }
+        .quiz-feedback-bar.show { display: block; }
+        .quiz-feedback-bar.correct { background: rgba(0,255,136,0.08); border-left: 3px solid var(--neon-green); color: #aaffcc; }
+        .quiz-feedback-bar.wrong   { background: rgba(255,0,128,0.08); border-left: 3px solid var(--neon-pink);  color: #ffaad4; }
+
+        /* Résultats quiz */
+        .quiz-results-block {
+            max-width: 600px; margin: 0 auto; text-align: center; padding: 20px 0;
+        }
+        .quiz-final-score {
+            font-family: 'Space Mono', monospace; font-size: 3.5em; font-weight: 700;
+            line-height: 1; margin: 20px 0 6px;
+        }
+        .quiz-score-label { font-size: 0.9em; color: var(--muted); margin-bottom: 28px; }
+        .quiz-result-box {
+            border-radius: 14px; padding: 24px 28px; margin: 20px 0; line-height: 1.7;
+        }
+        .quiz-result-box.passed { background: rgba(0,255,136,0.08); border: 2px solid var(--neon-green); }
+        .quiz-result-box.failed { background: rgba(255,0,128,0.08); border: 2px solid var(--neon-pink); }
+
+        /* Champ nom attestation */
+        .cert-name-input {
+            width: 100%; padding: 13px 16px;
+            background: rgba(0,50,100,0.35); border: 2px solid rgba(0,229,204,0.35);
+            border-radius: 8px; color: white; font-size: 1em;
+            font-family: 'Exo 2', sans-serif; margin: 14px 0;
+            transition: border-color 0.3s;
+        }
+        .cert-name-input:focus { outline: none; border-color: var(--neon-teal); box-shadow: 0 0 12px rgba(0,229,204,0.2); }
+        .cert-name-input::placeholder { color: #556677; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .client-panel { width: 250px; }
+            .strategies-panel { padding: 18px; }
+        }
+        @media (max-width: 768px) {
+            .briefing-nav { display: none; }
+            .briefing-content { padding: 20px; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .clients-preview { grid-template-columns: repeat(3, 1fr); }
+            .game-main { flex-direction: column; }
+            .client-panel { width: 100%; flex-direction: row; flex-wrap: wrap; padding: 14px; gap: 12px; }
+            .quiz-body { padding: 20px; }
         }
 
     </style>
 </head>
 <body>
 
-    <!-- Effet scanline global -->
-    <div class="scanline"></div>
+<div class="scanline"></div>
+<div class="particles" id="particles"></div>
 
-    <!-- Particules décoratives -->
-    <div class="particles" id="particles"></div>
+<!-- ==================== ÉCRAN TITRE ==================== -->
+<div id="title-screen">
+    <a href="modules.html" class="back-link-title">← Modules</a>
+    <div class="module-badge">MODULE 14 · Enjeux Citoyens</div>
+    <div class="title-logo">⚙️</div>
+    <div class="title-tagline">IA & Emploi</div>
+    <h1 class="main-title">SHIFT</h1>
+    <p class="subtitle">Le Grand Tournant — La Transformation du Travail</p>
+    <div class="intro-text">
+        <strong>2031. L'IA a transformé 40% des métiers.</strong><br><br>
+        Vous venez d'être recruté(e) à l'agence <strong>ARIA</strong> — Agence de Reconversion
+        pour l'Intelligence Artificielle. Des milliers de travailleurs frappent à votre porte,
+        désorientés par la révolution en cours.<br><br>
+        Votre mission : comprendre les enjeux, analyser les situations et
+        guider vos clients vers <strong>leur nouveau futur professionnel</strong>.
+    </div>
+    <button class="start-btn" onclick="showBriefing()">▶ Prendre son poste</button>
+    <div class="quick-stats">
+        <div class="stat-item"><div class="stat-value">7</div><div class="stat-label">Leçons</div></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><div class="stat-value">5</div><div class="stat-label">Clients</div></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><div class="stat-value">~20</div><div class="stat-label">Minutes</div></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><div class="stat-value">70%</div><div class="stat-label">Score mini</div></div>
+    </div>
+</div>
 
-    <!-- ==================== ÉCRAN TITRE ==================== -->
-    <div id="title-screen">
-
-        <a href="modules.html" class="back-link-title">
-            ← Modules
-        </a>
-
-        <div class="module-badge">MODULE 14 · Enjeux Citoyens</div>
-
-        <div class="title-logo">⚙️</div>
-
-        <div class="title-tagline">IA & Emploi</div>
-        <h1 class="main-title">SHIFT</h1>
-        <p class="subtitle">Le Grand Tournant — La Transformation du Travail</p>
-
-        <div class="intro-text">
-            <strong>2031. L'IA a transformé 40% des métiers.</strong><br><br>
-            Vous venez d'être recruté(e) à l'agence <strong>ARIA</strong> — Agence de Reconversion
-            pour l'Intelligence Artificielle. Des milliers de travailleurs frappent à votre porte,
-            désorientés par la révolution en cours.<br><br>
-            Votre mission : comprendre les enjeux, analyser les situations et
-            guider vos clients vers <strong>leur nouveau futur professionnel</strong>.
-        </div>
-
-        <button class="start-btn" onclick="startGame()">
-            ▶ Prendre son poste
-        </button>
-
-        <div class="quick-stats">
-            <div class="stat-item">
-                <div class="stat-value">7</div>
-                <div class="stat-label">Leçons</div>
+<!-- ==================== OVERLAY RÉSULTATS DU JEU ==================== -->
+<div id="results-overlay">
+    <div class="results-card">
+        <div class="results-icon" id="results-icon">⚙️</div>
+        <div class="results-title" id="results-title">Journée terminée !</div>
+        <div class="results-subtitle" id="results-subtitle">Voici le bilan de vos conseils chez ARIA</div>
+        <div class="results-score-wrap">
+            <div class="results-score-item">
+                <div class="results-score-num" id="results-pts" style="color:var(--neon-teal)">0</div>
+                <div class="results-score-label">Points gagnés</div>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-value">5</div>
-                <div class="stat-label">Clients</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-value">~20</div>
-                <div class="stat-label">Minutes</div>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-value">70%</div>
-                <div class="stat-label">Score mini</div>
+            <div class="results-score-item">
+                <div class="results-score-num" id="results-pct" style="color:var(--neon-green)">0%</div>
+                <div class="results-score-label">Performance</div>
             </div>
         </div>
+        <p style="color:var(--muted);font-size:0.9em;margin-bottom:24px;" id="results-message"></p>
+        <div>
+            <button class="results-btn" onclick="startQuiz()">📜 Passer le quiz →</button>
+            <button class="results-btn secondary" onclick="restartGame()">↺ Rejouer</button>
+        </div>
+    </div>
+</div>
 
-    </div><!-- /#title-screen -->
+<!-- ==================== QUIZ SCREEN ==================== -->
+<div id="quiz-screen">
+    <div class="quiz-header">
+        <div class="quiz-header-title">⚙️ QUIZ DE CERTIFICATION — SHIFT</div>
+        <div class="quiz-progress-wrap">
+            <div class="quiz-counter" id="quiz-counter">1 / 10</div>
+            <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+    <div class="quiz-body" id="quiz-body"></div>
+</div>
 
-    <script>
-        // ==================== PARTICULES ====================
-        (function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 25; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + '%';
-                p.style.animationDuration = (8 + Math.random() * 14) + 's';
-                p.style.animationDelay = (Math.random() * 10) + 's';
-                p.style.width = (Math.random() > 0.7 ? 3 : 2) + 'px';
-                p.style.height = p.style.width;
-                if (Math.random() > 0.6) {
-                    p.style.background = '#00d4ff';
-                }
-                container.appendChild(p);
+<!-- ==================== BUREAU ARIA - JEU ==================== -->
+<div id="game-container">
+    <div class="game-topbar">
+        <div class="game-topbar-left">
+            <span class="game-topbar-title">⚙️ BUREAU ARIA — NAVIGATION DE CARRIÈRE</span>
+            <div class="client-progress">
+                <span>Client</span>
+                <div class="client-dots" id="client-dots"></div>
+            </div>
+        </div>
+        <div class="game-score-display">
+            Points : <span class="score-value" id="score-display">0</span> / <span id="max-score-display">10</span>
+        </div>
+    </div>
+    <div class="game-main">
+        <!-- Profil client -->
+        <div class="client-panel">
+            <div class="client-avatar-wrap">
+                <img id="client-avatar" class="client-avatar" src="" alt="">
+                <div class="client-name" id="client-name"></div>
+                <div class="client-meta" id="client-meta"></div>
+                <div class="client-tag" id="client-tag"></div>
+            </div>
+            <div class="client-risk" id="client-risk"></div>
+            <div class="client-speech" id="client-speech"></div>
+        </div>
+        <!-- Stratégies -->
+        <div class="strategies-panel">
+            <div class="strategies-title">Votre conseil</div>
+            <div class="strategies-subtitle" id="strategies-subtitle">Choisissez la meilleure stratégie pour ce client :</div>
+            <div class="strategy-cards" id="strategy-cards"></div>
+            <div class="global-feedback" id="global-feedback"></div>
+            <button class="game-next-btn" id="game-next-btn" onclick="nextClient()">Client suivant →</button>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== BRIEFING ==================== -->
+<div id="briefing-screen">
+    <div class="briefing-header">
+        <div class="briefing-title">DOSSIER AGENT ARIA — CONFIDENTIEL</div>
+        <div class="briefing-progress">
+            <span id="lesson-counter">1 / 7</span>
+            <div class="briefing-progress-bar">
+                <div class="briefing-progress-fill" id="progress-fill" style="width:14%"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="briefing-body">
+        <!-- NAV LATÉRALE -->
+        <nav class="briefing-nav">
+            <a href="modules.html" class="back-link-sidebar">← Modules</a>
+            <div class="briefing-nav-item active" id="nav-0" onclick="showLesson(0)">
+                <span class="nav-icon">🎬</span> Introduction
+            </div>
+            <div class="briefing-nav-item" id="nav-1" onclick="showLesson(1)">
+                <span class="nav-icon">💥</span> Le choc
+            </div>
+            <div class="briefing-nav-item" id="nav-2" onclick="showLesson(2)">
+                <span class="nav-icon">⚠️</span> Métiers à risque
+            </div>
+            <div class="briefing-nav-item" id="nav-3" onclick="showLesson(3)">
+                <span class="nav-icon">🤝</span> IA collègue
+            </div>
+            <div class="briefing-nav-item" id="nav-4" onclick="showLesson(4)">
+                <span class="nav-icon">🚀</span> Nouveaux métiers
+            </div>
+            <div class="briefing-nav-item" id="nav-5" onclick="showLesson(5)">
+                <span class="nav-icon">🧠</span> Atouts humains
+            </div>
+            <div class="briefing-nav-item" id="nav-6" onclick="showLesson(6)">
+                <span class="nav-icon">⚖️</span> Enjeux sociaux
+            </div>
+            <div class="briefing-nav-item" id="nav-7" onclick="showLesson(7)" style="margin-top:10px;border-top:1px solid rgba(0,229,204,0.15);">
+                <span class="nav-icon">🎯</span> Mission ARIA
+            </div>
+        </nav>
+
+        <!-- CONTENU -->
+        <div class="briefing-content" id="lesson-content"></div>
+    </div>
+
+    <div class="briefing-footer">
+        <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
+        <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
+    </div>
+</div>
+
+<script>
+// ==================== PARTICULES ====================
+(function() {
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 14) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.width = (Math.random() > 0.7 ? 3 : 2) + 'px';
+        p.style.height = p.style.width;
+        if (Math.random() > 0.6) p.style.background = '#00d4ff';
+        c.appendChild(p);
+    }
+})();
+
+// ==================== NAVIGATION PRINCIPALE ====================
+function showBriefing() {
+    document.getElementById('title-screen').classList.add('hidden');
+    document.getElementById('briefing-screen').classList.add('active');
+    showLesson(0);
+}
+
+// ==================== ÉTAT ====================
+let currentLesson = 0;
+const TOTAL_LESSONS = 8; // 0-6 leçons + 7 mission
+
+// ==================== LEÇONS ====================
+const lessons = [
+
+    // ── LEÇON 0 : INTRODUCTION ──
+    {
+        navId: 0,
+        content: `
+        <h2 class="module-title">🎬 Bienvenue à l'Agence ARIA</h2>
+        <p class="module-kicker">Vous venez de décrocher le poste le plus demandé de 2031 : Navigateur·trice de Carrière à l'ARIA. Voici votre briefing d'intégration.</p>
+
+        <div class="callout">
+            <strong>📋 Contexte de mission :</strong><br>
+            En 2031, l'IA générative et les robots collaboratifs ont restructuré 40% des emplois en France.
+            L'<strong>Agence ARIA</strong> (Agence de Reconversion pour l'Intelligence Artificielle) accompagne
+            chaque semaine des milliers de travailleurs perdus face à cette transformation. Vous êtes leur dernier rempart.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🌍 Un monde du travail en mutation</h3>
+        <p>L'intelligence artificielle n'est pas la première technologie à bouleverser le travail. Mais elle est la première
+        à menacer simultanément les emplois <strong>manuels ET intellectuels</strong>, les cols bleus ET les cols blancs.</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1780s — Révolution industrielle</div>
+                <div class="timeline-text">Les machines à vapeur remplacent les fileuses à la main. Émeutes des Luddites en Angleterre. Finalement : des millions de nouveaux emplois dans les usines.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">1980s — Révolution informatique</div>
+                <div class="timeline-text">Les ordinateurs font disparaître les dactylos et les comptables manuels. Finalement : les informaticiens, développeurs, et tout un secteur tertiaire explosent.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2000s — Révolution numérique</div>
+                <div class="timeline-text">Internet détruit les petites librairies, les agences de voyages, les photographes. Finalement : community managers, UX designers, data scientists émergent.</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2020s–2030s — Révolution IA</div>
+                <div class="timeline-text"><strong>En cours.</strong> L'IA touche pour la première fois les professions qualifiées : juristes, médecins, journalistes, développeurs. L'issue reste à écrire.</div>
+            </div>
+        </div>
+
+        <div class="callout warn">
+            <strong>⚠️ Ce qui est différent cette fois :</strong><br>
+            Les révolutions précédentes remplaçaient la force physique ou la mémoire. L'IA s'attaque au
+            <strong>raisonnement, à la créativité et à la communication</strong> — les derniers bastions supposés "humains".
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🎯 Vos objectifs de formation</h3>
+        <ul>
+            <li><strong>Comprendre</strong> les mécanismes de transformation du travail par l'IA</li>
+            <li><strong>Identifier</strong> les métiers les plus vulnérables et ceux qui résistent</li>
+            <li><strong>Connaître</strong> les nouvelles compétences qui émergent</li>
+            <li><strong>Analyser</strong> les enjeux sociaux et politiques de cette transition</li>
+            <li><strong>Guider</strong> 5 clients réels vers leur reconversion en tant qu'agent ARIA</li>
+        </ul>
+        `
+    },
+
+    // ── LEÇON 1 : LE CHOC DE L'AUTOMATISATION ──
+    {
+        navId: 1,
+        content: `
+        <h2 class="module-title">💥 Le Choc de l'Automatisation</h2>
+        <p class="module-kicker">Les chiffres sont vertigineux. Pour bien aider vos clients, vous devez d'abord comprendre l'ampleur réelle de la transformation.</p>
+
+        <h3>📊 Les grands chiffres</h3>
+        <p>Les études prospectives s'accumulent depuis 2013, date du célèbre rapport d'Oxford sur l'automatisation :</p>
+
+        <table class="stat-table">
+            <tr><th>Source</th><th>Estimation</th><th>Horizon</th></tr>
+            <tr><td><strong>Oxford (Frey & Osborne)</strong></td><td>47% des emplois US automatisables</td><td>2030</td></tr>
+            <tr><td><strong>McKinsey Global Institute</strong></td><td>375 millions de travailleurs à reconvertir</td><td>2030</td></tr>
+            <tr><td><strong>Forum Économique Mondial</strong></td><td>85 millions emplois déplacés, 97 millions créés</td><td>2025</td></tr>
+            <tr><td><strong>OCDE</strong></td><td>14% des emplois fortement automatisables</td><td>2030</td></tr>
+            <tr><td><strong>Goldman Sachs (2023)</strong></td><td>300 millions d'emplois affectés par l'IA générative</td><td>2030</td></tr>
+        </table>
+
+        <div class="callout info">
+            <strong>ℹ️ Pourquoi les estimations varient-elles autant ?</strong><br>
+            Tout dépend de ce qu'on mesure : une <em>tâche</em> automatisable ≠ un <em>emploi</em> automatisable.
+            Un emploi contient souvent des dizaines de tâches. Si l'IA en automatise 30%, l'emploi est <em>transformé</em>, pas supprimé.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🇫🇷 Et en France ?</h3>
+        <p>Selon France Stratégie (2023) :</p>
+        <ul>
+            <li><strong>3 millions d'emplois</strong> présentent un risque fort d'automatisation</li>
+            <li><strong>10 millions d'emplois</strong> seront significativement transformés</li>
+            <li>Les <strong>secteurs les plus touchés</strong> : transport, commerce, services administratifs, comptabilité</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <h3>⚡ Le facteur accélérateur : l'IA générative</h3>
+        <p>Avant 2022, l'automatisation ciblait surtout les tâches répétitives et prévisibles. L'IA générative
+        (ChatGPT, Gemini, Claude…) a changé la donne : elle s'attaque désormais au <strong>travail cognitif</strong>.</p>
+
+        <div class="callout danger">
+            <strong>🚨 Rupture majeure :</strong><br>
+            En 2024, une IA peut rédiger un contrat juridique, diagnostiquer une radio, composer une chanson,
+            déboguer du code ou rédiger un article de presse — des tâches qui nécessitaient jusqu'ici des
+            <strong>années d'études</strong> et une <strong>rémunération élevée</strong>.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>📈 La vitesse d'adoption</h3>
+        <p>L'adoption de l'IA en entreprise s'accélère exponentiellement :</p>
+        <div class="risk-bar">
+            <span class="risk-label">2020</span>
+            <div class="risk-track"><div class="risk-fill low" style="width:15%"></div></div>
+            <span class="risk-pct">15%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">2022</span>
+            <div class="risk-track"><div class="risk-fill medium" style="width:35%"></div></div>
+            <span class="risk-pct">35%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">2024</span>
+            <div class="risk-track"><div class="risk-fill high" style="width:72%"></div></div>
+            <span class="risk-pct">72%</span>
+        </div>
+        <p style="font-size:0.82em;color:var(--muted);margin-top:6px;">% d'entreprises du Fortune 500 utilisant l'IA dans leurs processus (McKinsey, 2024)</p>
+        `
+    },
+
+    // ── LEÇON 2 : MÉTIERS À RISQUE ──
+    {
+        navId: 2,
+        content: `
+        <h2 class="module-title">⚠️ Les Métiers en Première Ligne</h2>
+        <p class="module-kicker">Tous les métiers ne sont pas égaux face à l'automatisation. Voici comment identifier le niveau de risque.</p>
+
+        <h3>🔍 Les 3 facteurs de vulnérabilité</h3>
+        <p>Un emploi est à risque élevé lorsqu'il combine :</p>
+        <ul>
+            <li><strong>Répétitivité</strong> — les tâches sont identiques ou très similaires d'une fois à l'autre</li>
+            <li><strong>Codification</strong> — les règles peuvent s'écrire sous forme de procédures ou d'algorithmes</li>
+            <li><strong>Faible interaction sociale complexe</strong> — peu de négociation, empathie ou leadership requis</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <h3>📉 Métiers à risque élevé</h3>
+
+        <div class="risk-bar">
+            <span class="risk-label">Caissier·ère</span>
+            <div class="risk-track"><div class="risk-fill high" style="width:97%"></div></div>
+            <span class="risk-pct">97%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Opérateur saisie</span>
+            <div class="risk-track"><div class="risk-fill high" style="width:99%"></div></div>
+            <span class="risk-pct">99%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Téléopérateur</span>
+            <div class="risk-track"><div class="risk-fill high" style="width:92%"></div></div>
+            <span class="risk-pct">92%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Chauffeur livreur</span>
+            <div class="risk-track"><div class="risk-fill high" style="width:79%"></div></div>
+            <span class="risk-pct">79%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Comptable junior</span>
+            <div class="risk-track"><div class="risk-fill high" style="width:88%"></div></div>
+            <span class="risk-pct">88%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Journaliste data</span>
+            <div class="risk-track"><div class="risk-fill medium" style="width:65%"></div></div>
+            <span class="risk-pct">65%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Radiologue</span>
+            <div class="risk-track"><div class="risk-fill medium" style="width:61%"></div></div>
+            <span class="risk-pct">61%</span>
+        </div>
+        <div class="risk-bar">
+            <span class="risk-label">Illustrateur</span>
+            <div class="risk-track"><div class="risk-fill medium" style="width:55%"></div></div>
+            <span class="risk-pct">55%</span>
+        </div>
+
+        <p style="font-size:0.8em;color:var(--muted);margin-top:8px;">Source : Oxford University / McKinsey, probabilité d'automatisation complète</p>
+
+        <div class="callout warn">
+            <strong>⚠️ Attention à l'interprétation :</strong><br>
+            Un risque d'automatisation de 88% pour les comptables juniors ne signifie pas que
+            <em>88% des comptables perdront leur emploi</em>. Cela signifie que 88% de leurs
+            <em>tâches actuelles</em> pourraient être automatisées — libérant du temps pour d'autres missions.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🛡️ Métiers plus résistants</h3>
+        <p>À l'inverse, certains emplois résistent mieux car ils requièrent :</p>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-card-icon">🤝</div>
+                <div class="skill-card-title">Intelligence sociale</div>
+                <div class="skill-card-desc">Thérapeutes, travailleurs sociaux, enseignants spécialisés, médiateurs</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🎨</div>
+                <div class="skill-card-title">Créativité originale</div>
+                <div class="skill-card-desc">Artistes, architectes, chefs cuisiniers, designers expérientiels</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🔧</div>
+                <div class="skill-card-title">Dextérité en contexte</div>
+                <div class="skill-card-desc">Plombiers, électriciens, chirurgiens, kiné — dans des environnements imprévisibles</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">💡</div>
+                <div class="skill-card-title">Jugement complexe</div>
+                <div class="skill-card-desc">Juges, stratèges, éthiciens, DG d'entreprise — décisions non codifiables</div>
+            </div>
+        </div>
+        `
+    },
+
+    // ── LEÇON 3 : L'IA COMME COLLÈGUE ──
+    {
+        navId: 3,
+        content: `
+        <h2 class="module-title">🤝 L'IA Comme Collègue</h2>
+        <p class="module-kicker">La réalité est plus nuancée que "l'IA supprime des emplois". Dans la majorité des cas, l'IA transforme et augmente le travail humain plutôt qu'elle ne l'élimine.</p>
+
+        <h3>💡 Remplacement vs Augmentation</h3>
+        <p>Il existe deux façons dont l'IA peut s'intégrer dans un métier :</p>
+
+        <table class="stat-table">
+            <tr><th>Mode</th><th>Ce qui se passe</th><th>Exemple</th></tr>
+            <tr>
+                <td><span class="pill red">Remplacement</span></td>
+                <td>L'IA effectue la tâche à la place de l'humain</td>
+                <td>Chatbot remplaçant un téléopérateur pour les questions simples</td>
+            </tr>
+            <tr>
+                <td><span class="pill green">Augmentation</span></td>
+                <td>L'IA assiste l'humain qui garde le contrôle final</td>
+                <td>IA suggérant un diagnostic, médecin validant et expliquant</td>
+            </tr>
+            <tr>
+                <td><span class="pill blue">Transformation</span></td>
+                <td>L'IA crée de nouvelles tâches inexistantes avant</td>
+                <td>Prompt engineer, superviseur d'IA, auditeur algorithmique</td>
+            </tr>
+        </table>
+
+        <div class="callout info">
+            <strong>📌 Le cas des distributeurs automatiques :</strong><br>
+            En 1990, les experts prédisaient que les ATM (distributeurs) allaient éliminer les guichetiers de banque.
+            Résultat : le nombre de guichetiers a <strong>augmenté</strong> entre 1990 et 2010. Les ATM ont réduit
+            le coût d'exploitation d'une agence, ce qui a permis d'en ouvrir davantage. Les guichetiers ont évolué
+            vers des missions de conseil à plus haute valeur ajoutée.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🏥 Cas concrets d'augmentation par l'IA</h3>
+        <ul>
+            <li><strong>Médecine :</strong> L'IA détecte les cancers sur les radios avec une précision de 94% — mais c'est <em>le médecin</em> qui annonce, qui contextualise, qui décide du traitement avec le patient</li>
+            <li><strong>Droit :</strong> L'IA analyse 10 000 contrats en quelques secondes — mais c'est <em>l'avocat</em> qui négocie, argumente et défend son client</li>
+            <li><strong>Architecture :</strong> L'IA génère 500 plans en 3D selon des contraintes — mais c'est <em>l'architecte</em> qui choisit, adapte et répond aux besoins humains</li>
+            <li><strong>Journalisme :</strong> L'IA rédige les résumés sportifs et résultats boursiers — mais c'est <em>le journaliste</em> qui mène l'enquête de fond, interview et donne du sens</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <h3>🔄 Le concept de "Centaure"</h3>
+        <p>En référence aux joueurs d'échecs "centaures" (humain + IA) qui battent systématiquement les IA seules
+        et les humains seuls, de nombreux experts prônent le modèle du <strong>travailleur centaure</strong> :</p>
+
+        <div class="callout">
+            <strong>⚙️ Humain + IA > IA seule > Humain seul</strong><br><br>
+            Ce n'est pas l'IA qui remplacera les humains, mais les humains qui <em>savent utiliser l'IA</em>
+            qui remplaceront ceux qui ne le savent pas. La compétence de demain n'est pas de faire ce que fait l'IA —
+            c'est de savoir <strong>quand lui faire confiance, quand la corriger, et quand la contourner</strong>.
+        </div>
+        `
+    },
+
+    // ── LEÇON 4 : NOUVEAUX MÉTIERS ──
+    {
+        navId: 4,
+        content: `
+        <h2 class="module-title">🚀 Les Nouveaux Métiers qui Émergent</h2>
+        <p class="module-kicker">Chaque révolution technologique détruit des emplois mais en crée de nouveaux. L'IA ne déroge pas à la règle. Mais quels sont ces nouveaux métiers ?</p>
+
+        <h3>🆕 Métiers nés directement de l'IA</h3>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-card-icon">✍️</div>
+                <div class="skill-card-title">Prompt Engineer</div>
+                <div class="skill-card-desc">Spécialiste de la rédaction d'instructions pour optimiser les sorties des IA. Salaire moyen 2024 : 80-150k€/an.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🏋️</div>
+                <div class="skill-card-title">AI Trainer</div>
+                <div class="skill-card-desc">Annoter, corriger et évaluer les sorties des IA pour les entraîner. Des millions de postes à l'échelle mondiale.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">⚖️</div>
+                <div class="skill-card-title">Officier d'Éthique IA</div>
+                <div class="skill-card-desc">Veille à ce que les systèmes IA respectent les valeurs éthiques et légales de l'entreprise.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🔍</div>
+                <div class="skill-card-title">Auditeur Algorithmique</div>
+                <div class="skill-card-desc">Audite les biais et erreurs des systèmes IA. Profil hybride : tech + juridique + sociologie.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🛡️</div>
+                <div class="skill-card-title">Red Teamer IA</div>
+                <div class="skill-card-desc">Tente de "casser" les IA pour identifier leurs failles de sécurité avant déploiement.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🌱</div>
+                <div class="skill-card-title">Curateur de Données</div>
+                <div class="skill-card-desc">Sélectionne, nettoie et documente les données d'entraînement pour garantir leur qualité.</div>
+            </div>
+        </div>
+
+        <div class="callout info">
+            <strong>ℹ️ Les "New Collar Jobs" :</strong><br>
+            IBM a popularisé ce concept : des emplois techniques qui ne requièrent pas forcément un diplôme
+            universitaire traditionnel, mais des <strong>compétences spécifiques acquises en formation courte</strong>.
+            Cela ouvre des opportunités inédites pour les travailleurs en reconversion.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>📈 Métiers existants qui explosent grâce à l'IA</h3>
+        <ul>
+            <li><strong>Analyste de données</strong> — L'IA traite la donnée brute, l'humain l'interprète et la met en stratégie</li>
+            <li><strong>Manager de transition</strong> — Accompagner les entreprises dans leur transformation IA</li>
+            <li><strong>Formateur en compétences numériques</strong> — La demande est 10 fois supérieure à l'offre</li>
+            <li><strong>Psychologue du travail</strong> — Accompagner les travailleurs déplacés (burn-out, perte de sens)</li>
+            <li><strong>Artisan / Créateur indépendant</strong> — Paradoxalement, l'IA crée une prime sur l'authenticité humaine</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <h3>🎯 Le profil recherché en 2031</h3>
+        <p>Les recruteurs de l'ère ARIA ne cherchent plus des spécialistes d'un seul domaine. Ils cherchent des profils en "<strong>T inversé</strong>" :</p>
+        <div class="callout">
+            <strong>Le profil T-inversé :</strong><br>
+            <strong>Large barre horizontale</strong> = maîtrise des outils IA et compétences transversales (communication, gestion de projet, pensée critique)<br>
+            <strong>Longue barre verticale</strong> = expertise profonde dans <em>un</em> domaine métier (santé, droit, education, ingénierie…)<br><br>
+            L'IA se charge de la largeur. L'humain apporte la profondeur.
+        </div>
+        `
+    },
+
+    // ── LEÇON 5 : ATOUTS HUMAINS ──
+    {
+        navId: 5,
+        content: `
+        <h2 class="module-title">🧠 Les Atouts Humains Irremplaçables</h2>
+        <p class="module-kicker">Si l'IA excelle dans de nombreuses tâches, il existe des domaines où l'humain conserve un avantage décisif. Les comprendre, c'est connaître la carte maîtresse de vos clients.</p>
+
+        <h3>🏆 Ce que l'IA ne peut pas (encore) faire</h3>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <div class="skill-card-icon">❤️</div>
+                <div class="skill-card-title">Empathie Authentique</div>
+                <div class="skill-card-desc">Percevoir et ressentir les émotions d'autrui. L'IA <em>simule</em> l'empathie, elle ne la ressent pas. Fondamental en soin, éducation, travail social.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🌀</div>
+                <div class="skill-card-title">Créativité de Rupture</div>
+                <div class="skill-card-desc">L'IA combine et recombine l'existant. L'humain peut inventer du radicalement nouveau, transgressor les règles, rêver au-delà des données.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🧭</div>
+                <div class="skill-card-title">Jugement moral</div>
+                <div class="skill-card-desc">Décider dans des situations d'ambiguïté éthique. Qui est responsable ? Quelle valeur prime ? L'IA optimise, mais ne juge pas.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🤲</div>
+                <div class="skill-card-title">Confiance relationnelle</div>
+                <div class="skill-card-desc">Un patient fait confiance à son médecin. Un élève à son enseignant. Cette confiance naît de la relation humaine, pas de la performance algorithmique.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">⚡</div>
+                <div class="skill-card-title">Adaptabilité au chaos</div>
+                <div class="skill-card-desc">Gérer une situation totalement inédite, sans données historiques. Les crises, l'urgence, l'imprévu — terrains de l'ingéniosité humaine.</div>
+            </div>
+            <div class="skill-card">
+                <div class="skill-card-icon">🎭</div>
+                <div class="skill-card-title">Incarnation & Présence</div>
+                <div class="skill-card-desc">Un concert, un discours politique, une performance sportive, un accouchement — la présence physique humaine a une valeur propre irréductible.</div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>📚 La notion de "sens" au travail</h3>
+        <p>Une étude Harvard (2023) révèle que <strong>87% des travailleurs</strong> placent le "sens de leur travail"
+        avant le salaire dans leurs critères de satisfaction. L'IA pose une question fondamentale :</p>
+
+        <div class="callout warn">
+            <strong>⚠️ Le paradoxe du sens :</strong><br>
+            Si l'IA fait les tâches répétitives et ennuyeuses, les humains devraient être libérés pour du travail
+            plus épanouissant. Mais si l'IA fait aussi les tâches créatives et relationnelles, que reste-t-il ?<br><br>
+            La réponse n'est pas technique. Elle est <strong>philosophique et politique</strong>.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>🔑 Les compétences clés pour 2030+ (WEF)</h3>
+        <p>Le Forum Économique Mondial identifie les compétences les plus demandées dans un monde d'IA :</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">
+            <span class="pill green">Pensée analytique</span>
+            <span class="pill green">Créativité & innovation</span>
+            <span class="pill blue">Intelligence émotionnelle</span>
+            <span class="pill blue">Leadership & influence</span>
+            <span class="pill">Résilience & adaptabilité</span>
+            <span class="pill">Esprit critique</span>
+            <span class="pill amber">Orientation service</span>
+            <span class="pill amber">Résolution de problèmes complexes</span>
+        </div>
+        `
+    },
+
+    // ── LEÇON 6 : ENJEUX SOCIAUX ──
+    {
+        navId: 6,
+        content: `
+        <h2 class="module-title">⚖️ Enjeux Sociaux et Politiques</h2>
+        <p class="module-kicker">La transformation du travail par l'IA n'est pas qu'une affaire d'individus. Elle soulève des questions fondamentales pour toute la société.</p>
+
+        <h3>🏛️ Qui profite de la transition ?</h3>
+        <p>L'automatisation crée de la valeur, mais sa distribution est inégale :</p>
+        <ul>
+            <li><strong>Les propriétaires du capital</strong> (actionnaires, grandes entreprises tech) captent la majorité des gains de productivité</li>
+            <li><strong>Les travailleurs qualifiés</strong> en IA et numérique voient leurs salaires exploser</li>
+            <li><strong>Les travailleurs peu qualifiés</strong> des secteurs automatisables subissent pression salariale et chômage</li>
+        </ul>
+
+        <div class="callout danger">
+            <strong>🚨 Le risque de la polarisation :</strong><br>
+            Sans politiques redistributives, l'IA risque de <strong>creuser les inégalités</strong> : d'un côté une élite
+            de super-qualifiés très bien payés, de l'autre une masse de travailleurs précaires en reconversion permanente.
+            L'OCDE alerte sur la "jobless recovery" — une reprise économique sans création d'emplois.
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>💡 Les réponses politiques envisagées</h3>
+
+        <table class="stat-table">
+            <tr><th>Mesure</th><th>Principe</th><th>Statut</th></tr>
+            <tr>
+                <td><strong>Revenu Universel de Base</strong></td>
+                <td>Verser un revenu minimum à tous, indépendamment du travail</td>
+                <td><span class="pill amber">Expérimenté (Finlande, Kenya)</span></td>
+            </tr>
+            <tr>
+                <td><strong>Taxe sur les robots</strong></td>
+                <td>Taxer les entreprises qui automatisent pour financer la reconversion</td>
+                <td><span class="pill">Débattu (EU, France)</span></td>
+            </tr>
+            <tr>
+                <td><strong>Réduction du temps de travail</strong></td>
+                <td>Passer à 32h ou 4 jours/sem pour partager le travail disponible</td>
+                <td><span class="pill blue">En cours (UK, Belgique)</span></td>
+            </tr>
+            <tr>
+                <td><strong>Formation tout au long de la vie</strong></td>
+                <td>Droit à la formation continue financée pour tous les travailleurs</td>
+                <td><span class="pill green">CPF en France</span></td>
+            </tr>
+        </table>
+
+        <div class="divider"></div>
+
+        <h3>🌍 La dimension internationale</h3>
+        <p>La transformation n'est pas uniforme à l'échelle mondiale :</p>
+        <ul>
+            <li><strong>Pays riches :</strong> automatisation des services, émergence des métiers IA, désindustrialisation avancée</li>
+            <li><strong>Pays émergents :</strong> risque de "sauter" la phase industrielle sans avoir les filets sociaux pour absorber la transition</li>
+            <li><strong>Compétition géopolitique :</strong> USA, Chine et Europe en rivalité pour la domination des technologies IA, créant des dépendances stratégiques</li>
+        </ul>
+
+        <div class="callout">
+            <strong>💬 La question fondamentale :</strong><br>
+            L'IA peut nous libérer des tâches ingrates et augmenter notre productivité collective.
+            Mais à qui bénéficie cette libération ? La réponse dépend des <strong>choix politiques et sociaux</strong>
+            que nous ferons ensemble — pas de la technologie elle-même.<br><br>
+            <em>"L'IA n'est ni bonne ni mauvaise. Elle amplifie les intentions de ceux qui la construisent et de ceux qui la gouvernent."</em>
+        </div>
+        `
+    },
+
+    // ── LEÇON 7 : MISSION ARIA ──
+    {
+        navId: 7,
+        content: `
+        <h2 class="module-title">🎯 Mission ARIA — Vos Clients vous Attendent</h2>
+        <p class="module-kicker">La formation est terminée. Place à la pratique. Cinq travailleurs ont besoin de votre expertise. À vous de jouer.</p>
+
+        <div class="mission-box">
+            <div class="mission-box-title">⚙️ ARIA — BUREAU DE NAVIGATION DE CARRIÈRE</div>
+            <p>Vous allez recevoir <strong>5 clients</strong>, chacun face à une situation professionnelle
+            bouleversée par l'IA. Pour chaque client, vous devrez :<br><br>
+            <strong>① Analyser</strong> sa situation et son profil de risque<br>
+            <strong>② Choisir</strong> parmi 3 stratégies de reconversion possibles<br>
+            <strong>③ Observer</strong> les conséquences de vos choix<br><br>
+            Chaque bonne décision vous rapporte des <strong>Points de Navigation</strong>.
+            À la fin, votre score détermine votre certification.</p>
+        </div>
+
+        <h3>👥 Vos 5 clients du jour</h3>
+        <div class="clients-preview">
+            <div class="client-preview-card">
+                <img src="images/module14-client1.png" alt="Marcel" class="client-preview-img">
+                <div class="client-preview-name">Marcel</div>
+                <div class="client-preview-job">Chauffeur routier, 48 ans</div>
+            </div>
+            <div class="client-preview-card">
+                <img src="images/module14-client2.png" alt="Isabelle" class="client-preview-img">
+                <div class="client-preview-name">Isabelle</div>
+                <div class="client-preview-job">Comptable, 41 ans</div>
+            </div>
+            <div class="client-preview-card">
+                <img src="images/module14-client3.png" alt="Théo" class="client-preview-img">
+                <div class="client-preview-name">Théo</div>
+                <div class="client-preview-job">Journaliste, 32 ans</div>
+            </div>
+            <div class="client-preview-card">
+                <img src="images/module14-client4.png" alt="Amina" class="client-preview-img">
+                <div class="client-preview-name">Amina</div>
+                <div class="client-preview-job">Infirmière, 36 ans</div>
+            </div>
+            <div class="client-preview-card">
+                <img src="images/module14-client5.png" alt="Léa" class="client-preview-img">
+                <div class="client-preview-name">Léa</div>
+                <div class="client-preview-job">Illustratrice, 29 ans</div>
+            </div>
+        </div>
+
+        <div class="callout">
+            <strong>📋 Règles du bureau :</strong><br>
+            • Chaque client vous expose sa situation — lisez attentivement<br>
+            • Vous choisissez <strong>1 stratégie parmi 3</strong> proposées<br>
+            • Un retour immédiat vous indique si votre conseil était pertinent<br>
+            • Score minimum pour valider : <strong>70%</strong> (3,5 clients bien orientés sur 5)<br>
+            • Pas de timer — prenez le temps de bien réfléchir
+        </div>
+
+        <div class="divider"></div>
+        <p style="text-align:center;color:var(--muted);font-size:0.9em;">Cliquez sur <strong style="color:var(--neon-teal);">Ouvrir le bureau ARIA →</strong> pour commencer votre première journée.</p>
+        `
+    }
+];
+
+// ==================== AFFICHAGE D'UNE LEÇON ====================
+function showLesson(index) {
+    currentLesson = index;
+    const content = document.getElementById('lesson-content');
+    content.innerHTML = `<div class="section-content">${lessons[index].content}</div>`;
+    content.scrollTop = 0;
+
+    // Nav items
+    document.querySelectorAll('.briefing-nav-item').forEach((item, i) => {
+        item.classList.remove('active');
+        if (i < index) item.classList.add('completed');
+        else item.classList.remove('completed');
+    });
+    const activeNav = document.getElementById('nav-' + lessons[index].navId);
+    if (activeNav) {
+        activeNav.classList.add('active');
+        activeNav.classList.remove('completed');
+    }
+
+    // Progression
+    const pct = Math.round(((index + 1) / TOTAL_LESSONS) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('lesson-counter').textContent = (index + 1) + ' / ' + TOTAL_LESSONS;
+
+    // Boutons
+    document.getElementById('btn-prev').disabled = index === 0;
+    const btnNext = document.getElementById('btn-next');
+    if (index === TOTAL_LESSONS - 1) {
+        btnNext.textContent = 'Ouvrir le bureau ARIA →';
+        btnNext.classList.add('primary');
+    } else {
+        btnNext.textContent = 'Suivant →';
+    }
+}
+
+function nextLesson() {
+    if (currentLesson < TOTAL_LESSONS - 1) {
+        showLesson(currentLesson + 1);
+    } else {
+        startARIA();
+    }
+}
+
+function prevLesson() {
+    if (currentLesson > 0) showLesson(currentLesson - 1);
+}
+
+// ==================== DONNÉES DES CLIENTS ====================
+const clients = [
+    {
+        id: 1,
+        name: 'Marcel D.',
+        meta: 'Chauffeur routier longue distance\n48 ans — 24 ans d\'expérience',
+        tag: '🚛 Transport',
+        avatar: 'images/module14-client1.png',
+        risk: '<strong>Risque : Élevé (79%)</strong><br>Le transport de marchandises est en première ligne de l\'automatisation. Les premiers camions semi-autonomes circulent déjà sur autoroute en 2031.',
+        speech: 'Ça fait 24 ans que je fais la route. J\'adore mon métier. Mais mon patron parle de robots-camions d\'ici 2 ans. Je ne sais pas quoi faire, j\'ai pas de diplôme à part mon permis et ma boîte de vitesses.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Attendre que ça passe',
+                desc: 'La réglementation sur les camions autonomes est encore floue. Marcel parie sur un ralentissement légal et reste à son poste sans se former.',
+                result: 'bad',
+                feedback: 'Mauvais pari. La réglementation européenne valide progressivement les camions autonomes pour les autoroutes depuis 2028. Attendre sans agir laisse Marcel sans filet de sécurité.',
+                points: 0
+            },
+            {
+                letter: 'B',
+                title: 'Se reconvertir en superviseur de flotte autonome',
+                desc: 'Marcel se forme à la supervision à distance des camions autonomes : gestion des incidents, coordination logistique, interface avec les algorithmes de routage.',
+                result: 'good',
+                feedback: 'Excellente stratégie ! Marcel capitalise sur son expérience terrain inestimable (connaissance des routes, des aléas, des règles) tout en acquérant de nouvelles compétences numériques. Ces superviseurs sont en forte demande et bien rémunérés.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Se reconvertir en livreur du dernier kilomètre',
+                desc: 'Marcel abandonne le longue distance pour les livraisons urbaines à vélo cargo ou scooter électrique, moins automatisables à court terme.',
+                result: 'ok',
+                feedback: 'Solution de court terme viable, mais ce secteur est aussi en mutation rapide. Surtout, cela représente une baisse de revenus significative et ne valorise pas l\'expérience de Marcel. À envisager en transition, pas comme destination finale.',
+                points: 1
             }
-        })();
+        ]
+    },
+    {
+        id: 2,
+        name: 'Isabelle M.',
+        meta: 'Comptable en cabinet\n41 ans — Expert-comptable stagiaire',
+        tag: '📊 Finance & Comptabilité',
+        avatar: 'images/module14-client2.png',
+        risk: '<strong>Risque : Élevé (88%)</strong><br>Les tâches comptables standardisées (saisie, rapprochement bancaire, déclarations) sont massivement automatisées. Les logiciels IA remplacent les juniors.',
+        speech: 'Mon cabinet a adopté une IA qui fait en 5 minutes ce que je faisais en 3 jours. Mon manager me dit que mon travail "évolue", mais je vois bien que mes missions rétrécissent. J\'ai peur de finir par ne plus être utile.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Maîtriser l\'IA comptable et monter en expertise conseil',
+                desc: 'Isabelle se forme aux nouveaux logiciels IA du cabinet, gagne du temps sur les tâches répétitives, et réoriente son énergie vers le conseil fiscal stratégique, la gestion patrimoniale et l\'accompagnement des dirigeants.',
+                result: 'good',
+                feedback: 'Stratégie idéale ! L\'IA libère Isabelle des tâches ingrates pour lui permettre de faire ce qu\'une machine ne peut pas : conseiller, anticiper, rassurer un chef d\'entreprise face à une décision complexe. Sa valeur ajoutée explose.',
+                points: 2
+            },
+            {
+                letter: 'B',
+                title: 'Refuser d\'utiliser l\'IA pour rester "irremplaçable"',
+                desc: 'Isabelle mise sur la comptabilité manuelle traditionnelle, pensant que son expertise humaine suffit à la rendre indispensable là où l\'IA échoue.',
+                result: 'bad',
+                feedback: 'Stratégie dangereuse. Refuser les outils IA la rend moins productive qu\'une collègue qui les maîtrise. Les clients et employeurs privilégieront la compétence hybride. Isabelle se marginalise en résistant à l\'adoption.',
+                points: 0
+            },
+            {
+                letter: 'C',
+                title: 'Changer de secteur — devenir commerciale',
+                desc: 'Isabelle abandonne la comptabilité pour un poste commercial dans une entreprise tech, secteur perçu comme plus dynamique.',
+                result: 'ok',
+                feedback: 'Reconversion possible mais risquée : Isabelle repart de zéro sans valoriser 15 ans d\'expertise. Elle peut réussir si elle a des aptitudes commerciales, mais c\'est un pari coûteux en temps et en argent alors qu\'une évolution dans son secteur est plus accessible.',
+                points: 1
+            }
+        ]
+    },
+    {
+        id: 3,
+        name: 'Théo B.',
+        meta: 'Journaliste polyvalent — Presse régionale\n32 ans — 7 ans d\'expérience',
+        tag: '📰 Journalisme & Médias',
+        avatar: 'images/module14-client3.png',
+        risk: '<strong>Risque : Modéré-Élevé (65%)</strong><br>Les articles de dépêches, résultats sportifs et financiers sont déjà produits par IA. Le journalisme d\'investigation reste hors de portée des algorithmes.',
+        speech: 'Ma rédac utilise maintenant une IA pour tous les matchs de foot et les résultats d\'élections. Ça représentait 40% de mon volume. Mon rédac-chef dit que je dois me "réinventer" mais il n\'explique pas comment. J\'ai l\'impression que mon métier s\'évapore.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Se reconvertir en rédacteur web SEO',
+                desc: 'Théo quitte la presse et devient rédacteur de contenus web optimisés pour le référencement, un domaine apparemment moins touché par l\'IA.',
+                result: 'ok',
+                feedback: 'Attention : le SEO est également sous pression des IA générative et des nouvelles interfaces de recherche. C\'est une solution de court terme. Si Théo part dans cette direction, il doit viser le SEO stratégique et la direction éditoriale, pas la simple rédaction.',
+                points: 1
+            },
+            {
+                letter: 'B',
+                title: 'Se spécialiser dans le grand reportage et l\'investigation',
+                desc: 'Théo abandonne la production de masse pour se concentrer sur les enquêtes de fond, les reportages terrain, les portraits et les sujets qui demandent du temps, des sources et un accès humain.',
+                result: 'good',
+                feedback: 'C\'est exactement le bon mouvement. L\'IA ne peut pas aller sur le terrain, nouer des relations de confiance avec des sources, infiltrer un réseau ou donner sa vie du sens à une histoire complexe. Le journalisme de qualité est plus que jamais valorisé — et rare.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Militer pour interdire l\'IA dans sa rédaction',
+                desc: 'Théo s\'engage syndicalement pour bloquer l\'adoption de l\'IA dans sa rédaction, argumentant que cela détruit des emplois journalistiques.',
+                result: 'bad',
+                feedback: 'L\'action syndicale est légitime, mais miser sur l\'interdiction comme stratégie personnelle est illusoire. D\'autres rédactions adopteront l\'IA. Théo risque de rester sans compétences adaptées quand son employeur sera contraint de changer — ou quand il cherchera un autre poste.',
+                points: 0
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: 'Amina K.',
+        meta: 'Infirmière en service de médecine interne\n36 ans — 11 ans d\'expérience',
+        tag: '🏥 Santé & Soins',
+        avatar: 'images/module14-client4.png',
+        risk: '<strong>Risque : Faible-Modéré (28%)</strong><br>Les soins infirmiers requièrent une présence physique, une empathie et un jugement contextuel difficiles à automatiser. Mais les outils IA transforment les pratiques.',
+        speech: 'À l\'hôpital, on a déployé des IA pour analyser les ECG, dépouiller les prises de sang et programmer les tournées. Les collègues ont peur. Moi, je ne sais pas si c\'est une bonne ou une mauvaise nouvelle. Est-ce que mon métier va vraiment changer ?',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Ne rien changer — le soin reste fondamentalement humain',
+                desc: 'Amina estime que son cœur de métier (relation patient, soins physiques, accompagnement) est trop humain pour être menacé. Elle continue sans se former aux outils IA.',
+                result: 'ok',
+                feedback: 'Partiellement vrai : la relation de soin est irremplaçable. Mais ne pas maîtriser les outils IA médicaux crée un risque d\'être dépassée par ses collègues qui les maîtrisent, d\'être moins efficace, et de rater des opportunités d\'évolution. La passivité comporte un coût.',
+                points: 1
+            },
+            {
+                letter: 'B',
+                title: 'Se former aux outils IA médicaux et devenir infirmière coordinatrice IA',
+                desc: 'Amina se forme aux interfaces des systèmes IA de son hôpital, comprend leurs sorties, peut les corriger et devient un point de référence entre les algorithmes et les soignants.',
+                result: 'good',
+                feedback: 'Excellente approche. Amina ne perd rien de sa compétence soignante — elle l\'enrichit. Elle devient la personne qui "traduit" les analyses IA pour les médecins et les patients, qui vérifie les alertes, qui comprend les limites des machines. Un profil rare et très demandé.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Se reconvertir uniquement en technicienne de systèmes IA médicaux',
+                desc: 'Amina abandonne le soin direct pour devenir technicienne de maintenance et configuration des IA médicales, un nouveau métier bien payé.',
+                result: 'bad',
+                feedback: 'Ce serait abandonner inutilement la compétence la plus précieuse d\'Amina : son expertise clinique de terrain. Les techniciens IA médicaux sans background soignant existent, mais les profils hybrides (soignant + compétences IA) sont bien plus rares et mieux valorisés.',
+                points: 0
+            }
+        ]
+    },
+    {
+        id: 5,
+        name: 'Léa F.',
+        meta: 'Illustratrice indépendante\n29 ans — 6 ans de freelance',
+        tag: '🎨 Arts & Création',
+        avatar: 'images/module14-client5.png',
+        risk: '<strong>Risque : Modéré (55%)</strong><br>L\'illustration commerciale standardisée est très concurrencée par les IA génératives. L\'art à forte identité personnelle et la direction artistique résistent mieux.',
+        speech: 'Deux de mes clients habituels m\'ont dit qu\'ils utilisaient maintenant Midjourney. J\'ai perdu 30% de mes revenus en 6 mois. Je ne sais pas si je dois baisser mes prix, changer de métier ou me former à l\'IA. J\'aime mon travail mais j\'ai peur de ne plus pouvoir en vivre.',
+        strategies: [
+            {
+                letter: 'A',
+                title: 'Baisser ses tarifs pour concurrencer l\'IA',
+                desc: 'Léa réduit ses prix pour rester compétitive face aux solutions IA, en se positionnant comme une alternative moins chère mais humaine.',
+                result: 'bad',
+                feedback: 'Stratégie perdante sur le long terme. Léa ne peut pas gagner une guerre de prix contre une IA. En bradant son travail, elle se précarise davantage, dévalue l\'illustration humaine en général, et épuise sa motivation. C\'est la spirale descendante.',
+                points: 0
+            },
+            {
+                letter: 'B',
+                title: 'Miser sur son univers unique + proposer de la direction artistique IA',
+                desc: 'Léa renforce son identité visuelle distinctive (que l\'IA ne peut pas copier), cible des clients qui valorisent l\'authenticité, et propose aussi un service de direction artistique : elle pilote les IA pour ses clients qui veulent des visuels cohérents avec leur charte.',
+                result: 'good',
+                feedback: 'Stratégie gagnante sur tous les fronts. Les clients qui paient pour de l\'illustration humaine paient pour une vision unique, pas pour "une image". Léa devient aussi celle qui maîtrise l\'IA comme outil, pas comme concurrent — et elle peut facturer cette compétence rare.',
+                points: 2
+            },
+            {
+                letter: 'C',
+                title: 'Se former uniquement à la retouche et correction d\'images IA',
+                desc: 'Léa se reconvertit en spécialiste du "post-processing" d\'images générées par IA : corriger les mains, harmoniser les couleurs, adapter les visuels aux besoins des clients.',
+                result: 'ok',
+                feedback: 'Marché réel à court terme, mais fragile : les IA progressent rapidement sur ces tâches de correction. C\'est une reconversion qui peut servir de transition mais pas de destination. Si Léa ne capitalise pas sur sa créativité propre, elle restera dans une position de dépendance vis-à-vis des outils.',
+                points: 1
+            }
+        ]
+    }
+];
 
-        // ==================== DÉMARRAGE ====================
-        function startGame() {
-            // Pour l'instant : transition vers le briefing (à coder en phase 2)
-            const titleScreen = document.getElementById('title-screen');
-            titleScreen.classList.add('hidden');
-            // TODO: afficher l'écran de briefing
-            // Temporaire — on reviendra ici
-            setTimeout(() => {
-                titleScreen.style.display = 'none';
-                alert('Briefing en cours de développement — Phase 2 à venir !');
-                titleScreen.style.display = 'flex';
-                titleScreen.classList.remove('hidden');
-            }, 800);
+// ==================== ÉTAT DU JEU ====================
+const gameState = {
+    currentClient: 0,
+    score: 0,
+    totalPoints: 0,
+    answered: false
+};
+
+// ==================== DÉMARRER LE JEU ====================
+function startARIA() {
+    document.getElementById('briefing-screen').classList.remove('active');
+    document.getElementById('game-container').classList.add('active');
+    gameState.currentClient = 0;
+    gameState.score = 0;
+    gameState.totalPoints = clients.reduce((sum, c) => sum + Math.max(...c.strategies.map(s => s.points)), 0);
+    document.getElementById('max-score-display').textContent = gameState.totalPoints;
+    buildDots();
+    loadClient(0);
+}
+
+function buildDots() {
+    const wrap = document.getElementById('client-dots');
+    wrap.innerHTML = '';
+    clients.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'client-dot' + (i === 0 ? ' current' : '');
+        d.id = 'dot-' + i;
+        wrap.appendChild(d);
+    });
+}
+
+// ==================== CHARGER UN CLIENT ====================
+function loadClient(index) {
+    const c = clients[index];
+    gameState.answered = false;
+
+    // Dots
+    for (let i = 0; i < clients.length; i++) {
+        const d = document.getElementById('dot-' + i);
+        d.className = 'client-dot' + (i < index ? ' done' : i === index ? ' current' : '');
+    }
+
+    // Profil
+    const avatar = document.getElementById('client-avatar');
+    avatar.src = c.avatar;
+    avatar.className = 'client-avatar';
+    document.getElementById('client-name').textContent = c.name;
+    document.getElementById('client-meta').textContent = c.meta;
+    document.getElementById('client-tag').textContent = c.tag;
+    document.getElementById('client-risk').innerHTML = c.risk;
+    document.getElementById('client-speech').textContent = c.speech;
+
+    // Stratégies
+    const container = document.getElementById('strategy-cards');
+    container.innerHTML = '';
+    c.strategies.forEach((s, i) => {
+        const card = document.createElement('div');
+        card.className = 'strategy-card';
+        card.id = 'strat-' + i;
+        card.onclick = () => chooseStrategy(index, i);
+        card.innerHTML = `
+            <div class="strategy-letter">${s.letter}</div>
+            <div class="strategy-body">
+                <div class="strategy-title">${s.title}</div>
+                <div class="strategy-desc">${s.desc}</div>
+                <div class="strategy-result" id="result-${i}"></div>
+            </div>`;
+        container.appendChild(card);
+    });
+
+    // Reset feedback
+    const fb = document.getElementById('global-feedback');
+    fb.className = 'global-feedback';
+    fb.textContent = '';
+    document.getElementById('game-next-btn').className = 'game-next-btn';
+    document.getElementById('score-display').textContent = gameState.score;
+    document.getElementById('strategies-subtitle').textContent = 'Choisissez la meilleure stratégie pour ce client :';
+}
+
+// ==================== CHOISIR UNE STRATÉGIE ====================
+function chooseStrategy(clientIndex, stratIndex) {
+    if (gameState.answered) return;
+    gameState.answered = true;
+
+    const c = clients[clientIndex];
+    const chosen = c.strategies[stratIndex];
+
+    // Désactiver tous les clics
+    document.querySelectorAll('.strategy-card').forEach(card => {
+        card.onclick = null;
+        card.classList.add('disabled');
+    });
+
+    // Appliquer les résultats sur toutes les cartes
+    c.strategies.forEach((s, i) => {
+        const card = document.getElementById('strat-' + i);
+        const resultEl = document.getElementById('result-' + i);
+        card.classList.remove('disabled');
+        resultEl.textContent = s.feedback;
+        resultEl.className = 'strategy-result show ' + s.result;
+
+        if (i === stratIndex) {
+            // Carte choisie
+            if (s.result === 'good')  card.className = 'strategy-card selected-good';
+            else if (s.result === 'bad') card.className = 'strategy-card selected-bad';
+            else card.className = 'strategy-card selected-ok';
+        } else if (s.result === 'good') {
+            card.className = 'strategy-card revealed-good';
+        } else {
+            card.className = 'strategy-card disabled';
         }
-    </script>
+    });
+
+    // Feedback global
+    gameState.score += chosen.points;
+    document.getElementById('score-display').textContent = gameState.score;
+
+    const avatar = document.getElementById('client-avatar');
+    const fb = document.getElementById('global-feedback');
+    let fbMsg = '';
+    if (chosen.result === 'good') {
+        avatar.classList.add('good');
+        fbMsg = `✅ <strong>Excellent conseil !</strong> +${chosen.points} points de navigation. ${c.name.split(' ')[0]} repart avec un plan solide.`;
+        fb.style.borderLeftColor = 'var(--neon-green)';
+        fb.style.background = 'rgba(0,255,136,0.05)';
+    } else if (chosen.result === 'bad') {
+        avatar.classList.add('bad');
+        fbMsg = `❌ <strong>Conseil risqué.</strong> +${chosen.points} point. La stratégie optimale était la <strong>${c.strategies.find(s=>s.result==='good').letter}</strong>.`;
+        fb.style.borderLeftColor = 'var(--neon-pink)';
+        fb.style.background = 'rgba(255,0,128,0.05)';
+    } else {
+        avatar.classList.add('ok');
+        fbMsg = `⚠️ <strong>Conseil partiel.</strong> +${chosen.points} point. Une meilleure option existait : la stratégie <strong>${c.strategies.find(s=>s.result==='good').letter}</strong>.`;
+        fb.style.borderLeftColor = 'var(--neon-amber)';
+        fb.style.background = 'rgba(255,183,0,0.05)';
+    }
+    fb.innerHTML = fbMsg;
+    fb.classList.add('show');
+
+    // Bouton suivant
+    const btn = document.getElementById('game-next-btn');
+    btn.classList.add('show');
+    const isLast = clientIndex === clients.length - 1;
+    btn.textContent = isLast ? 'Résultats & Quiz →' : 'Client suivant →';
+    btn.onclick = isLast ? goToQuiz : nextClient;
+}
+
+// ==================== CLIENT SUIVANT ====================
+function nextClient() {
+    const next = gameState.currentClient + 1;
+    if (next < clients.length) {
+        gameState.currentClient = next;
+        loadClient(next);
+    }
+}
+
+function goToQuiz() {
+    document.getElementById('game-container').classList.remove('active');
+    const pct = Math.round(gameState.score / gameState.totalPoints * 100);
+    document.getElementById('results-pts').textContent = `${gameState.score}/${gameState.totalPoints}`;
+    document.getElementById('results-pct').textContent = pct + '%';
+    document.getElementById('results-pct').style.color = pct >= 70 ? 'var(--neon-green)' : 'var(--neon-amber)';
+
+    let msg = '';
+    if (pct === 100)     msg = '🏆 Performance parfaite ! Vous êtes un·e expert·e de la reconversion IA.';
+    else if (pct >= 80)  msg = '🎯 Excellents conseils ! Vos clients repartent avec de solides perspectives.';
+    else if (pct >= 60)  msg = '✅ Bon début pour un·e navigateur·trice novice. Vous avez aidé la plupart de vos clients.';
+    else                 msg = '💡 Quelques clients ont été mal orientés. Complétez le quiz pour valider quand même votre formation.';
+    document.getElementById('results-message').textContent = msg;
+    document.getElementById('results-overlay').classList.add('active');
+}
+
+function restartGame() {
+    document.getElementById('results-overlay').classList.remove('active');
+    gameState.score = 0;
+    gameState.currentClient = 0;
+    document.getElementById('game-container').classList.add('active');
+    buildDots();
+    loadClient(0);
+}
+
+// ==================== QUESTIONS DU QUIZ ====================
+const quizQuestions = [
+    {
+        question: "Selon le célèbre rapport d'Oxford (Frey & Osborne, 2013), quel pourcentage des emplois américains présentait un risque d'automatisation ?",
+        options: ['12%', '47%', '78%', '31%'],
+        correct: 1,
+        explanation: '47% est le chiffre marquant de cette étude pionnière qui a lancé le débat mondial sur l'IA et l'emploi.'
+    },
+    {
+        question: "Qu'est-ce qu'un emploi « augmenté » par l'IA ?",
+        options: [
+            'Un emploi entièrement réalisé par l'IA sans intervention humaine',
+            'Un emploi mieux rémunéré grâce à l'IA',
+            'Un emploi où l'IA assiste l'humain qui garde le contrôle et la décision finale',
+            'Un emploi créé spécifiquement pour programmer des IA'
+        ],
+        correct: 2,
+        explanation: 'L'augmentation signifie que l'humain reste maître du processus et bénéficie des capacités de l'IA comme d'un outil, sans être remplacé.'
+    },
+    {
+        question: "Lequel de ces métiers présente le risque d'automatisation le PLUS FAIBLE ?",
+        options: ['Opérateur de saisie de données', 'Caissier·ère de supermarché', 'Travailleur·se social·e', 'Téléopérateur·trice'],
+        correct: 2,
+        explanation: 'Le travail social requiert empathie authentique, jugement complexe en situations imprévisibles et lien humain — des compétences que l'IA ne peut pas reproduire.'
+    },
+    {
+        question: "Que désigne le concept de « New Collar Jobs » popularisé par IBM ?",
+        options: [
+            'Des emplois réservés aux ingénieurs ayant un master en IA',
+            'Des emplois techniques accessibles sans diplôme universitaire traditionnel, via des formations courtes',
+            'Des emplois dans les cols blancs reconvertis au numérique',
+            'Des postes d'encadrement créés pour superviser les IA'
+        ],
+        correct: 1,
+        explanation: 'Les New Collar Jobs ouvrent des opportunités à des travailleurs en reconversion sans passer par une longue formation académique.'
+    },
+    {
+        question: "Un « Prompt Engineer » est un·e professionnel·le qui :",
+        options: [
+            'Répare les pannes matérielles des serveurs IA',
+            'Conçoit les circuits électroniques des puces IA',
+            'Rédige des instructions optimisées pour obtenir les meilleures sorties des modèles d'IA',
+            'Traduit les langages de programmation vers d'autres langages'
+        ],
+        correct: 2,
+        explanation: 'Le Prompt Engineering est une compétence nouvelle qui peut atteindre 80 000 à 150 000 € de salaire annuel en 2024, preuve que l'IA crée aussi des métiers à forte valeur ajoutée.'
+    },
+    {
+        question: "L'histoire des distributeurs automatiques (ATM) est souvent citée dans les débats sur l'emploi et l'IA car :",
+        options: [
+            'Elle prouve que l'IA supprime toujours les emplois sur le long terme',
+            'Les ATM ont fait disparaître tous les guichetiers de banque en 10 ans',
+            'Malgré les prédictions, le nombre de guichetiers a augmenté après l'introduction des ATM',
+            'Les ATM ont été la première IA véritablement opérationnelle'
+        ],
+        correct: 2,
+        explanation: 'Les ATM ont réduit le coût d'une agence, permettant d'en ouvrir davantage. Les guichetiers ont évolué vers du conseil. Un exemple classique d'augmentation plutôt que de remplacement.'
+    },
+    {
+        question: "Qu'est-ce qui distingue fondamentalement l'IA générative (GPT, Claude…) des précédentes vagues d'automatisation ?",
+        options: [
+            'Elle est moins coûteuse à déployer que les robots industriels',
+            'Elle s'attaque au travail cognitif et créatif, pas seulement aux tâches physiques répétitives',
+            'Elle ne peut affecter que les emplois peu qualifiés',
+            'Elle nécessite un opérateur humain permanent pour fonctionner'
+        ],
+        correct: 1,
+        explanation: 'L'IA générative franchit une frontière inédite : elle peut rédiger, raisonner, créer — des capacités jusqu'ici réservées aux travailleurs qualifiés.'
+    },
+    {
+        question: "Selon le Forum Économique Mondial (rapport 2023), quelle compétence humaine sera la plus demandée dans un monde dominé par l'IA ?",
+        options: [
+            'La vitesse de frappe et saisie informatique',
+            'La mémorisation de grandes quantités d'informations',
+            'La pensée analytique et la créativité',
+            'La connaissance des langages de programmation IA'
+        ],
+        correct: 2,
+        explanation: 'Pensée analytique, créativité et intelligence émotionnelle arrivent en tête des compétences recherchées selon le WEF — précisément parce que l'IA y excelle le moins.'
+    },
+    {
+        question: "La « taxe sur les robots » est une proposition visant à :",
+        options: [
+            'Rendre les robots plus chers pour freiner leur adoption',
+            'Taxer les entreprises qui automatisent pour financer la reconversion des travailleurs déplacés',
+            'Interdire l'usage de l'IA dans les secteurs à risque',
+            'Imposer les revenus des développeurs d'IA'
+        ],
+        correct: 1,
+        explanation: 'Cette mesure, débattue en Europe et aux USA, cherche à faire contribuer ceux qui captent les gains de productivité au financement de la transition sociale.'
+    },
+    {
+        question: "Qu'est-ce que le modèle du « travailleur centaure » ?",
+        options: [
+            'Un travailleur mi-humain mi-robot dans une usine 4.0',
+            'Un profil hybride où l'humain et l'IA collaborent, dépassant les performances de chacun séparément',
+            'Un contrat de travail partagé entre un humain et une IA',
+            'Un poste qui n'existera que dans 50 ans'
+        ],
+        correct: 1,
+        explanation: 'Inspiré des joueurs d'échecs "centaures", ce modèle montre que Humain + IA > IA seule. La clé n'est pas de battre l'IA, mais de savoir quand lui faire confiance et quand la corriger.'
+    }
+];
+
+// ==================== ÉTAT QUIZ ====================
+let quizState = { current: 0, score: 0, answered: false };
+let finalQuizScore = 0;
+
+// ==================== DÉMARRER LE QUIZ ====================
+function startQuiz() {
+    document.getElementById('results-overlay').classList.remove('active');
+    quizState = { current: 0, score: 0, answered: false };
+    document.getElementById('quiz-screen').classList.add('active');
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    const q = quizQuestions[quizState.current];
+    const pct = Math.round(quizState.current / quizQuestions.length * 100);
+    document.getElementById('quiz-counter').textContent = `${quizState.current + 1} / ${quizQuestions.length}`;
+    document.getElementById('quiz-progress-fill').style.width = pct + '%';
+    quizState.answered = false;
+
+    document.getElementById('quiz-body').innerHTML = `
+        <div class="quiz-question-block">
+            <div class="quiz-question-text">${q.question}</div>
+            <div class="quiz-options" id="quiz-options">
+                ${q.options.map((opt, i) => `
+                    <button class="quiz-option" onclick="answerQuiz(${i})" id="qopt-${i}">
+                        <span class="quiz-option-letter">${String.fromCharCode(65+i)}</span>
+                        ${opt}
+                    </button>`).join('')}
+            </div>
+            <div class="quiz-feedback-bar" id="quiz-fb"></div>
+        </div>`;
+}
+
+function answerQuiz(selected) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    const q = quizQuestions[quizState.current];
+    const correct = selected === q.correct;
+    if (correct) quizState.score++;
+
+    document.querySelectorAll('.quiz-option').forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === selected && !correct) btn.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('quiz-fb');
+    fb.className = 'quiz-feedback-bar show ' + (correct ? 'correct' : 'wrong');
+    fb.innerHTML = (correct ? '✅ Bonne réponse ! ' : '❌ Incorrect. ') + q.explanation;
+
+    setTimeout(() => {
+        quizState.current++;
+        if (quizState.current < quizQuestions.length) renderQuizQuestion();
+        else showQuizResults();
+    }, 1800);
+}
+
+function showQuizResults() {
+    finalQuizScore = Math.round(quizState.score / quizQuestions.length * 100);
+    const passed = finalQuizScore >= 70;
+    document.getElementById('quiz-counter').textContent = 'Résultats';
+    document.getElementById('quiz-progress-fill').style.width = '100%';
+
+    document.getElementById('quiz-body').innerHTML = `
+        <div class="quiz-results-block">
+            <div style="font-size:3.5em;margin-bottom:12px;">${passed ? '🎓' : '📚'}</div>
+            <h2 class="module-title" style="text-align:center;">${passed ? 'Quiz validé !' : 'Résultat insuffisant'}</h2>
+            <div class="quiz-final-score" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
+                ${quizState.score}/${quizQuestions.length}
+            </div>
+            <div class="quiz-score-label">${finalQuizScore}% de bonnes réponses</div>
+
+            <div class="quiz-result-box ${passed ? 'passed' : 'failed'}">
+                ${passed
+                    ? `<strong style="color:var(--neon-green)">Félicitations !</strong> Vous avez validé le module <strong>"IA & Emploi"</strong>. Votre attestation est prête.`
+                    : `Vous devez obtenir au moins <strong>70%</strong> pour valider. Rejouez la mission ou retentez le quiz pour progresser.`
+                }
+            </div>
+
+            ${passed ? `
+                <div style="margin-top:24px;">
+                    <p style="color:var(--muted);margin-bottom:14px;font-size:0.9em;">Entrez votre nom pour personnaliser votre attestation :</p>
+                    <input type="text" class="cert-name-input" id="cert-name" placeholder="Prénom NOM">
+                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+                        <button class="results-btn" onclick="downloadCertificate()">📥 Télécharger l'attestation</button>
+                        <button class="results-btn secondary" onclick="location.reload()">↺ Rejouer</button>
+                    </div>
+                </div>` : `
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+                    <button class="results-btn" onclick="retryQuiz()">🔄 Retenter le quiz</button>
+                    <button class="results-btn secondary" onclick="location.reload()">↺ Rejouer la mission</button>
+                </div>`
+            }
+        </div>`;
+}
+
+function retryQuiz() {
+    quizState = { current: 0, score: 0, answered: false };
+    renderQuizQuestion();
+}
+
+// ==================== ATTESTATION ====================
+function downloadCertificate() {
+    const name = (document.getElementById('cert-name').value.trim()) || 'Participant·e';
+    const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const gameScorePct = Math.round(gameState.score / gameState.totalPoints * 100);
+    const ref = 'IA-EMPL-' + Date.now().toString(36).toUpperCase();
+
+    const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Attestation - IA & Emploi — SHIFT</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Open Sans',sans-serif;
+            background:linear-gradient(135deg,#0a1628 0%,#1a2d4a 100%);
+            min-height:100vh; display:flex;
+            justify-content:center; align-items:center; padding:20px;
+        }
+        .certificate {
+            background:linear-gradient(180deg,#0d1f35 0%,#162840 100%);
+            border:3px solid #00e5cc; border-radius:20px;
+            padding:50px 60px; max-width:800px; width:100%;
+            position:relative;
+            box-shadow:0 0 60px rgba(0,229,204,0.3), inset 0 0 60px rgba(0,212,255,0.08);
+        }
+        .certificate::before {
+            content:''; position:absolute;
+            top:15px; left:15px; right:15px; bottom:15px;
+            border:1px solid rgba(0,212,255,0.3); border-radius:15px; pointer-events:none;
+        }
+        .header { text-align:center; margin-bottom:40px; }
+        .logo { font-size:3em; margin-bottom:10px; }
+        .title {
+            font-family:'Playfair Display',serif; font-size:2.5em;
+            background:linear-gradient(90deg,#00e5cc,#00d4ff);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text; margin-bottom:5px;
+        }
+        .subtitle-cert { color:#00d4ff; font-size:1.1em; letter-spacing:3px; text-transform:uppercase; }
+        .content { text-align:center; color:#e0e0e0; line-height:1.8; }
+        .certifies { font-size:1.1em; margin:30px 0 15px; }
+        .name-cert {
+            font-family:'Playfair Display',serif; font-size:2.2em;
+            color:#ffffff; margin:20px 0; padding:15px 0;
+            border-top:1px solid rgba(0,212,255,0.3); border-bottom:1px solid rgba(0,212,255,0.3);
+        }
+        .module-cert {
+            background:rgba(0,229,204,0.08); border:1px solid rgba(0,229,204,0.3);
+            border-radius:10px; padding:20px; margin:30px 0;
+        }
+        .module-cert-title { color:#00e5cc; font-size:1.3em; font-weight:600; margin-bottom:10px; }
+        .score-cert {
+            display:inline-block; background:linear-gradient(135deg,#00e5cc,#00d4ff);
+            color:#0a1628; padding:8px 25px; border-radius:20px; font-weight:600; margin-top:10px;
+        }
+        .footer-cert {
+            display:flex; justify-content:space-between;
+            margin-top:40px; padding-top:30px; border-top:1px solid rgba(0,212,255,0.2);
+        }
+        .footer-cert-item { text-align:center; }
+        .footer-cert-label { color:#888; font-size:0.85em; margin-bottom:5px; }
+        .footer-cert-value { color:#00d4ff; font-weight:600; }
+        .skills-cert { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:15px; }
+        .skill-cert {
+            background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3);
+            padding:5px 15px; border-radius:15px; font-size:0.85em; color:#00d4ff;
+        }
+        .profexpress { margin-top:30px; padding-top:20px; border-top:1px solid rgba(0,212,255,0.2); text-align:center; color:#556677; font-size:0.85em; }
+        @media print { body { background:white; } .certificate { box-shadow:none; border-width:2px; } }
+    </style>
+</head>
+<body>
+    <div class="certificate">
+        <div class="header">
+            <div class="logo">⚙️🎓</div>
+            <div class="title">Attestation de Réussite</div>
+            <div class="subtitle-cert">Formation IA Responsable</div>
+        </div>
+        <div class="content">
+            <p class="certifies">Cette attestation certifie que</p>
+            <div class="name-cert">${name}</div>
+            <p>a complété avec succès le micro-module</p>
+            <div class="module-cert">
+                <div class="module-cert-title">⚙️ IA & Emploi — La Transformation du Travail</div>
+                <p>via la simulation immersive "SHIFT — Bureau ARIA"</p>
+                <div class="score-cert">Quiz : ${finalQuizScore}% · Navigation : ${gameScorePct}%</div>
+            </div>
+            <p>Compétences validées :</p>
+            <div class="skills-cert">
+                <span class="skill-cert">⚠️ Métiers à risque</span>
+                <span class="skill-cert">🤝 IA & augmentation</span>
+                <span class="skill-cert">🚀 Nouveaux métiers</span>
+                <span class="skill-cert">🧠 Atouts humains</span>
+                <span class="skill-cert">⚖️ Enjeux sociaux</span>
+            </div>
+        </div>
+        <div class="footer-cert">
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Date d'obtention</div>
+                <div class="footer-cert-value">${date}</div>
+            </div>
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Référence</div>
+                <div class="footer-cert-value">${ref}</div>
+            </div>
+            <div class="footer-cert-item">
+                <div class="footer-cert-label">Validité</div>
+                <div class="footer-cert-value">Permanente</div>
+            </div>
+        </div>
+        <div class="profexpress">
+            Proposé par <strong>Prof Express</strong> · profexpress.com · Formation IA Citoyenne
+        </div>
+    </div>
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `attestation-ia-emploi-${name.replace(/\s+/g,'-').toLowerCase()}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+</script>
 
 </body>
 </html>
