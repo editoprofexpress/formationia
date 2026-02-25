@@ -1060,8 +1060,8 @@
       background: rgba(78,205,196,0.1) !important;
       color: #4ecdc4 !important;
     }
-    .nav-number { background: rgba(78,205,196,0.2) !important; }
-    .briefing-nav-item.active .nav-number { background: rgba(78,205,196,0.4) !important; }
+    .nav-number, .nav-num { background: rgba(78,205,196,0.2) !important; }
+    .briefing-nav-item.active .nav-number, .briefing-nav-item.active .nav-num { background: rgba(78,205,196,0.4) !important; }
 
 </style>
 </head>
@@ -1151,7 +1151,12 @@
                     <span class="nav-icon">📐</span><span class="nav-num">06</span>Le Format
                 </div>
             
-        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px">
+        <div style="border-top:1px solid rgba(78,205,196,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" id="game-nav-item" onclick="startGame()">
+            <span class="nav-icon">🔐</span>
+            <span class="nav-number">▶</span>
+            Entrer dans le Lab
+          </div>
           <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
             <span class="nav-icon">🔒</span>
             <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
