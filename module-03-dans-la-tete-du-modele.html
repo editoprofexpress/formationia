@@ -750,8 +750,36 @@
       opacity: 1;
     }
     #title-screen .main-title {
-      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
-      margin: 8px 0 16px;
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#ff6b6b,#ff8c00,#ff0080) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(255,107,107,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #ff6b6b !important;
+      color: #ff6b6b !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(255,107,107,0.08) !important;
+      box-shadow: 0 0 30px rgba(255,107,107,0.5), inset 0 0 30px rgba(255,107,107,0.08) !important;
     }
     .activity-badge-std {
       display: inline-block;
@@ -799,6 +827,13 @@
     .nav-number { background: rgba(255,107,107,0.2) !important; }
     .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
 
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
+
 </style>
 </head>
 <body>
@@ -811,13 +846,14 @@
     </a>
 
     <div class="domain-badge-std" style="background:#ff6b6b22;border:1px solid #ff6b6b88;color:#ff6b6b;">Fondations IA</div>
-    <div class="module-official-label">Module n° 03 : Dans la tête d'un modèle</div>
+    <div class="module-official-label">Module n° 03</div>
     <div class="particles" id="particles"></div>
     <div class="title-logo">
       <img src="images/module3-neuronaut.png" alt="Neuronaute"
            style="height:120px;filter:drop-shadow(0 0 20px rgba(255,107,107,0.7)) drop-shadow(0 0 40px rgba(0,212,255,0.4))">
     </div>
-    <h1 class="main-title">NEURONAUTE</h1>
+    <h1 class="main-title">Dans la tête du modèle</h1>
+    <p class="mission-label">NEURONAUTE</p>
     <p class="intro-text">
       Comment une IA lit-elle un texte, en comprend-elle le sens, et prédit-elle la suite ?
       Plonge <strong>à l'intérieur d'un modèle de langage</strong> pour explorer ses trois couches essentielles :
