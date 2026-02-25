@@ -1977,8 +1977,8 @@
       });
       html += `
         <div style="text-align:center;margin:20px 0 40px">
-          <button onclick="submitQuiz()"
-            style="font-family:'Space Mono',monospace;font-size:0.95em;padding:14px 40px;background:rgba(255,107,107,0.15);border:2px solid var(--neon-red);color:var(--neon-red);cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s">
+          <button id="quiz-submit-btn" onclick="submitQuiz()"
+            style="font-family:'Space Mono',monospace;font-size:0.95em;padding:14px 40px;background:rgba(255,107,107,0.15);border:2px solid var(--neon-red);color:var(--neon-red);border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s;opacity:0.5;cursor:not-allowed;" disabled>
             ✅ Valider mes réponses
           </button>
         </div>
@@ -1988,45 +1988,48 @@
     }
 
     function answerQuiz(qi, oi) {
-      if (quizAnswers.hasOwnProperty(qi)) return;
       quizAnswers[qi] = oi;
       document.querySelectorAll(`[id^="qq-opt-${qi}-"]`).forEach(el => {
         const j = parseInt(el.id.split('-').pop());
-        if (j === oi) {
-          el.style.background = 'rgba(255,107,107,0.15)';
-          el.style.borderColor = 'var(--neon-red)';
-        }
+        el.style.background = j === oi ? 'rgba(255,107,107,0.15)' : 'rgba(255,107,107,0.03)';
+        el.style.borderColor = j === oi ? 'var(--neon-red)' : 'rgba(255,107,107,0.25)';
       });
+      // Enable submit when all questions answered
+      if (Object.keys(quizAnswers).length === quizQuestions.length) {
+        const btn = document.getElementById('quiz-submit-btn');
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+      }
     }
 
     function submitQuiz() {
-      if (Object.keys(quizAnswers).length < quizQuestions.length) {
-        showToast('⚠️ Réponds à toutes les questions !', true);
-        return;
-      }
       let score = 0;
-      quizQuestions.forEach((q, i) => {
-        const userAns = quizAnswers[i];
-        document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
-          el.style.cursor = 'default';
-          el.onclick = null;
-          const j = parseInt(el.id.split('-').pop());
-          if (j === q.correct) {
-            el.style.background = 'rgba(0,255,136,0.1)';
-            el.style.borderColor = 'var(--neon-green)';
-            el.style.color = 'var(--neon-green)';
-          } else if (j === userAns) {
-            el.style.background = 'rgba(255,0,128,0.1)';
-            el.style.borderColor = 'var(--neon-pink)';
-          }
-        });
-        document.getElementById(`qq-explain-${i}`).style.display = 'block';
-        if (userAns === q.correct) score++;
-      });
-
+      quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
       const pct = Math.round(score / quizQuestions.length * 100);
       finalQuizScore = pct;
       const success = pct >= 70;
+
+      document.getElementById('quiz-submit-btn').style.display = 'none';
+
+      if (success) {
+        quizQuestions.forEach((q, i) => {
+          const userAns = quizAnswers[i];
+          document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
+            el.style.cursor = 'default'; el.onclick = null;
+            const j = parseInt(el.id.split('-').pop());
+            if (j === q.correct) {
+              el.style.background = 'rgba(0,255,136,0.1)';
+              el.style.borderColor = 'var(--neon-green)';
+              el.style.color = 'var(--neon-green)';
+            } else if (j === userAns && j !== q.correct) {
+              el.style.background = 'rgba(255,0,128,0.1)';
+              el.style.borderColor = 'var(--neon-pink)';
+            }
+          });
+          document.getElementById(`qq-explain-${i}`).style.display = 'block';
+        });
+      } else {
+        document.querySelectorAll('[id^="qq-opt-"]').forEach(el => { el.onclick = null; el.style.cursor = 'default'; });
+      }
 
       document.getElementById('quiz-result').innerHTML = `
         <div style="text-align:center;padding:30px;margin:20px 0;

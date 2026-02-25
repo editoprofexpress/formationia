@@ -724,8 +724,9 @@
             border-color: rgba(0,229,204,0.5); background: rgba(0,229,204,0.07);
         }
         .quiz-option:disabled { cursor: default; }
-        .quiz-option.correct { border-color: var(--neon-green) !important; background: rgba(0,255,136,0.1) !important; }
-        .quiz-option.wrong   { border-color: var(--neon-pink)  !important; background: rgba(255,0,128,0.1) !important; }
+        .quiz-option.correct  { border-color: var(--neon-green) !important; background: rgba(0,255,136,0.1) !important; }
+        .quiz-option.wrong    { border-color: var(--neon-pink)  !important; background: rgba(255,0,128,0.1) !important; }
+        .quiz-option.selected { border-color: rgba(0,229,204,0.6) !important; background: rgba(0,229,204,0.1) !important; }
         .quiz-option-letter {
             font-family: 'Space Mono', monospace; font-size: 0.88em;
             color: var(--neon-teal); background: rgba(0,229,204,0.1);
@@ -2103,104 +2104,114 @@ const quizQuestions = [
 ];
 
 // ==================== ÉTAT QUIZ ====================
-let quizState = { current: 0, score: 0, answered: false };
+let quizState = { answers: {} };
 let finalQuizScore = 0;
 
 // ==================== DÉMARRER LE QUIZ ====================
 function startQuiz() {
     document.getElementById('results-overlay').classList.remove('active');
-    quizState = { current: 0, score: 0, answered: false };
+    quizState = { answers: {} };
     document.getElementById('quiz-screen').classList.add('active');
-    renderQuizQuestion();
-}
-
-function renderQuizQuestion() {
-    const q = quizQuestions[quizState.current];
-    const pct = Math.round(quizState.current / quizQuestions.length * 100);
-    document.getElementById('quiz-counter').textContent = `${quizState.current + 1} / ${quizQuestions.length}`;
-    document.getElementById('quiz-progress-fill').style.width = pct + '%';
-    quizState.answered = false;
-
+    document.getElementById('quiz-counter').textContent = `0 / ${quizQuestions.length}`;
+    document.getElementById('quiz-progress-fill').style.width = '0%';
     document.getElementById('quiz-body').innerHTML = `
-        <div class="quiz-question-block">
-            <div class="quiz-question-text">${q.question}</div>
-            <div class="quiz-options" id="quiz-options">
-                ${q.options.map((opt, i) => `
-                    <button class="quiz-option" onclick="answerQuiz(${i})" id="qopt-${i}">
-                        <span class="quiz-option-letter">${String.fromCharCode(65+i)}</span>
-                        ${opt}
-                    </button>`).join('')}
-            </div>
-            <div class="quiz-feedback-bar" id="quiz-fb"></div>
-        </div>`;
-}
-
-function answerQuiz(selected) {
-    if (quizState.answered) return;
-    quizState.answered = true;
-    const q = quizQuestions[quizState.current];
-    const correct = selected === q.correct;
-    if (correct) quizState.score++;
-
-    document.querySelectorAll('.quiz-option').forEach((btn, i) => {
-        btn.disabled = true;
-        if (i === q.correct) btn.classList.add('correct');
-        else if (i === selected && !correct) btn.classList.add('wrong');
-    });
-
-    const fb = document.getElementById('quiz-fb');
-    fb.className = 'quiz-feedback-bar show ' + (correct ? 'correct' : 'wrong');
-    fb.innerHTML = (correct ? '✅ Bonne réponse ! ' : '❌ Incorrect. ') + q.explanation;
-
-    setTimeout(() => {
-        quizState.current++;
-        if (quizState.current < quizQuestions.length) renderQuizQuestion();
-        else showQuizResults();
-    }, 1800);
-}
-
-function showQuizResults() {
-    finalQuizScore = Math.round(quizState.score / quizQuestions.length * 100);
-    const passed = finalQuizScore >= 70;
-    document.getElementById('quiz-counter').textContent = 'Résultats';
-    document.getElementById('quiz-progress-fill').style.width = '100%';
-
-    document.getElementById('quiz-body').innerHTML = `
-        <div class="quiz-results-block">
-            <div style="font-size:3.5em;margin-bottom:12px;">${passed ? '🎓' : '📚'}</div>
-            <h2 class="module-title" style="text-align:center;">${passed ? 'Quiz validé !' : 'Résultat insuffisant'}</h2>
-            <div class="quiz-final-score" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
-                ${quizState.score}/${quizQuestions.length}
-            </div>
-            <div class="quiz-score-label">${finalQuizScore}% de bonnes réponses</div>
-
-            <div class="quiz-result-box ${passed ? 'passed' : 'failed'}">
-                ${passed
-                    ? `<strong style="color:var(--neon-green)">Félicitations !</strong> Vous avez validé le module <strong>"IA & Emploi"</strong>. Votre attestation est prête.`
-                    : `Vous devez obtenir au moins <strong>70%</strong> pour valider. Rejouez la mission ou retentez le quiz pour progresser.`
-                }
-            </div>
-
-            ${passed ? `
-                <div style="margin-top:24px;">
-                    <p style="color:var(--muted);margin-bottom:14px;font-size:0.9em;">Entrez votre nom pour personnaliser votre attestation :</p>
-                    <input type="text" class="cert-name-input" id="cert-name" placeholder="Prénom NOM">
-                    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
-                        <button class="results-btn" onclick="downloadCertificate()">📥 Télécharger l'attestation</button>
-                        <button class="results-btn secondary" onclick="location.reload()">↺ Rejouer</button>
+        <div style="padding:10px 0;">
+            <p style="color:var(--muted);text-align:center;margin-bottom:24px;font-size:0.95em;">Répondez aux ${quizQuestions.length} questions, puis validez. Score minimum : <strong>70%</strong></p>
+            ${quizQuestions.map((q, i) => `
+                <div class="quiz-question-block" id="qq-${i}" style="margin-bottom:20px;">
+                    <div class="quiz-question-text">${i+1}. ${q.question}</div>
+                    <div class="quiz-options" id="qopts-${i}">
+                        ${q.options.map((opt, j) => `
+                            <button class="quiz-option" id="qopt-${i}-${j}" onclick="selectQuizAnswer(${i},${j})">
+                                <span class="quiz-option-letter">${String.fromCharCode(65+j)}</span>
+                                ${opt}
+                            </button>`).join('')}
                     </div>
-                </div>` : `
-                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
-                    <button class="results-btn" onclick="retryQuiz()">🔄 Retenter le quiz</button>
-                    <button class="results-btn secondary" onclick="location.reload()">↺ Rejouer la mission</button>
-                </div>`
-            }
+                    <div class="quiz-feedback-bar" id="qq-explain-${i}"></div>
+                </div>
+            `).join('')}
+            <div style="text-align:center;margin:20px 0;">
+                <div id="quiz-all-progress" style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);margin-bottom:12px;">0/${quizQuestions.length} questions répondues</div>
+                <button class="results-btn" id="quiz-submit-all" onclick="submitAllQuiz()"
+                    style="opacity:0.5;cursor:not-allowed;" disabled>✅ Valider mes réponses</button>
+            </div>
+            <div id="quiz-result-all"></div>
         </div>`;
+}
+
+function selectQuizAnswer(qi, oi) {
+    quizState.answers[qi] = oi;
+    document.querySelectorAll(`#qopts-${qi} .quiz-option`).forEach((btn, j) => {
+        btn.classList.toggle('selected', j === oi);
+    });
+    const done = Object.keys(quizState.answers).length;
+    document.getElementById('quiz-all-progress').textContent = `${done}/${quizQuestions.length} questions répondues`;
+    document.getElementById('quiz-counter').textContent = `${done} / ${quizQuestions.length}`;
+    document.getElementById('quiz-progress-fill').style.width = Math.round(done/quizQuestions.length*100) + '%';
+    if (done === quizQuestions.length) {
+        const btn = document.getElementById('quiz-submit-all');
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+    }
+}
+
+function submitAllQuiz() {
+    let score = 0;
+    quizQuestions.forEach((q, i) => { if (quizState.answers[i] === q.correct) score++; });
+    finalQuizScore = Math.round(score / quizQuestions.length * 100);
+    const passed = finalQuizScore >= 70;
+
+    const submitBtn = document.getElementById('quiz-submit-all');
+    if (submitBtn) submitBtn.style.display = 'none';
+
+    if (passed) {
+        quizQuestions.forEach((q, i) => {
+            const chosen = quizState.answers[i];
+            document.querySelectorAll(`#qopts-${i} .quiz-option`).forEach((btn, j) => {
+                btn.disabled = true;
+                btn.classList.remove('selected');
+                if (j === q.correct) btn.classList.add('correct');
+                else if (j === chosen && j !== q.correct) btn.classList.add('wrong');
+            });
+            const exEl = document.getElementById(`qq-explain-${i}`);
+            if (exEl && q.explanation) {
+                exEl.className = 'quiz-feedback-bar show correct';
+                exEl.innerHTML = '💡 ' + q.explanation;
+            }
+        });
+    } else {
+        document.querySelectorAll('.quiz-option').forEach(btn => { btn.disabled = true; btn.classList.remove('selected'); });
+    }
+
+    document.getElementById('quiz-result-all').innerHTML = passed ? `
+        <div class="quiz-results-block" style="margin-top:20px;">
+            <div style="font-size:3em;margin-bottom:12px;">🎓</div>
+            <h2 class="module-title" style="text-align:center;">Quiz validé !</h2>
+            <div class="quiz-final-score" style="color:var(--neon-green);">${score}/${quizQuestions.length}</div>
+            <div class="quiz-score-label">${finalQuizScore}% de bonnes réponses</div>
+            <div class="quiz-result-box passed"><strong style="color:var(--neon-green)">Félicitations !</strong> Vous avez validé le module <strong>"IA & Emploi"</strong>. Votre attestation est prête.</div>
+            <div style="margin-top:24px;">
+                <p style="color:var(--muted);margin-bottom:14px;font-size:0.9em;">Entrez votre nom pour personnaliser votre attestation :</p>
+                <input type="text" class="cert-name-input" id="cert-name" placeholder="Prénom NOM">
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+                    <button class="results-btn" onclick="downloadCertificate()">📥 Télécharger l'attestation</button>
+                </div>
+            </div>
+        </div>` : `
+        <div class="quiz-results-block" style="margin-top:20px;">
+            <div style="font-size:3em;margin-bottom:12px;">📚</div>
+            <h2 class="module-title" style="text-align:center;">Résultat insuffisant</h2>
+            <div class="quiz-final-score" style="color:var(--neon-pink);">${score}/${quizQuestions.length}</div>
+            <div class="quiz-score-label">${finalQuizScore}% de bonnes réponses</div>
+            <div class="quiz-result-box failed">Vous devez obtenir au moins <strong>70%</strong> pour valider. Retentez le quiz.</div>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
+                <button class="results-btn" onclick="retryQuiz()">↺ Réessayer le quiz</button>
+            </div>
+        </div>`;
+    document.getElementById('quiz-result-all').scrollIntoView({ behavior: 'smooth' });
 }
 
 function retryQuiz() {
-    quizState = { current: 0, score: 0, answered: false };
-    renderQuizQuestion();
+    startQuiz();
 }
 
 // ==================== ATTESTATION ====================

@@ -985,7 +985,7 @@
   <div class="quiz-footer">
     <button class="quiz-footer-btn" onclick="backToGame()">← Retour à l'audit</button>
     <span style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)" id="quiz-answered-count"></span>
-    <button class="quiz-footer-btn primary" id="quiz-submit-btn" onclick="submitQuiz()">Valider mes réponses ✓</button>
+    <button class="quiz-footer-btn primary" id="quiz-submit-btn" onclick="submitQuiz()" style="opacity:0.5;cursor:not-allowed;" disabled>Valider mes réponses ✓</button>
   </div>
 </div><!-- end #quiz-screen -->
 
@@ -2266,31 +2266,37 @@ function answerQuiz(qIdx, oIdx) {
 function updateAnsweredCount() {
   const count = Object.keys(quizAnswers).length;
   document.getElementById('quiz-answered-count').textContent = `${count}/${quizQuestions.length} répondu(es)`;
+  // Enable submit button when all answered
+  if (count === quizQuestions.length) {
+    const btn = document.getElementById('quiz-submit-btn');
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+  }
 }
 
 function submitQuiz() {
-  const answered = Object.keys(quizAnswers).length;
-  if(answered < quizQuestions.length) {
-    alert(`Veuillez répondre à toutes les questions ! (${quizQuestions.length - answered} restante(s))`);
-    return;
-  }
+  if(quizSubmitted) return;
   quizSubmitted = true;
   quizScore = 0;
-  quizQuestions.forEach((q,i) => {
-    const userAns = quizAnswers[i];
-    const opts = document.querySelectorAll(`.opt[data-q="${i}"]`);
-    opts.forEach(el => {
-      const oIdx = parseInt(el.dataset.o);
-      el.style.pointerEvents = 'none';
-      if(oIdx === q.correct) el.classList.add('correct');
-      else if(oIdx === userAns && userAns !== q.correct) el.classList.add('wrong');
-    });
-    document.getElementById('explain-'+i).classList.add('show');
-    if(userAns === q.correct) quizScore++;
-  });
-
+  quizQuestions.forEach((q,i) => { if(quizAnswers[i] === q.correct) quizScore++; });
   const pct = Math.round((quizScore / quizQuestions.length) * 100);
   const passed = pct >= 70;
+
+  if(passed) {
+    // Success: show highlights + explanations
+    quizQuestions.forEach((q,i) => {
+      const userAns = quizAnswers[i];
+      document.querySelectorAll(`.opt[data-q="${i}"]`).forEach(el => {
+        const oIdx = parseInt(el.dataset.o);
+        el.style.pointerEvents = 'none';
+        if(oIdx === q.correct) el.classList.add('correct');
+        else if(oIdx === userAns && userAns !== q.correct) el.classList.add('wrong');
+      });
+      document.getElementById('explain-'+i).classList.add('show');
+    });
+  } else {
+    // Failure: lock options only (no highlights, no explanations)
+    document.querySelectorAll('.opt').forEach(el => { el.style.pointerEvents = 'none'; });
+  }
 
   document.getElementById('quiz-submit-inner-btn').style.display = 'none';
   document.getElementById('quiz-submit-btn').style.display = 'none';
@@ -2312,7 +2318,7 @@ function submitQuiz() {
       </p>
       ${passed
         ? `<button class="quiz-footer-btn primary" onclick="showCertificate(${pct})" style="margin-top:20px;cursor:pointer">🎓 Obtenir mon attestation →</button>`
-        : `<button class="quiz-footer-btn" onclick="retryQuiz()" style="margin-top:20px;border-color:var(--neon-orange);color:var(--neon-orange);cursor:pointer">🔄 Réessayer</button>`
+        : `<button class="quiz-footer-btn" onclick="retryQuiz()" style="margin-top:20px;border-color:var(--neon-orange);color:var(--neon-orange);cursor:pointer">↺ Réessayer</button>`
       }
     </div>
   `;

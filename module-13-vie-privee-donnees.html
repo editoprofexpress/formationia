@@ -2839,140 +2839,115 @@
             }
         ];
 
-        let quizState = { currentQuestion: 0, score: 0, answers: [] };
+        let quizState = { answers: {} };
         let certificateUnlocked = false;
         let finalScore = 0;
 
         function showQuiz() {
             document.getElementById('results-overlay').classList.remove('active');
             document.getElementById('game-container').classList.remove('active');
-            quizState = { currentQuestion: 0, score: 0, answers: [] };
-            showQuizScreen();
-        }
-
-        function showQuizScreen() {
-            const q = quizQuestions[quizState.currentQuestion];
-            const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
-
+            quizState = { answers: {} };
             document.getElementById('briefing-screen').classList.add('active');
+            document.getElementById('prev-btn').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
 
             document.getElementById('briefing-content').innerHTML = `
                 <div style="max-width:700px;margin:0 auto;">
                     <h2 class="module-title">📜 Quiz de Certification</h2>
-                    <p style="color:var(--neon-blue);margin-bottom:20px;">Vie Privée & Données Personnelles</p>
-
-                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:25px;">
-                        <div style="background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));height:8px;border-radius:8px;width:${progress}%;transition:width 0.5s;"></div>
+                    <p style="color:var(--neon-blue);margin-bottom:10px;">Vie Privée & Données Personnelles</p>
+                    <p style="color:#888;margin-bottom:16px;font-size:0.92em;">Répondez aux ${quizQuestions.length} questions puis validez. Score minimum : <strong>70%</strong>.</p>
+                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:8px;">
+                        <div id="quiz13-fill" style="background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));height:8px;border-radius:8px;width:0%;transition:width 0.3s;"></div>
                     </div>
-
-                    <p style="color:#888;margin-bottom:10px;">Question ${quizState.currentQuestion + 1} / ${quizQuestions.length}</p>
-
-                    <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:25px;margin-bottom:25px;">
-                        <p style="font-size:1.15em;line-height:1.6;">${q.question}</p>
+                    <div id="quiz13-prog" style="color:#888;font-size:0.88em;margin-bottom:20px;">0/${quizQuestions.length} répondues</div>
+                    ${quizQuestions.map((q, i) => `
+                        <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:20px;margin-bottom:18px;">
+                            <p style="color:#888;font-size:0.88em;margin-bottom:8px;">Question ${i+1} / ${quizQuestions.length}</p>
+                            <p style="font-size:1.1em;line-height:1.6;margin-bottom:16px;">${q.question}</p>
+                            <div style="display:flex;flex-direction:column;gap:10px;" id="qopts13-${i}">
+                                ${q.options.map((opt, j) => `
+                                    <button id="qopt13-${i}-${j}" onclick="selectQ13(${i},${j})" style="
+                                        background:rgba(20,40,60,0.8);border:2px solid rgba(0,212,255,0.3);
+                                        border-radius:10px;padding:13px 18px;color:var(--text);
+                                        font-size:1em;cursor:pointer;transition:all 0.3s;
+                                        text-align:left;font-family:'Exo 2',sans-serif;"
+                                        onmouseover="if(!this.dataset.sel)this.style.borderColor='var(--neon-blue)';if(!this.dataset.sel)this.style.background='rgba(0,100,150,0.4)'"
+                                        onmouseout="if(!this.dataset.sel)this.style.borderColor='rgba(0,212,255,0.3)';if(!this.dataset.sel)this.style.background='rgba(20,40,60,0.8)'">
+                                        <span style="color:var(--neon-blue);margin-right:10px;font-weight:bold;font-family:'Space Mono',monospace;">${String.fromCharCode(65+j)}.</span>${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div style="text-align:center;margin-top:20px;">
+                        <button id="quiz13-submit" onclick="submitQ13()" class="action-btn"
+                            style="opacity:0.5;cursor:not-allowed;" disabled>
+                            ✅ Valider mes réponses
+                        </button>
                     </div>
-
-                    <div style="display:flex;flex-direction:column;gap:12px;" id="quiz-options">
-                        ${q.options.map((opt, i) => `
-                            <button onclick="selectQuizAnswer(${i})" style="
-                                background:rgba(20,40,60,0.8);
-                                border:2px solid rgba(0,212,255,0.3);
-                                border-radius:10px;
-                                padding:15px 20px;
-                                color:var(--text);
-                                font-size:1em;
-                                cursor:pointer;
-                                transition:all 0.3s;
-                                text-align:left;
-                                font-family:'Exo 2',sans-serif;
-                            " onmouseover="this.style.borderColor='var(--neon-blue)';this.style.background='rgba(0,100,150,0.4)'"
-                               onmouseout="this.style.borderColor='rgba(0,212,255,0.3)';this.style.background='rgba(20,40,60,0.8)'">
-                                <span style="color:var(--neon-blue);margin-right:10px;font-weight:bold;font-family:'Space Mono',monospace;">${String.fromCharCode(65 + i)}.</span>
-                                ${opt}
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('prev-btn').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'none';
+                    <div id="quiz13-result"></div>
+                </div>`;
         }
 
-        function selectQuizAnswer(index) {
-            const q = quizQuestions[quizState.currentQuestion];
-            const isCorrect = index === q.correct;
-
-            if (isCorrect) quizState.score++;
-            quizState.answers.push({ question: quizState.currentQuestion, selected: index, correct: isCorrect });
-
-            const options = document.querySelectorAll('#quiz-options button');
-            options.forEach((btn, i) => {
-                btn.style.pointerEvents = 'none';
-                btn.onmouseover = null;
-                btn.onmouseout = null;
-                if (i === q.correct) {
-                    btn.style.borderColor = 'var(--neon-green)';
-                    btn.style.background = 'rgba(0,255,136,0.2)';
-                } else if (i === index && !isCorrect) {
-                    btn.style.borderColor = 'var(--neon-pink)';
-                    btn.style.background = 'rgba(255,0,128,0.2)';
-                }
+        function selectQ13(qi, oi) {
+            quizState.answers[qi] = oi;
+            document.querySelectorAll(`#qopts13-${qi} button`).forEach((btn, j) => {
+                delete btn.dataset.sel;
+                btn.style.borderColor = 'rgba(0,212,255,0.3)'; btn.style.background = 'rgba(20,40,60,0.8)';
             });
-
-            setTimeout(() => {
-                quizState.currentQuestion++;
-                if (quizState.currentQuestion < quizQuestions.length) {
-                    showQuizScreen();
-                } else {
-                    showQuizResults();
-                }
-            }, 1200);
+            const chosen = document.getElementById(`qopt13-${qi}-${oi}`);
+            if (chosen) { chosen.dataset.sel = '1'; chosen.style.borderColor = 'var(--neon-blue)'; chosen.style.background = 'rgba(0,100,150,0.4)'; }
+            const done = Object.keys(quizState.answers).length;
+            const txt = document.getElementById('quiz13-prog');
+            if (txt) txt.textContent = `${done}/${quizQuestions.length} répondues`;
+            const fill = document.getElementById('quiz13-fill');
+            if (fill) fill.style.width = Math.round(done/quizQuestions.length*100) + '%';
+            if (done === quizQuestions.length) {
+                const btn = document.getElementById('quiz13-submit');
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+            }
         }
 
-        function showQuizResults() {
-            const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+        function submitQ13() {
+            let score = 0;
+            quizQuestions.forEach((q, i) => { if (quizState.answers[i] === q.correct) score++; });
+            const percentage = Math.round(score / quizQuestions.length * 100);
             const passed = percentage >= 70;
 
-            if (passed) unlockCertificate(percentage);
+            const submitBtn = document.getElementById('quiz13-submit');
+            if (submitBtn) submitBtn.style.display = 'none';
 
-            document.getElementById('briefing-content').innerHTML = `
-                <div style="max-width:600px;margin:0 auto;text-align:center;">
-                    <h2 class="module-title" style="text-align:center;">
-                        ${passed ? '🎓 Attestation Obtenue !' : '📚 Continuez à apprendre'}
-                    </h2>
+            if (passed) {
+                quizQuestions.forEach((q, i) => {
+                    const chosen = quizState.answers[i];
+                    document.querySelectorAll(`#qopts13-${i} button`).forEach((btn, j) => {
+                        btn.style.pointerEvents = 'none'; btn.onmouseover = null; btn.onmouseout = null;
+                        if (j === q.correct) { btn.style.borderColor = 'var(--neon-green)'; btn.style.background = 'rgba(0,255,136,0.2)'; }
+                        else if (j === chosen && j !== q.correct) { btn.style.borderColor = 'var(--neon-pink)'; btn.style.background = 'rgba(255,0,128,0.2)'; }
+                    });
+                });
+                unlockCertificate(percentage);
+            } else {
+                document.querySelectorAll('[id^="qopts13-"] button').forEach(btn => { btn.style.pointerEvents = 'none'; btn.onmouseover = null; btn.onmouseout = null; });
+            }
 
-                    <div style="display:flex;justify-content:center;gap:40px;margin:30px 0;">
-                        <div>
-                            <div style="font-size:2.5em;font-family:'Space Mono',monospace;color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${quizState.score}/${quizQuestions.length}</div>
-                            <div style="color:var(--muted);font-size:0.9em;">Bonnes réponses</div>
-                        </div>
-                        <div>
-                            <div style="font-size:2.5em;font-family:'Space Mono',monospace;color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${percentage}%</div>
-                            <div style="color:var(--muted);font-size:0.9em;">Score</div>
-                        </div>
-                    </div>
-
-                    ${passed ? `
-                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px 0;">
-                            <p style="font-size:1.1em;margin-bottom:15px;">Félicitations ! Vous avez validé le micro-module <strong>"Vie Privée & Données Personnelles"</strong>.</p>
-                            <p style="color:#aaa;">Votre attestation est maintenant disponible dans le dossier SHIELD DATA.</p>
-                        </div>
-                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="action-btn" onclick="goToFolderCertificate()">📂 Récupérer l'attestation</button>
-                            <button class="action-btn secondary" onclick="location.reload()">🔄 Rejouer</button>
-                        </div>
-                    ` : `
-                        <div style="background:rgba(255,0,128,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:25px 0;">
-                            <p style="font-size:1.1em;margin-bottom:15px;">Vous devez obtenir au moins <strong>70%</strong> pour valider.</p>
-                            <p style="color:#aaa;">Rejouez pour réviser et retentez le quiz !</p>
-                        </div>
-                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="action-btn" onclick="showQuiz()">🔄 Retenter le quiz</button>
-                            <button class="action-btn secondary" onclick="location.reload()">🎮 Rejouer la mission</button>
-                        </div>
-                    `}
-                </div>
-            `;
+            const resultEl = document.getElementById('quiz13-result');
+            if (resultEl) {
+                resultEl.innerHTML = passed ? `
+                    <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:20px 0;text-align:center;">
+                        <div style="font-size:2em;margin-bottom:10px;">🎓</div>
+                        <p style="color:var(--neon-green);font-size:1.2em;margin-bottom:10px;"><strong>${score}/${quizQuestions.length} — ${percentage}%</strong></p>
+                        <p style="margin-bottom:12px;">Félicitations ! Vous avez validé le micro-module <strong>"Vie Privée & Données Personnelles"</strong>.</p>
+                        <button class="action-btn" onclick="goToFolderCertificate()" style="margin-top:10px;">📂 Récupérer l'attestation</button>
+                    </div>` : `
+                    <div style="background:rgba(255,0,128,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:20px 0;text-align:center;">
+                        <div style="font-size:2em;margin-bottom:10px;">📚</div>
+                        <p style="color:var(--neon-pink);font-size:1.2em;margin-bottom:10px;"><strong>${score}/${quizQuestions.length} — ${percentage}%</strong></p>
+                        <p style="margin-bottom:12px;">Vous devez obtenir au moins <strong>70%</strong> pour valider.</p>
+                        <button class="action-btn" onclick="showQuiz()" style="margin-top:8px;">↺ Réessayer le quiz</button>
+                    </div>`;
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
 
         // ==================== SYSTÈME D'ATTESTATION ====================

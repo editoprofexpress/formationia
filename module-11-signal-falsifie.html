@@ -832,7 +832,7 @@
   <div class="quiz-body" id="quiz-body"></div>
   <div class="quiz-footer">
     <div style="font-family:'Space Mono',monospace;font-size:0.82em;color:var(--muted)">Score minimum requis : 70 %</div>
-    <button class="briefing-btn primary" id="quiz-submit-btn" onclick="submitQuiz()" style="display:none">
+    <button class="briefing-btn primary" id="quiz-submit-btn" onclick="submitQuiz()" style="opacity:0.5;cursor:not-allowed;" disabled>
       ✅ Valider mes réponses
     </button>
   </div>
@@ -1600,7 +1600,8 @@ function initQuiz(){
       <div class="quiz-explain" id="explain-${i}">${q.explain}</div>
     </div>`).join('')+'<div id="quiz-result"></div>';
 
-  document.getElementById('quiz-submit-btn').style.display='none';
+  const _sq2 = document.getElementById('quiz-submit-btn');
+  if (_sq2) { _sq2.disabled = true; _sq2.style.opacity = '0.5'; _sq2.style.cursor = 'not-allowed'; }
   document.getElementById('quiz-meta-bar').textContent = '0/'+quizQuestions.length+' répondu(e)s';
   body.scrollTop = 0;
 }
@@ -1619,11 +1620,19 @@ function selectOpt(qIdx, oIdx){
   const answered = Object.keys(quizAnswers).length;
   document.getElementById('quiz-meta-bar').textContent = answered+'/'+quizQuestions.length+' répondue'+(answered>1?'s':'');
 
-  // Afficher bouton soumettre si tout répondu
+  // Enable submit button when all questions answered
   if(answered === quizQuestions.length){
-    document.getElementById('quiz-submit-btn').style.display='flex';
+    const btn = document.getElementById('quiz-submit-btn');
+    if(btn){ btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
     toast('✅ Toutes les questions répondues — validez vos réponses !');
   }
+}
+
+function retryQuiz(){
+  quizAnswers = {};
+  quizSubmitted = false;
+  quizFinalScore = 0;
+  initQuiz();
 }
 
 function submitQuiz(){
@@ -1631,39 +1640,50 @@ function submitQuiz(){
   quizSubmitted = true;
 
   let score = 0;
-  quizQuestions.forEach((q,i)=>{
-    const userAns = quizAnswers[i];
-    // Désactiver toutes les options
-    document.querySelectorAll(`.quiz-opt[id^="opt-${i}-"]`).forEach(el=>{
-      el.classList.remove('selected');
+  quizQuestions.forEach((q,i)=>{ if(quizAnswers[i]===q.correct) score++; });
+  const pct = Math.round(score/quizQuestions.length*100);
+  quizFinalScore = pct;
+  const passed = pct >= 70;
+
+  if(passed){
+    // Success: show highlights + explanations
+    quizQuestions.forEach((q,i)=>{
+      const userAns = quizAnswers[i];
+      document.querySelectorAll(`.quiz-opt[id^="opt-${i}-"]`).forEach(el=>{
+        el.classList.remove('selected');
+        el.classList.add('disabled');
+        el.onclick = null;
+      });
+      document.getElementById('opt-'+i+'-'+q.correct)?.classList.add('correct');
+      if(userAns !== undefined && userAns !== q.correct){
+        document.getElementById('opt-'+i+'-'+userAns)?.classList.add('wrong');
+      }
+      document.getElementById('explain-'+i)?.classList.add('show');
+    });
+  } else {
+    // Failure: lock options only (no highlights, no explanations)
+    document.querySelectorAll('.quiz-opt').forEach(el=>{
       el.classList.add('disabled');
       el.onclick = null;
     });
-    // Colorier correct / wrong
-    document.getElementById('opt-'+i+'-'+q.correct)?.classList.add('correct');
-    if(userAns !== undefined && userAns !== q.correct){
-      document.getElementById('opt-'+i+'-'+userAns)?.classList.add('wrong');
-    }
-    // Afficher explication
-    document.getElementById('explain-'+i)?.classList.add('show');
-    if(userAns === q.correct) score++;
-  });
+  }
 
-  const pct = Math.round(score/quizQuestions.length*100);
-  quizFinalScore = pct;
-
-  document.getElementById('quiz-submit-btn').style.display='none';
+  const btn = document.getElementById('quiz-submit-btn');
+  if(btn){ btn.disabled = true; btn.style.display='none'; }
   document.getElementById('quiz-result').innerHTML = `
-    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:28px;margin-top:10px">
-      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:14px;font-family:'Space Mono',monospace">
-        ${pct>=70?'🏆 Mission accomplie !':'⚠️ Score insuffisant'}
+    <div class="callout ${passed?'ok':'warn'}" style="text-align:center;padding:28px;margin-top:10px">
+      <h3 style="color:${passed?'var(--neon-green)':'var(--warn)'};margin-bottom:14px;font-family:'Space Mono',monospace">
+        ${passed?'🏆 Mission accomplie !':'⚠️ Score insuffisant'}
       </h3>
       <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
-      <p style="line-height:1.7">${pct>=70
+      <p style="line-height:1.7">${passed
         ?'Vous avez prouvé votre maîtrise de la détection des deepfakes. Votre attestation Unité VERITAS est débloquée !'
         :'Il faut au moins 70 % pour valider. Relisez le briefing et retentez le quiz.'
       }</p>
-      ${pct>=70?`<button class="briefing-btn primary" onclick="showCertificate()" style="margin-top:18px;font-size:1em;padding:14px 35px">🎓 Obtenir mon attestation →</button>`:''}
+      ${passed
+        ?`<button class="briefing-btn primary" onclick="showCertificate()" style="margin-top:18px;font-size:1em;padding:14px 35px">🎓 Obtenir mon attestation →</button>`
+        :`<button class="briefing-btn" onclick="retryQuiz()" style="margin-top:18px;">↺ Réessayer le quiz</button>`
+      }
     </div>`;
 
   if(pct>=70) unlockCertificate();

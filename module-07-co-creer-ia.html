@@ -2192,50 +2192,59 @@
 
   function checkQuizComplete() {
     const allAnswered = quizState.answers.every(a => a !== null);
-    document.getElementById('quiz-submit-btn').style.opacity = allAnswered ? '1' : '0.5';
+    const btn = document.getElementById('quiz-submit-btn');
+    if (btn) {
+      btn.disabled = !allAnswered;
+      btn.style.opacity = allAnswered ? '1' : '0.5';
+      btn.style.cursor = allAnswered ? 'pointer' : 'not-allowed';
+    }
   }
 
   function submitQuiz() {
-    const unanswered = quizState.answers.filter(a => a === null).length;
-    if (unanswered > 0) {
-      alert(`Il reste ${unanswered} question(s) sans réponse !`);
-      return;
-    }
+    if (quizState.submitted) return;
     quizState.submitted = true;
     document.getElementById('quiz-submit-btn').style.display = 'none';
 
     let score = 0;
     QUIZ_QUESTIONS.forEach((q, qi) => {
-      const chosen = quizState.answers[qi];
-      const correct = q.correct;
-      // Colorier les options
-      q.opts.forEach((_, oi) => {
-        const el = document.getElementById(`opt-${qi}-${oi}`);
-        if (!el) return;
-        if (oi === correct) {
-          el.style.background = 'rgba(0,60,30,0.5)';
-          el.style.borderColor = 'var(--neon-green)';
-          el.style.color = 'var(--neon-green)';
-        } else if (oi === chosen && oi !== correct) {
-          el.style.background = 'rgba(60,10,10,0.5)';
-          el.style.borderColor = 'var(--danger)';
-          el.style.color = 'var(--danger)';
-        }
-        el.style.cursor = 'default';
-      });
-      // Explication
-      const explEl = document.getElementById(`explain-${qi}`);
-      if (explEl) {
-        explEl.style.display = 'block';
-        explEl.innerHTML = q.explain;
-      }
-      if (chosen === correct) score++;
+      if (quizState.answers[qi] === q.correct) score++;
     });
-
-    // Résultat
     const pct = Math.round((score / QUIZ_QUESTIONS.length) * 100);
-    const passed = score >= 7;
+    const passed = pct >= 70;
+
+    if (passed) {
+      // Success: show highlights + explanations
+      QUIZ_QUESTIONS.forEach((q, qi) => {
+        const chosen = quizState.answers[qi];
+        q.opts.forEach((_, oi) => {
+          const el = document.getElementById(`opt-${qi}-${oi}`);
+          if (!el) return;
+          if (oi === q.correct) {
+            el.style.background = 'rgba(0,60,30,0.5)';
+            el.style.borderColor = 'var(--neon-green)';
+            el.style.color = 'var(--neon-green)';
+          } else if (oi === chosen && oi !== q.correct) {
+            el.style.background = 'rgba(60,10,10,0.5)';
+            el.style.borderColor = 'var(--danger)';
+            el.style.color = 'var(--danger)';
+          }
+          el.style.cursor = 'default';
+        });
+        const explEl = document.getElementById(`explain-${qi}`);
+        if (explEl) { explEl.style.display = 'block'; explEl.innerHTML = q.explain; }
+      });
+    } else {
+      // Failure: just lock options (no highlights, no explanations)
+      QUIZ_QUESTIONS.forEach((q, qi) => {
+        q.opts.forEach((_, oi) => {
+          const el = document.getElementById(`opt-${qi}-${oi}`);
+          if (el) el.style.cursor = 'default';
+        });
+      });
+    }
+
     const resultBox = document.createElement('div');
+    resultBox.id = 'quiz-result-box';
     resultBox.style.cssText = `
       border-radius:14px;padding:30px;text-align:center;margin:10px 0 30px;
       background:${passed ? 'rgba(0,60,30,0.4)' : 'rgba(60,50,0,0.4)'};
@@ -2247,14 +2256,12 @@
         ${score} / ${QUIZ_QUESTIONS.length}
       </div>
       <div style="font-size:1.1em;color:var(--text);margin-bottom:12px;">
-        ${passed ? '🎉 Certification validée !' : '⚠️ Score insuffisant — relis les sections du briefing'}
+        ${passed ? '🎉 Certification validée !' : '⚠️ Score insuffisant'}
       </div>
-      <div style="color:var(--muted);font-size:0.9em;">Score : ${pct}% — Minimum requis : 70%</div>
-      ${passed ? `<button class="ws-btn primary" onclick="startCertification(${score})" style="margin-top:20px;font-size:1em;padding:14px 36px;">
-        🎓 GÉNÉRER MON ATTESTATION
-      </button>` : `<button class="ws-btn" onclick="restartQuiz()" style="margin-top:20px;">
-        🔁 Revoir le quiz
-      </button>`}
+      <div style="color:var(--muted);font-size:0.9em;margin-bottom:16px;">Score : ${pct}% — Minimum requis : 70%</div>
+      ${passed
+        ? `<button class="ws-btn primary" onclick="startCertification(${score})" style="font-size:1em;padding:14px 36px;">🎓 GÉNÉRER MON ATTESTATION</button>`
+        : `<button class="ws-btn" onclick="restartQuiz()">↺ Réessayer le quiz</button>`}
     `;
     document.getElementById('quiz-container').insertBefore(resultBox, document.getElementById('quiz-container').firstChild);
     document.getElementById('quiz-container').scrollTop = 0;

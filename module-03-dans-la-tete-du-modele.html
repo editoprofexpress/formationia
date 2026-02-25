@@ -1490,6 +1490,9 @@
       document.getElementById('btn-prev').onclick = () => showLesson(5);
       document.getElementById('btn-next').textContent = '✅ Valider';
       document.getElementById('btn-next').onclick = submitQuiz;
+      // Disable until all questions answered
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) { btnNext.disabled = true; btnNext.style.opacity = '0.5'; btnNext.style.cursor = 'not-allowed'; }
       document.getElementById('footer-hint').textContent = 'Score minimum : 70%';
 
       document.getElementById('briefing-content').innerHTML = renderQuizHTML();
@@ -1524,7 +1527,7 @@
       });
       html += `
         <div style="text-align:center;margin:25px 0 10px">
-          <button onclick="submitQuiz()" class="zone-btn" style="max-width:380px;margin:0 auto">
+          <button id="quiz-inline-submit" onclick="submitQuiz()" class="zone-btn" style="max-width:380px;margin:0 auto;opacity:0.5;cursor:not-allowed;" disabled>
             ✅ Valider mes réponses
           </button>
         </div>
@@ -1534,62 +1537,78 @@
     }
 
     function answerQuiz(qIdx, oIdx) {
-      if (quizAnswers.hasOwnProperty(qIdx)) return;
       quizAnswers[qIdx] = oIdx;
       document.querySelectorAll(`[id^="qq-opt-${qIdx}-"]`).forEach(el => {
         el.classList.remove('selected');
         const j = parseInt(el.id.split('-').pop());
         if (j === oIdx) el.classList.add('selected');
       });
+      // Enable submit buttons when all questions answered
+      if (Object.keys(quizAnswers).length === quizQuestions.length) {
+        const btn = document.getElementById('btn-next');
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+        const btnInline = document.getElementById('quiz-inline-submit');
+        if (btnInline) { btnInline.disabled = false; btnInline.style.opacity = '1'; btnInline.style.cursor = 'pointer'; }
+      }
     }
 
     function submitQuiz() {
-      if (Object.keys(quizAnswers).length < quizQuestions.length) {
-        toast('⚠️ Réponds à toutes les questions avant de valider !', 3000);
-        return;
-      }
+      // Calculate score first (no DOM changes yet)
       let score = 0;
-      quizQuestions.forEach((q, i) => {
-        const userAns = quizAnswers[i];
-        document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
-          el.classList.remove('selected');
-          el.style.pointerEvents = 'none';
-          const j = parseInt(el.id.split('-').pop());
-          if (j === q.correct) el.classList.add('correct');
-          else if (j === userAns) el.classList.add('wrong');
-        });
-        document.getElementById(`qq-explain-${i}`).classList.add('show');
-        if (userAns === q.correct) score++;
-      });
-
+      quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
       const pct = Math.round(score / quizQuestions.length * 100);
       finalQuizScore = pct;
       const success = pct >= 70;
 
-      document.getElementById('quiz-result').innerHTML = `
+      if (success) {
+        // Show highlights + explanations only on success
+        quizQuestions.forEach((q, i) => {
+          const userAns = quizAnswers[i];
+          document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
+            el.classList.remove('selected');
+            el.style.pointerEvents = 'none';
+            const j = parseInt(el.id.split('-').pop());
+            if (j === q.correct) el.classList.add('correct');
+            else if (j === userAns) el.classList.add('wrong');
+          });
+          document.getElementById(`qq-explain-${i}`).classList.add('show');
+        });
+      } else {
+        // Failure: lock options without revealing answers
+        document.querySelectorAll(`[id^="qq-opt-"]`).forEach(el => {
+          el.style.pointerEvents = 'none';
+        });
+      }
+
+      document.getElementById('quiz-result').innerHTML = success ? `
         <div style="text-align:center;padding:30px;margin:20px 0;
-             background:${success ? 'rgba(0,255,136,0.08)' : 'rgba(255,204,0,0.08)'};
-             border:1px solid ${success ? 'rgba(0,255,136,0.3)' : 'rgba(255,204,0,0.3)'};
-             border-radius:12px">
-          <div style="font-size:2.5em;margin-bottom:12px">${success ? '🎉' : '📚'}</div>
-          <h3 style="font-family:'Space Mono',monospace;color:${success ? 'var(--neon-green)' : '#ffcc00'};margin-bottom:10px">
-            ${success ? 'Mission accomplie !' : 'Score insuffisant'}
-          </h3>
+             background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">🎉</div>
+          <h3 style="font-family:'Space Mono',monospace;color:var(--neon-green);margin-bottom:10px">Mission accomplie !</h3>
           <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
-            ${score}/${quizQuestions.length} — <span style="color:${success ? 'var(--neon-green)' : '#ffcc00'}">${pct}%</span>
+            ${score}/${quizQuestions.length} — <span style="color:var(--neon-green)">${pct}%</span>
           </div>
           <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
-            ${success
-              ? 'Tu maîtrises les fondamentaux du fonctionnement d\'un LLM. Ton attestation est débloquée !'
-              : 'Il faut au moins 70% pour valider. Relis les cours et réessaie.'}
+            Tu maîtrises les fondamentaux du fonctionnement d'un LLM. Ton attestation est débloquée !
           </p>
-          ${success
-            ? `<button class="zone-btn" style="max-width:340px;margin:0 auto;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="unlockCertificate()">
-                🎓 Accéder à mon attestation →
-               </button>`
-            : `<button class="zone-btn" style="max-width:340px;margin:0 auto" onclick="showQuizInBriefing()">
-                🔄 Réessayer le quiz
-               </button>`}
+          <button class="zone-btn" style="max-width:340px;margin:0 auto;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="unlockCertificate()">
+            🎓 Accéder à mon attestation →
+          </button>
+        </div>
+      ` : `
+        <div style="text-align:center;padding:30px;margin:20px 0;
+             background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.3);border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">📚</div>
+          <h3 style="font-family:'Space Mono',monospace;color:#ffcc00;margin-bottom:10px">Score insuffisant</h3>
+          <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
+            ${score}/${quizQuestions.length} — <span style="color:#ffcc00">${pct}%</span>
+          </div>
+          <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
+            Il faut au moins 70% pour valider. Réessaie !
+          </p>
+          <button class="zone-btn" style="max-width:340px;margin:0 auto" onclick="showQuizInBriefing()">
+            🔄 Réessayer le quiz
+          </button>
         </div>
       `;
 

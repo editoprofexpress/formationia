@@ -1787,44 +1787,70 @@
       el.classList.remove('selected');
       if (parseInt(el.dataset.o) === oIdx) el.classList.add('selected');
     });
+    // Enable submit when all questions answered
+    if (Object.keys(quizAnswers).length === quizQuestions.length) {
+      const btn = document.getElementById('quiz-submit');
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+    }
   }
 
   function submitQuiz() {
     let score = 0;
-    quizQuestions.forEach((q, i) => {
-      const ans = quizAnswers[i];
-      document.querySelectorAll(`.q-opt[data-q="${i}"]`).forEach(el => {
-        el.style.pointerEvents = 'none';
-        const oIdx = parseInt(el.dataset.o);
-        if (oIdx === q.correct) el.classList.add('opt-correct');
-        if (oIdx === ans && ans !== q.correct) el.classList.add('opt-wrong');
-      });
-      if (ans === q.correct) score++;
-      document.getElementById('qexplain-' + i).classList.add('show');
-    });
-
+    quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
     const pct = Math.round(score / quizQuestions.length * 100);
     finalScore = pct;
+    const passed = pct >= 70;
+
     document.getElementById('quiz-submit').style.display = 'none';
+
+    if (passed) {
+      // Success: show highlights + explanations
+      quizQuestions.forEach((q, i) => {
+        const ans = quizAnswers[i];
+        document.querySelectorAll(`.q-opt[data-q="${i}"]`).forEach(el => {
+          el.style.pointerEvents = 'none';
+          const oIdx = parseInt(el.dataset.o);
+          if (oIdx === q.correct) el.classList.add('opt-correct');
+          if (oIdx === ans && ans !== q.correct) el.classList.add('opt-wrong');
+        });
+        document.getElementById('qexplain-' + i).classList.add('show');
+      });
+    } else {
+      // Failure: lock options only (no highlights, no explanations)
+      document.querySelectorAll('.q-opt').forEach(el => { el.style.pointerEvents = 'none'; });
+    }
 
     const resEl = document.getElementById('quiz-result');
     resEl.innerHTML = `
-      <div class="quiz-result-box ${pct >= 70 ? 'res-ok' : 'res-warn'}">
-        <h3 style="color:${pct >= 70 ? 'var(--neon-green)' : 'var(--warn)'};margin-bottom:12px">
-          ${pct >= 70 ? '🎉 Félicitations !' : '📚 Score insuffisant'}
+      <div class="quiz-result-box ${passed ? 'res-ok' : 'res-warn'}">
+        <h3 style="color:${passed ? 'var(--neon-green)' : 'var(--warn)'};margin-bottom:12px">
+          ${passed ? '🎉 Félicitations !' : '📚 Score insuffisant'}
         </h3>
         <p style="font-size:1.4em;margin-bottom:10px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
         <p style="line-height:1.7;color:#aabbcc">
-          ${pct >= 70
+          ${passed
             ? 'Vous maîtrisez les protocoles NEXUS. Votre attestation de certification est débloquée !'
             : 'Il faut au moins 70% pour valider. Relisez le dossier de protocole et retentez.'}
         </p>
-        ${pct >= 70 ? '<button class="btn-unlock" onclick="showCertificate()">🎓 Télécharger mon attestation</button>' : ''}
+        ${passed
+          ? '<button class="btn-unlock" onclick="showCertificate()">🎓 Télécharger mon attestation</button>'
+          : '<button class="briefing-btn" onclick="retryQuiz()" style="margin-top:14px;">↺ Réessayer le quiz</button>'}
       </div>
     `;
     resEl.scrollIntoView({ behavior: 'smooth' });
 
-    if (pct >= 70) certUnlocked = true;
+    if (passed) certUnlocked = true;
+  }
+
+  function retryQuiz() {
+    Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+    finalScore = 0;
+    certUnlocked = false;
+    renderQuiz();
+    const btn = document.getElementById('quiz-submit');
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; btn.style.display = ''; }
+    document.getElementById('quiz-result').innerHTML = '';
+    document.getElementById('quiz-container').scrollTop = 0;
   }
 
   function showCertificate() {
@@ -1843,7 +1869,7 @@
     <div style="flex:1;overflow-y:auto;padding:40px;max-width:860px;margin:0 auto;width:100%">
       <div id="quiz-container"></div>
       <div style="text-align:center;margin:30px 0">
-        <button id="quiz-submit" class="briefing-btn primary" style="font-size:1.1em;padding:15px 40px" onclick="submitQuiz()">
+        <button id="quiz-submit" class="briefing-btn primary" style="font-size:1.1em;padding:15px 40px;opacity:0.5;cursor:not-allowed;" disabled onclick="submitQuiz()">
           ✅ Valider mes réponses
         </button>
       </div>

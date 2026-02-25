@@ -1437,7 +1437,7 @@ function showQuiz(){
       `).join('')}
     </div>
     <div style="text-align:center;margin-top:25px">
-      <button class="btn yellow" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px">Valider mes réponses</button>
+      <button class="btn yellow" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px;opacity:0.5;cursor:not-allowed;" disabled>Valider mes réponses</button>
     </div>
     <div id="quiz-result" style="margin-top:20px"></div>
   `;
@@ -1451,39 +1451,57 @@ function answerQuiz(qIdx,oIdx){
     el.classList.remove('selected');
     if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
   });
+  // Enable submit button when all questions answered
+  if(Object.keys(quizAnswers).length===quizQuestions.length){
+    const btn=$('quiz-submit-btn');
+    if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
+  }
 }
 
 function submitQuiz(){
   let score=0;
-  quizQuestions.forEach((q,i)=>{
-    const userAns=quizAnswers[i];
-    const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
-    opts.forEach(el=>{
-      const oIdx=parseInt(el.dataset.o);
-      el.style.pointerEvents='none';
-      if(oIdx===q.correct) el.classList.add('correct');
-      if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
-    });
-    if(userAns===q.correct) score++;
-    $('explain-'+i).classList.add('show');
-  });
-
+  quizQuestions.forEach((q,i)=>{ if(quizAnswers[i]===q.correct) score++; });
   const pct=Math.round(score/quizQuestions.length*100);
-  state.quizScore=score;state.quizTotal=quizQuestions.length;
+  state.quizScore=score; state.quizTotal=quizQuestions.length;
   finalScore=pct;
 
   $('quiz-submit-btn').style.display='none';
-  $('quiz-result').innerHTML=`
-    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:30px">
-      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:15px">${pct>=70?'Félicitations !':'Score insuffisant'}</h3>
-      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
-      <p style="line-height:1.6">${pct>=70
-        ?'Vous avez démontré une solide compréhension des hallucinations IA et des techniques de vérification. Votre attestation est débloquée !'
-        :'Il faut au moins 70% pour valider. Relisez les dossiers et réessayez.'
-      }</p>
-    </div>`;
 
-  if(pct>=70) unlockCertificate();
+  if(pct>=70){
+    // Success: show highlights + explanations
+    quizQuestions.forEach((q,i)=>{
+      const userAns=quizAnswers[i];
+      const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
+      opts.forEach(el=>{
+        const oIdx=parseInt(el.dataset.o);
+        el.style.pointerEvents='none';
+        if(oIdx===q.correct) el.classList.add('correct');
+        if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
+      });
+      $('explain-'+i).classList.add('show');
+    });
+    $('quiz-result').innerHTML=`
+    <div class="callout ok" style="text-align:center;padding:30px">
+      <h3 style="color:var(--neon-yellow);margin-bottom:15px">Félicitations !</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">Vous avez démontré une solide compréhension des hallucinations IA et des techniques de vérification. Votre attestation est débloquée !</p>
+    </div>`;
+    unlockCertificate();
+  } else {
+    // Failure: show only score + retry (no answer details)
+    $('quiz-result').innerHTML=`
+    <div class="callout warn" style="text-align:center;padding:30px">
+      <h3 style="color:var(--warn);margin-bottom:15px">Score insuffisant</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">Il faut au moins 70% pour valider. Réessayez !</p>
+      <button class="btn" onclick="retryQuiz()" style="margin-top:20px;background:var(--neon-yellow);color:#000;padding:12px 30px">↺ Réessayer</button>
+    </div>`;
+  }
+}
+
+function retryQuiz(){
+  Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+  showQuiz();
 }
 
 /* =========================================================
