@@ -950,6 +950,7 @@
             line-height: 1.55;
         }
         .quiz-option:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.04); }
+        .quiz-option.selected { border-color: var(--domain-color) !important; background: rgba(78,205,196,0.08) !important; }
         .quiz-opt-letter {
             font-family: 'Space Mono', monospace;
             font-weight: 700;
@@ -2394,125 +2395,108 @@
             }
         ];
 
-        let quizCurrent = 0;
-        let quizScore = 0;
-        let quizAnswered = false;
+        let quizAnswers5 = {};
 
         function initQuiz() {
-            quizCurrent = 0;
-            quizScore = 0;
-            quizAnswered = false;
-            renderQuizQuestion();
-        }
-
-        function renderQuizQuestion() {
+            quizAnswers5 = {};
             const screen = document.getElementById('quiz-screen');
-            const q = quizQuestions[quizCurrent];
-            quizAnswered = false;
             screen.innerHTML = `
                 <div class="quiz-container">
                     <div class="quiz-header">
                         <div style="font-family:'Space Mono',monospace;color:var(--domain-color);font-size:1em;">📜 QUIZ DE CERTIFICATION</div>
-                        <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);">Question ${quizCurrent + 1}/${quizQuestions.length} • Score : ${quizScore}/${quizCurrent}</div>
+                        <div id="quiz5-progress" style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);">0/${quizQuestions.length} répondues</div>
                     </div>
                     <div class="quiz-progress-bar">
-                        <div class="quiz-progress-fill" style="width:${((quizCurrent)/quizQuestions.length*100).toFixed(0)}%"></div>
+                        <div class="quiz-progress-fill" id="quiz5-fill" style="width:0%"></div>
                     </div>
                     <div class="quiz-body">
-                        <div class="quiz-question">${q.question}</div>
-                        <div class="quiz-options" id="quiz-options">
-                            ${q.options.map((opt, i) => `
-                                <div class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i})">
-                                    <span class="quiz-opt-letter">${String.fromCharCode(65+i)}</span>
-                                    <span class="quiz-opt-text">${opt}</span>
+                        <p style="color:#aabbcc;font-size:0.92em;margin-bottom:18px;">Répondez aux ${quizQuestions.length} questions puis validez. Score minimum : <strong style="color:var(--domain-color)">70%</strong>.</p>
+                        ${quizQuestions.map((q, i) => `
+                            <div style="background:rgba(10,20,40,0.6);border:1px solid rgba(78,205,196,0.2);border-radius:10px;padding:20px;margin-bottom:16px;" id="qq5-${i}">
+                                <div style="font-family:'Space Mono',monospace;font-size:0.78em;color:var(--muted);margin-bottom:8px;">Q${i+1}/${quizQuestions.length}</div>
+                                <div class="quiz-question" style="margin-bottom:14px;">${q.question}</div>
+                                <div class="quiz-options" id="qopts5-${i}">
+                                    ${q.options.map((opt, j) => `
+                                        <div class="quiz-option" id="qopt5-${i}-${j}" onclick="selectOpt5(${i},${j})">
+                                            <span class="quiz-opt-letter">${String.fromCharCode(65+j)}</span>
+                                            <span class="quiz-opt-text">${opt}</span>
+                                        </div>
+                                    `).join('')}
                                 </div>
-                            `).join('')}
-                        </div>
-                        <div class="quiz-explain" id="quiz-explain" style="display:none;"></div>
-                        <div style="margin-top:20px;text-align:center;">
-                            <button class="validate-btn" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display:none;">
-                                ${quizCurrent + 1 < quizQuestions.length ? 'Question suivante →' : '📜 Voir mes résultats'}
+                                <div class="quiz-explain" id="qexpl5-${i}" style="display:none;"></div>
+                            </div>
+                        `).join('')}
+                        <div style="text-align:center;margin-top:20px;">
+                            <button class="validate-btn" id="quiz5-submit" onclick="submitQuiz5()"
+                                style="opacity:0.5;cursor:not-allowed;" disabled>
+                                ✅ Valider mes réponses
                             </button>
                         </div>
+                        <div id="quiz5-result"></div>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
-        function answerQuiz(idx) {
-            if (quizAnswered) return;
-            quizAnswered = true;
-            const q = quizQuestions[quizCurrent];
-            const correct = idx === q.correct;
-            if (correct) quizScore++;
-
-            document.querySelectorAll('.quiz-option').forEach((el, i) => {
-                el.style.pointerEvents = 'none';
-                if (i === q.correct) {
-                    el.style.borderColor = 'var(--neon-green)';
-                    el.style.background = 'rgba(0,255,136,0.08)';
-                } else if (i === idx && !correct) {
-                    el.style.borderColor = 'var(--danger)';
-                    el.style.background = 'rgba(255,77,77,0.08)';
-                }
+        function selectOpt5(qi, oi) {
+            quizAnswers5[qi] = oi;
+            document.querySelectorAll(`#qopts5-${qi} .quiz-option`).forEach((el, j) => {
+                el.classList.toggle('selected', j === oi);
             });
-
-            const explain = document.getElementById('quiz-explain');
-            explain.style.display = 'block';
-            explain.innerHTML = `
-                <div style="display:flex;align-items:flex-start;gap:10px;">
-                    <span style="font-size:1.4em;">${correct ? '✅' : '❌'}</span>
-                    <div>
-                        <strong style="color:${correct ? 'var(--neon-green)' : 'var(--danger)'}">
-                            ${correct ? 'Bonne réponse !' : 'Pas tout à fait...'}
-                        </strong>
-                        <p style="margin-top:6px;color:#aabbcc;font-size:0.92em;line-height:1.6;">${q.explain}</p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('quiz-next-btn').style.display = 'inline-block';
-        }
-
-        function nextQuizQuestion() {
-            quizCurrent++;
-            if (quizCurrent < quizQuestions.length) {
-                renderQuizQuestion();
-            } else {
-                showQuizResults();
+            const done = Object.keys(quizAnswers5).length;
+            const prog = document.getElementById('quiz5-progress');
+            if (prog) prog.textContent = `${done}/${quizQuestions.length} répondues`;
+            const fill = document.getElementById('quiz5-fill');
+            if (fill) fill.style.width = Math.round(done/quizQuestions.length*100) + '%';
+            if (done === quizQuestions.length) {
+                const btn = document.getElementById('quiz5-submit');
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
             }
         }
 
-        function showQuizResults() {
-            const screen = document.getElementById('quiz-screen');
-            const pct = Math.round(quizScore / quizQuestions.length * 100);
-            const pass = quizScore >= 6;
-            screen.innerHTML = `
-                <div class="quiz-container">
-                    <div class="quiz-header">
-                        <div style="font-family:'Space Mono',monospace;color:var(--domain-color);">📜 RÉSULTATS</div>
-                    </div>
-                    <div class="quiz-body" style="text-align:center;">
-                        <div style="font-size:4em;margin:20px 0;">${pass ? '🏆' : '🔄'}</div>
-                        <div style="font-family:'Space Mono',monospace;font-size:2em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};">
-                            ${quizScore}/${quizQuestions.length}
-                        </div>
-                        <div style="font-size:1.3em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};margin:10px 0 25px;">
-                            ${pct}% — ${pass ? 'Mission accomplie !' : 'Presque...'}
-                        </div>
-                        <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 30px;">
-                            ${pass
-                                ? 'Tu as démontré que tu maîtrises l\'art de la consigne. ARIA-7 est entièrement réactivée grâce à toi. Télécharge ton attestation.'
-                                : `Tu as ${quizScore} bonnes réponses. Il faut 6/8 pour valider. Revois le briefing et réessaie !`
-                            }
-                        </p>
+        function submitQuiz5() {
+            let score = 0;
+            quizQuestions.forEach((q, i) => { if (quizAnswers5[i] === q.correct) score++; });
+            const pct = Math.round(score / quizQuestions.length * 100);
+            const pass = pct >= 70;
+
+            const submitBtn = document.getElementById('quiz5-submit');
+            if (submitBtn) submitBtn.style.display = 'none';
+
+            if (pass) {
+                quizQuestions.forEach((q, i) => {
+                    const chosen = quizAnswers5[i];
+                    document.querySelectorAll(`#qopts5-${i} .quiz-option`).forEach((el, j) => {
+                        el.classList.remove('selected');
+                        el.style.pointerEvents = 'none';
+                        if (j === q.correct) { el.style.borderColor = 'var(--neon-green)'; el.style.background = 'rgba(0,255,136,0.08)'; }
+                        else if (j === chosen && j !== q.correct) { el.style.borderColor = 'var(--danger)'; el.style.background = 'rgba(255,77,77,0.08)'; }
+                    });
+                    const exEl = document.getElementById(`qexpl5-${i}`);
+                    if (exEl) { exEl.style.display = 'block'; exEl.innerHTML = `<p style="color:#aabbcc;font-size:0.92em;line-height:1.6;">💡 ${q.explain}</p>`; }
+                });
+            } else {
+                document.querySelectorAll('.quiz-option').forEach(el => { el.classList.remove('selected'); el.style.pointerEvents = 'none'; });
+            }
+
+            const resultEl = document.getElementById('quiz5-result');
+            if (resultEl) {
+                resultEl.innerHTML = pass ? `
+                    <div style="text-align:center;margin-top:24px;padding:28px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);border-radius:10px;">
+                        <div style="font-size:3em;margin-bottom:12px;">🏆</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-green);">${score}/${quizQuestions.length} — ${pct}%</div>
+                        <p style="color:#aabbcc;line-height:1.7;margin:14px 0 20px;">Tu as démontré que tu maîtrises l'art de la consigne. ARIA-7 est entièrement réactivée grâce à toi.</p>
                         <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            ${pass ? `<button class="validate-btn success-btn" onclick="showAttestation()">🎓 Télécharger l'attestation</button>` : ''}
-                            <button class="validate-btn" onclick="initQuiz()" style="${pass ? 'opacity:0.6;font-size:0.9em;' : ''}">🔄 ${pass ? 'Refaire le quiz' : 'Réessayer'}</button>
-                            <a href="modules.html" style="font-family:'Space Mono',monospace;padding:13px 25px;border:2px solid rgba(78,205,196,0.3);color:var(--muted);text-decoration:none;font-size:0.9em;">↩ Modules</a>
+                            <button class="validate-btn success-btn" onclick="showAttestation()">🎓 Télécharger l'attestation</button>
                         </div>
-                    </div>
-                </div>
-            `;
+                    </div>` : `
+                    <div style="text-align:center;margin-top:24px;padding:28px;background:rgba(255,204,0,0.06);border:1px solid rgba(255,204,0,0.25);border-radius:10px;">
+                        <div style="font-size:3em;margin-bottom:12px;">📚</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:1.8em;color:var(--warn);">${score}/${quizQuestions.length} — ${pct}%</div>
+                        <p style="color:#aabbcc;line-height:1.7;margin:14px 0 20px;">Il faut au moins 70% pour valider. Revois le briefing et réessaie !</p>
+                        <button class="validate-btn" onclick="initQuiz()">↺ Réessayer le quiz</button>
+                    </div>`;
+                resultEl.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // ==================== ATTESTATION ====================

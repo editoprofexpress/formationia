@@ -4087,155 +4087,110 @@ Tapez <span class="info">help</span> pour la liste des commandes.
             }
         ];
 
-        let quizState = {
-            currentQuestion: 0,
-            score: 0,
-            answers: []
-        };
+        let quizState = { answers: {} };
 
         function startCertificationQuiz() {
-            quizState = { currentQuestion: 0, score: 0, answers: [] };
-            showQuizQuestion();
-        }
-
-        function showQuizQuestion() {
-            const q = quizQuestions[quizState.currentQuestion];
-            const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
-
-            const content = `
+            quizState = { answers: {} };
+            const html = `
                 <div class="final-report" style="max-width:700px;">
                     <div class="final-title" style="font-size:1.5em;">📜 Quiz d'Attestation</div>
-                    <p style="color:var(--neon-cyan);margin-bottom:20px;">Impact Environnemental de l'IA</p>
-
-                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:25px;">
-                        <div style="background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan));height:8px;border-radius:8px;width:${progress}%;transition:width 0.5s;"></div>
+                    <p style="color:var(--neon-cyan);margin-bottom:10px;">Impact Environnemental de l'IA</p>
+                    <p style="color:#888;margin-bottom:16px;font-size:0.92em;">Répondez aux ${quizQuestions.length} questions puis validez. Score minimum : <strong>70%</strong>.</p>
+                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:8px;">
+                        <div id="quiz12-fill" style="background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan));height:8px;border-radius:8px;width:0%;transition:width 0.3s;"></div>
                     </div>
-
-                    <p style="color:#888;margin-bottom:10px;">Question ${quizState.currentQuestion + 1} / ${quizQuestions.length}</p>
-
-                    <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:25px;margin-bottom:25px;">
-                        <p style="font-size:1.15em;line-height:1.6;">${q.question}</p>
+                    <div id="quiz12-prog" style="color:#888;font-size:0.88em;margin-bottom:20px;">0/${quizQuestions.length} répondues</div>
+                    ${quizQuestions.map((q, i) => `
+                        <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:20px;margin-bottom:18px;" id="qq12-${i}">
+                            <p style="color:#888;font-size:0.88em;margin-bottom:8px;">Question ${i+1} / ${quizQuestions.length}</p>
+                            <p style="font-size:1.1em;line-height:1.6;margin-bottom:16px;">${q.question}</p>
+                            <div style="display:flex;flex-direction:column;gap:10px;" id="qopts12-${i}">
+                                ${q.options.map((opt, j) => `
+                                    <button id="qopt12-${i}-${j}" onclick="selectQ12(${i},${j})" style="
+                                        background:rgba(20,40,60,0.8);border:2px solid rgba(0,212,255,0.3);
+                                        border-radius:10px;padding:13px 18px;color:white;font-size:0.97em;
+                                        cursor:pointer;transition:all 0.3s;text-align:left;"
+                                        onmouseover="this.style.borderColor='var(--neon-cyan)';this.style.background='rgba(0,100,150,0.4)'"
+                                        onmouseout="if(!this.dataset.sel)this.style.borderColor='rgba(0,212,255,0.3)';if(!this.dataset.sel)this.style.background='rgba(20,40,60,0.8)'">
+                                        <span style="color:var(--neon-cyan);margin-right:10px;font-weight:bold;">${String.fromCharCode(65+j)}.</span>${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div style="text-align:center;margin-top:20px;">
+                        <button id="quiz12-submit" onclick="submitQ12()" style="
+                            background:rgba(0,255,136,0.15);border:2px solid var(--neon-green);
+                            border-radius:10px;padding:15px 40px;color:var(--neon-green);
+                            font-size:1em;opacity:0.5;cursor:not-allowed;transition:all 0.3s;" disabled>
+                            ✅ Valider mes réponses
+                        </button>
                     </div>
-
-                    <div style="display:flex;flex-direction:column;gap:12px;" id="quiz-options">
-                        ${q.options.map((opt, i) => `
-                            <button class="quiz-option" onclick="selectQuizAnswer(${i})" style="
-                                background:rgba(20,40,60,0.8);
-                                border:2px solid rgba(0,212,255,0.3);
-                                border-radius:10px;
-                                padding:15px 20px;
-                                color:white;
-                                font-size:1em;
-                                cursor:pointer;
-                                transition:all 0.3s;
-                                text-align:left;
-                            " onmouseover="this.style.borderColor='var(--neon-cyan)';this.style.background='rgba(0,100,150,0.4)'"
-                               onmouseout="this.style.borderColor='rgba(0,212,255,0.3)';this.style.background='rgba(20,40,60,0.8)'">
-                                <span style="color:var(--neon-cyan);margin-right:10px;font-weight:bold;">${String.fromCharCode(65 + i)}.</span>
-                                ${opt}
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            showModal(content);
+                    <div id="quiz12-result"></div>
+                </div>`;
+            showModal(html);
             document.querySelector('.modal-close').style.display = 'none';
         }
 
-        function selectQuizAnswer(index) {
-            const q = quizQuestions[quizState.currentQuestion];
-            const isCorrect = index === q.correct;
-
-            if (isCorrect) {
-                quizState.score++;
-            }
-            quizState.answers.push({ question: quizState.currentQuestion, selected: index, correct: isCorrect });
-
-            // Afficher feedback
-            const options = document.querySelectorAll('#quiz-options button');
-            options.forEach((btn, i) => {
-                btn.style.pointerEvents = 'none';
-                if (i === q.correct) {
-                    btn.style.borderColor = 'var(--neon-green)';
-                    btn.style.background = 'rgba(0,255,136,0.2)';
-                } else if (i === index && !isCorrect) {
-                    btn.style.borderColor = 'var(--neon-pink)';
-                    btn.style.background = 'rgba(255,51,102,0.2)';
-                }
+        function selectQ12(qi, oi) {
+            quizState.answers[qi] = oi;
+            document.querySelectorAll(`#qopts12-${qi} button`).forEach((btn, j) => {
+                delete btn.dataset.sel;
+                btn.style.borderColor = 'rgba(0,212,255,0.3)'; btn.style.background = 'rgba(20,40,60,0.8)';
             });
-
-            // Passer à la question suivante
-            setTimeout(() => {
-                quizState.currentQuestion++;
-                if (quizState.currentQuestion < quizQuestions.length) {
-                    showQuizQuestion();
-                } else {
-                    showQuizResults();
-                }
-            }, 1200);
+            const chosen = document.getElementById(`qopt12-${qi}-${oi}`);
+            if (chosen) { chosen.dataset.sel = '1'; chosen.style.borderColor = 'var(--neon-cyan)'; chosen.style.background = 'rgba(0,100,150,0.4)'; }
+            const done = Object.keys(quizState.answers).length;
+            const txt = document.getElementById('quiz12-prog');
+            if (txt) txt.textContent = `${done}/${quizQuestions.length} répondues`;
+            const fill = document.getElementById('quiz12-fill');
+            if (fill) fill.style.width = Math.round(done/quizQuestions.length*100) + '%';
+            if (done === quizQuestions.length) {
+                const btn = document.getElementById('quiz12-submit');
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+            }
         }
 
-        function showQuizResults() {
-            const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+        function submitQ12() {
+            let score = 0;
+            quizQuestions.forEach((q, i) => { if (quizState.answers[i] === q.correct) score++; });
+            const percentage = Math.round(score / quizQuestions.length * 100);
             const passed = percentage >= 70;
 
-            // Débloquer l'attestation si réussi
+            const submitBtn = document.getElementById('quiz12-submit');
+            if (submitBtn) submitBtn.style.display = 'none';
+
             if (passed) {
+                quizQuestions.forEach((q, i) => {
+                    const chosen = quizState.answers[i];
+                    document.querySelectorAll(`#qopts12-${i} button`).forEach((btn, j) => {
+                        btn.style.pointerEvents = 'none'; btn.onmouseover = null; btn.onmouseout = null;
+                        if (j === q.correct) { btn.style.borderColor = 'var(--neon-green)'; btn.style.background = 'rgba(0,255,136,0.2)'; }
+                        else if (j === chosen && j !== q.correct) { btn.style.borderColor = 'var(--neon-pink)'; btn.style.background = 'rgba(255,51,102,0.2)'; }
+                    });
+                });
                 unlockCertificate(percentage);
+            } else {
+                document.querySelectorAll('[id^="qopts12-"] button').forEach(btn => { btn.style.pointerEvents = 'none'; btn.onmouseover = null; btn.onmouseout = null; });
             }
 
-            const content = `
-                <div class="final-report" style="max-width:600px;">
-                    <div class="final-title" style="font-size:1.5em;">
-                        ${passed ? '🎓 Attestation Obtenue !' : '📚 Continuez à apprendre'}
-                    </div>
-
-                    <div class="final-stats" style="margin:30px 0;">
-                        <div class="final-stat">
-                            <div class="final-stat-value" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${quizState.score}/${quizQuestions.length}</div>
-                            <div class="final-stat-label">Bonnes réponses</div>
-                        </div>
-                        <div class="final-stat">
-                            <div class="final-stat-value" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${percentage}%</div>
-                            <div class="final-stat-label">Score</div>
-                        </div>
-                    </div>
-
-                    ${passed ? `
-                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px 0;">
-                            <p style="font-size:1.1em;margin-bottom:15px;">🎉 Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
-                            <p style="color:#aaa;">Votre attestation de réussite est maintenant disponible dans le dossier d'infiltration.</p>
-                        </div>
-
-                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="start-btn" onclick="goToFolderCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
-                                📂 Récupérer l'attestation
-                            </button>
-                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
-                                🔄 Rejouer
-                            </button>
-                        </div>
-                    ` : `
-                        <div style="background:rgba(255,51,102,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:25px 0;">
-                            <p style="font-size:1.1em;margin-bottom:15px;">Vous devez obtenir au moins <strong>70%</strong> pour valider le module.</p>
-                            <p style="color:#aaa;">Rejouez pour réviser les concepts et retentez le quiz !</p>
-                        </div>
-
-                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="start-btn" onclick="startCertificationQuiz()" style="border-color:var(--neon-cyan);">
-                                🔄 Retenter le quiz
-                            </button>
-                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
-                                🎮 Rejouer la mission
-                            </button>
-                        </div>
-                    `}
-                </div>
-            `;
-
-            showModal(content);
-            document.querySelector('.modal-close').style.display = 'none';
+            const resultEl = document.getElementById('quiz12-result');
+            if (resultEl) {
+                resultEl.innerHTML = passed ? `
+                    <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:20px 0;text-align:center;">
+                        <div style="font-size:2em;margin-bottom:10px;">🎓</div>
+                        <p style="color:var(--neon-green);font-size:1.2em;margin-bottom:10px;"><strong>${score}/${quizQuestions.length} — ${percentage}%</strong></p>
+                        <p style="margin-bottom:12px;">🎉 Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
+                        <button class="start-btn" onclick="goToFolderCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));margin-top:12px;">📂 Récupérer l'attestation</button>
+                    </div>` : `
+                    <div style="background:rgba(255,51,102,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:20px 0;text-align:center;">
+                        <div style="font-size:2em;margin-bottom:10px;">📚</div>
+                        <p style="color:var(--neon-pink);font-size:1.2em;margin-bottom:10px;"><strong>${score}/${quizQuestions.length} — ${percentage}%</strong></p>
+                        <p style="margin-bottom:12px;">Vous devez obtenir au moins <strong>70%</strong> pour valider.</p>
+                        <button class="start-btn" onclick="startCertificationQuiz()" style="border-color:var(--neon-cyan);margin-top:8px;">↺ Réessayer le quiz</button>
+                    </div>`;
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
 
         // ==================== ATTESTATION ====================

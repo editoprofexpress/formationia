@@ -3480,7 +3480,7 @@
                 <div class="hr"></div>
                 <div class="quiz" id="quizHost">${quizHTML()}</div>
                 <div class="hr"></div>
-                <button class="btn primary" onclick="gradeQuiz()"><span>🧾</span> Corriger & calculer le score</button>
+                <button class="btn primary" id="quiz15-submit" onclick="gradeQuiz()" style="opacity:0.5;cursor:not-allowed;" disabled><span>🧾</span> Corriger & calculer le score</button>
                 <div id="quizResult" class="muted" style="margin-top:12px; line-height:1.55"></div>
             `;
 
@@ -3495,6 +3495,23 @@
                     <div class="item"><strong>RGPD (art. 22)</strong><small>Droit de ne pas être soumis à une décision fondée uniquement sur un traitement automatisé.</small></div>
                 </div>
             `;
+
+            // Enable submit when all questions have at least one answer
+            function checkQuiz15Complete() {
+                const radioGroups = ['q1','q2','q3','q4','q6','q7','q9'];
+                const checkGroups = ['q5','q10'];
+                const allRadio = radioGroups.every(n => !!document.querySelector(`input[name="${n}"]:checked`));
+                const allCheck = checkGroups.every(n => !!document.querySelector(`input[name="${n}"]:checked`));
+                const q8val = (document.getElementById('q8') ? document.getElementById('q8').value.trim() : '');
+                const btn = $('quiz15-submit');
+                const allDone = allRadio && allCheck && q8val.length >= 5;
+                if (btn) { btn.disabled = !allDone; btn.style.opacity = allDone ? '1' : '0.5'; btn.style.cursor = allDone ? 'pointer' : 'not-allowed'; }
+            }
+            const quizHost = document.getElementById('quizHost');
+            if (quizHost) {
+                quizHost.addEventListener('change', checkQuiz15Complete);
+                quizHost.addEventListener('input', checkQuiz15Complete);
+            }
         }
 
         function quizHTML() {
@@ -3626,16 +3643,11 @@
             state.finalScorePct = finalPct;
 
             const passed = finalPct >= 70;
-            const msg = passed
-                ? `✅ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-green)">${finalPct}%</strong><br><span class="mono">Attestation débloquée.</span>`
-                : `❌ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-pink)">${finalPct}%</strong><br>Objectif : <strong>70%</strong>. Relisez le briefing et recommencez.`;
-
-            document.getElementById("quizResult").innerHTML = msg;
-
-            // Highlight correct/incorrect answers
-            highlightQuizAnswers(key);
-
             if (passed) {
+                const msg = `✅ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-green)">${finalPct}%</strong><br><span class="mono">Attestation débloquée.</span>`;
+                document.getElementById("quizResult").innerHTML = msg;
+                // Success: highlight correct/incorrect answers
+                highlightQuizAnswers(key);
                 unlockCertificate(finalPct);
                 toast("🎓 Attestation débloquée !");
                 launchCelebration();
@@ -3646,6 +3658,10 @@
                     </div>
                 `;
             } else {
+                // Failure: show only score + retry (no highlights)
+                const msg = `❌ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-pink)">${finalPct}%</strong><br>Objectif : <strong>70%</strong>. Révisez et réessayez.`;
+                document.getElementById("quizResult").innerHTML = msg + `<div style="margin-top:14px;"><button class="btn" onclick="renderFinalQuiz()">↺ Réessayer le quiz</button></div>`;
+                state.quiz.done = false;
                 setCredibility(-6);
                 toast("Score insuffisant : pénalité de crédibilité (-6).");
             }
