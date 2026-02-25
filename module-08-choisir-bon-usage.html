@@ -912,6 +912,28 @@
       text-transform: uppercase;
     }
 
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(78,205,196,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(78,205,196,0.05) !important;
+      border-color: rgba(78,205,196,0.3) !important;
+      color: #4ecdc4 !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(78,205,196,0.15) !important;
+      border-color: #4ecdc4 !important;
+    }
+    .briefing-nav-item:hover { background: rgba(78,205,196,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #4ecdc4 !important;
+      background: rgba(78,205,196,0.1) !important;
+      color: #4ecdc4 !important;
+    }
+    .nav-number { background: rgba(78,205,196,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(78,205,196,0.4) !important; }
+
 </style>
 </head>
 <body>
@@ -957,8 +979,8 @@
     <div class="briefing-body">
       <!-- Navigation latérale -->
       <nav class="briefing-nav">
-        <a href="modules.html" class="back-link-sidebar">
-          <span class="back-arrow">←</span> Retour modules
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
         </a>
 
         <div class="briefing-nav-item active" id="nav-0" onclick="showLesson(0)">
@@ -990,6 +1012,14 @@
           <span class="nav-icon">🧠</span>
           <span class="nav-number">06</span>
           Garder son agentivité
+        </div>
+      
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
         </div>
       </nav>
 
@@ -1839,7 +1869,7 @@
     `;
     resEl.scrollIntoView({ behavior: 'smooth' });
 
-    if (passed) certUnlocked = true;
+    if (passed) { certUnlocked = true; unlockCertificate(); }
   }
 
   function retryQuiz() {
@@ -1881,7 +1911,9 @@
   <div id="cert-screen">
     <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
       <div class="briefing-title" style="color:var(--neon-cyan)">Attestation de réussite — NEXUS DÉCISION</div>
-      <a href="modules.html" class="back-link-sidebar" style="position:static;margin:0">← Retour modules</a>
+      <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
     </div>
 
     <div style="flex:1;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto;width:100%">
@@ -2022,7 +2054,20 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
     if (el) el.textContent = finalScore + '%';
     if (refEl) refEl.textContent = 'Référence : ' + refNum;
   };
-  </script>
+  
+/* ==================== ATTESTATION SIDEBAR ==================== */
+function unlockCertificate() {
+  certUnlocked = true;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(78,205,196,0.2)'; num.style.color = '#4ecdc4'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() { showCertificate(); }
+</script>
 
 </body>
 </html>

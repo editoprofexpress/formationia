@@ -775,6 +775,28 @@
       text-transform: uppercase;
     }
 
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(255,107,107,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(255,107,107,0.05) !important;
+      border-color: rgba(255,107,107,0.3) !important;
+      color: #ff6b6b !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(255,107,107,0.15) !important;
+      border-color: #ff6b6b !important;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #ff6b6b !important;
+      background: rgba(255,107,107,0.1) !important;
+      color: #ff6b6b !important;
+    }
+    .nav-number { background: rgba(255,107,107,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
+
 </style>
 </head>
 <body>
@@ -822,8 +844,7 @@
     <div class="briefing-body">
       <nav class="briefing-nav">
         <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
-          <span class="back-arrow">←</span>
-          <span>Tous les modules</span>
+          <span class="back-arrow">←</span><span>Tous les modules</span>
         </a>
 
         <div class="briefing-nav-item active" onclick="showLesson(0)">

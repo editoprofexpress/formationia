@@ -777,6 +777,28 @@
       text-transform: uppercase;
     }
 
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(255,107,107,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(255,107,107,0.05) !important;
+      border-color: rgba(255,107,107,0.3) !important;
+      color: #ff6b6b !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(255,107,107,0.15) !important;
+      border-color: #ff6b6b !important;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #ff6b6b !important;
+      background: rgba(255,107,107,0.1) !important;
+      color: #ff6b6b !important;
+    }
+    .nav-number { background: rgba(255,107,107,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
+
 </style>
 </head>
 <body>
@@ -832,7 +854,9 @@
 
       <!-- Sidebar -->
       <nav class="briefing-nav">
-        <a href="modules.html" class="back-link-sidebar">← Tous les modules</a>
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
 
         <div class="briefing-nav-item active" onclick="showLesson(0)" id="nav-0">
           <span class="nav-icon">🌐</span>
@@ -873,11 +897,10 @@
             <span class="nav-icon">📜</span>
             <span>Quiz de certification</span>
           </div>
-          <div class="briefing-nav-item" id="cert-nav-item"
-               onclick="showCertInBriefing()"
-               style="display:none">
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
             <span class="nav-icon">🔒</span>
-            <span>Attestation de réussite</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
           </div>
         </div>
       </nav>
@@ -1618,20 +1641,25 @@
 
     function unlockCertificate() {
       certificateUnlocked = true;
-      const cNav = document.getElementById('cert-nav-item');
-      if (cNav) {
-        cNav.style.display = '';
-        cNav.querySelector('.nav-icon').textContent = '🎓';
+      const navItem = document.getElementById('certificate-nav-item');
+      if (navItem) {
+        navItem.style.opacity = '1';
+        navItem.style.cursor = 'pointer';
+        navItem.style.background = '';
+        const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+        const num = navItem.querySelector('.nav-number');
+        if (num) { num.style.background = 'rgba(0,255,136,0.2)'; num.style.color = 'var(--neon-green)'; num.textContent = '✓'; }
       }
-      showCertInBriefing();
+      showCertificateInFolder();
     }
+    function showCertificateInFolder() { showCertInBriefing(); }
 
     // ==================== ATTESTATION DANS LE BRIEFING ====================
     function showCertInBriefing() {
       if (!certificateUnlocked) return;
       currentLesson = 'cert';
       document.querySelectorAll('.briefing-nav-item').forEach(el => el.classList.remove('active'));
-      const cNav = document.getElementById('cert-nav-item');
+      const cNav = document.getElementById('certificate-nav-item');
       if (cNav) cNav.classList.add('active');
 
       document.getElementById('progress-fill').style.width = '100%';
