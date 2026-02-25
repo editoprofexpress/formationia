@@ -1413,10 +1413,10 @@
         <!-- Barre supérieure -->
         <div class="game-top-bar">
             <div class="game-top-left">
-                <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier">
                     <span>←</span>
-                    <span>Modules</span>
-                </a>
+                    <span>Retour au dossier</span>
+                </button>
                 <div class="scenario-indicator">
                     <span id="scenario-icon">🔓</span>
                     <span id="scenario-name">Scénario 1/5</span>
@@ -1482,6 +1482,11 @@
             document.getElementById('title-screen').classList.add('hidden');
             document.getElementById('briefing-screen').classList.add('active');
             showLesson(0);
+        }
+
+        function returnToDossier() {
+            document.getElementById('game-container').classList.remove('active');
+            document.getElementById('briefing-screen').classList.add('active');
         }
 
         // ==================== SYSTÈME DE BRIEFING ====================

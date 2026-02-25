@@ -1967,10 +1967,10 @@
     <!-- CONTAINER JEU -->
     <div id="game-container">
         <div class="top-bar">
-            <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+            <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier">
                 <span>←</span>
-                <span>Modules</span>
-            </a>
+                <span>Retour au dossier</span>
+            </button>
             <div class="hud-items">
                 <div class="hud-box">
                     <span class="hud-label">Crédibilité</span>
@@ -2646,6 +2646,11 @@
             $('title-screen').classList.add('hidden');
             $('briefing-screen').classList.add('active');
             showLesson(0);
+        }
+
+        function returnToDossier() {
+            $('game-container').classList.remove('active');
+            $('briefing-screen').classList.add('active');
         }
 
         function showLesson(index) {
