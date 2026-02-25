@@ -8,6 +8,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
     :root{
+  --domain-color: #ff6b6b;
       --neon-green:#00ff88;
       --neon-blue:#00d4ff;
       --neon-pink:#ff0080;
@@ -112,7 +113,7 @@
       padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
     }
     .briefing-title{
-      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-green);
+      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--domain-color);
       display:flex;align-items:center;gap:15px;
     }
     .briefing-title::before{content:'🧬';font-size:1.5em}
@@ -438,6 +439,7 @@
     .briefing-title { font-size: 1.3em !important; }
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
+    .briefing-progress{display:none!important}
 </style>
 </head>
 <body>
@@ -634,7 +636,7 @@ const lessons = [
       <div class="pill">SYNAPTIK</div><div class="pill">Module 2</div><div class="pill">Fondamentaux</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🧒 L'apprentissage humain vs l'apprentissage machine</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🧒 L'apprentissage humain vs l'apprentissage machine</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un enfant apprend à reconnaître un chat en voyant quelques exemples. Après avoir vu trois ou quatre chats différents, il peut identifier un chat qu'il n'a jamais vu auparavant, même s'il est d'une race différente, dans une position inhabituelle, ou partiellement caché derrière un meuble. Il <strong>comprend intuitivement</strong> ce qu'est un chat : un animal vivant, doux, qui miaule, avec des moustaches et des griffes.
       </p>
@@ -648,7 +650,7 @@ const lessons = [
         Sans données, pas d'apprentissage. Sans algorithme, pas de méthode. Sans puissance de calcul, pas de résultat. Ces trois ingrédients sont indissociables.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚙️ Concrètement, que fait la machine ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">⚙️ Concrètement, que fait la machine ?</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Imaginons qu'on veuille entraîner un modèle à distinguer les photos de chats des photos de chiens. Le processus se déroule ainsi :
       </p>
@@ -665,7 +667,7 @@ const lessons = [
         <strong>Attention au piège :</strong> Quand on dit qu'une IA "apprend", il ne faut pas projeter notre expérience humaine de l'apprentissage. La machine n'a pas d'expérience subjective, pas de curiosité, pas de moment "eurêka". Elle optimise une fonction mathématique, point final.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Quelques ordres de grandeur</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Quelques ordres de grandeur</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:15px 0">
         <div class="callout" style="text-align:center">
           <div style="font-size:2em;margin-bottom:8px">🖼️</div>
@@ -691,12 +693,12 @@ const lessons = [
     title:"02 — Les données d'entraînement : le carburant de l'IA",
     kicker:"Sans données, pas d'IA. Mais toutes les données ne se valent pas.",
     html:`
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">⛽ Le carburant indispensable</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">⛽ Le carburant indispensable</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Si l'algorithme est le moteur de l'IA, les données sont son carburant. Un modèle d'IA, aussi sophistiqué soit-il, est fondamentalement limité par la qualité et la diversité des données sur lesquelles il a été entraîné. C'est le principe fondamental du <strong>"Garbage In, Garbage Out"</strong> (données médiocres en entrée = résultats médiocres en sortie).
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📦 Types de données d'entraînement</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📦 Types de données d'entraînement</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout"><strong>📝 Texte</strong><br/>Livres, articles web, conversations, code source, sous-titres de films...</div>
         <div class="callout"><strong>🖼️ Images</strong><br/>Photos, dessins, captures d'écran, images satellites, scans médicaux...</div>
@@ -704,7 +706,7 @@ const lessons = [
         <div class="callout"><strong>📊 Données structurées</strong><br/>Tableaux, bases de données, capteurs IoT, transactions financières...</div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 D'où viennent les données ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔍 D'où viennent les données ?</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Les sources de données d'entraînement sont multiples et leur provenance soulève des questions importantes. Le <strong>web scraping</strong> consiste à collecter automatiquement des milliards de pages web (CommonCrawl indexe plus de 250 milliards de pages). Les <strong>datasets publics</strong> sont des collections organisées et annotées par des chercheurs (ImageNet, Wikipedia, OpenSubtitles). Le <strong>crowdsourcing</strong> fait appel à des milliers d'annotateurs humains qui étiquettent manuellement les données (Amazon Mechanical Turk). Enfin, les <strong>données propriétaires</strong> sont collectées directement par les entreprises auprès de leurs utilisateurs.
       </p>
@@ -713,7 +715,7 @@ const lessons = [
         <strong>Le problème du consentement :</strong> De nombreux modèles d'IA ont été entraînés sur des données collectées sans le consentement explicite de leurs créateurs originaux. Des artistes ont découvert que leurs œuvres étaient utilisées pour entraîner des générateurs d'images comme Stable Diffusion. Cette question du consentement et du droit d'auteur est au cœur de nombreux procès en 2025-2026.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚖️ Qualité vs Quantité</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">⚖️ Qualité vs Quantité</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Pendant longtemps, l'approche dominante était "plus de données = meilleur modèle". Mais la recherche récente montre que la <strong>qualité des données</strong> est souvent plus importante que leur quantité. Le modèle Phi-2 de Microsoft, entraîné sur des données soigneusement sélectionnées et de haute qualité, rivalise avec des modèles entraînés sur des corpus 10 fois plus volumineux. L'étiquetage correct, la diversité des exemples et l'absence de duplications comptent davantage que le volume brut.
       </p>
@@ -728,7 +730,7 @@ const lessons = [
     title:"03 — Supervisé vs non supervisé",
     kicker:"Deux grandes familles d'apprentissage aux philosophies opposées.",
     html:`
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎓 Apprentissage supervisé : le professeur guide</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎓 Apprentissage supervisé : le professeur guide</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Dans l'apprentissage supervisé, on fournit au modèle des exemples <strong>étiquetés</strong> : chaque donnée d'entrée est accompagnée de la bonne réponse attendue. Le modèle apprend à associer les entrées aux sorties correctes, comme un élève qui s'entraîne avec des exercices corrigés.
       </p>
@@ -745,7 +747,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 Apprentissage non supervisé : l'explorateur autonome</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔍 Apprentissage non supervisé : l'explorateur autonome</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Dans l'apprentissage non supervisé, le modèle reçoit des données <strong>sans étiquettes</strong>. Il doit découvrir seul les structures cachées, les groupes naturels et les patterns dans les données. C'est comme donner à quelqu'un un tas de photos sans explication et lui demander de les trier par catégories logiques.
       </p>
@@ -756,7 +758,7 @@ const lessons = [
         • <strong>Réduction de dimension :</strong> Compresser des données complexes en visualisations compréhensibles
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎮 Apprentissage par renforcement : l'aventurier</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎮 Apprentissage par renforcement : l'aventurier</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Le troisième type d'apprentissage fonctionne par <strong>essai-erreur</strong>. Un agent interagit avec un environnement, reçoit des récompenses quand il fait de bons choix et des pénalités quand il se trompe. Il affine progressivement sa stratégie pour maximiser sa récompense totale. C'est ainsi qu'AlphaGo a appris à battre les meilleurs joueurs de Go en jouant des millions de parties contre lui-même.
       </p>
@@ -774,7 +776,7 @@ const lessons = [
     title:"04 — Poids, ajustement et optimisation",
     kicker:"Comment un réseau de neurones ajuste des milliards de paramètres pour apprendre.",
     html:`
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚖️ Les poids : les boutons de réglage de l'IA</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">⚖️ Les poids : les boutons de réglage de l'IA</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un réseau de neurones est constitué de millions, voire de milliards de <strong>poids</strong> (ou paramètres). Chaque poids est un simple nombre décimal (comme 0.347 ou -1.208) qui influence la façon dont le réseau traite l'information. Entraîner un modèle, c'est ajuster tous ces poids pour que le réseau donne les bonnes réponses.
       </p>
@@ -792,7 +794,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📉 La descente de gradient : trouver le chemin optimal</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📉 La descente de gradient : trouver le chemin optimal</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         La <strong>fonction de perte</strong> (loss function) mesure à quel point le modèle se trompe. L'objectif de l'entraînement est de <strong>minimiser cette erreur</strong>. Pour cela, on utilise un algorithme appelé <strong>descente de gradient</strong> : à chaque étape, on calcule dans quelle direction ajuster les poids pour réduire l'erreur, puis on fait un petit pas dans cette direction.
       </p>
@@ -801,7 +803,7 @@ const lessons = [
         <strong>Analogie :</strong> Imaginez que vous êtes perdu dans un brouillard épais sur une montagne et que vous cherchez la vallée (le minimum d'erreur). Vous ne voyez pas le paysage global, mais vous pouvez sentir la pente sous vos pieds. À chaque pas, vous descendez dans la direction la plus pentue. C'est exactement ce que fait la descente de gradient.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Epochs et learning rate</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔄 Epochs et learning rate</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Une <strong>epoch</strong> correspond à un passage complet à travers toutes les données d'entraînement. Un modèle est typiquement entraîné sur plusieurs dizaines d'epochs. Le <strong>learning rate</strong> (taux d'apprentissage) contrôle la taille des pas : trop grand, le modèle oscille et rate l'optimum ; trop petit, l'entraînement prend une éternité.
       </p>
@@ -816,12 +818,12 @@ const lessons = [
     title:"05 — Quand les données mentent : biais et déséquilibres",
     kicker:"Les données reflètent le monde tel qu'il est — avec ses injustices.",
     html:`
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">⚠️ Le biais, ennemi invisible de l'IA</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">⚠️ Le biais, ennemi invisible de l'IA</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un modèle d'IA n'est jamais meilleur que les données sur lesquelles il a été entraîné. Si ces données contiennent des <strong>biais</strong> — des déséquilibres, des préjugés historiques, des représentations inégales — le modèle les apprendra et les reproduira fidèlement, souvent à une échelle bien plus grande que les humains ne l'auraient fait.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Cas réels qui ont fait scandale</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📋 Cas réels qui ont fait scandale</h3>
 
       <div class="callout pink">
         <strong>Amazon (2018) — Recrutement biaisé</strong><br/>
@@ -838,7 +840,7 @@ const lessons = [
         L'algorithme de reconnaissance d'images de Google Photos a classifié des photos de personnes noires comme "gorilles". Cette erreur dramatique était due à un <strong>jeu de données d'entraînement insuffisamment diversifié</strong>, sous-représentant les personnes à peau foncée.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔎 Les types de biais</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔎 Les types de biais</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout"><strong>Biais historique</strong><br/>Les données reflètent les discriminations passées (ex : moins de femmes PDG → l'IA associe "PDG" à "homme")</div>
         <div class="callout"><strong>Biais de représentation</strong><br/>Certains groupes sont sous-représentés dans les données (ex : peu de photos de personnes âgées asiatiques)</div>
@@ -856,7 +858,7 @@ const lessons = [
     title:"06 — Surapprentissage : quand l'IA apprend trop bien",
     kicker:"Mémoriser n'est pas comprendre. Le piège de la performance trompeuse.",
     html:`
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📈 Le paradoxe : trop bien apprendre, c'est mal apprendre</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📈 Le paradoxe : trop bien apprendre, c'est mal apprendre</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Le <strong>surapprentissage</strong> (overfitting) est l'un des problèmes les plus courants en machine learning. Il se produit lorsqu'un modèle <strong>mémorise</strong> les données d'entraînement au lieu d'en extraire des règles générales. Le modèle obtient d'excellents résultats sur les données qu'il connaît, mais échoue lamentablement sur des données nouvelles.
       </p>
@@ -865,7 +867,7 @@ const lessons = [
         <strong>Analogie :</strong> Un élève qui apprend par cœur les réponses d'un examen passé. Il obtient 100% en s'auto-testant sur les mêmes questions. Mais face à un nouvel examen avec des questions différentes, il échoue car il n'a pas vraiment compris les concepts sous-jacents.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Training accuracy vs Validation accuracy</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Training accuracy vs Validation accuracy</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Pour détecter le surapprentissage, on divise les données en deux ensembles : les données d'<strong>entraînement</strong> (sur lesquelles le modèle apprend) et les données de <strong>validation</strong> (qu'il n'a jamais vues, et qui servent à tester sa capacité de généralisation).
       </p>
@@ -873,7 +875,7 @@ const lessons = [
         Le signal d'alerte typique du surapprentissage : la précision sur les données d'entraînement continue de monter (95%, 97%, 99%...) tandis que la précision sur les données de validation <strong>stagne ou baisse</strong>. Les deux courbes divergent — c'est le signe que le modèle mémorise au lieu d'apprendre.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🛡️ Comment lutter contre le surapprentissage ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🛡️ Comment lutter contre le surapprentissage ?</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout"><strong>Plus de données</strong><br/>Plus le jeu d'entraînement est grand et diversifié, plus il est difficile de le mémoriser</div>
         <div class="callout"><strong>Modèle plus simple</strong><br/>Réduire la complexité du modèle (moins de couches, moins de paramètres)</div>
@@ -891,12 +893,12 @@ const lessons = [
     title:"07 — Vers un apprentissage responsable",
     kicker:"Auditer, équilibrer, tester : les bonnes pratiques pour une IA de confiance.",
     html:`
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🌱 Construire une IA de confiance</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🌱 Construire une IA de confiance</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Face aux risques de biais, de surapprentissage et de données de mauvaise qualité, la communauté scientifique et l'industrie ont développé un ensemble de <strong>bonnes pratiques</strong> pour un apprentissage plus responsable. Ces pratiques ne sont pas optionnelles : elles sont devenues essentielles pour déployer des systèmes d'IA fiables et équitables.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Les piliers de l'apprentissage responsable</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📋 Les piliers de l'apprentissage responsable</h3>
 
       <div class="callout">
         <strong>1. Auditer les données avant l'entraînement</strong><br/>
@@ -918,7 +920,7 @@ const lessons = [
         Le principe du <strong>"human-in-the-loop"</strong> : pour les décisions critiques (justice, santé, emploi), un humain doit toujours pouvoir vérifier, comprendre et invalider la décision de l'IA.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🇪🇺 Le cadre réglementaire émerge</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🇪🇺 Le cadre réglementaire émerge</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         L'<strong>AI Act européen</strong> (2024) classe les systèmes d'IA par niveau de risque et impose des exigences strictes pour les systèmes à haut risque : transparence des données d'entraînement, documentation technique, tests de biais, supervision humaine obligatoire. C'est le premier cadre réglementaire complet au monde dédié à l'IA.
       </p>
@@ -1328,7 +1330,7 @@ function showQuiz(){
   zone.style.display='block';
   zone.innerHTML=`
     <div class="divider" style="margin:30px 0"></div>
-    <h3 style="color:var(--neon-green);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 2</h3>
+    <h3 style="color:var(--domain-color);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 2</h3>
     <p style="color:var(--muted);margin-bottom:20px">Répondez aux 10 questions pour obtenir votre attestation. Score minimum : 70%.</p>
     <div id="quiz-questions">
       ${quizQuestions.map((q,i)=>`
@@ -1390,7 +1392,7 @@ function submitQuiz(){
     });
     $('quiz-result').innerHTML=`
     <div class="callout ok" style="text-align:center;padding:30px">
-      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
       <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
       <p style="line-height:1.6">Vous avez démontré une solide compréhension de l'apprentissage machine, des données et des biais. Votre attestation est débloquée !</p>
     </div>`;
@@ -1453,7 +1455,7 @@ function showCertificateInFolder(){
     <div class="divider"></div>
     <div class="callout ok" style="text-align:center;padding:30px 20px">
       <div style="font-size:3em;margin-bottom:15px">🎉</div>
-      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
       <p style="line-height:1.8;margin-bottom:15px">Vous avez terminé avec succès le <strong>Module 2 - Données sous Influence</strong>.</p>
       <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:20px;margin:20px auto;max-width:400px">
         <p style="margin-bottom:10px"><strong>Score certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span></p>
