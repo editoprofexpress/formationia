@@ -1880,11 +1880,11 @@
             <!-- Barre supérieure -->
             <div class="top-bar">
                 <div style="display: flex; align-items: center;">
-                    <!-- Bouton retour modules -->
-                    <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                    <!-- Bouton retour dossier -->
+                    <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier" style="cursor:pointer;border:none;">
                         <span>←</span>
-                        <span>Modules</span>
-                    </a>
+                        <span>Retour au dossier</span>
+                    </button>
                     <div class="location-name">
                         <span class="location-icon" id="location-icon">📍</span>
                         <span id="location-name">Couloir Principal</span>
@@ -2398,6 +2398,13 @@
             showLesson(0);
         }
 
+        // Retour au dossier depuis l'écran de jeu
+        function returnToDossier() {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('briefing-screen').classList.add('active');
+            showCertificateInFolder();
+        }
+
         // Variable pour suivre si le quiz est réussi (session courante uniquement)
         let certificateUnlocked = false;
         let finalScore = 0;
@@ -2533,21 +2540,21 @@
             }
 
             // Gérer les boutons
-            document.getElementById('prev-btn').disabled = index === 0;
+            { const _pb = document.getElementById('prev-btn'); if (_pb) _pb.disabled = index === 0; }
 
             const nextBtn = document.getElementById('next-btn');
             if (index === briefingLessons.length - 1) {
                 // Sur la page Mission : bouton pour lancer le jeu
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = '🎮 Commencer la mission';
-                nextBtn.onclick = startGame;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = '🎮 Commencer la mission';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else if (index === 6) {
                 // Dernier fichier : masquer le bouton suivant (accès mission via menu)
-                nextBtn.style.visibility = 'hidden';
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'hidden';
             } else {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.innerHTML = 'Fichier suivant →';
-                nextBtn.onclick = nextLesson;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.innerHTML = 'Fichier suivant →';
+                if (nextBtn) nextBtn.onclick = nextLesson;
             }
 
             // Scroll en haut

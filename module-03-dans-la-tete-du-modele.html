@@ -1390,11 +1390,11 @@
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Mission';
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = () => showLesson(4);
       const btnNext = document.getElementById('btn-next');
-      btnNext.textContent = '⚡ Lancer l\'exploration →';
-      btnNext.onclick = launchGame;
+      if (btnNext) btnNext.textContent = '⚡ Lancer l\'exploration →';
+      if (btnNext) btnNext.onclick = launchGame;
       document.getElementById('footer-hint').textContent = '3 zones interactives t\'attendent !';
     }
 
@@ -1420,15 +1420,15 @@
       document.getElementById('progress-fill').style.width = pct + '%';
       document.getElementById('progress-text').textContent = `Section ${idx + 1}/${totalLessons}`;
 
-      document.getElementById('btn-prev').disabled = idx === 0;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = idx === 0; }
       document.getElementById('btn-prev').onclick = prevLesson;
       const btnNext = document.getElementById('btn-next');
       if (idx === totalLessons - 1) {
-        btnNext.textContent = '🚀 Exploration →';
-        btnNext.onclick = () => showLesson(5);
+        if (btnNext) btnNext.textContent = '🚀 Exploration →';
+        if (btnNext) btnNext.onclick = () => showLesson(5);
       } else {
-        btnNext.textContent = 'Suivant →';
-        btnNext.onclick = nextLesson;
+        if (btnNext) btnNext.textContent = 'Suivant →';
+        if (btnNext) btnNext.onclick = nextLesson;
       }
 
       const hints = [
@@ -1482,7 +1482,7 @@
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Quiz de certification';
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = () => showLesson(5);
       document.getElementById('btn-next').textContent = '✅ Valider';
       document.getElementById('btn-next').onclick = submitQuiz;
@@ -1615,7 +1615,7 @@
       document.getElementById('progress-text').textContent = 'Attestation';
       document.getElementById('btn-next').textContent = '📥 Télécharger';
       document.getElementById('btn-next').onclick = downloadCertificate;
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = showQuizInBriefing;
       document.getElementById('footer-hint').textContent = 'Ctrl+P → Enregistrer en PDF';
 

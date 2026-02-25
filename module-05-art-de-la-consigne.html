@@ -1612,14 +1612,14 @@
             document.getElementById('progress-label').textContent = `Dossier ${index + 1}/${TOTAL_SECTIONS}`;
 
             // Buttons
-            document.getElementById('prev-btn').disabled = (index === 0);
+            { const _pb = document.getElementById('prev-btn'); if (_pb) _pb.disabled = (index === 0); }
             const nextBtn = document.getElementById('next-btn');
             if (index === TOTAL_SECTIONS - 1) {
-                nextBtn.textContent = '🔐 Entrer dans le Lab →';
-                nextBtn.onclick = startGame;
+                if (nextBtn) nextBtn.textContent = '🔐 Entrer dans le Lab →';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else {
-                nextBtn.textContent = 'Suivant →';
-                nextBtn.onclick = nextSection;
+                if (nextBtn) nextBtn.textContent = 'Suivant →';
+                if (nextBtn) nextBtn.onclick = nextSection;
             }
         }
 

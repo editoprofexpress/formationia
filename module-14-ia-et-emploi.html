@@ -1622,13 +1622,13 @@ function showLesson(index) {
     document.getElementById('lesson-counter').textContent = (index + 1) + ' / ' + TOTAL_LESSONS;
 
     // Boutons
-    document.getElementById('btn-prev').disabled = index === 0;
+    { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = index === 0; }
     const btnNext = document.getElementById('btn-next');
     if (index === TOTAL_LESSONS - 1) {
-        btnNext.textContent = 'Ouvrir le bureau ARIA →';
+        if (btnNext) btnNext.textContent = 'Ouvrir le bureau ARIA →';
         btnNext.classList.add('primary');
     } else {
-        btnNext.textContent = 'Suivant →';
+        if (btnNext) btnNext.textContent = 'Suivant →';
     }
 }
 

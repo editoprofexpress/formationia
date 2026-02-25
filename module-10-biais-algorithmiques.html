@@ -1416,14 +1416,14 @@ function renderContent() {
   document.getElementById('lesson-counter').textContent = `Leçon ${currentLesson+1}/${lessons.length}`;
 
   // Buttons
-  document.getElementById('btn-prev').disabled = currentLesson === 0;
+  { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = currentLesson === 0; }
   const btnNext = document.getElementById('btn-next');
   if (currentLesson === lessons.length - 1) {
-    btnNext.textContent = '⚡ Lancer l\'audit →';
-    btnNext.onclick = launchGame;
+    if (btnNext) btnNext.textContent = '⚡ Lancer l\'audit →';
+    if (btnNext) btnNext.onclick = launchGame;
   } else {
-    btnNext.textContent = 'Suivant →';
-    btnNext.onclick = nextLesson;
+    if (btnNext) btnNext.textContent = 'Suivant →';
+    if (btnNext) btnNext.onclick = nextLesson;
   }
 
   document.getElementById('lesson-hint').textContent =
@@ -1727,9 +1727,9 @@ function updateGameFooter() {
   backBtn.style.display = s === 0 ? 'none' : 'flex';
 
   if(!v) {
-    nextBtn.textContent = 'Valider ✓';
+    if (nextBtn) nextBtn.textContent = 'Valider ✓';
     nextBtn.className = 'game-btn primary';
-    nextBtn.onclick = validateCurrentStep;
+    if (nextBtn) nextBtn.onclick = validateCurrentStep;
     const hints = [
       'Cliquez sur les graphiques suspects',
       'Répondez à la question',
@@ -1738,14 +1738,14 @@ function updateGameFooter() {
     ];
     hint.textContent = hints[s] || '';
   } else if(s < 3) {
-    nextBtn.textContent = 'Étape suivante →';
+    if (nextBtn) nextBtn.textContent = 'Étape suivante →';
     nextBtn.className = 'game-btn green';
-    nextBtn.onclick = gameNext;
+    if (nextBtn) nextBtn.onclick = gameNext;
     hint.textContent = `Score : ${gameState.totalScore} pts`;
   } else {
-    nextBtn.textContent = '📋 Aller au quiz →';
+    if (nextBtn) nextBtn.textContent = '📋 Aller au quiz →';
     nextBtn.className = 'game-btn green';
-    nextBtn.onclick = launchQuiz;
+    if (nextBtn) nextBtn.onclick = launchQuiz;
     hint.textContent = `Score audit : ${gameState.totalScore} pts`;
   }
 }

@@ -1490,14 +1490,14 @@
       if (navEl) { navEl.classList.add('active'); navEl.classList.remove('completed'); }
 
       // Boutons
-      document.getElementById('btn-prev').disabled = (idx === 0);
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = (idx === 0); }
       const btnNext = document.getElementById('btn-next');
       if (idx === totalLessons - 1) {
-        btnNext.textContent = '▶ Lancer la simulation';
+        if (btnNext) btnNext.textContent = '▶ Lancer la simulation';
         btnNext.classList.add('launch');
         document.getElementById('footer-hint').textContent = 'Toutes les sections vues — bonne chance !';
       } else {
-        btnNext.textContent = 'Suivant →';
+        if (btnNext) btnNext.textContent = 'Suivant →';
         btnNext.classList.remove('launch');
         document.getElementById('footer-hint').textContent = 'Lis chaque section avant de passer à la simulation';
       }

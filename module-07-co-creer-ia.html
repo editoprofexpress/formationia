@@ -1610,14 +1610,14 @@
     document.getElementById('section-indicator').textContent = `Section ${idx+1} sur ${state.briefingSections}`;
 
     // Boutons
-    document.getElementById('btn-prev').disabled = idx === 0;
+    { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = idx === 0; }
     const btnNext = document.getElementById('btn-next');
     if (idx === state.briefingSections - 1) {
-      btnNext.textContent = '▶ ACCÉDER AUX ATELIERS';
-      btnNext.onclick = startAtelier;
+      if (btnNext) btnNext.textContent = '▶ ACCÉDER AUX ATELIERS';
+      if (btnNext) btnNext.onclick = startAtelier;
     } else {
-      btnNext.textContent = 'Suivant →';
-      btnNext.onclick = nextSection;
+      if (btnNext) btnNext.textContent = 'Suivant →';
+      if (btnNext) btnNext.onclick = nextSection;
     }
 
     state.briefingSection = idx;
@@ -1918,8 +1918,8 @@
 
     // Bouton suivant
     const btnNext = document.getElementById('ws-validate-btn');
-    btnNext.textContent = stepIdx < totalSteps - 1 ? 'Étape suivante →' : 'Terminer l\'atelier ✓';
-    btnNext.onclick = validateStep;
+    if (btnNext) btnNext.textContent = stepIdx < totalSteps - 1 ? 'Étape suivante →' : 'Terminer l\'atelier ✓';
+    if (btnNext) btnNext.onclick = validateStep;
   }
 
   function selectPrompt(choiceIdx) {
@@ -1981,18 +1981,18 @@
     const btnNext = document.getElementById('ws-validate-btn');
 
     if (nextStep < atelier.steps.length) {
-      btnNext.textContent = 'Étape suivante →';
-      btnNext.disabled = false;
-      btnNext.onclick = () => renderStep(atelierState.current, nextStep);
+      if (btnNext) btnNext.textContent = 'Étape suivante →';
+      if (btnNext) btnNext.disabled = false;
+      if (btnNext) btnNext.onclick = () => renderStep(atelierState.current, nextStep);
     } else {
       // Atelier terminé
       atelierState.done[atelierState.current] = true;
       const doneCount = atelierState.done.filter(Boolean).length;
       document.getElementById('ateliers-done').textContent = doneCount;
 
-      btnNext.textContent = 'Retour aux ateliers →';
-      btnNext.disabled = false;
-      btnNext.onclick = () => {
+      if (btnNext) btnNext.textContent = 'Retour aux ateliers →';
+      if (btnNext) btnNext.disabled = false;
+      if (btnNext) btnNext.onclick = () => {
         backToSelector();
         // Si tous terminés, afficher écran complet
         if (atelierState.done.every(Boolean)) {

@@ -2670,17 +2670,17 @@
                 $('progress-text').textContent = `Fichier ${index + 1}/8`;
             }
 
-            $('prev-btn').disabled = index === 0;
+            { const _pb = $('prev-btn'); if (_pb) _pb.disabled = index === 0; }
 
             const nextBtn = $('next-btn');
             if (index === briefingLessons.length - 1) {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = '⚖️ Commencer le tribunal';
-                nextBtn.onclick = startGame;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = '⚖️ Commencer le tribunal';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = 'Fichier suivant →';
-                nextBtn.onclick = nextLesson;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = 'Fichier suivant →';
+                if (nextBtn) nextBtn.onclick = nextLesson;
             }
         }
 
@@ -2797,9 +2797,9 @@
 
             // Update footer button to allow return to game
             const nextBtn = $('next-btn');
-            nextBtn.style.visibility = 'visible';
-            nextBtn.textContent = '⚖️ Retour au tribunal';
-            nextBtn.onclick = returnToGame;
+            if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+            if (nextBtn) nextBtn.textContent = '⚖️ Retour au tribunal';
+            if (nextBtn) nextBtn.onclick = returnToGame;
         }
 
         function returnToGame() {

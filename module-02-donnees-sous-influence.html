@@ -526,13 +526,13 @@ function updateBriefingProgress(){
   const pct=Math.round(((currentLesson+1)/totalLessons)*100);
   $('progress-text').textContent=`Dossier ${currentLesson+1}/${totalLessons}`;
   $('progress-fill').style.width=pct+'%';
-  const prevBtn=$('prev-btn'), nextBtn=$('next-btn');
-  if(prevBtn) prevBtn.disabled=(currentLesson===0);
+  const prevBtn = document.getElementById('prev-btn'), nextBtn = document.getElementById('next-btn');
+  if(prevBtn) if (prevBtn) prevBtn.disabled = (currentLesson===0);
   if(nextBtn){
     if(currentLesson===totalLessons-1){
-      nextBtn.textContent='Terminé ✓';nextBtn.disabled=true;nextBtn.style.opacity='0.5';
+      if (nextBtn) nextBtn.textContent = 'Terminé ✓';if (nextBtn) nextBtn.disabled = true;if (nextBtn) if (nextBtn) nextBtn.style.opacity = '0.5';
     } else {
-      nextBtn.innerHTML='Dossier suivant →';nextBtn.onclick=nextLesson;nextBtn.disabled=false;nextBtn.style.opacity='1';
+      if (nextBtn) nextBtn.innerHTML = 'Dossier suivant →';if (nextBtn) nextBtn.onclick = nextLesson;if (nextBtn) nextBtn.disabled = false;if (nextBtn) if (nextBtn) nextBtn.style.opacity = '1';
     }
   }
 }

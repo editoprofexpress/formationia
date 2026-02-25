@@ -2068,14 +2068,14 @@
             document.getElementById('progress-text').textContent = `Dossier ${index + 1}/${total}`;
 
             // Boutons précédent/suivant
-            document.getElementById('prev-btn').disabled = (index === 0);
+            { const _pb = document.getElementById('prev-btn'); if (_pb) _pb.disabled = (index === 0); }
             const nextBtn = document.getElementById('next-btn');
             if (index === total - 1) {
-                nextBtn.textContent = '🎮 Lancer la mission →';
-                nextBtn.onclick = () => startGame();
+                if (nextBtn) nextBtn.textContent = '🎮 Lancer la mission →';
+                if (nextBtn) nextBtn.onclick = () => startGame();
             } else {
-                nextBtn.textContent = 'Dossier suivant →';
-                nextBtn.onclick = () => nextLesson();
+                if (nextBtn) nextBtn.textContent = 'Dossier suivant →';
+                if (nextBtn) nextBtn.onclick = () => nextLesson();
             }
 
             // Scroll en haut du contenu

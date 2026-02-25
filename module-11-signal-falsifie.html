@@ -1158,14 +1158,14 @@ function showLesson(idx){
   document.getElementById('progress-text').textContent = 'Section '+(idx+1)+'/'+TOTAL_LESSONS;
 
   // Boutons
-  document.getElementById('btn-prev').disabled = (idx === 0);
+  { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = (idx === 0); }
   const btnNext = document.getElementById('btn-next');
   if(idx === TOTAL_LESSONS-1){
-    btnNext.textContent = '🔍 Lancer la mission →';
-    btnNext.onclick = goToGame;
+    if (btnNext) btnNext.textContent = '🔍 Lancer la mission →';
+    if (btnNext) btnNext.onclick = goToGame;
   } else {
-    btnNext.textContent = 'Suivant →';
-    btnNext.onclick = nextLesson;
+    if (btnNext) btnNext.textContent = 'Suivant →';
+    if (btnNext) btnNext.onclick = nextLesson;
   }
 
   // Footer info
