@@ -265,15 +265,66 @@
       .briefing-btn{width:100%;justify-content:center}
       .exp-grid{grid-template-columns:1fr}
     }
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: #aabbcc;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+</style>
 </head>
 <body>
 
   <!-- ==================== TITLE SCREEN ==================== -->
   <section id="title-screen">
     <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
-      <span>←</span><span>Modules</span>
+      <span>←</span><span>Tous les modules</span>
     </a>
+
+    <div class="domain-badge-std" style="background:#4ecdc422;border:1px solid #4ecdc488;color:#4ecdc4;">Interaction Raisonnée</div>
+    <div class="module-official-label">Module n° 06 : Itération et amélioration</div>
     <div class="title-logo">🎯</div>
     <h1 class="main-title">ITÉRATION & AMÉLIORATION</h1>
     <p class="subtitle">Module 6 — Prompt Engineering & Raffinement</p>
@@ -282,11 +333,12 @@
       Votre mission : maîtriser les techniques de prompt engineering pour obtenir des résultats précis,
       apprendre à itérer sur vos requêtes et transformer un premier essai approximatif en résultat optimal.
     </p>
+    <div class="activity-badge-std">🎯 Défi progressif</div>
     <button class="start-btn" onclick="startModule()">Entrer dans le Studio</button>
-    <div style="margin-top:40px;opacity:0.7">
-      <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Une formation proposée par</p>
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
       <a href="https://www.profexpress.com" target="_blank" rel="noopener">
-        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
       </a>
     </div>
   </section>

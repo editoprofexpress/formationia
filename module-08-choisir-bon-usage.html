@@ -859,18 +859,67 @@
       transform: scale(1.04);
     }
 
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: #aabbcc;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+</style>
 </head>
 <body>
 
   <!-- ==================== ÉCRAN TITRE ==================== -->
   <div id="title-screen">
     <div class="scan-line"></div>
-    <a href="modules.html" class="back-link-title">← Modules</a>
-    <div class="domain-badge">Interaction Raisonnée · Module 08</div>
+    <a href="modules.html" class="back-link-title">← Tous les modules</a>
+
+    <div class="domain-badge-std" style="background:#4ecdc422;border:1px solid #4ecdc488;color:#4ecdc4;">Interaction Raisonnée</div>
+    <div class="module-official-label">Module n° 08 : Choisir le bon usage</div>
 
     <div class="title-logo">🧭</div>
-    <div class="module-label">Module 08 — Centre de Protocole</div>
     <h1 class="main-title">NEXUS DÉCISION</h1>
     <div class="subtitle">Choisir le bon usage de l'IA</div>
 
@@ -891,8 +940,15 @@
         <div class="stat-item">✅ Validation : <span class="stat-val">Quiz 70%</span></div>
       </div>
     </div>
+    <div class="activity-badge-std">🧭 Triage de cas</div>
 
     <button class="start-btn" onclick="startModule()">▶ Activer le protocole</button>
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
+    </div>
   </div>
 
   <!-- ==================== BRIEFING ==================== -->
