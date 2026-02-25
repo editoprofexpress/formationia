@@ -1,289 +1,223 @@
-# Formation IA - Formation Interactive
+# Formationia — Formation IA Responsable
 
-**Plateforme éducative gratuite sur l'IA responsable** - 15 micro-modules interactifs ludifiés pour comprendre l'intelligence artificielle de manière citoyenne.
+**Plateforme éducative gratuite sur l'IA responsable** — 15 micro-modules interactifs ludifiés pour comprendre, utiliser et questionner l'intelligence artificielle de manière citoyenne.
 
 > Proposée par [Prof Express](https://www.profexpress.com)
 
 ---
 
+## Démarrage rapide
+
+```bash
+git clone <url-du-repo>
+cd formationia
+open index.html        # macOS
+xdg-open index.html    # Linux
+```
+
+Aucun serveur ni build requis. Tous les fichiers fonctionnent directement en local ou sur n'importe quel hébergeur statique.
+
+---
+
 ## Vue d'ensemble
 
-### Objectif
-Former le grand public (notamment les jeunes et enseignants) aux enjeux de l'IA de manière ludique et immersive, sans collecte de données personnelles (conforme RGPD pour usage éducatif avec mineurs).
-
-### Structure
-- **15 micro-modules** organisés en **4 domaines**
-- Chaque module : 10-20 minutes
-- Format : HTML/CSS/JS autonome (pas de backend, pas de dépendances)
-- Style : **Cyberpunk/Néon** immersif
-
----
-
-## Les 4 Domaines
-
-| Domaine | Couleur | Modules | Thème |
-|---------|---------|---------|-------|
-| **Fondations IA** | Rouge `#ff6b6b` | 1-4 | Comprendre l'IA |
-| **Interaction Raisonnée** | Cyan `#4ecdc4` | 5-8 | Utiliser l'IA efficacement |
-| **Limites et Esprit Critique** | Jaune `#ffe66d` | 9-11 | Détecter les failles |
-| **Enjeux Citoyens** | Vert menthe `#95e1d3` | 12-15 | Impacts sociétaux |
+| | |
+|---|---|
+| Modules | 15 micro-modules (10–20 min chacun) |
+| Domaines | 4 domaines de compétences |
+| Durée totale | ~15 heures |
+| Format | HTML/CSS/JS autonome — zéro backend, zéro tracking |
+| Conformité | Compatible RGPD pour usage éducatif avec mineurs |
+| Style | Cyberpunk / Néon immersif |
 
 ---
 
-## Liste des 15 Modules
+## Structure des fichiers
 
-### Fondations IA (1-4)
-1. **Démystifier l'IA** *(Dossier Zéro)* - Mission d'enquête ✅ *Disponible*
-2. **Données sous influence** - Apprentissage & biais, jeu de simulation ✅ *Disponible*
-3. **Dans la tête d'un modèle** *(NEURONAUT)* - Tokenisation, embeddings, attention, prédiction ✅ *Disponible*
-4. **Générer sans comprendre** - Simulation d'un modèle génératif ⏳ *Bientôt*
-
-### Interaction Raisonnée (5-8)
-5. **L'art de la consigne** - Escape room de prompts, rédiger des consignes efficaces ⏳ *Bientôt*
-6. **Itération et amélioration** - Prompt engineering, défi progressif ✅ *Disponible*
-7. **Co-créer avec l'IA** - Usages créatifs ⏳ *Bientôt*
-8. **Savoir quand s'arrêter** - Limites d'utilisation ⏳ *Bientôt*
-
-### Limites et Esprit Critique (9-11)
-9. **Hallucinations** *(L'Erreur qui Sonne Juste)* - Quand l'IA invente ✅ *Disponible*
-10. **Biais algorithmiques** - Discrimination et équité ⏳ *Bientôt*
-11. **Deepfakes** - Détection de contenus manipulés ⏳ *Bientôt*
-
-### Enjeux Citoyens (12-15)
-12. **Impact environnemental** *(Green Infiltration)* - Empreinte carbone de l'IA, escape game ✅ *Disponible*
-13. **Vie privée et données** *(Data Shadow)* - Protection des informations personnelles, jeu de rôle ✅ *Disponible*
-14. **IA et emploi** - Transformation du travail ⏳ *Bientôt*
-15. **Le Tribunal de l'IA** - Responsabilité humaine et régulation ✅ *Disponible*
-
----
-
-## Architecture Technique
-
-### Structure des fichiers
 ```
 formationia/
 ├── index.html                              # Page d'accueil
-├── modules.html                            # Catalogue des modules
-├── certification.html                      # Page certification (future)
-├── module-01-demystifier-ia.html           # Module 1 - Mission d'enquête
-├── module-02-donnees-sous-influence.html   # Module 2 - Jeu de simulation
-├── module-03-dans-la-tete-du-modele.html   # Module 3 - NEURONAUT (tokenisation, embeddings…)
-├── module-06-iteration-amelioration.html   # Module 6 - Prompt engineering
-├── module-09-hallucinations.html           # Module 9 - Hallucinations IA
-├── module-12-impact-environnemental.html   # Module 12 - Escape game environnement
-├── module-13-vie-privee-donnees.html       # Module 13 - Jeu de rôle vie privée
-├── module15-le-tribunal-de-l-ia.html      # Module 15 - Régulation et éthique
-├── images/
-│   ├── logo-profexpress.png
-│   ├── hero-banner.png
-│   ├── domain-*.png                        # Icônes des domaines
-│   ├── room-*.png                          # Arrière-plans escape game
-│   └── ...
-└── README.md
+├── modules.html                            # Catalogue des 15 modules
+├── certification.html                      # Page de certification finale
+│
+├── module1.html                            # Module 01 – Démystifier l'IA
+├── module-02-donnees-sous-influence.html   # Module 02
+├── module-03-dans-la-tete-du-modele.html   # Module 03
+├── module-04-generer-sans-comprendre.html  # Module 04
+├── module-05-art-de-la-consigne.html       # Module 05
+├── module-06-iteration-amelioration.html   # Module 06
+├── module-07-co-creer-ia.html              # Module 07
+├── module-08-choisir-bon-usage.html        # Module 08
+├── module-09-hallucinations.html           # Module 09
+├── module-10-biais-algorithmiques.html     # Module 10
+├── module-11-signal-falsifie.html          # Module 11
+├── module-12-impact-environnemental.html   # Module 12
+├── module-13-vie-privee-donnees.html       # Module 13
+├── module-14-ia-et-emploi.html             # Module 14
+├── module15-le-tribunal-de-l-ia.html       # Module 15
+│
+├── images/                                 # Ressources graphiques (fonds, logos, icônes)
+│
+├── fix_badge_merge.py                      # Script maintenance : fusion badge + n° module
+└── fix_all.py                              # Script maintenance : couleurs, barres, footer
 ```
-
-### Stack Technique
-- **HTML5** - Structure sémantique
-- **CSS3** - Animations, variables CSS, flexbox/grid
-- **JavaScript Vanilla** - Aucune dépendance externe
-- **Fonts** : Google Fonts (Space Mono, Exo 2)
-
-### Pas de backend
-- Aucune base de données
-- Aucun tracking utilisateur
-- Tout fonctionne en local/statique
-- Compatible hébergement GitHub Pages, Netlify, etc.
 
 ---
 
-## Charte Graphique - ADN Visuel
+## Catalogue des modules
 
-### Palette de couleurs
+### Domaine 1 — Fondations IA `#ff6b6b`
+
+| # | Fichier | Titre | Univers / Mission | Activité | Leçons |
+|---|---------|-------|-------------------|----------|--------|
+| 01 | `module1.html` | 🕵️‍♂️ Démystifier l'IA | DOSSIER ZÉRO · VERIT-IA | Mission d'enquête | 8 |
+| 02 | `module-02-donnees-sous-influence.html` | 🧬 Données sous influence | LABORATOIRES SYNAPTIK | Jeu de simulation | 8 |
+| 03 | `module-03-dans-la-tete-du-modele.html` | 🧠 Dans la tête du modèle | NEURONAUTE | Exploration interactive | 5 |
+| 04 | `module-04-generer-sans-comprendre.html` | 🧠 Générer sans comprendre | SYNTHÈSE | Simulation | — |
+
+### Domaine 2 — Interaction Raisonnée `#4ecdc4`
+
+| # | Fichier | Titre | Univers / Mission | Activité | Leçons |
+|---|---------|-------|-------------------|----------|--------|
+| 05 | `module-05-art-de-la-consigne.html` | 🤖 L'art de la consigne | ARIA-7 LAB | Escape Room | 5 |
+| 06 | `module-06-iteration-amelioration.html` | 🎯 Itération et amélioration | STUDIO ITERATEK | Défi progressif | 8 |
+| 07 | `module-07-co-creer-ia.html` | 🎨 Co-créer avec l'IA | SYNAPSE STUDIO | Ateliers créatifs | — |
+| 08 | `module-08-choisir-bon-usage.html` | 🧭 Choisir le bon usage | NEXUS DÉCISION | Triage de cas | — |
+
+### Domaine 3 — Limites & Esprit Critique `#ffe66d`
+
+| # | Fichier | Titre | Univers / Mission | Activité | Leçons |
+|---|---------|-------|-------------------|----------|--------|
+| 09 | `module-09-hallucinations.html` | 🔍 L'erreur qui sonne juste | RÉDACTION VERITAS NEWS | Enquête d'investigation | 9 |
+| 10 | `module-10-biais-algorithmiques.html` | ⚖️ Biais invisibles | AGENCE EQUITYWATCH | Simulation d'audit | — |
+| 11 | `module-11-signal-falsifie.html` | 🎭 Signal Falsifié | UNITÉ VERITAS | Investigation forensique | 7 |
+
+### Domaine 4 — Enjeux Citoyens `#95e1d3`
+
+| # | Fichier | Titre | Univers / Mission | Activité | Leçons |
+|---|---------|-------|-------------------|----------|--------|
+| 12 | `module-12-impact-environnemental.html` | 🔐 Impact environnemental de l'IA | INFILTRATION VERTE | Escape Game | — |
+| 13 | `module-13-vie-privee-donnees.html` | 🛡️ Vie privée & données | AGENCE SHIELD DATA | Jeu de rôle | — |
+| 14 | `module-14-ia-et-emploi.html` | ⚙️ IA et Emploi | AGENCE ARIA | Simulation de carrière | 8 |
+| 15 | `module15-le-tribunal-de-l-ia.html` | ⚖️ Le Tribunal de l'IA | LE TRIBUNAL | Tribunal simulé | — |
+
+---
+
+## Architecture d'un module
+
+Chaque fichier HTML est structuré en 4 écrans navigués par JavaScript, sans rechargement de page :
+
+```
+1. Écran titre
+   └── Contexte narratif, personnage du module, badge domaine, CTA "Commencer"
+
+2. Briefing / Cours
+   ├── Sidebar gauche : liste des leçons + accès Mission + Attestation (verrouillée)
+   ├── Zone contenu : leçons 1…N (chargées dynamiquement)
+   └── Footer : boutons "← Précédent" / "Suivant →"
+        (dernière leçon → "Ouvrir [mission] →")
+
+3. Mission / Jeu
+   └── Activité gamifiée adaptée au thème
+       (escape room, simulation, tribunal, triage…)
+
+4. Quiz + Attestation
+   └── QCM de validation (score minimum : 70 %)
+   └── Attestation HTML téléchargeable (nom, date, score, compétences)
+```
+
+---
+
+## Design system
+
+### Typographies
+
+| Rôle | Police |
+|------|--------|
+| Titres, interface | Space Mono (monospace) |
+| Corps de texte | Exo 2 / Inter |
+
+### Palette de base
+
 ```css
 :root {
-    --neon-green: #00ff88;      /* Accent principal */
-    --neon-blue: #00d4ff;       /* Accent secondaire */
-    --neon-cyan: #00d4ff;       /* Liens, interactions */
-    --neon-pink: #ff0080;       /* Alertes, erreurs */
-    --dark-bg: #0a0e17;         /* Fond principal */
-    --panel-bg: rgba(10, 20, 40, 0.95);  /* Panneaux */
-    --text: #e0f0ff;            /* Texte principal */
-    --text-muted: #8899aa;      /* Texte secondaire */
+  --neon-green:  #00ff88;          /* Accent principal */
+  --neon-blue:   #00d4ff;          /* Accent secondaire */
+  --neon-pink:   #ff0080;          /* Alertes */
+  --dark-bg:     #0a0e17;          /* Fond principal */
+  --panel-bg:    rgba(10,20,40,.95);
+  --text:        #e0f0ff;
+  --muted:       #8899aa;
 }
 ```
 
-### Typographies
-- **Titres** : `'Space Mono', monospace` - Style terminal/hacker
-- **Corps** : `'Exo 2', sans-serif` - Lisibilité futuriste
+### Couleurs par domaine
 
-### Effets visuels signature
-- **Glow néon** : `box-shadow: 0 0 20px rgba(0, 255, 136, 0.5)`
-- **Bordures luminescentes** : `border: 1px solid rgba(0, 212, 255, 0.5)`
-- **Dégradés** : `linear-gradient(135deg, var(--neon-green), var(--neon-blue))`
-- **Backdrop blur** : `backdrop-filter: blur(10px)`
-- **Grilles de fond** : Pattern de lignes cyberpunk
+Chaque module expose une variable `--domain-color` dans son `:root` :
 
-### Animations
-- Transitions fluides : `transition: all 0.3s ease`
-- Hover avec scale : `transform: scale(1.02)`
-- Effets de scan/pulse pour éléments interactifs
-- Float animation pour éléments décoratifs
+| Domaine | `--domain-color` | Usages |
+|---------|-----------------|--------|
+| Fondations IA | `#ff6b6b` | Badge, `briefing-title`, titres `h3` |
+| Interaction Raisonnée | `#4ecdc4` | Badge, `briefing-title`, titres `h3` |
+| Limites & Esprit Critique | `#ffe66d` | Badge, `briefing-title`, titres `h3` |
+| Enjeux Citoyens | `#95e1d3` | Badge, `briefing-title`, titres `h3` |
+
+### Badge de domaine (format standardisé)
+
+Tous les modules affichent en haut de l'écran titre un badge unique au format :
+
+```
+[Nom du domaine - Module n°NN]
+```
+
+Exemple : `Enjeux Citoyens - Module n°12`
 
 ---
 
-## Structure d'un Module (Template)
+## Hébergement statique
 
-### Flux utilisateur
-```
-1. ÉCRAN TITRE
-   └── Contexte narratif + bouton "Commencer"
-
-2. BRIEFING / COURS (si applicable)
-   └── 5-8 sections de contenu pédagogique
-   └── Navigation latérale
-   └── Boutons Précédent/Suivant
-
-3. PHASE DE JEU
-   └── Mécanique interactive adaptée au thème
-   └── Objectifs clairs + feedback visuel
-   └── Progression trackée visuellement
-
-4. QUIZ DE VALIDATION
-   └── 5-10 questions sur le contenu
-   └── Score minimum pour valider
-
-5. ATTESTATION
-   └── Certificat téléchargeable (HTML généré)
-   └── Nom du participant
-   └── Date + score
-```
-
-### Mécaniques de jeu possibles
-| Type | Description | Adapté pour |
-|------|-------------|-------------|
-| **Escape Game** | Explorer, collecter indices, résoudre énigmes | Modules complexes, investigation |
-| **Simulation** | Prendre des décisions, voir conséquences | Éthique, choix sociétaux |
-| **Enquête** | Analyser documents, détecter anomalies | Deepfakes, fact-checking |
-| **Jeu de rôle** | Incarner un personnage, dialogues | Biais, interactions humaines |
-| **Puzzle** | Assembler, trier, catégoriser | Concepts techniques |
-| **Quiz interactif** | Questions avec feedback immédiat | Tous modules |
+| Plateforme | Config |
+|------------|--------|
+| GitHub Pages | Pages sur `main`, dossier racine |
+| Netlify | Glisser-déposer ou `netlify deploy` |
+| Vercel | `vercel --prod` |
+| Apache / Nginx | Copier dans `www/` ou `public_html/` |
 
 ---
 
-## Module 12 - Référence Technique
+## Conventions de nommage
 
-### Spécifications
-- **Fichier** : `module-12-impact-environnemental.html`
-- **Lignes** : ~4400 (HTML + CSS + JS intégré)
-- **Type** : Escape Game immersif
-- **Durée** : 15-20 minutes
-
-### Structure interne
-```javascript
-// État du jeu
-const gameState = {
-    currentRoom: 'corridor',
-    inventory: [],
-    evidence: { energy: false, water: false, models: false, manufacturing: false, co2: false },
-    suspicion: 0,
-    timeRemaining: 900, // 15 minutes
-    // ...
-};
 ```
-
-### Fonctionnalités implémentées
-- [x] Écran titre avec contexte narratif
-- [x] 7 sections de briefing éducatif
-- [x] 5 salles explorables (corridor, serveurs, contrôle, refroidissement, bureau)
-- [x] Système d'inventaire (5 slots)
-- [x] Collecte de 5 types de preuves
-- [x] Jauge de suspicion
-- [x] Timer de 15 minutes
-- [x] Mini-map de navigation
-- [x] Système de dialogues/SMS
-- [x] Puzzles interactifs (calculs, associations)
-- [x] Quiz final de certification
-- [x] Génération d'attestation téléchargeable
-- [x] Bouton retour vers liste des modules
-
----
-
-## Attestation - Format Standard
-
-Chaque module génère une attestation HTML téléchargeable avec :
-
-```html
-<!-- Structure de l'attestation -->
-- En-tête avec logo Prof Express
-- Titre "ATTESTATION DE RÉUSSITE"
-- Nom du module complété
-- Nom du participant (saisi à la fin)
-- Date de complétion
-- Score obtenu
-- Liste des compétences validées
-- Design cohérent avec la charte graphique
+module-{NN}-{slug}.html    →  modules 02–14  (format principal)
+module{N}.html             →  module 01      (format historique)
+module{NN}-{slug}.html     →  module 15      (format alternatif)
 ```
 
 ---
 
-## Workflow de Développement
+## Scripts de maintenance
 
-### Pour créer un nouveau module
-
-1. **Dupliquer** `module-12-impact-environnemental.html` comme template
-2. **Adapter** le contenu pédagogique (briefing)
-3. **Choisir** la mécanique de jeu appropriée
-4. **Implémenter** les interactions spécifiques
-5. **Créer** les images de fond si nécessaire
-6. **Ajouter** le lien dans `modules.html`
-7. **Tester** le parcours complet
-
-### Conventions de nommage
-- Fichiers : `module-XX-nom-court.html`
-- Images : `room-nom.png`, `icon-nom.png`
-- IDs CSS : kebab-case (`#game-container`)
-- Classes CSS : kebab-case (`.module-card`)
-- Variables JS : camelCase (`gameState`)
+| Script | Rôle |
+|--------|------|
+| `fix_badge_merge.py` | Fusionne le numéro de module dans le badge de domaine sur tous les modules |
+| `fix_all.py` | Harmonisation couleurs titres, suppression barres de progression, ajout footer module 14 |
 
 ---
 
-## Versioning
+## Statut du projet
 
-### V1.0.0
-- Page d'accueil (`index.html`)
-- Catalogue des modules (`modules.html`)
-- Module 12 complet (escape game environnement)
-- Charte graphique établie
-- Infrastructure de base
-
-### V1.1.0
-- Module 01 : Dossier Zéro — Mission d'enquête (Démystifier l'IA)
-- Module 02 : Données sous Influence — Jeu de simulation (Apprentissage & Biais)
-- Module 06 : Itération & Amélioration — Défi progressif (Prompt Engineering)
-- Module 09 : L'Erreur qui Sonne Juste — Hallucinations de l'IA
-- Module 13 : Data Shadow — Jeu de rôle (Vie Privée & Données)
-- Module 15 : Le Tribunal de l'IA — Responsabilité humaine
-
-### V1.2.0 (actuelle)
-- Module 03 : NEURONAUT — Voyage au Cœur du Modèle (Tokenisation, Embeddings, Attention, Prédiction)
-
-### Roadmap
-- Module 4 (Fondations IA — suite)
-- Modules 5, 7-8 (Interaction Raisonnée — suite)
-- Modules 10-11 (Limites et Esprit Critique — suite)
-- Module 14 (Enjeux Citoyens — IA et emploi)
-- Page certification globale
+- [x] 15 modules HTML autonomes et complets
+- [x] 4 domaines avec code couleur harmonisé (`--domain-color`)
+- [x] Badge domaine unifié sur tous les modules (`Domaine - Module n°NN`)
+- [x] Couleurs des titres (`briefing-title`, `h3`) alignées sur la couleur du domaine
+- [x] Barres de progression dossier/section supprimées
+- [x] Footer de navigation (Précédent / Suivant) présent sur tous les modules
+- [x] Attestations téléchargeables par module
+- [ ] Page de certification inter-modules (`certification.html`) — en cours
 
 ---
 
-## Licence et Crédits
+## Licence et crédits
 
-**Projet** : Formation IA - Formation Interactive
 **Éditeur** : [Prof Express](https://www.profexpress.com)
-**Usage** : Éducatif, gratuit, sans tracking
-
----
-
-## Contact
-
-Pour toute question sur ce projet, contacter l'équipe Prof Express.
+**Usage** : Éducatif, gratuit, sans tracking ni collecte de données
