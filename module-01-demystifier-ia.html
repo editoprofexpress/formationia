@@ -2705,132 +2705,114 @@ const quizQuestions = [
 ];
 
 function startCertificationQuiz(){
-  quizState = { currentQuestion: 0, score: 0, answers: [] };
-  showQuizQuestion();
-}
-
-function showQuizQuestion(){
-  const q = quizQuestions[quizState.currentQuestion];
-  const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
-
+  quizState = { answers: {} };
   $('briefing-content').innerHTML = `
     <div class="module-title" style="color:var(--neon-blue)">📝 Quiz de Certification</div>
     <div class="module-kicker">Module 1 — Démystifier l'IA (DOSSIER ZÉRO)</div>
     <div class="divider"></div>
-
-    <div class="callout" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.5);">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
-        <span style="color:var(--neon-blue);font-weight:600">Question ${quizState.currentQuestion + 1}/${quizQuestions.length}</span>
-        <span style="color:#8899aa">Progression : ${progress}%</span>
+    <p style="color:#aabbcc;line-height:1.7;margin-bottom:20px">Répondez aux ${quizQuestions.length} questions ci-dessous, puis validez. Score minimum : <strong style="color:var(--neon-blue)">70%</strong>.</p>
+    ${quizQuestions.map((q, i) => `
+      <div style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,212,255,0.3);border-radius:12px;padding:24px;margin-bottom:16px" id="qq-${i}">
+        <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:#8899aa;margin-bottom:8px">Q${i+1}/${quizQuestions.length}</div>
+        <div style="font-size:1em;color:var(--text);margin-bottom:16px;line-height:1.6;font-weight:600">${q.question}</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          ${q.options.map((opt, j) => `
+            <div id="qopt-${i}-${j}" onclick="selectQuizOpt(${i},${j})"
+              style="padding:13px 18px;border:1px solid rgba(0,212,255,0.2);border-radius:8px;cursor:pointer;transition:all 0.2s;color:#cfe9ff;line-height:1.5">
+              <strong>${String.fromCharCode(65+j)}.</strong> ${opt}
+            </div>
+          `).join('')}
+        </div>
       </div>
-      <div style="background:rgba(0,212,255,0.2);height:8px;border-radius:10px;overflow:hidden">
-        <div style="background:var(--neon-blue);height:100%;width:${progress}%;transition:width 0.3s"></div>
-      </div>
+    `).join('')}
+    <div id="quiz-progress-lbl" style="text-align:center;margin:10px 0;font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)">0/${quizQuestions.length} questions répondues</div>
+    <div style="text-align:center;margin:20px 0">
+      <button id="quiz-submit-all" onclick="submitAllQuiz()" class="btn green"
+        style="font-size:1.1em;padding:15px 40px;opacity:0.5;cursor:not-allowed;" disabled>
+        ✅ Valider mes réponses
+      </button>
     </div>
-
-    <div style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,212,255,0.3);border-radius:12px;padding:30px;margin:30px 0">
-      <h3 style="color:var(--text);font-size:1.2em;line-height:1.6;margin-bottom:25px">${q.question}</h3>
-
-      <div style="display:flex;flex-direction:column;gap:12px">
-        ${q.options.map((opt, i) => `
-          <button class="mission-option" onclick="answerQuizQuestion(${i})"
-            style="text-align:left;padding:15px 20px;font-size:1em;cursor:pointer;transition:all 0.3s">
-            <div style="font-weight:600;margin-bottom:4px">${String.fromCharCode(65 + i)}. ${opt}</div>
-          </button>
-        `).join('')}
-      </div>
-    </div>
-
-    <div class="callout warn" style="margin-top:20px">
-      <strong>⚠️ Important :</strong> Réfléchissez bien avant de répondre. Vous ne pourrez pas revenir en arrière.
-    </div>
+    <div id="quiz-result-all"></div>
   `;
 }
 
-function answerQuizQuestion(answerIndex){
-  const q = quizQuestions[quizState.currentQuestion];
-  const isCorrect = answerIndex === q.correct;
-
-  quizState.answers.push({
-    question: quizState.currentQuestion,
-    answer: answerIndex,
-    correct: isCorrect
+function selectQuizOpt(qi, oi){
+  quizState.answers[qi] = oi;
+  quizQuestions[qi].options.forEach((_, j) => {
+    const el = $('qopt-'+qi+'-'+j);
+    if (!el) return;
+    if (j === oi) {
+      el.style.background = 'rgba(0,212,255,0.12)';
+      el.style.borderColor = 'var(--neon-blue)';
+      el.style.color = 'var(--neon-blue)';
+    } else {
+      el.style.background = '';
+      el.style.borderColor = 'rgba(0,212,255,0.2)';
+      el.style.color = '#cfe9ff';
+    }
   });
-
-  if(isCorrect) quizState.score++;
-
-  // Passer à la question suivante ou afficher les résultats
-  quizState.currentQuestion++;
-
-  if(quizState.currentQuestion < quizQuestions.length){
-    showQuizQuestion();
-  } else {
-    showQuizResults();
+  const done = Object.keys(quizState.answers).length;
+  const lbl = $('quiz-progress-lbl');
+  if (lbl) lbl.textContent = done+'/'+quizQuestions.length+' questions répondues';
+  if (done === quizQuestions.length) {
+    const btn = $('quiz-submit-all');
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
   }
 }
 
-function showQuizResults(){
-  const scorePct = Math.round((quizState.score / quizQuestions.length) * 100);
-  const passed = scorePct >= 70;
+function submitAllQuiz(){
+  let score = 0;
+  quizQuestions.forEach((q, i) => { if (quizState.answers[i] === q.correct) score++; });
+  const pct = Math.round(score / quizQuestions.length * 100);
+  const passed = pct >= 70;
 
-  if(passed){
+  const btn = $('quiz-submit-all');
+  if (btn) btn.style.display = 'none';
+
+  if (passed) {
+    quizQuestions.forEach((q, i) => {
+      const chosen = quizState.answers[i];
+      q.options.forEach((_, j) => {
+        const el = $('qopt-'+i+'-'+j);
+        if (!el) return;
+        el.onclick = null; el.style.cursor = 'default';
+        if (j === q.correct) {
+          el.style.background = 'rgba(0,60,30,0.5)';
+          el.style.borderColor = 'var(--neon-green)';
+          el.style.color = 'var(--neon-green)';
+        } else if (j === chosen && j !== q.correct) {
+          el.style.background = 'rgba(60,10,10,0.5)';
+          el.style.borderColor = 'var(--danger)';
+          el.style.color = 'var(--danger)';
+        }
+      });
+    });
     certificateUnlocked = true;
-    finalScore = scorePct;
-    unlockCertificate(scorePct);
+    finalScore = pct;
+    unlockCertificate(pct);
+  } else {
+    document.querySelectorAll('[id^="qopt-"]').forEach(el => { el.onclick = null; el.style.cursor = 'default'; });
   }
 
-  $('briefing-content').innerHTML = `
-    <div class="module-title" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
-      ${passed ? '🎉 Quiz réussi !' : '😔 Quiz non réussi'}
-    </div>
-    <div class="module-kicker">Résultats de la certification</div>
-    <div class="divider"></div>
-
-    <div class="callout ${passed ? 'ok' : 'warn'}" style="text-align:center;padding:40px 20px">
-      <div style="font-size:4em;margin-bottom:20px">${passed ? '✅' : '❌'}</div>
-      <h2 style="font-size:2em;margin-bottom:15px;color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'}">
-        Score : ${quizState.score}/${quizQuestions.length} (${scorePct}%)
-      </h2>
-      <p style="font-size:1.1em;line-height:1.8;margin-bottom:20px">
-        ${passed
-          ? 'Félicitations ! Vous avez validé le quiz de certification avec un excellent score.'
-          : 'Le score minimum requis est de 70%. Révisez les leçons et réessayez.'}
-      </p>
-
-      ${passed ? `
-        <div style="margin-top:30px">
-          <p style="margin-bottom:15px;color:var(--neon-blue)">🎓 <strong>Votre attestation est maintenant disponible !</strong></p>
-          <button class="btn green" onclick="showCertificateInFolder()" style="font-size:1.1em;padding:15px 40px">
-            📥 Accéder à l'attestation
-          </button>
-        </div>
-      ` : `
-        <div style="margin-top:30px">
-          <button class="btn" onclick="startCertificationQuiz()" style="font-size:1.1em;padding:15px 40px">
-            🔄 Réessayer le quiz
-          </button>
-        </div>
-      `}
-    </div>
-
-    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📊 Détail de vos réponses</h3>
-    ${quizQuestions.map((q, i) => {
-      const userAnswer = quizState.answers[i];
-      const isCorrect = userAnswer.correct;
-      return `
-        <div style="background:rgba(10,20,40,0.6);border:1px solid ${isCorrect ? 'rgba(0,255,136,0.3)' : 'rgba(255,77,77,0.3)'};
-          border-radius:12px;padding:20px;margin-bottom:15px">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-            <span style="font-size:1.5em">${isCorrect ? '✅' : '❌'}</span>
-            <strong style="color:${isCorrect ? 'var(--neon-green)' : 'var(--danger)'}">Question ${i + 1}</strong>
-          </div>
-          <p style="margin-bottom:10px;line-height:1.6">${q.question}</p>
-          <p style="color:#8899aa;margin-bottom:5px">Votre réponse : <strong>${q.options[userAnswer.answer]}</strong></p>
-          ${!isCorrect ? `<p style="color:var(--neon-green)">Bonne réponse : <strong>${q.options[q.correct]}</strong></p>` : ''}
-        </div>
-      `;
-    }).join('')}
-  `;
+  const resultEl = $('quiz-result-all');
+  if (resultEl) {
+    resultEl.innerHTML = passed ? `
+      <div class="callout ok" style="text-align:center;padding:30px;margin-top:20px">
+        <div style="font-size:2.5em;margin-bottom:12px">🎉</div>
+        <h3 style="color:var(--neon-green);margin-bottom:12px">Quiz réussi !</h3>
+        <p style="font-size:1.3em;margin-bottom:12px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
+        <p style="line-height:1.7;margin-bottom:18px">Félicitations ! Vous avez validé le quiz de certification.</p>
+        <button class="btn green" onclick="showCertificateInFolder()" style="font-size:1.1em;padding:15px 40px">📥 Accéder à l'attestation</button>
+      </div>` : `
+      <div class="callout warn" style="text-align:center;padding:30px;margin-top:20px">
+        <div style="font-size:2.5em;margin-bottom:12px">📚</div>
+        <h3 style="color:var(--warn);margin-bottom:12px">Score insuffisant</h3>
+        <p style="font-size:1.3em;margin-bottom:12px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
+        <p style="line-height:1.7;margin-bottom:18px">Le score minimum requis est de 70%. Révisez les leçons et réessayez.</p>
+        <button class="btn" onclick="startCertificationQuiz()" style="font-size:1.1em;padding:15px 40px">↺ Réessayer le quiz</button>
+      </div>`;
+    resultEl.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 function unlockCertificate(score){
