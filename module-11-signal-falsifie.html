@@ -612,7 +612,55 @@
     }
     #toast.show{transform:translateY(0);opacity:1}
 
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: #aabbcc;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+</style>
 </head>
 <body>
 
@@ -624,7 +672,10 @@
   <div class="corner corner-bl"></div>
   <div class="corner corner-br"></div>
 
-  <a href="modules.html" class="back-link-title">← Modules</a>
+  <a href="modules.html" class="back-link-title">← Tous les modules</a>
+
+    <div class="domain-badge-std" style="background:#ffe66d22;border:1px solid #ffe66d88;color:#ffe66d;">Limites et Esprit Critique</div>
+    <div class="module-official-label">Module n° 11 : Signal Falsifié</div>
 
   <div class="badge-domain">Limites &amp; Esprit Critique — Module 11</div>
   <div class="title-logo">🎭</div>
@@ -639,6 +690,7 @@
     maîtriser les techniques de détection, et authentifier 6 dossiers<br>
     avant qu'ils ne contaminent l'opinion publique.
   </p>
+    <div class="activity-badge-std">🎭 Investigation forensique</div>
 
   <button class="start-btn" onclick="startModule()">▶ Accepter la mission</button>
 
@@ -647,6 +699,12 @@
     <div class="stat"><span class="stat-dot"></span>6 dossiers à analyser</div>
     <div class="stat"><span class="stat-dot"></span>Score 70 % requis</div>
   </div>
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
+    </div>
 </div>
 
 <!-- ======================== BRIEFING ======================== -->
@@ -668,7 +726,7 @@
     <!-- Navigation latérale -->
     <nav class="briefing-nav">
       <a href="modules.html" class="back-link-sidebar">
-        <span class="back-arrow">←</span> Modules
+        <span class="back-arrow">←</span> Tous les modules
       </a>
 
       <div class="briefing-nav-item active" id="nav-0" onclick="showLesson(0)">

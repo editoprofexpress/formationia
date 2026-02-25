@@ -822,7 +822,55 @@
     }
     .cert-action-btn:hover{border-color:rgba(0,212,255,0.4);color:var(--neon-blue);background:rgba(0,212,255,0.05)}
 
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: #aabbcc;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+</style>
 </head>
 <body>
 
@@ -835,13 +883,14 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 
-  <a href="modules.html" class="back-link-title">← Modules</a>
+  <a href="modules.html" class="back-link-title">← Tous les modules</a>
+
+    <div class="domain-badge-std" style="background:#ffe66d22;border:1px solid #ffe66d88;color:#ffe66d;">Limites et Esprit Critique</div>
+    <div class="module-official-label">Module n° 10 : Biais invisibles</div>
 
   <div class="title-content">
 
     <div class="title-logo">⚖️</div>
-
-    <div class="module-badge">Module 10 &nbsp;·&nbsp; Limites &amp; Esprit Critique</div>
 
     <h1 class="main-title">BIAIS INVISIBLES</h1>
     <p class="subtitle">Algorithmes sous surveillance &nbsp;—&nbsp; Opération Équité</p>
@@ -879,6 +928,7 @@
       responsable. Votre mission : analyser les données, identifier les biais dissimulés, et rédiger le
       rapport qui permettra de démanteler un algorithme discriminatoire.
     </div>
+    <div class="activity-badge-std">⚖️ Simulation d'audit</div>
 
     <button class="start-btn" onclick="startModule()">⚡ Lancer l'audit</button>
 
@@ -905,6 +955,13 @@
     </div>
   </div>
 
+  <div class="profexpress-std">
+    <p>Une formation proposée par</p>
+    <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+      <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+    </a>
+  </div>
+
 </div><!-- end #title-screen -->
 
 <!-- ==================== BRIEFING ==================== -->
@@ -925,7 +982,7 @@
     <!-- Sidebar nav -->
     <nav class="briefing-nav">
       <a href="modules.html" class="back-link-sidebar">
-        <span class="back-arrow">←</span> Modules
+        <span class="back-arrow">←</span> Tous les modules
       </a>
       <div id="nav-items"></div>
     </nav>

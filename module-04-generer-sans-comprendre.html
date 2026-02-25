@@ -892,7 +892,55 @@
     #toast.show { transform: translateX(-50%) translateY(0); }
     #toast.error { border-color: rgba(255,0,128,0.4); color: var(--neon-pink); box-shadow: 0 0 20px rgba(255,0,128,0.2); }
 
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: #aabbcc;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+</style>
 </head>
 <body>
 
@@ -904,10 +952,12 @@
     <div class="particles" id="particles"></div>
 
     <!-- Retour aux modules -->
-    <a href="modules.html" class="back-link-title">← Modules</a>
+    <a href="modules.html" class="back-link-title">← Tous les modules</a>
+
+    <div class="domain-badge-std" style="background:#ff6b6b22;border:1px solid #ff6b6b88;color:#ff6b6b;">Fondations IA</div>
+    <div class="module-official-label">Module n° 04 : Générer sans comprendre</div>
 
     <!-- Badge -->
-    <div class="module-badge">FONDATIONS IA — MODULE 04</div>
 
     <!-- Logo flottant -->
     <div class="title-logo">🧠</div>
@@ -927,6 +977,7 @@
     </div>
 
     <!-- Bouton -->
+    <div class="activity-badge-std">🎮 Simulation</div>
     <button class="start-btn" onclick="startModule()">▶ Entrer dans la matrice</button>
 
     <!-- Infos -->
@@ -934,6 +985,12 @@
       <span>⏱ 15-20 min</span>
       <span>🎮 3 niveaux de simulation</span>
       <span>📜 Attestation incluse</span>
+    </div>
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
     </div>
   </div>
 
