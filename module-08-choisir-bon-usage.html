@@ -876,12 +876,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -921,25 +926,11 @@
 
     <div class="title-logo">🧭</div>
     <h1 class="main-title">NEXUS DÉCISION</h1>
-    <div class="subtitle">Choisir le bon usage de l'IA</div>
 
-    <div class="intro-box">
-      <div class="dispatch-header">Transmission sécurisée — Nexus Protocol Division</div>
-      <p>
-        Agent, bienvenue au <strong>Centre de Protocole IA</strong>. Des dizaines de demandes arrivent chaque jour dans notre terminal : des organisations, des professionnels, des équipes qui veulent utiliser l'IA pour leurs missions.
-      </p>
-      <p>
-        Votre rôle : évaluer chaque cas et appliquer le bon protocole. L'IA n'est pas toujours la meilleure réponse. Certaines situations réclament de la prudence. D'autres exigent une expertise humaine irremplaçable.
-      </p>
-      <p>
-        Maîtrisez les <strong>trois niveaux de protocole</strong>, analysez les cas qui vous sont soumis, et démontrez que vous savez quand utiliser l'IA — et quand ne pas le faire.
-      </p>
-      <div class="mission-stats">
-        <div class="stat-item">🕐 Durée : <span class="stat-val">15–20 min</span></div>
-        <div class="stat-item">📋 Cas : <span class="stat-val">10 scénarios</span></div>
-        <div class="stat-item">✅ Validation : <span class="stat-val">Quiz 70%</span></div>
-      </div>
-    </div>
+
+  <p class="intro-text">Agent, bienvenue au <strong>Centre de Protocole IA</strong>. Des dizaines de demandes arrivent chaque jour dans notre terminal : des organisations, des professionnels, des équipes qui veulent utiliser l'IA pour leurs missions.</p>
+  <p class="intro-text">Votre rôle : évaluer chaque cas et appliquer le bon protocole. L'IA n'est pas toujours la meilleure réponse. Certaines situations réclament de la prudence. D'autres exigent une expertise humaine irremplaçable.</p>
+  <p class="intro-text">Maîtrisez les <strong>trois niveaux de protocole</strong>, analysez les cas qui vous sont soumis, et démontrez que vous savez quand utiliser l'IA — et quand ne pas le faire.</p>
     <div class="activity-badge-std">🧭 Triage de cas</div>
 
     <button class="start-btn" onclick="startModule()">▶ Activer le protocole</button>

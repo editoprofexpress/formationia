@@ -909,12 +909,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -964,28 +969,18 @@
 
     <!-- Titre principal -->
     <h1 class="main-title">SYNTHÈSE</h1>
-    <p class="subtitle">Générer sans comprendre</p>
 
     <!-- Texte d'intro narratif -->
     <p class="intro-text">
       Nous sommes en 2034. Tu viens d'être téléporté dans la <strong>matrice de génération</strong> de SYNTHÈSE, une IA de dernière génération. Tu vas vivre, de l'intérieur, comment le texte est produit — <strong>token après token</strong> — sans aucune compréhension du sens. Ton défi : démonter l'illusion, comprendre le mécanisme, et ne plus jamais voir les IA de la même façon.
     </p>
 
-    <!-- Ligne terminal -->
-    <div class="terminal-line">
-      SYNTHÈSE v4.0 — Matrice de génération initialisée<span class="cursor"></span>
-    </div>
 
     <!-- Bouton -->
     <div class="activity-badge-std">🎮 Simulation</div>
     <button class="start-btn" onclick="startModule()">▶ Entrer dans la matrice</button>
 
     <!-- Infos -->
-    <div class="module-info">
-      <span>⏱ 15-20 min</span>
-      <span>🎮 3 niveaux de simulation</span>
-      <span>📜 Attestation incluse</span>
-    </div>
     <div class="profexpress-std">
       <p>Une formation proposée par</p>
       <a href="https://www.profexpress.com" target="_blank" rel="noopener">
@@ -2233,7 +2228,6 @@
   <div class="corner bl"></div><div class="corner br"></div>
   <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:rgba(255,107,107,0.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px">Formation IA Citoyenne — Module 04</div>
   <div class="title">ATTESTATION DE RÉUSSITE</div>
-  <div class="subtitle">SYNTHÈSE — Générer sans comprendre</div>
   <div class="sep"></div>
   <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Nous attestons que</p>
   <div class="name">${participantName}</div>

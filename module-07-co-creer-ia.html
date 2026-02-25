@@ -900,12 +900,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -948,30 +953,15 @@
 
   <div class="title-logo">🎨</div>
   <h1 class="main-title">SYNAPSE STUDIO</h1>
-  <p class="subtitle">Là où ta créativité rencontre l'intelligence artificielle</p>
 
-  <div class="intro-box">
-    <div class="dispatch-header">🔴 Mission reçue — SYNAPSE AGENCY</div>
-    <p>
-      <strong>Situation d'urgence.</strong> L'agence SYNAPSE doit pitcher son plus grand projet demain matin.
-      Les équipes créatives sont épuisées. Tu es appelé en renfort.
-    </p>
-    <p>
-      Ton défi : co-créer avec quatre IA spécialisées — <strong>LYRA</strong> (texte),
+
+  <p class="intro-text"><strong>Situation d'urgence.</strong> L'agence SYNAPSE doit pitcher son plus grand projet demain matin.
+      Les équipes créatives sont épuisées. Tu es appelé en renfort.</p>
+  <p class="intro-text">Ton défi : co-créer avec quatre IA spécialisées — <strong>LYRA</strong> (texte),
       <strong>PRISM</strong> (visuel), <strong>ECHO</strong> (musique) et <strong>VOLT</strong> (code) —
-      pour produire les piliers d'une campagne complète.
-    </p>
-    <p>
-      Mais attention : l'IA ne remplace pas ta créativité. C'est toi qui diriges.
-      Ta capacité à formuler, orienter, juger et ajuster fera toute la différence.
-    </p>
-    <div class="mission-stats">
-      <div class="stat-item">⏱ Durée : <span class="stat-val">15-20 min</span></div>
-      <div class="stat-item">🎯 Missions : <span class="stat-val">4 ateliers</span></div>
-      <div class="stat-item">🏆 Validation : <span class="stat-val">Quiz + Attestation</span></div>
-      <div class="stat-item">🧠 Niveau : <span class="stat-val">Intermédiaire</span></div>
-    </div>
-  </div>
+      pour produire les piliers d'une campagne complète.</p>
+  <p class="intro-text">Mais attention : l'IA ne remplace pas ta créativité. C'est toi qui diriges.
+      Ta capacité à formuler, orienter, juger et ajuster fera toute la différence.</p>
     <div class="activity-badge-std">🎨 Ateliers créatifs</div>
 
   <button class="start-btn" onclick="startBriefing()">▶ ACCÉDER AU BRIEFING</button>
