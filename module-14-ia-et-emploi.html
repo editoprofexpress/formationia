@@ -887,6 +887,7 @@
     .briefing-title { font-size: 1.3em !important; }
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
+    .briefing-progress{display:none!important}
 </style>
 </head>
 <body>
@@ -1048,6 +1049,11 @@
         <!-- CONTENU -->
         <div class="briefing-content" id="lesson-content"></div>
     </div>
+
+        <div class="briefing-footer">
+            <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
+            <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
+        </div>
 
 </div>
 
@@ -1677,8 +1683,7 @@ function showLesson(index) {
     { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = index === 0; }
     const btnNext = document.getElementById('btn-next');
     if (index === TOTAL_LESSONS - 1) {
-        if (btnNext) btnNext.textContent = 'Ouvrir le bureau ARIA →';
-        btnNext.classList.add('primary');
+        if (btnNext) { btnNext.textContent = 'Ouvrir le bureau ARIA →'; btnNext.classList.add('primary'); }
     } else {
         if (btnNext) btnNext.textContent = 'Suivant →';
     }

@@ -10,6 +10,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
     :root{
+  --domain-color: #ff6b6b;
       --neon-green:#00ff88;
       --neon-blue:#00d4ff;
       --neon-pink:#ff0080;
@@ -163,7 +164,7 @@
     .briefing-title {
       font-family: 'Space Mono', monospace;
       font-size: 1.3em;
-      color: var(--neon-green);
+      color:var(--domain-color);
       display: flex;
       align-items: center;
       gap: 15px;
@@ -833,6 +834,7 @@
     .briefing-title { font-size: 1.3em !important; }
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
+    .briefing-progress{display:none!important}
 </style>
 </head>
 <body>
@@ -2605,7 +2607,7 @@ function submitMissionReport() {
       finalFeedback.innerHTML = `
         <div style="text-align:center;padding:20px">
           <div style="font-size:3em;margin-bottom:15px">🎉</div>
-          <h3 style="color:var(--neon-green);margin-bottom:15px">Enquête résolue avec succès !</h3>
+          <h3 style="color:var(--domain-color);margin-bottom:15px">Enquête résolue avec succès !</h3>
           <p style="line-height:1.8;margin-bottom:20px;font-size:1.05em">
             Vous avez correctement identifié <strong>Genius AI</strong> comme une IA symbolique classique (système expert), démystifié le discours marketing exagéré de TechCorp, et recommandé l'approche appropriée pour l'imagerie médicale.
           </p>
@@ -2856,7 +2858,7 @@ function submitAllQuiz(){
     resultEl.innerHTML = passed ? `
       <div class="callout ok" style="text-align:center;padding:30px;margin-top:20px">
         <div style="font-size:2.5em;margin-bottom:12px">🎉</div>
-        <h3 style="color:var(--neon-green);margin-bottom:12px">Quiz réussi !</h3>
+        <h3 style="color:var(--domain-color);margin-bottom:12px">Quiz réussi !</h3>
         <p style="font-size:1.3em;margin-bottom:12px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
         <p style="line-height:1.7;margin-bottom:18px">Félicitations ! Vous avez validé le quiz de certification.</p>
         <button class="btn green" onclick="showCertificateInFolder()" style="font-size:1.1em;padding:15px 40px">📥 Accéder à l'attestation</button>
@@ -2932,7 +2934,7 @@ function showCertificateInFolder(){
 
     <div class="callout ok" style="text-align:center;padding:30px 20px">
       <div style="font-size:3em;margin-bottom:15px">🎉</div>
-      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
       <p style="line-height:1.8;margin-bottom:15px">
         Vous avez terminé avec succès le <strong>Module 1 - Démystifier l'IA</strong> de la formation
         <strong>Intelligence Artificielle Responsable</strong>.

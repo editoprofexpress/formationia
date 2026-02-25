@@ -8,6 +8,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
     :root{
+  --domain-color: #4ecdc4;
       --neon-green:#00ff88;
       --neon-blue:#00d4ff;
       --neon-pink:#ff0080;
@@ -88,7 +89,7 @@
       padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
     }
     .briefing-title{
-      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-green);
+      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--domain-color);
       display:flex;align-items:center;gap:15px;
     }
     .briefing-title::before{content:'🎯';font-size:1.5em}
@@ -376,6 +377,7 @@
     .briefing-title { font-size: 1.3em !important; }
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
+    .briefing-progress{display:none!important}
 </style>
 </head>
 <body>
@@ -551,7 +553,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Fondamentaux</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Le mythe du prompt parfait</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎯 Le mythe du prompt parfait</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Beaucoup de gens pensent qu'il existe un "prompt magique" qui donnera immédiatement le résultat parfait. C'est un mythe. En réalité, obtenir un résultat de qualité avec une IA générative est un <strong>processus itératif</strong> : on commence par une première tentative, on analyse le résultat, on ajuste sa demande, et on recommence jusqu'à obtenir ce qu'on veut.
       </p>
@@ -565,7 +567,7 @@ const lessons = [
         Chaque itération vous rapproche du résultat souhaité. L'important n'est pas de réussir du premier coup, mais de savoir <strong>comment améliorer</strong> sa demande.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Premier essai vs résultat itéré</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Premier essai vs résultat itéré</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Voici un exemple concret de la puissance de l'itération :
       </p>
@@ -583,7 +585,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Les 3 types d'itération</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔄 Les 3 types d'itération</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout" style="text-align:center">
           <div style="font-size:2em;margin-bottom:8px">🔧</div>
@@ -611,7 +613,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Structure</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Qu'est-ce qu'un prompt ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔄 Qu'est-ce qu'un prompt ?</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un <strong>prompt</strong> est le texte que vous envoyez à une IA générative pour obtenir une réponse. C'est votre seul moyen de communication avec le modèle. La qualité de votre prompt détermine directement la qualité de la réponse. C'est comme donner des instructions à quelqu'un : plus vos instructions sont claires et complètes, plus le résultat sera conforme à vos attentes.
       </p>
@@ -620,7 +622,7 @@ const lessons = [
         <strong>Analogie :</strong> Imaginez que vous commandez un meuble sur mesure à un artisan. Si vous dites simplement "faites-moi une table", vous aurez une table... mais peut-être pas celle que vous vouliez. Si vous précisez les dimensions, le matériau, le style, la couleur et l'usage prévu, vous obtiendrez exactement ce que vous aviez en tête.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🧩 Les composants d'un prompt</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🧩 Les composants d'un prompt</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un prompt efficace peut contenir plusieurs éléments, même si tous ne sont pas toujours nécessaires :
       </p>
@@ -648,7 +650,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📝 Exemple décortiqué</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📝 Exemple décortiqué</h3>
       <div class="callout ok">
         <p style="line-height:1.8;font-family:'Space Mono',monospace;font-size:0.9em">
           <span style="color:var(--neon-blue)">[Contexte]</span> Tu es un nutritionniste spécialisé pour adolescents.<br/>
@@ -673,7 +675,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Méthode</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🏗️ La méthode RCTFC</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🏗️ La méthode RCTFC</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Au studio ITERATEK, nous utilisons un framework en 5 piliers pour construire des prompts efficaces. Chaque pilier ajoute une couche de précision qui rapproche le résultat de l'objectif. Ce n'est pas obligatoire d'utiliser les 5 à chaque fois, mais plus vous en utilisez, plus le résultat sera ciblé.
       </p>
@@ -715,7 +717,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 L'impact de chaque pilier</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 L'impact de chaque pilier</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Chaque pilier ajouté améliore significativement la pertinence du résultat :
       </p>
@@ -774,12 +776,12 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Précision</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 Vague vs Spécifique</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔍 Vague vs Spécifique</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         La spécificité est la compétence n°1 en prompt engineering. Un prompt vague laisse l'IA deviner ce que vous voulez — et elle devinera souvent mal. Un prompt spécifique réduit l'espace des réponses possibles et guide l'IA vers exactement ce dont vous avez besoin.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Avant / Après : 5 transformations</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📋 Avant / Après : 5 transformations</h3>
 
       <div class="callout pink" style="margin-bottom:8px">
         <strong>❌ Vague :</strong> <em>"Écris un email professionnel"</em>
@@ -802,7 +804,7 @@ const lessons = [
         <strong>✅ Spécifique :</strong> <em>"Propose 5 idées de micro-entreprises réalisables par un étudiant avec moins de 500€ de budget initial, dans le domaine du numérique. Pour chaque idée : description en 2 lignes, investissement requis, potentiel de revenus mensuels."</em>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Les 4 dimensions de la spécificité</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎯 Les 4 dimensions de la spécificité</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout">
           <strong style="color:var(--neon-green)">Qui ?</strong><br/>
@@ -838,12 +840,12 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Format</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📐 Pourquoi le format compte autant que le fond</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📐 Pourquoi le format compte autant que le fond</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Vous pouvez obtenir la bonne information dans le mauvais format — et ça la rend inutilisable. Imaginez : vous demandez une comparaison entre 3 produits. L'IA vous répond en 5 paragraphes denses. La même information en tableau serait 10 fois plus lisible et utile. <strong>Spécifier le format de sortie</strong> est l'un des leviers les plus puissants du prompt engineering.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Les formats courants</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Les formats courants</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout" style="text-align:center">
           <div style="font-size:2em;margin-bottom:8px">📝</div>
@@ -871,7 +873,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🚧 Les contraintes qui changent tout</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🚧 Les contraintes qui changent tout</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Les contraintes sont des règles que l'IA doit respecter. Elles canalisent la créativité du modèle et évitent les réponses trop longues, hors-sujet ou inadaptées.
       </p>
@@ -913,12 +915,12 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Personas</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎭 Le pouvoir du rôle</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎭 Le pouvoir du rôle</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Quand vous dites à l'IA <strong>"Tu es un nutritionniste"</strong>, vous ne faites pas semblant. Vous activez un ensemble de connaissances, un vocabulaire spécifique et un angle d'approche qui transforment radicalement la réponse. Le même prompt avec des rôles différents produit des résultats complètement différents.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔬 Même question, 4 rôles différents</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔬 Même question, 4 rôles différents</h3>
       <p style="line-height:1.7;color:#cfe9ff;margin-bottom:15px">
         Question : <strong><em>"Explique pourquoi le ciel est bleu."</em></strong>
       </p>
@@ -942,7 +944,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Construire un persona efficace</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📋 Construire un persona efficace</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un bon persona va au-delà du simple titre. Plus vous le détaillez, plus l'IA s'y conformera :
       </p>
@@ -954,7 +956,7 @@ const lessons = [
         <em style="color:var(--neon-green)">"Tu es un professeur de français au lycée, passionné de littérature contemporaine. Tu utilises souvent des références à la pop culture pour rendre tes cours vivants. Tu t'adresses à des élèves de Première. Tu es exigeant sur l'orthographe mais bienveillant dans tes corrections."</em>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🌍 Le contexte : le décor de la scène</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🌍 Le contexte : le décor de la scène</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Le contexte donne à l'IA les informations de fond qu'elle ne peut pas deviner. Sans contexte, l'IA fait des suppositions qui peuvent être complètement fausses.
       </p>
@@ -984,7 +986,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Few-shot</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">💡 Montrer plutôt qu'expliquer</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">💡 Montrer plutôt qu'expliquer</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Parfois, la meilleure façon de dire à l'IA ce que vous voulez n'est pas de l'expliquer avec des mots, mais de lui <strong>montrer un exemple</strong>. C'est le principe du <strong>few-shot learning</strong> : fournir quelques exemples du résultat attendu pour que l'IA comprenne le pattern et le reproduise.
       </p>
@@ -993,7 +995,7 @@ const lessons = [
         <strong>Analogie :</strong> Imaginez que vous voulez apprendre à quelqu'un un jeu de cartes. Vous pouvez lire les 3 pages de règles... ou jouer 2-3 tours en montrant comment ça marche. La deuxième approche est souvent plus efficace. Le few-shot, c'est pareil.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Zero-shot, One-shot, Few-shot</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Zero-shot, One-shot, Few-shot</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout" style="text-align:center;border-color:rgba(255,0,128,.4)">
           <div style="font-size:2em;margin-bottom:8px">0️⃣</div>
@@ -1018,7 +1020,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📝 Exemple concret : créer des flashcards</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📝 Exemple concret : créer des flashcards</h3>
       <div class="callout pink" style="margin-bottom:8px">
         <strong>❌ Sans exemple (zero-shot) :</strong><br/>
         <em>"Crée des flashcards sur la Révolution française."</em><br/>
@@ -1036,7 +1038,7 @@ const lessons = [
         </span>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Quand utiliser le few-shot ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎯 Quand utiliser le few-shot ?</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout ok">
           <strong>Utilisez le few-shot quand :</strong><br/>
@@ -1526,7 +1528,7 @@ function showQuiz(){
   zone.style.display='block';
   zone.innerHTML=`
     <div class="divider" style="margin:30px 0"></div>
-    <h3 style="color:var(--neon-green);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 6</h3>
+    <h3 style="color:var(--domain-color);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 6</h3>
     <p style="color:var(--muted);margin-bottom:20px">Répondez aux 10 questions pour obtenir votre attestation. Score minimum : 70%.</p>
     <div id="quiz-questions">
       ${quizQuestions.map((q,i)=>`
@@ -1588,7 +1590,7 @@ function submitQuiz(){
     });
     $('quiz-result').innerHTML=`
     <div class="callout ok" style="text-align:center;padding:30px">
-      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
       <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
       <p style="line-height:1.6">Vous maîtrisez les techniques de prompt engineering et d'itération. Votre attestation est débloquée !</p>
     </div>`;
@@ -1651,7 +1653,7 @@ function showCertificateInFolder(){
     <div class="divider"></div>
     <div class="callout ok" style="text-align:center;padding:30px 20px">
       <div style="font-size:3em;margin-bottom:15px">🎉</div>
-      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
       <p style="line-height:1.8;margin-bottom:15px">Vous avez terminé avec succès le <strong>Module 6 - Itération & Amélioration</strong>.</p>
       <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:20px;margin:20px auto;max-width:400px">
         <p style="margin-bottom:10px"><strong>Score certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span></p>
