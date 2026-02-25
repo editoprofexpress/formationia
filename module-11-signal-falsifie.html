@@ -140,12 +140,7 @@
     .back-link-sidebar .back-arrow{transition:transform .3s}
     .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
 
-    .scan-line{
-      position:absolute;top:0;left:0;right:0;height:2px;
-      background:linear-gradient(90deg,transparent,rgba(255,230,109,0.6),transparent);
-      animation:scan 6s linear infinite;pointer-events:none;
-    }
-    @keyframes scan{0%{top:-2px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+    .scan-line{ display:none; }
     .corner{position:absolute;width:25px;height:25px;border-color:rgba(255,230,109,0.5);border-style:solid}
     .corner-tl{top:15px;left:15px;border-width:2px 0 0 2px}
     .corner-tr{top:15px;right:15px;border-width:2px 2px 0 0}
