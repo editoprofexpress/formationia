@@ -1074,6 +1074,51 @@
       .attestation-card { padding: 25px; }
       .evidence-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* === STANDARDISATION FORMAT MODULE-01 (Fondations IA - #ff6b6b) === */
+    #title-screen .main-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#ff6b6b,#ff8c00,#ff0080) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(255,107,107,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #ff6b6b !important;
+      color: #ff6b6b !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(255,107,107,0.08) !important;
+      box-shadow: 0 0 30px rgba(255,107,107,0.5), inset 0 0 30px rgba(255,107,107,0.08) !important;
+    }
+    .title-badge {
+      background: rgba(255,107,107,0.08) !important;
+      border-color: rgba(255,107,107,0.4) !important;
+      color: #ff6b6b !important;
+    }
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
   </style>
 </head>
 <body>
@@ -1086,9 +1131,9 @@
     </a>
 
     <div class="title-logo">🔍</div>
-    <div class="title-badge">Module 1 — Fondations IA</div>
-    <h1 class="main-title">DECODE<br>Mission Vérité</h1>
-    <p class="subtitle">Démystifier l'Intelligence Artificielle</p>
+    <div class="title-badge">Module n° 01</div>
+    <h1 class="main-title">Démystifier l'IA</h1>
+    <p class="mission-label">DOSSIER ZÉRO  ·  VERIT-IA</p>
 
     <p class="intro-text">
       Bienvenue à l'agence <strong>DECODE</strong> — Division d'Évaluation Critique et d'Observation
