@@ -839,12 +839,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -888,72 +893,28 @@
     <div class="domain-badge-std" style="background:#ffe66d22;border:1px solid #ffe66d88;color:#ffe66d;">Limites et Esprit Critique</div>
     <div class="module-official-label">Module n° 10 : Biais invisibles</div>
 
-  <div class="title-content">
+
 
     <div class="title-logo">⚖️</div>
 
     <h1 class="main-title">BIAIS INVISIBLES</h1>
-    <p class="subtitle">Algorithmes sous surveillance &nbsp;—&nbsp; Opération Équité</p>
 
-    <div class="title-stats">
-      <div class="title-stat">
-        <span class="title-stat-value">7</span>
-        <span class="title-stat-label">Leçons</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="title-stat">
-        <span class="title-stat-value">4</span>
-        <span class="title-stat-label">Étapes d'audit</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="title-stat">
-        <span class="title-stat-value">~15<span style="font-size:0.55em;font-weight:400"> min</span></span>
-        <span class="title-stat-label">Durée</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="title-stat">
-        <span class="title-stat-value">10</span>
-        <span class="title-stat-label">Questions</span>
-      </div>
-    </div>
 
-    <div class="mission-card">
-      <div class="mission-label">🔒 Dossier confidentiel — EquityWatch</div>
-      Une alerte a été transmise à l'agence <strong style="color:var(--neon-yellow)">EquityWatch</strong>.
+
+  <p class="intro-text">Une alerte a été transmise à l'agence <strong style="color:var(--neon-yellow)">EquityWatch</strong>.
       L'algorithme <strong style="color:var(--neon-orange)">NEXUS-RH</strong>, utilisé par TechCorp pour
-      filtrer automatiquement des milliers de candidatures, produit des résultats suspects.<br><br>
+      filtrer automatiquement des milliers de candidatures, produit des résultats suspects. 
       Des données internes suggèrent que l'algorithme <strong>écarte systématiquement</strong> certains
-      profils selon des critères qui ne devraient pas influencer une décision d'embauche.<br><br>
+      profils selon des critères qui ne devraient pas influencer une décision d'embauche. 
       Vous êtes <strong style="color:var(--neon-yellow)">ARIA</strong>, auditrice spécialisée en IA
       responsable. Votre mission : analyser les données, identifier les biais dissimulés, et rédiger le
-      rapport qui permettra de démanteler un algorithme discriminatoire.
-    </div>
+      rapport qui permettra de démanteler un algorithme discriminatoire.</p>
     <div class="activity-badge-std">⚖️ Simulation d'audit</div>
 
     <button class="start-btn" onclick="startModule()">⚡ Lancer l'audit</button>
 
-  </div><!-- end title-content -->
+  <!-- end title-content -->
 
-  <!-- Ticker d'alerte -->
-  <div class="ticker-wrap">
-    <div class="ticker">
-      <span class="ticker-item">🔴 Alerte biais détectée — Algorithme NEXUS-RH</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">Taux de rejet suspects — Groupes A et B comparés</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">EquityWatch — Audit ouvert dossier #10-2024-BIAIS</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">Auditrice ARIA — Niveau d'habilitation : MAXIMUM</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">🔴 Alerte biais détectée — Algorithme NEXUS-RH</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">Taux de rejet suspects — Groupes A et B comparés</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">EquityWatch — Audit ouvert dossier #10-2024-BIAIS</span>
-      <span class="ticker-dot">◆</span>
-      <span class="ticker-item">Auditrice ARIA — Niveau d'habilitation : MAXIMUM</span>
-    </div>
-  </div>
 
   <div class="profexpress-std">
     <p>Une formation proposée par</p>
@@ -992,11 +953,6 @@
 
   </div>
 
-  <div class="briefing-footer">
-    <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
-    <span id="lesson-hint" style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)"></span>
-    <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">Suivant →</button>
-  </div>
 
 </div><!-- end #briefing-screen -->
 
@@ -1421,14 +1377,14 @@ function renderContent() {
   document.getElementById('lesson-counter').textContent = `Leçon ${currentLesson+1}/${lessons.length}`;
 
   // Buttons
-  document.getElementById('btn-prev').disabled = currentLesson === 0;
+  { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = currentLesson === 0; }
   const btnNext = document.getElementById('btn-next');
   if (currentLesson === lessons.length - 1) {
-    btnNext.textContent = '⚡ Lancer l\'audit →';
-    btnNext.onclick = launchGame;
+    if (btnNext) btnNext.textContent = '⚡ Lancer l\'audit →';
+    if (btnNext) btnNext.onclick = launchGame;
   } else {
-    btnNext.textContent = 'Suivant →';
-    btnNext.onclick = nextLesson;
+    if (btnNext) btnNext.textContent = 'Suivant →';
+    if (btnNext) btnNext.onclick = nextLesson;
   }
 
   document.getElementById('lesson-hint').textContent =
@@ -1732,9 +1688,9 @@ function updateGameFooter() {
   backBtn.style.display = s === 0 ? 'none' : 'flex';
 
   if(!v) {
-    nextBtn.textContent = 'Valider ✓';
+    if (nextBtn) nextBtn.textContent = 'Valider ✓';
     nextBtn.className = 'game-btn primary';
-    nextBtn.onclick = validateCurrentStep;
+    if (nextBtn) nextBtn.onclick = validateCurrentStep;
     const hints = [
       'Cliquez sur les graphiques suspects',
       'Répondez à la question',
@@ -1743,14 +1699,14 @@ function updateGameFooter() {
     ];
     hint.textContent = hints[s] || '';
   } else if(s < 3) {
-    nextBtn.textContent = 'Étape suivante →';
+    if (nextBtn) nextBtn.textContent = 'Étape suivante →';
     nextBtn.className = 'game-btn green';
-    nextBtn.onclick = gameNext;
+    if (nextBtn) nextBtn.onclick = gameNext;
     hint.textContent = `Score : ${gameState.totalScore} pts`;
   } else {
-    nextBtn.textContent = '📋 Aller au quiz →';
+    if (nextBtn) nextBtn.textContent = '📋 Aller au quiz →';
     nextBtn.className = 'game-btn green';
-    nextBtn.onclick = launchQuiz;
+    if (nextBtn) nextBtn.onclick = launchQuiz;
     hint.textContent = `Score audit : ${gameState.totalScore} pts`;
   }
 }

@@ -741,12 +741,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -791,7 +796,6 @@
            style="height:120px;filter:drop-shadow(0 0 20px rgba(255,107,107,0.7)) drop-shadow(0 0 40px rgba(0,212,255,0.4))">
     </div>
     <h1 class="main-title">NEURONAUTE</h1>
-    <p class="subtitle">Module 3 — Voyage au Cœur du Modèle</p>
     <p class="intro-text">
       Comment une IA lit-elle un texte, en comprend-elle le sens, et prédit-elle la suite ?
       Plonge <strong>à l'intérieur d'un modèle de langage</strong> pour explorer ses trois couches essentielles :
@@ -885,11 +889,6 @@
     </div>
 
     <!-- Footer -->
-    <div class="briefing-footer">
-      <button class="nav-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
-      <span id="footer-hint" style="color:#8899aa;font-size:0.85em;font-family:'Space Mono',monospace"></span>
-      <button class="nav-btn next" id="btn-next" onclick="nextLesson()">Suivant →</button>
-    </div>
   </div>
 
 
@@ -1395,11 +1394,11 @@
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Mission';
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = () => showLesson(4);
       const btnNext = document.getElementById('btn-next');
-      btnNext.textContent = '⚡ Lancer l\'exploration →';
-      btnNext.onclick = launchGame;
+      if (btnNext) btnNext.textContent = '⚡ Lancer l\'exploration →';
+      if (btnNext) btnNext.onclick = launchGame;
       document.getElementById('footer-hint').textContent = '3 zones interactives t\'attendent !';
     }
 
@@ -1425,15 +1424,15 @@
       document.getElementById('progress-fill').style.width = pct + '%';
       document.getElementById('progress-text').textContent = `Section ${idx + 1}/${totalLessons}`;
 
-      document.getElementById('btn-prev').disabled = idx === 0;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = idx === 0; }
       document.getElementById('btn-prev').onclick = prevLesson;
       const btnNext = document.getElementById('btn-next');
       if (idx === totalLessons - 1) {
-        btnNext.textContent = '🚀 Exploration →';
-        btnNext.onclick = () => showLesson(5);
+        if (btnNext) btnNext.textContent = '🚀 Exploration →';
+        if (btnNext) btnNext.onclick = () => showLesson(5);
       } else {
-        btnNext.textContent = 'Suivant →';
-        btnNext.onclick = nextLesson;
+        if (btnNext) btnNext.textContent = 'Suivant →';
+        if (btnNext) btnNext.onclick = nextLesson;
       }
 
       const hints = [
@@ -1487,7 +1486,7 @@
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Quiz de certification';
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = () => showLesson(5);
       document.getElementById('btn-next').textContent = '✅ Valider';
       document.getElementById('btn-next').onclick = submitQuiz;
@@ -1620,7 +1619,7 @@
       document.getElementById('progress-text').textContent = 'Attestation';
       document.getElementById('btn-next').textContent = '📥 Télécharger';
       document.getElementById('btn-next').onclick = downloadCertificate;
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = showQuizInBriefing;
       document.getElementById('footer-hint').textContent = 'Ctrl+P → Enregistrer en PDF';
 

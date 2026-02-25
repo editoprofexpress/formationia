@@ -1816,12 +1816,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -1861,7 +1866,6 @@
     <div class="module-official-label">Module n° 15 : Responsabilité humaine & IA</div>
         <div class="title-logo">⚖️</div>
         <h1 class="main-title">Le Tribunal de l'IA</h1>
-        <p class="subtitle">Module 15 — Responsabilité Humaine & Éthique</p>
 
         <p class="intro-text">
             Une série d'affaires impliquant des IA défaillantes attend votre verdict.
@@ -1958,23 +1962,15 @@
             </div>
         </div>
 
-        <div class="briefing-footer">
-            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
-                ← Fichier précédent
-            </button>
-            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
-                Fichier suivant →
-            </button>
-        </div>
     </div>
 
     <!-- CONTAINER JEU -->
     <div id="game-container">
         <div class="top-bar">
-            <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+            <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier">
                 <span>←</span>
-                <span>Modules</span>
-            </a>
+                <span>Retour au dossier</span>
+            </button>
             <div class="hud-items">
                 <div class="hud-box">
                     <span class="hud-label">Crédibilité</span>
@@ -2652,6 +2648,11 @@
             showLesson(0);
         }
 
+        function returnToDossier() {
+            $('game-container').classList.remove('active');
+            $('briefing-screen').classList.add('active');
+        }
+
         function showLesson(index) {
             currentLesson = index;
             const lesson = briefingLessons[index];
@@ -2678,17 +2679,17 @@
                 $('progress-text').textContent = `Fichier ${index + 1}/8`;
             }
 
-            $('prev-btn').disabled = index === 0;
+            { const _pb = $('prev-btn'); if (_pb) _pb.disabled = index === 0; }
 
             const nextBtn = $('next-btn');
             if (index === briefingLessons.length - 1) {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = '⚖️ Commencer le tribunal';
-                nextBtn.onclick = startGame;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = '⚖️ Commencer le tribunal';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = 'Fichier suivant →';
-                nextBtn.onclick = nextLesson;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = 'Fichier suivant →';
+                if (nextBtn) nextBtn.onclick = nextLesson;
             }
         }
 
@@ -2805,9 +2806,9 @@
 
             // Update footer button to allow return to game
             const nextBtn = $('next-btn');
-            nextBtn.style.visibility = 'visible';
-            nextBtn.textContent = '⚖️ Retour au tribunal';
-            nextBtn.onclick = returnToGame;
+            if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+            if (nextBtn) nextBtn.textContent = '⚖️ Retour au tribunal';
+            if (nextBtn) nextBtn.onclick = returnToGame;
         }
 
         function returnToGame() {

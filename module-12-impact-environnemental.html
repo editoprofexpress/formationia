@@ -1722,12 +1722,17 @@
     }
     .module-official-label {
       font-family: 'Space Mono', monospace;
-      font-size: 0.85em;
-      color: #aabbcc;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
       text-align: center;
-      opacity: 0.9;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
     }
     .activity-badge-std {
       display: inline-block;
@@ -1768,7 +1773,6 @@
     <div class="module-official-label">Module n° 12 : Impact environnemental de l'IA</div>
         <div class="title-logo">🔐</div>
         <h1 class="main-title">Green Infiltration</h1>
-        <p class="subtitle">Escape Game - L'Impact Environnemental de l'IA</p>
 
         <p class="intro-text">
             Vous êtes journaliste d'investigation. Une source anonyme vous a donné accès à un data center high-tech.
@@ -1865,14 +1869,6 @@
             </div>
         </div>
 
-        <div class="briefing-footer">
-            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
-                ← Fichier précédent
-            </button>
-            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
-                Fichier suivant →
-            </button>
-        </div>
     </div>
 
     <!-- CONTAINER PRINCIPAL -->
@@ -1888,11 +1884,11 @@
             <!-- Barre supérieure -->
             <div class="top-bar">
                 <div style="display: flex; align-items: center;">
-                    <!-- Bouton retour modules -->
-                    <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                    <!-- Bouton retour dossier -->
+                    <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier" style="cursor:pointer;border:none;">
                         <span>←</span>
-                        <span>Modules</span>
-                    </a>
+                        <span>Retour au dossier</span>
+                    </button>
                     <div class="location-name">
                         <span class="location-icon" id="location-icon">📍</span>
                         <span id="location-name">Couloir Principal</span>
@@ -2406,6 +2402,13 @@
             showLesson(0);
         }
 
+        // Retour au dossier depuis l'écran de jeu
+        function returnToDossier() {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('briefing-screen').classList.add('active');
+            showCertificateInFolder();
+        }
+
         // Variable pour suivre si le quiz est réussi (session courante uniquement)
         let certificateUnlocked = false;
         let finalScore = 0;
@@ -2541,21 +2544,21 @@
             }
 
             // Gérer les boutons
-            document.getElementById('prev-btn').disabled = index === 0;
+            { const _pb = document.getElementById('prev-btn'); if (_pb) _pb.disabled = index === 0; }
 
             const nextBtn = document.getElementById('next-btn');
             if (index === briefingLessons.length - 1) {
                 // Sur la page Mission : bouton pour lancer le jeu
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = '🎮 Commencer la mission';
-                nextBtn.onclick = startGame;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = '🎮 Commencer la mission';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else if (index === 6) {
                 // Dernier fichier : masquer le bouton suivant (accès mission via menu)
-                nextBtn.style.visibility = 'hidden';
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'hidden';
             } else {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.innerHTML = 'Fichier suivant →';
-                nextBtn.onclick = nextLesson;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.innerHTML = 'Fichier suivant →';
+                if (nextBtn) nextBtn.onclick = nextLesson;
             }
 
             // Scroll en haut
@@ -4389,7 +4392,6 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                         <div class="header">
                             <div class="logo">🌿🤖</div>
                             <div class="title">Attestation de Réussite</div>
-                            <div class="subtitle">Formation IA Responsable</div>
                         </div>
 
                         <div class="content">
