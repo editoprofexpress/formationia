@@ -36,23 +36,23 @@ Former le grand public (notamment les jeunes et enseignants) aux enjeux de l'IA 
 1. **Démystifier l'IA** *(Dossier Zéro)* - Mission d'enquête ✅ *Disponible*
 2. **Données sous influence** - Apprentissage & biais, jeu de simulation ✅ *Disponible*
 3. **Dans la tête d'un modèle** *(NEURONAUT)* - Tokenisation, embeddings, attention, prédiction ✅ *Disponible*
-4. **Générer sans comprendre** - Simulation d'un modèle génératif ⏳ *Bientôt*
+4. **Générer sans comprendre** *(SYNTHÈSE)* - Simulation d'un modèle génératif ✅ *Disponible*
 
 ### Interaction Raisonnée (5-8)
-5. **L'art de la consigne** - Escape room de prompts, rédiger des consignes efficaces ⏳ *Bientôt*
+5. **L'art de la consigne** *(ARIA-7)* - Escape room de prompts, rédiger des consignes efficaces ✅ *Disponible*
 6. **Itération et amélioration** - Prompt engineering, défi progressif ✅ *Disponible*
-7. **Co-créer avec l'IA** - Usages créatifs ⏳ *Bientôt*
-8. **Savoir quand s'arrêter** - Limites d'utilisation ⏳ *Bientôt*
+7. **Co-créer avec l'IA** *(SYNAPSE STUDIO)* - Usages créatifs ✅ *Disponible*
+8. **Choisir le bon usage** *(NEXUS DÉCISION)* - Limites et pertinence d'utilisation ✅ *Disponible*
 
 ### Limites et Esprit Critique (9-11)
 9. **Hallucinations** *(L'Erreur qui Sonne Juste)* - Quand l'IA invente ✅ *Disponible*
-10. **Biais algorithmiques** - Discrimination et équité ⏳ *Bientôt*
-11. **Deepfakes** - Détection de contenus manipulés ⏳ *Bientôt*
+10. **Biais algorithmiques** *(Biais Invisibles)* - Discrimination et équité ✅ *Disponible*
+11. **Signal Falsifié** - Détection de deepfakes et contenus manipulés ✅ *Disponible*
 
 ### Enjeux Citoyens (12-15)
 12. **Impact environnemental** *(Green Infiltration)* - Empreinte carbone de l'IA, escape game ✅ *Disponible*
 13. **Vie privée et données** *(Data Shadow)* - Protection des informations personnelles, jeu de rôle ✅ *Disponible*
-14. **IA et emploi** - Transformation du travail ⏳ *Bientôt*
+14. **IA et emploi** *(SHIFT)* - Transformation du travail ✅ *Disponible*
 15. **Le Tribunal de l'IA** - Responsabilité humaine et régulation ✅ *Disponible*
 
 ---
@@ -65,14 +65,21 @@ formationia/
 ├── index.html                              # Page d'accueil
 ├── modules.html                            # Catalogue des modules
 ├── certification.html                      # Page certification (future)
-├── module-01-demystifier-ia.html           # Module 1 - Mission d'enquête
-├── module-02-donnees-sous-influence.html   # Module 2 - Jeu de simulation
-├── module-03-dans-la-tete-du-modele.html   # Module 3 - NEURONAUT (tokenisation, embeddings…)
-├── module-06-iteration-amelioration.html   # Module 6 - Prompt engineering
-├── module-09-hallucinations.html           # Module 9 - Hallucinations IA
-├── module-12-impact-environnemental.html   # Module 12 - Escape game environnement
-├── module-13-vie-privee-donnees.html       # Module 13 - Jeu de rôle vie privée
-├── module15-le-tribunal-de-l-ia.html      # Module 15 - Régulation et éthique
+├── module-01-demystifier-ia.html           # Module 1  - Dossier Zéro — Mission d'enquête
+├── module-02-donnees-sous-influence.html   # Module 2  - Données sous influence — Jeu de simulation
+├── module-03-dans-la-tete-du-modele.html   # Module 3  - NEURONAUT — Tokenisation, embeddings…
+├── module-04-generer-sans-comprendre.html  # Module 4  - SYNTHÈSE — Simulation modèle génératif
+├── module-05-art-de-la-consigne.html       # Module 5  - ARIA-7 — Escape room de prompts
+├── module-06-iteration-amelioration.html   # Module 6  - Itération & Amélioration — Prompt engineering
+├── module-07-co-creer-ia.html              # Module 7  - SYNAPSE STUDIO — Usages créatifs
+├── module-08-choisir-bon-usage.html        # Module 8  - NEXUS DÉCISION — Choisir le bon usage
+├── module-09-hallucinations.html           # Module 9  - L'Erreur qui Sonne Juste — Hallucinations
+├── module-10-biais-algorithmiques.html     # Module 10 - Biais Invisibles — Discrimination & équité
+├── module-11-signal-falsifie.html          # Module 11 - Signal Falsifié — Détection de deepfakes
+├── module-12-impact-environnemental.html   # Module 12 - Green Infiltration — Escape game environnement
+├── module-13-vie-privee-donnees.html       # Module 13 - Data Shadow — Jeu de rôle vie privée
+├── module-14-ia-et-emploi.html             # Module 14 - SHIFT — IA & Emploi, transformation du travail
+├── module15-le-tribunal-de-l-ia.html       # Module 15 - Le Tribunal de l'IA — Régulation & éthique
 ├── images/
 │   ├── logo-profexpress.png
 │   ├── hero-banner.png
@@ -264,14 +271,19 @@ Chaque module génère une attestation HTML téléchargeable avec :
 - Module 13 : Data Shadow — Jeu de rôle (Vie Privée & Données)
 - Module 15 : Le Tribunal de l'IA — Responsabilité humaine
 
-### V1.2.0 (actuelle)
+### V1.2.0
 - Module 03 : NEURONAUT — Voyage au Cœur du Modèle (Tokenisation, Embeddings, Attention, Prédiction)
 
+### V1.3.0 (actuelle)
+- Module 04 : SYNTHÈSE — Générer sans comprendre (Simulation d'un modèle génératif)
+- Module 05 : ARIA-7 — L'Art de la Consigne (Escape room de prompts)
+- Module 07 : SYNAPSE STUDIO — Co-créer avec l'IA (Usages créatifs)
+- Module 08 : NEXUS DÉCISION — Choisir le bon usage (Limites et pertinence de l'IA)
+- Module 10 : Biais Invisibles — Biais Algorithmiques (Discrimination et équité)
+- Module 11 : Signal Falsifié — Détection de deepfakes et contenus manipulés
+- Module 14 : SHIFT — IA & Emploi : La Transformation du Travail
+
 ### Roadmap
-- Module 4 (Fondations IA — suite)
-- Modules 5, 7-8 (Interaction Raisonnée — suite)
-- Modules 10-11 (Limites et Esprit Critique — suite)
-- Module 14 (Enjeux Citoyens — IA et emploi)
 - Page certification globale
 
 ---
