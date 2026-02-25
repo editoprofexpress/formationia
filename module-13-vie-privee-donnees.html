@@ -1295,6 +1295,28 @@
       text-transform: uppercase;
     }
 
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(149,225,211,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(149,225,211,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(149,225,211,0.05) !important;
+      border-color: rgba(149,225,211,0.3) !important;
+      color: #95e1d3 !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(149,225,211,0.15) !important;
+      border-color: #95e1d3 !important;
+    }
+    .briefing-nav-item:hover { background: rgba(149,225,211,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #95e1d3 !important;
+      background: rgba(149,225,211,0.1) !important;
+      color: #95e1d3 !important;
+    }
+    .nav-number { background: rgba(149,225,211,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(149,225,211,0.4) !important; }
+
 </style>
 </head>
 <body>
@@ -1346,9 +1368,8 @@
             <nav class="briefing-nav">
                 <!-- Lien retour vers modules -->
                 <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
-                    <span class="back-arrow">←</span>
-                    <span>Tous les modules</span>
-                </a>
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
 
                 <div class="briefing-nav-item active" onclick="showLesson(0)">
                     <span class="nav-icon">🎬</span>

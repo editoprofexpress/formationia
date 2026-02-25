@@ -945,6 +945,28 @@
       text-transform: uppercase;
     }
 
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(255,107,107,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(255,107,107,0.05) !important;
+      border-color: rgba(255,107,107,0.3) !important;
+      color: #ff6b6b !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(255,107,107,0.15) !important;
+      border-color: #ff6b6b !important;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #ff6b6b !important;
+      background: rgba(255,107,107,0.1) !important;
+      color: #ff6b6b !important;
+    }
+    .nav-number { background: rgba(255,107,107,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
+
 </style>
 </head>
 <body>
@@ -1008,7 +1030,9 @@
 
       <!-- Sidebar nav -->
       <nav class="briefing-nav">
-        <a href="modules.html" class="back-link-sidebar">← Tous les modules</a>
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
         <div class="briefing-nav-item active" onclick="showLesson(0)" id="nav-0">
           <span class="nav-icon">⚡</span><span>Qu'est-ce que "générer" ?</span><span class="nav-number">1</span>
         </div>
@@ -1026,6 +1050,14 @@
         </div>
         <div class="briefing-nav-item" onclick="showLesson(5)" id="nav-5">
           <span class="nav-icon">⚠️</span><span>Hallucinations et limites</span><span class="nav-number">6</span>
+        </div>
+      
+        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
         </div>
       </nav>
 
@@ -2005,6 +2037,7 @@
       let score = 0;
       quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
       const pct = Math.round(score / quizQuestions.length * 100);
+      if (pct >= 70) unlockCertificate(pct);
       finalQuizScore = pct;
       const success = pct >= 70;
 
@@ -2254,7 +2287,27 @@
       a.download = `attestation-module04-synthese-${participantName.toLowerCase().replace(/\s+/g, '-')}.html`;
       a.click();
     }
-  </script>
+  
+/* ==================== ATTESTATION SIDEBAR ==================== */
+let certFinalPct04 = 0;
+function unlockCertificate(pct) {
+  certFinalPct04 = pct || certFinalPct04;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(255,107,107,0.2)'; num.style.color = '#ff6b6b'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() {
+  // Show quiz/cert screen for attestation
+  const qs = document.getElementById('quiz-screen');
+  if (qs) { qs.style.display = 'flex'; }
+  const bs = document.getElementById('briefing-screen');
+  if (bs) { bs.classList.remove('active'); }
+}
+</script>
 
 </body>
 </html>
