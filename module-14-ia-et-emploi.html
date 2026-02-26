@@ -888,6 +888,7 @@
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
     .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
 </style>
 </head>
 <body>
@@ -1650,7 +1651,10 @@ const lessons = [
         </div>
 
         <div class="divider"></div>
-        <p style="text-align:center;color:var(--muted);font-size:0.9em;">Cliquez sur <strong style="color:var(--neon-teal);">Ouvrir le bureau ARIA →</strong> pour commencer votre première journée.</p>
+
+        <div style="text-align:center;margin-top:30px;padding-bottom:20px">
+            <button onclick="startARIA()" style="font-family:'Space Mono',monospace;padding:16px 50px;background:rgba(149,225,211,0.15);border:2px solid var(--domain-color);color:var(--domain-color);cursor:pointer;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;border-radius:6px;transition:all .3s" onmouseover="this.style.background='rgba(149,225,211,0.3)'" onmouseout="this.style.background='rgba(149,225,211,0.15)'">⚙️ Ouvrir le bureau ARIA →</button>
+        </div>
         `
     }
 ];
