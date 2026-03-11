@@ -834,7 +834,8 @@
     .briefing-title { font-size: 1.3em !important; }
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
-    /* briefing-progress and briefing-footer are intentionally visible */
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
 
     .lesson { display: none; }
     .lesson.active { display: block; animation: fadeIn 0.3s ease; }
@@ -898,37 +899,37 @@
           <span class="back-arrow">←</span><span>Tous les modules</span>
         </a>
 
-        <div class="briefing-nav-item active" onclick="showLesson(0)">
+        <div class="briefing-nav-item active" onclick="goToLesson(0)">
           <span class="nav-icon">🧠</span>
           <span class="nav-number">01</span>
           L'IA : mythes & réalité
         </div>
-        <div class="briefing-nav-item" onclick="showLesson(1)">
+        <div class="briefing-nav-item" onclick="goToLesson(1)">
           <span class="nav-icon">📜</span>
           <span class="nav-number">02</span>
           Origines : Turing → Dartmouth
         </div>
-        <div class="briefing-nav-item" onclick="showLesson(2)">
+        <div class="briefing-nav-item" onclick="goToLesson(2)">
           <span class="nav-icon">🎭</span>
           <span class="nav-number">03</span>
           IA symbolique : règles
         </div>
-        <div class="briefing-nav-item" onclick="showLesson(3)">
+        <div class="briefing-nav-item" onclick="goToLesson(3)">
           <span class="nav-icon">🔗</span>
           <span class="nav-number">04</span>
           IA connexionniste
         </div>
-        <div class="briefing-nav-item" onclick="showLesson(4)">
+        <div class="briefing-nav-item" onclick="goToLesson(4)">
           <span class="nav-icon">📊</span>
           <span class="nav-number">05</span>
           Hiérarchie des concepts
         </div>
-        <div class="briefing-nav-item" onclick="showLesson(5)">
+        <div class="briefing-nav-item" onclick="goToLesson(5)">
           <span class="nav-icon">📅</span>
           <span class="nav-number">06</span>
           Grandes dates (1950–2024)
         </div>
-        <div class="briefing-nav-item" onclick="showLesson(6)">
+        <div class="briefing-nav-item" onclick="goToLesson(6)">
           <span class="nav-icon">🔍</span>
           <span class="nav-number">07</span>
           Ce que l'IA fait… / ne fait pas
@@ -936,7 +937,7 @@
 
         <!-- Mission -->
         <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
-          <div class="briefing-nav-item" onclick="showLesson(7)">
+          <div class="briefing-nav-item" onclick="goToLesson(7)">
             <span class="nav-icon">🎮</span>
             <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
             Mission
@@ -1563,16 +1564,6 @@
       </div><!-- fin briefing-content -->
     </div>
 
-    <!-- Footer navigation -->
-    <div class="briefing-footer">
-      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
-        ← Précédent
-      </button>
-      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
-        Suivant →
-      </button>
-    </div>
-
   </div>
 
   <!-- ==================== MODAL (preuves) ==================== -->
@@ -1655,50 +1646,85 @@ const hierarchyLevels = [
 /* =========================================================
    NAVIGATION (Title → Briefing → Game)
 ========================================================= */
+const TOTAL_LESSONS = 8;
 let currentLesson = 0;
-const totalLessons = 8;
+let visitedLessons = new Set([0]);
 
 function startModule(){
   $('title-screen').classList.add('hidden');
   $('briefing-screen').classList.add('active');
-  showLesson(0);
+  goToLesson(0);
   toast("Accès autorisé. Dossier chargé.");
 }
 
+function goToLesson(index){
+  if(index < 0 || index >= TOTAL_LESSONS) return;
+
+  // Masquer la leçon actuelle
+  const current = document.getElementById('lesson-' + currentLesson);
+  if(current) current.classList.remove('active');
+
+  // Afficher la nouvelle
+  currentLesson = index;
+  visitedLessons.add(index);
+  const next = document.getElementById('lesson-' + index);
+  if(next) next.classList.add('active');
+
+  // Scroll en haut
+  const contentArea = $('briefing-content');
+  if(contentArea) contentArea.scrollTop = 0;
+
+  state.lessonSeen.add(index);
+  updateNav();
+}
+
 function prevLesson(){
-  if(currentLesson > 0){
-    showLesson(currentLesson - 1);
-  }
+  if(currentLesson > 0) goToLesson(currentLesson - 1);
 }
 
 function nextLesson(){
-  if(currentLesson < totalLessons - 1){
-    showLesson(currentLesson + 1);
-  }
+  if(currentLesson < TOTAL_LESSONS - 1) goToLesson(currentLesson + 1);
 }
 
-function updateBriefingProgress(){
-  const pct = Math.round(((currentLesson + 1) / totalLessons) * 100);
-  $('progress-text').textContent = `Fichier ${currentLesson + 1}/${totalLessons}`;
+function updateNav(){
+  const pct = Math.round(((currentLesson + 1) / TOTAL_LESSONS) * 100);
+  $('progress-text').textContent = `Fichier ${currentLesson + 1}/${TOTAL_LESSONS}`;
   $('progress-fill').style.width = pct + '%';
 
-  // prev/next buttons
-  const prevBtn = $('prev-btn');
-  const nextBtn = $('next-btn');
-  if(prevBtn) if (prevBtn) prevBtn.disabled = (currentLesson === 0);
+  // Boutons prev/next
+  const prevBtn = $('btn-prev');
+  const nextBtn = $('btn-next');
+  if(prevBtn) prevBtn.disabled = (currentLesson === 0);
   if(nextBtn){
-    if(currentLesson === totalLessons - 1){
-      if (nextBtn) nextBtn.textContent = 'Terminé ✓';
-      if (nextBtn) nextBtn.disabled = true;
-      if (nextBtn) if (nextBtn) nextBtn.style.opacity = '0.5';
+    if(currentLesson === TOTAL_LESSONS - 1){
+      nextBtn.textContent = '🎯 Lancer la mission';
+      nextBtn.onclick = startMission;
     } else {
-      if (nextBtn) nextBtn.innerHTML = 'Fichier suivant →';
-      if (nextBtn) nextBtn.onclick = nextLesson;
-      if (nextBtn) nextBtn.disabled = false;
-      if (nextBtn) if (nextBtn) nextBtn.style.opacity = '1';
+      nextBtn.innerHTML = 'Suivant →';
+      nextBtn.onclick = nextLesson;
     }
   }
+
+  // Items sidebar
+  const items = document.querySelectorAll('.briefing-nav .briefing-nav-item');
+  items.forEach((item, i) => {
+    if(i < TOTAL_LESSONS){
+      item.classList.remove('active', 'completed');
+      if(i === currentLesson){
+        item.classList.add('active');
+      } else if(visitedLessons.has(i)){
+        item.classList.add('completed');
+      }
+    }
+  });
+
+  if(state.lessonSeen.size >= TOTAL_LESSONS){
+    toast("Dossier étudié. Passez à la phase de jeu.");
+  }
 }
+
+// Alias pour compatibilité avec les appels restants
+function updateBriefingProgress(){ updateNav(); }
 
 /* =========================================================
    BRIEFING CONTENT
@@ -3551,7 +3577,7 @@ function showCertificateInFolder(){
           </p>
         </div>
 
-        <button class="btn" onclick="showLesson(7)" style="margin-top:20px">
+        <button class="btn" onclick="goToLesson(7)" style="margin-top:20px">
           🎮 Commencer la mission
         </button>
       </div>
