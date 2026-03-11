@@ -878,12 +878,10 @@
       </a>
     </div>
   </section>
-
-  <!-- ==================== BRIEFING SCREEN ==================== -->
+  <!-- ==================== ÉCRAN BRIEFING ==================== -->
   <div id="briefing-screen">
-    <!-- HEADER WITH PROGRESS BAR -->
     <div class="briefing-header">
-      <div class="briefing-title">VERIT-IA // DOSSIER ZÉRO</div>
+      <div class="briefing-title">DECODE // DOSSIER ATLAS</div>
       <div class="briefing-progress">
         <span id="progress-text">Fichier 1/8</span>
         <div class="briefing-progress-bar">
@@ -892,27 +890,27 @@
       </div>
     </div>
 
-    <!-- NAV SIDEBAR + CONTENT AREA -->
     <div class="briefing-body">
       <nav class="briefing-nav">
         <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
-          <span class="back-arrow">←</span><span>Tous les modules</span>
+          <span>←</span>
+          <span>Tous les modules</span>
         </a>
 
         <div class="briefing-nav-item active" onclick="goToLesson(0)">
           <span class="nav-icon">🧠</span>
           <span class="nav-number">01</span>
-          L'IA : mythes & réalité
+          L'IA, c'est quoi ?
         </div>
         <div class="briefing-nav-item" onclick="goToLesson(1)">
           <span class="nav-icon">📜</span>
           <span class="nav-number">02</span>
-          Origines : Turing → Dartmouth
+          De Turing à Dartmouth
         </div>
         <div class="briefing-nav-item" onclick="goToLesson(2)">
           <span class="nav-icon">🎭</span>
           <span class="nav-number">03</span>
-          IA symbolique : règles
+          IA symbolique
         </div>
         <div class="briefing-nav-item" onclick="goToLesson(3)">
           <span class="nav-icon">🔗</span>
@@ -927,30 +925,35 @@
         <div class="briefing-nav-item" onclick="goToLesson(5)">
           <span class="nav-icon">📅</span>
           <span class="nav-number">06</span>
-          Grandes dates (1950–2024)
+          75 ans d'IA
         </div>
         <div class="briefing-nav-item" onclick="goToLesson(6)">
-          <span class="nav-icon">🔍</span>
+          <span class="nav-icon">⚡</span>
           <span class="nav-number">07</span>
-          Ce que l'IA fait… / ne fait pas
+          Ce que l'IA fait… et ne fait pas
+        </div>
+        <div class="briefing-nav-item" onclick="goToLesson(7)">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-number">08</span>
+          Mission : Opération ATLAS
         </div>
 
-        <!-- Mission -->
-        <div style="border-top:1px solid rgba(0,212,255,0.2);margin-top:15px;padding-top:15px;">
-          <div class="briefing-nav-item" onclick="goToLesson(7)">
-            <span class="nav-icon">🎮</span>
-            <span class="nav-number" style="background:rgba(0,255,136,0.2);color:var(--neon-green);">▶</span>
-            Mission
-          </div>
-          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2);">
-            <span class="nav-icon">🔒</span>
-            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888;">--</span>
-            Attestation de réussite
-          </div>
+        <!-- Séparateur -->
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent); margin: 15px 20px;"></div>
+
+        <div class="briefing-nav-item" onclick="startMission()" style="color: var(--neon-blue); opacity: 0.6;" id="nav-mission">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-number" style="background: rgba(0, 212, 255, 0.2);">▶</span>
+          Activité : Enquête
+        </div>
+
+        <div class="briefing-nav-item" style="color: var(--neon-pink); opacity: 0.4; cursor: default;" id="nav-attestation">
+          <span class="nav-icon">🎓</span>
+          <span class="nav-number" style="background: rgba(255, 0, 128, 0.2);">🔒</span>
+          Attestation
         </div>
       </nav>
 
-      <!-- Content area -->
       <div class="briefing-content" id="briefing-content">
 
         <!-- ===== LEÇON 1 ===== -->
@@ -1093,7 +1096,7 @@
 
           <h3>⏪ Avant Dartmouth : les précurseurs</h3>
           <ul>
-            <li><strong>1943</strong> — McCulloch &amp; Pitts publient un modèle mathématique du <em>neurone artificiel</em>, inspiré du cerveau biologique</li>
+            <li><strong>1943</strong> — McCulloch & Pitts publient un modèle mathématique du <em>neurone artificiel</em>, inspiré du cerveau biologique</li>
             <li><strong>1948</strong> — Norbert Wiener fonde la <em>cybernétique</em> : l'étude des systèmes auto-régulés (machines et vivants)</li>
             <li><strong>1950</strong> — Turing publie son article et imagine le Test de Turing</li>
           </ul>
@@ -1495,7 +1498,7 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 8 — TRANSITION VERS LA MISSION ===== -->
+        <!-- ===== LEÇON 8 ===== -->
         <div class="lesson" id="lesson-7">
           <h2 class="module-title">08 — Mission DECODE : Opération ATLAS</h2>
 
@@ -1562,2297 +1565,987 @@
         </div>
 
       </div><!-- fin briefing-content -->
-    </div>
+    </div><!-- fin briefing-body -->
 
-  </div>
-
-  <!-- ==================== MODAL (preuves) ==================== -->
-  <div class="modal" id="modal">
-    <div class="modal-card">
-      <h3 id="modal-title">Titre</h3>
-      <p id="modal-body">Contenu</p>
-      <div class="modal-actions">
-        <button class="btn" onclick="closeModal()">Fermer</button>
-      </div>
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
+        ← Précédent
+      </button>
+      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
+        Suivant →
+      </button>
     </div>
   </div>
 
-  <!-- ==================== TOAST ==================== -->
-  <div id="toast"></div>
+  <script>
+    /* ==================== NAVIGATION BRIEFING ==================== */
+    const TOTAL_LESSONS = 8;
+    let currentLesson = 0;
+    let visitedLessons = new Set([0]);
 
-<script>
-/* =========================================================
-   UTILITAIRES (style M12/M15)
-========================================================= */
-const $ = (id)=>document.getElementById(id);
-
-function toast(msg, ms=2200){
-  const el = $('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(window.__toastT);
-  window.__toastT = setTimeout(()=>el.classList.remove('show'), ms);
-}
-
-function typewriter(el, text, speed=18){
-  el.textContent = "";
-  let i=0;
-  const t = setInterval(()=>{
-    el.textContent += text[i] ?? "";
-    i++;
-    if(i>text.length){clearInterval(t);}
-  }, speed);
-}
-
-
-/* =========================================================
-   ÉTAT GLOBAL
-========================================================= */
-const state = {
-  lessonSeen: new Set(),
-};
-
-const timelineEvents = [
-  { id: 1, year: '1950', desc: 'Alan Turing propose un test pour savoir si une machine peut se faire passer pour un humain' },
-  { id: 2, year: '1956', desc: 'Naissance du terme "intelligence artificielle" à la conférence de Dartmouth' },
-  { id: 3, year: '1980', desc: 'Les systèmes experts (IA symbolique) aident les médecins à poser des diagnostics' },
-  { id: 4, year: '1997', desc: 'Deep Blue bat le champion du monde d’échecs (victoire de l’IA symbolique)' },
-  { id: 5, year: '2010', desc: 'Le Deep Learning décolle : l’IA connexionniste reconnaît images et voix' },
-  { id: 6, year: '2015', desc: 'AlphaGo bat un champion de go grâce au Deep Learning' },
-  { id: 7, year: '2017', desc: 'Les Transformers sont introduits pour améliorer la traduction (attention)' },
-  { id: 8, year: '2020', desc: 'GPT-3 (175B) impressionne : génération de textes très réalistes' },
-  { id: 9, year: '2022', desc: 'ChatGPT devient viral : IA générative accessible à tous' },
-  { id: 10, year: '2024', desc: 'En France, Mistral AI symbolise l’intensification de la compétition' }
-];
-
-const timelineYears = timelineEvents.map(e=>e.year);
-
-const systemsData = [
-  { id: 1, name: '🏁 Deep Blue (échecs)', type: 'symbolique' },
-  { id: 2, name: '🗣️ Reconnaissance vocale', type: 'connexionniste' },
-  { id: 3, name: '🏥 Système expert médical', type: 'symbolique' },
-  { id: 4, name: '📸 Reconnaissance d’images', type: 'connexionniste' },
-  { id: 5, name: '💬 ChatGPT', type: 'connexionniste' },
-  { id: 6, name: '🎮 AlphaGo', type: 'connexionniste' }
-];
-
-const hierarchyLevels = [
-  {id:'ia', label:'Intelligence Artificielle'},
-  {id:'ml', label:'Machine Learning'},
-  {id:'dl', label:'Deep Learning'},
-  {id:'tr', label:'Transformers (GPT, BERT...)'}
-];
-
-/* =========================================================
-   NAVIGATION (Title → Briefing → Game)
-========================================================= */
-const TOTAL_LESSONS = 8;
-let currentLesson = 0;
-let visitedLessons = new Set([0]);
-
-function startModule(){
-  $('title-screen').classList.add('hidden');
-  $('briefing-screen').classList.add('active');
-  goToLesson(0);
-  toast("Accès autorisé. Dossier chargé.");
-}
-
-function goToLesson(index){
-  if(index < 0 || index >= TOTAL_LESSONS) return;
-
-  // Masquer la leçon actuelle
-  const current = document.getElementById('lesson-' + currentLesson);
-  if(current) current.classList.remove('active');
-
-  // Afficher la nouvelle
-  currentLesson = index;
-  visitedLessons.add(index);
-  const next = document.getElementById('lesson-' + index);
-  if(next) next.classList.add('active');
-
-  // Scroll en haut
-  const contentArea = $('briefing-content');
-  if(contentArea) contentArea.scrollTop = 0;
-
-  state.lessonSeen.add(index);
-  updateNav();
-}
-
-function prevLesson(){
-  if(currentLesson > 0) goToLesson(currentLesson - 1);
-}
-
-function nextLesson(){
-  if(currentLesson < TOTAL_LESSONS - 1) goToLesson(currentLesson + 1);
-}
-
-function updateNav(){
-  const pct = Math.round(((currentLesson + 1) / TOTAL_LESSONS) * 100);
-  $('progress-text').textContent = `Fichier ${currentLesson + 1}/${TOTAL_LESSONS}`;
-  $('progress-fill').style.width = pct + '%';
-
-  // Boutons prev/next
-  const prevBtn = $('btn-prev');
-  const nextBtn = $('btn-next');
-  if(prevBtn) prevBtn.disabled = (currentLesson === 0);
-  if(nextBtn){
-    if(currentLesson === TOTAL_LESSONS - 1){
-      nextBtn.textContent = '🎯 Lancer la mission';
-      nextBtn.onclick = startMission;
-    } else {
-      nextBtn.innerHTML = 'Suivant →';
-      nextBtn.onclick = nextLesson;
+    function startModule() {
+      document.getElementById('title-screen').classList.add('hidden');
+      document.getElementById('briefing-screen').classList.add('active');
     }
-  }
 
-  // Items sidebar
-  const items = document.querySelectorAll('.briefing-nav .briefing-nav-item');
-  items.forEach((item, i) => {
-    if(i < TOTAL_LESSONS){
-      item.classList.remove('active', 'completed');
-      if(i === currentLesson){
-        item.classList.add('active');
-      } else if(visitedLessons.has(i)){
-        item.classList.add('completed');
+    function goToLesson(index) {
+      if (index < 0 || index >= TOTAL_LESSONS) return;
+
+      // Masquer la leçon actuelle
+      const current = document.getElementById('lesson-' + currentLesson);
+      if (current) current.classList.remove('active');
+
+      // Afficher la nouvelle
+      currentLesson = index;
+      visitedLessons.add(index);
+      const next = document.getElementById('lesson-' + index);
+      if (next) next.classList.add('active');
+
+      // Scroll en haut
+      document.getElementById('briefing-content').scrollTop = 0;
+
+      updateNav();
+    }
+
+    function nextLesson() {
+      if (currentLesson < TOTAL_LESSONS - 1) {
+        goToLesson(currentLesson + 1);
       }
     }
-  });
 
-  if(state.lessonSeen.size >= TOTAL_LESSONS){
-    toast("Dossier étudié. Passez à la phase de jeu.");
-  }
-}
+    function prevLesson() {
+      if (currentLesson > 0) {
+        goToLesson(currentLesson - 1);
+      }
+    }
 
-// Alias pour compatibilité avec les appels restants
-function updateBriefingProgress(){ updateNav(); }
+    function updateNav() {
+      // Barre de progression
+      const pct = ((currentLesson + 1) / TOTAL_LESSONS * 100).toFixed(1);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = 'Fichier ' + (currentLesson + 1) + '/' + TOTAL_LESSONS;
 
-/* =========================================================
-   BRIEFING CONTENT
-========================================================= */
-const lessons = [
-  {
-    title:"01 — L'IA : entre mythes et réalité",
-    kicker:"Pourquoi autant d'idées reçues ? Le fossé entre SF et réalité.",
-    html:`
-      <div class="pill">VERIT-IA</div><div class="pill">Dossier Zéro</div><div class="pill">Démystification</div>
-      <div class="divider"></div>
+      // Boutons prev/next
+      document.getElementById('btn-prev').disabled = (currentLesson === 0);
+      const btnNext = document.getElementById('btn-next');
+      if (currentLesson === TOTAL_LESSONS - 1) {
+        btnNext.textContent = '🎯 Lancer la mission';
+        btnNext.onclick = startMission;
+      } else {
+        btnNext.innerHTML = 'Suivant →';
+        btnNext.onclick = nextLesson;
+      }
 
-      <div style="text-align:center;margin:30px 0">
-        <img src="images/nexus-briefing.png" alt="Agent Nexus - Briefing" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,255,136,0.2)"/>
-        <p style="margin-top:15px;font-size:0.9em;color:rgba(0,255,136,0.7);font-style:italic">Agent Nexus vous accueille dans le briefing VERIT-IA</p>
-      </div>
-
-      <h3>🎬 L'omniprésence de l'IA en 2026</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        En cette année 2026, l'intelligence artificielle est devenue omniprésente dans notre quotidien, au point que nous l'utilisons parfois sans même nous en rendre compte. Elle alimente les assistants vocaux comme Siri, Alexa ou Google Assistant qui répondent à nos questions et contrôlent nos appareils connectés. Elle personnalise nos fils d'actualité sur les réseaux sociaux, déterminant ce que nous voyons, lisons et découvrons chaque jour. Elle traduit instantanément des textes dans des dizaines de langues avec une précision impressionnante, rendant les barrières linguistiques presque obsolètes.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Plus spectaculaire encore, elle génère désormais des images photoréalistes, des vidéos convaincantes et des textes cohérents à partir de simples descriptions en langage naturel. Des millions de personnes à travers le monde utilisent quotidiennement des outils comme ChatGPT pour rédiger des emails, Midjourney pour créer des illustrations, ou DALL-E pour visualiser leurs idées. L'IA n'est plus une technologie futuriste réservée aux laboratoires de recherche : elle fait partie intégrante de notre environnement numérique.
-      </p>
-
-      <h3>🧠 La grande confusion : capacité technique vs intelligence humaine</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Pourtant, malgré cette familiarité croissante avec les outils d'IA, l'imaginaire collectif confond encore largement ce qui relève de la capacité technique pure et ce qui constitue véritablement l'intelligence humaine. Cette confusion n'est pas anodine : elle trouve ses racines dans des décennies de représentations culturelles qui ont façonné notre perception de l'intelligence artificielle bien avant que celle-ci ne devienne une réalité quotidienne.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les films de science-fiction, depuis le HAL 9000 de <em>2001 : L'Odyssée de l'espace</em> jusqu'à la Samantha de <em>Her</em> ou l'Ava d'<em>Ex Machina</em>, ont nourri pendant des années l'idée d'une IA consciente, capable d'émotions authentiques, dotée d'une volonté propre et même de désirs personnels. Ces représentations, aussi fascinantes soient-elles sur le plan narratif, ont créé des attentes et des peurs qui ne correspondent pas à la réalité technique actuelle. Elles influencent profondément notre perception de ce que l'IA peut réellement accomplir, créant un fossé entre fiction et réalité qui complique la compréhension publique de cette technologie.
-      </p>
-
-      <div class="callout warn">
-        <strong>Mythe courant :</strong> « L'IA comprend comme un humain, elle pense et ressent véritablement. »<br/><br/>
-        <strong>Réalité :</strong> L'intelligence artificielle actuelle repose sur des calculs mathématiques extrêmement sophistiqués. Elle identifie des régularités statistiques dans d'énormes volumes de données et génère des sorties plausibles en fonction de patterns qu'elle a appris pendant son entraînement. Elle ne "comprend" pas au sens où nous, humains, comprenons le monde qui nous entoure. Elle ne possède ni conscience de son existence, ni intentionnalité propre, ni compréhension causale du monde. Ce qui peut sembler être de la compréhension n'est en réalité qu'une capacité remarquable à reconnaître et reproduire des schémas linguistiques et conceptuels.
-      </div>
-
-      <h3>📊 Quelques chiffres révélateurs du malentendu</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'écart entre la perception publique et la réalité technique est frappant, comme en témoignent plusieurs études récentes menées auprès du grand public. Une étude de Stanford publiée en 2024 révèle que 63% des utilisateurs réguliers de ChatGPT attribuent à cet outil une forme de "compréhension" réelle, comparable à celle d'un humain. De même, une enquête Pew Research de 2025 montre que 58% des personnes interrogées pensent sincèrement que l'IA générative "pense par elle-même" et prend des décisions autonomes basées sur une forme de réflexion consciente.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Pourtant, la réalité est sans appel : aucun des systèmes d'IA actuellement déployés ne possède de conscience au sens où l'entend la communauté scientifique. Aucun n'a d'expérience subjective, de vie intérieure, ou de compréhension véritable du monde. Cette dissonance entre perception et réalité n'est pas qu'un détail académique : elle influence la manière dont nous utilisons ces outils, les décisions que nous leur confions, et les enjeux éthiques et sociétaux que soulève leur déploiement massif.
-      </p>
-
-      <div class="callout">
-        <strong>Votre mission :</strong> À travers ce module, vous allez apprendre à distinguer méthodiquement ce qui relève de la capacité technique réelle de ce qui appartient au domaine de l'exagération marketing ou du fantasme science-fictionnel. Vous mènerez ensuite une enquête concrète pour démystifier les affirmations d'une entreprise qui prétend avoir créé une "Super IA révolutionnaire". Cette investigation vous permettra d'appliquer les concepts théoriques à un cas pratique d'analyse critique.
-      </div>
-    `
-  },
-  {
-    title:"02 — Les origines : de Turing à Dartmouth",
-    kicker:"1950 : Test de Turing. 1956 : Dartmouth (John McCarthy).",
-    html:`
-      <h3>🧪 1950 : Le test de Turing, fondement conceptuel</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        En 1950, le mathématicien britannique Alan Turing publie dans la revue Mind un article fondateur intitulé <em>"Computing Machinery and Intelligence"</em>, qui va façonner pour des décennies la réflexion sur l'intelligence artificielle. Dans cet article visionnaire, Turing propose le célèbre Test de Turing, également appelé "jeu de l'imitation". Le principe en est élégamment simple : si un être humain, conversant par écrit avec une machine, ne parvient pas à déterminer s'il dialogue avec un ordinateur ou avec un autre être humain, alors on peut raisonnablement considérer que la machine fait preuve d'intelligence.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Ce test ne prétend pas mesurer l'intelligence au sens absolu ou philosophique du terme. Il se concentre plutôt sur la capacité d'imitation comportementale, sur l'aptitude d'une machine à produire des réponses indiscernables de celles d'un humain dans un contexte conversationnel. Cette proposition, révolutionnaire pour l'époque, a profondément influencé la recherche en intelligence artificielle et reste aujourd'hui une référence philosophique majeure, même si de nombreux chercheurs contemporains le jugent incomplet ou contestent sa pertinence comme mesure ultime de l'intelligence machine.
-      </p>
-
-      <h3>🎓 1956 : La conférence de Dartmouth, acte de naissance officiel</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Durant l'été 1956, au Dartmouth College situé à Hanover dans le New Hampshire, un groupe de chercheurs pionniers se réunit pour une conférence d'une durée de six semaines. Cet événement, organisé par John McCarthy, Marvin Minsky, Nathaniel Rochester et Claude Shannon, marquera l'histoire comme l'acte de naissance officiel de l'intelligence artificielle en tant que discipline scientifique à part entière. C'est lors de cette conférence que le terme "intelligence artificielle" est officiellement proposé et popularisé, donnant enfin un nom à ce champ de recherche émergent.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'optimisme régnait alors parmi les participants. Ils espéraient sincèrement qu'une machine pourrait simuler tous les aspects de l'intelligence humaine en l'espace de quelques décennies seulement. Cette ambition, aussi audacieuse qu'elle puisse paraître rétrospectivement, n'a certes pas été réalisée dans les délais imaginés par ces visionnaires. Pourtant, elle a lancé un domaine de recherche qui, soixante-dix ans plus tard, continue de révolutionner notre monde de manière spectaculaire, même si les chemins empruntés ont parfois été très différents de ceux initialement envisagés.
-      </p>
-
-      <div class="callout ok">
-        <strong>À retenir :</strong> L'intelligence artificielle ne naît pas avec ChatGPT en 2022. C'est une discipline scientifique vieille de plus de 70 ans, qui a connu des cycles alternés d'enthousiasme débordant (appelés "étés de l'IA") et de désillusion profonde (les fameux "hivers de l'IA"). La révolution que nous vivons actuellement n'est pas un événement isolé, mais plutôt l'aboutissement de décennies de recherche fondamentale, de progrès incrémentaux et de percées technologiques qui se sont accumulés progressivement.
-      </div>
-
-      <h3>📜 Les pionniers méconnus qui ont préparé le terrain</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Avant même les travaux de Turing et la conférence de Dartmouth, d'autres visionnaires avaient déjà posé des jalons essentiels pour l'émergence de l'intelligence artificielle. En 1943, Warren McCulloch, neurophysiologiste, et Walter Pitts, jeune mathématicien prodige, publient ensemble un modèle mathématique du neurone artificiel qui deviendra la pierre angulaire des futurs réseaux de neurones. Ce modèle montrait comment des neurones artificiels simples, interconnectés, pouvaient en théorie effectuer des calculs logiques complexes.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Quelques années plus tard, en 1948, Norbert Wiener, mathématicien au MIT, publie son ouvrage fondateur sur la cybernétique, établissant les fondements théoriques du feedback (rétroaction) et de l'apprentissage machine. Ces travaux, souvent méconnus du grand public, ont fourni le socle conceptuel sur lequel l'intelligence artificielle moderne a pu se construire.
-      </p>
-    `
-  },
-  {
-    title:"03 — IA symbolique : le cerveau logique",
-    kicker:"Règles SI… ALORS, systèmes experts, Deep Blue. Transparent mais rigide.",
-    html:`
-      <h3>⚙️ Principe fondamental</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'<strong>IA symbolique</strong> (ou "IA classique") repose sur la manipulation de <strong>symboles</strong> et l'application de <strong>règles explicites</strong>
-        définies par des experts humains. Ces règles prennent souvent la forme de logique formelle : <em>SI condition ALORS action</em>.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Cette approche a dominé les premières décennies de l'IA (années 1960-1980). Les chercheurs pensaient pouvoir encoder toute l'intelligence humaine
-        sous forme de règles logiques et de représentations symboliques du monde (ontologies, graphes de connaissances, arbres de décision).
-      </p>
-
-      <div class="callout ok">
-        <strong>Analogie :</strong> Un livre de recettes de cuisine très détaillé. Si vous suivez scrupuleusement chaque étape, vous obtiendrez le plat attendu.
-        Mais si un ingrédient manque ou qu'une étape n'est pas prévue dans la recette, le système ne sait pas improviser.
-      </div>
-
-      <h3>🎯 Exemples emblématiques de l'IA symbolique</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les années 1970 et 1980 ont vu l'émergence des systèmes experts, qui représentaient alors le summum de l'IA symbolique. MYCIN, développé à Stanford en 1976, illustre parfaitement cette approche : ce système de diagnostic médical pour les infections bactériennes fonctionnait grâce à environ 600 règles du type "SI le patient a de la fièvre ET la bactérie est gram-positive ALORS prescrire de la pénicilline". Bien que rudimentaire selon nos standards actuels, MYCIN atteignait des performances diagnostiques comparables à celles de médecins experts dans son domaine de spécialité très restreint.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Un autre exemple marquant est DENDRAL, créé dès 1965, qui se spécialisait dans l'identification de structures moléculaires en chimie organique. Ces systèmes partageaient une caractéristique commune : ils excellaient dans des domaines extrêmement circonscrits, mais ne pouvaient en aucun cas généraliser leurs compétences au-delà de leur champ d'expertise étroitement défini.
-      </p>
-
-      <div class="callout pink">
-        <strong>Cas iconique : Deep Blue et la victoire de 1997</strong><br/><br/>
-        Le superordinateur Deep Blue, développé par IBM, représente l'apogée de l'IA symbolique appliquée aux jeux. En 1997, lors d'un match historique qui a fasciné le monde entier, Deep Blue parvient à battre Garry Kasparov, alors champion du monde d'échecs incontesté. La machine évaluait jusqu'à 200 millions de positions par seconde grâce à des algorithmes de recherche sophistiqués comme minimax et l'élagage alpha-bêta, combinés à des règles d'évaluation soigneusement programmées par des grands maîtres d'échecs.<br/><br/>
-        Pourtant, il est crucial de comprendre que Deep Blue ne "comprend" pas les échecs au sens où un joueur humain comprend le jeu. Il n'a aucune intuition stratégique, aucune appréciation esthétique des positions, aucune conscience de ce qu'il fait. Il calcule massivement, explore des millions de variantes, et sélectionne le coup optimal selon ses critères d'évaluation. Sa victoire marque un tournant symbolique médiatique majeur dans l'histoire de l'IA, mais pas vraiment un tournant conceptuel dans la manière de concevoir l'intelligence artificielle.
-      </div>
-
-      <h3>✅ Les forces indéniables de l'IA symbolique</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'IA symbolique possède des atouts majeurs qui expliquent pourquoi elle reste utilisée dans certains domaines critiques aujourd'hui encore. Sa première force réside dans son explicabilité totale : on peut toujours retracer précisément le cheminement logique qui a conduit à une décision donnée, créant ainsi un véritable audit trail vérifiable. Cette transparence s'accompagne d'une prévisibilité absolue : face à une situation identique, le système produira invariablement la même réponse, ce qui constitue un avantage crucial pour certaines applications.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'auditabilité qui en découle est particulièrement cruciale dans des domaines hautement réglementés comme le médical, le juridique ou l'aéronautique, où il est impératif de pouvoir justifier chaque décision prise par le système. Enfin, contrairement aux approches modernes, l'IA symbolique nécessite peu de données : les règles sont encodées manuellement par des experts humains, ce qui permet de créer des systèmes fonctionnels même avec des jeux de données limités.
-      </p>
-
-      <h3>❌ Les faiblesses qui ont conduit à son déclin</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Malgré ces avantages, l'IA symbolique souffre de limitations fondamentales qui ont progressivement conduit à son déclin. Sa rigidité extrême constitue son talon d'Achille : dès qu'une situation ne correspond pas exactement aux règles prévues, le système échoue brutalement, incapable du moindre raisonnement par analogie ou de la moindre adaptation. La scalabilité pose également un problème majeur : lorsque le nombre de règles atteint plusieurs milliers, maintenir leur cohérence interne devient un cauchemar logistique, créant ce que les chercheurs ont appelé le "goulot d'étranglement de la connaissance".
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Le monde réel, par nature ambigu, bruité et incomplet, résiste mal à cette approche qui exige une formalisation précise de toutes les situations possibles. Enfin, le coût humain est considérable : il faut constamment faire intervenir des experts de haut niveau pour encoder de nouvelles règles, corriger les incohérences, et maintenir le système à jour face à l'évolution des connaissances du domaine. Ces limites accumulées ont conduit aux fameux "hivers de l'IA", périodes de désillusion profonde dans les années 1970 et 1990, jusqu'à l'émergence progressive d'une approche radicalement différente : l'IA connexionniste, qui allait bouleverser le paysage de l'intelligence artificielle.
-      </p>
-
-      <div style="text-align:center;margin:40px 0">
-        <img src="images/ai-duality.png" alt="IA Symbolique vs IA Connexionniste" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,212,255,0.3)"/>
-        <p style="margin-top:15px;font-size:0.9em;color:rgba(0,212,255,0.7);font-style:italic">Deux philosophies opposées : règles explicites vs apprentissage par l'exemple</p>
-      </div>
-    `
-  },
-  {
-    title:"04 — IA connexionniste : le cerveau qui apprend",
-    kicker:"Réseaux de neurones, apprentissage par l'exemple. Adaptable, parfois boîte noire.",
-    html:`
-      <h3>🧠 Principe fondamental : l'apprentissage par l'exemple</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Contrairement à l'IA symbolique où les règles sont explicitement programmées, l'<strong>IA connexionniste</strong> (ou apprentissage automatique / machine learning)
-        <strong>apprend à partir de données</strong>. Le système ajuste automatiquement ses paramètres internes pour minimiser l'erreur entre ses prédictions et les résultats attendus.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Cette approche s'inspire du fonctionnement du cerveau humain : des <strong>neurones artificiels</strong> interconnectés forment des réseaux qui modifient
-        progressivement leurs connexions (poids synaptiques) en fonction de l'expérience (entraînement sur des données). C'est le paradigme des <strong>réseaux de neurones</strong>.
-      </p>
-
-      <div class="callout ok">
-        <strong>Analogie :</strong> Un enfant qui apprend à reconnaître un chat. Il n'a pas besoin qu'on lui donne une liste de règles
-        ("SI moustaches ET poils ET quatre pattes ALORS chat"). Il voit des dizaines, des centaines de chats, et son cerveau extrait intuitivement
-        les caractéristiques discriminantes. De même, un réseau de neurones "apprend" en voyant des milliers d'exemples étiquetés.
-      </div>
-
-      <h3>📈 L'histoire en trois vagues successives</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'histoire de l'IA connexionniste n'est pas linéaire. Elle s'est déroulée par vagues successives d'enthousiasme et de désillusion, chaque cycle apportant son lot d'innovations et de limitations. La première vague, qui s'étend de 1943 à 1969, voit l'émergence des neurones formels. Comme nous l'avons évoqué précédemment, McCulloch et Pitts posent en 1943 les bases théoriques du neurone artificiel. Quinze ans plus tard, en 1958, Frank Rosenblatt crée le Perceptron, premier réseau de neurones capable d'apprentissage supervisé véritable. L'enthousiasme est immense : on imagine déjà des machines capables d'apprendre n'importe quelle tâche.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Mais en 1969, Marvin Minsky et Seymour Papert publient une critique dévastatrice qui met en lumière les limites mathématiques fondamentales du perceptron simple. Cet ouvrage provoque le premier "hiver connexionniste" : les financements se tarissent, les chercheurs se réorientent, et l'approche connexionniste tombe en disgrâce pour près de deux décennies.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        La deuxième vague émerge dans les années 1980 avec la redécouverte et la popularisation de l'algorithme de rétropropagation (backpropagation) en 1986. Cet algorithme mathématique résout le problème identifié par Minsky et Papert en permettant d'entraîner efficacement des réseaux multicouches. Les applications pratiques commencent à voir le jour : reconnaissance de chiffres manuscrits pour le tri automatique du courrier postal, premiers systèmes de reconnaissance vocale, traduction automatique rudimentaire. L'approche connexionniste retrouve sa crédibilité scientifique, mais reste limitée par la puissance de calcul disponible et le manque de données massives.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        La troisième vague, celle que nous vivons actuellement, débute véritablement en 2012 avec AlexNet. Ce réseau de neurones profond remporte une victoire écrasante dans le concours de reconnaissance d'images ImageNet, surpassant toutes les méthodes traditionnelles avec une marge inédite. C'est le début du Deep Learning tel que nous le connaissons aujourd'hui. Les succès s'enchaînent : en 2016, AlphaGo de DeepMind bat Lee Sedol, champion du monde de Go, dans un jeu réputé inaccessible aux machines en raison de sa complexité combinatoire astronomique. Puis arrive en 2017 l'architecture Transformer, qui va révolutionner le traitement du langage naturel et donner naissance à la lignée GPT, BERT, et finalement ChatGPT qui popularisera l'IA auprès du grand public en 2022.
-      </p>
-
-      <h3>✅ Les forces qui expliquent le triomphe actuel de l'IA connexionniste</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        La domination actuelle de l'IA connexionniste n'est pas le fruit du hasard. Elle repose sur des atouts structurels considérables qui la distinguent radicalement de l'IA symbolique. D'abord, cette approche excelle dans le traitement de données complexes et non structurées : images haute résolution, flux audio et vidéo, textes dans des langues multiples, données biométriques... tout ce qui paraissait hors de portée des systèmes à règles est devenu son terrain de jeu naturel.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Sa capacité de généralisation constitue un autre avantage décisif : un réseau de neurones bien entraîné peut extrapoler au-delà des exemples précis qu'il a vus pendant son apprentissage, reconnaissant des variantes, des angles différents, des contextes inédits. Cette faculté lui permet d'atteindre des performances state-of-the-art qui dominent aujourd'hui pratiquement tous les benchmarks scientifiques, que ce soit en vision par ordinateur, en traitement du langage, en jeux stratégiques ou en prédiction de structures moléculaires.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Un avantage souvent sous-estimé est qu'elle ne nécessite pas d'expertise métier approfondie pour fonctionner : le modèle découvre lui-même les patterns pertinents dans les données, sans qu'un expert humain ait besoin d'encoder manuellement des milliers de règles. Enfin, sa scalabilité est remarquable : contrairement à l'IA symbolique qui s'écroule sous le poids de trop nombreuses règles, l'IA connexionniste s'améliore généralement avec plus de données et plus de puissance de calcul, créant une dynamique vertueuse où les progrès technologiques nourrissent directement les progrès en intelligence artificielle.
-      </p>
-
-      <h3>❌ Les faiblesses qui demeurent malgré les succès</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Malgré ces succès spectaculaires, l'IA connexionniste souffre de limites importantes qui tempèrent l'enthousiasme et soulèvent des questions éthiques et pratiques majeures. Le problème de la "boîte noire" est peut-être le plus préoccupant : il est extrêmement difficile, voire impossible, de comprendre précisément pourquoi un réseau de neurones profond a pris telle décision plutôt qu'une autre. Cette opacité devient problématique dans des domaines sensibles comme la justice, la médecine ou le crédit bancaire, où la capacité à expliquer et justifier une décision est cruciale.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        La dépendance aux données constitue une autre faiblesse structurelle : entraîner un modèle performant nécessite d'énormes volumes de données étiquetées de haute qualité, ce qui n'est pas toujours disponible ou éthiquement acceptable à collecter. Les coûts computationnels atteignent des sommets vertigineux : l'entraînement de GPT-4 aurait coûté plusieurs dizaines de millions de dollars en électricité et infrastructure matérielle, créant une barrière à l'entrée qui concentre le pouvoir dans les mains de quelques géants technologiques.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les biais algorithmiques représentent un danger social réel : si les données d'entraînement reflètent des préjugés sociaux (sexisme, racisme, discrimination socio-économique), le modèle apprendra et reproduira fidèlement ces biais, potentiellement à une échelle massive. La fragilité face aux exemples adverses (adversarial examples) est également troublante : de minuscules perturbations, imperceptibles à l'œil humain sur une image, peuvent complètement tromper un système de reconnaissance pourtant très performant.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Enfin, et peut-être plus fondamentalement, l'IA connexionniste manque cruellement de bon sens et de compréhension causale du monde. Elle détecte des corrélations statistiques dans les données, mais ne comprend pas les mécanismes sous-jacents qui expliquent pourquoi ces corrélations existent. Elle peut prédire qu'un coq chante avant le lever du soleil, mais ne sait pas que le coq ne cause pas le lever du soleil. Cette limitation, bien que subtile, a des implications profondes pour la fiabilité et la robustesse des systèmes d'IA dans des situations inédites.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Malgré ces faiblesses, l'IA connexionniste, et particulièrement le deep learning, domine aujourd'hui le paysage de l'intelligence artificielle. ChatGPT, DALL-E, les systèmes de conduite autonome, la reconnaissance faciale omniprésente : tous reposent sur des réseaux de neurones profonds entraînés sur d'immenses corpus de données, illustrant à la fois la puissance et les dilemmes de cette approche.
-      </p>
-
-      <h3>🧪 Activité : Laboratoire de Classification</h3>
-      <div class="callout">
-        <strong>Objectif :</strong> Maintenant que vous comprenez la différence entre IA symbolique et IA connexionniste, testez vos connaissances en classant 6 systèmes d'IA emblématiques.<br/>
-        <strong>Astuce :</strong> Posez-vous la question : "Ce système apprend-il par l'exemple (connexionniste) ou suit-il des règles explicites (symbolique) ?"
-      </div>
-
-      <div id="classification-activity" style="margin-top:30px">
-        <div style="background:rgba(10,20,40,0.6);padding:25px;border-radius:12px;border:1px solid rgba(0,255,136,0.2)">
-
-          <!-- Rappel des deux familles -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:30px">
-            <div style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);border-radius:10px;padding:18px">
-              <div style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-weight:700;font-size:1.05em;margin-bottom:8px">🎭 IA SYMBOLIQUE</div>
-              <div style="font-size:0.9em;line-height:1.5;color:#aabbcc">
-                <strong>Principe :</strong> Règles explicites (SI… ALORS…)<br/>
-                <strong>Analogie :</strong> Livre de recettes<br/>
-                <strong>Exemple :</strong> Deep Blue (échecs)
-              </div>
-            </div>
-            <div style="background:rgba(255,0,128,0.08);border:1px solid rgba(255,0,128,0.3);border-radius:10px;padding:18px">
-              <div style="font-family:'Space Mono',monospace;color:var(--neon-pink);font-weight:700;font-size:1.05em;margin-bottom:8px">🧠 IA CONNEXIONNISTE</div>
-              <div style="font-size:0.9em;line-height:1.5;color:#aabbcc">
-                <strong>Principe :</strong> Apprend par l'exemple<br/>
-                <strong>Analogie :</strong> Enfant qui apprend<br/>
-                <strong>Exemple :</strong> ChatGPT, AlphaGo
-              </div>
-            </div>
-          </div>
-
-          <!-- Systèmes à classer -->
-          <div style="margin-bottom:25px">
-            <h4 style="color:var(--neon-green);margin-bottom:15px;font-size:1.1em">🔄 Systèmes à classer</h4>
-            <div id="classification-systems-pool" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px"></div>
-          </div>
-
-          <!-- Zones de dépôt -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:25px">
-            <div>
-              <h4 style="color:var(--neon-blue);margin-bottom:12px;font-size:1.05em">📥 IA Symbolique</h4>
-              <div id="classification-dropzone-symbolique" class="classification-dropzone" data-type="symbolique" style="min-height:200px;border:2px dashed rgba(0,212,255,0.4);background:rgba(0,212,255,0.04);border-radius:10px;padding:15px">
-                <div style="opacity:0.5;text-align:center;padding:20px;color:#8899aa">Glissez les systèmes symboliques ici</div>
-              </div>
-            </div>
-            <div>
-              <h4 style="color:var(--neon-pink);margin-bottom:12px;font-size:1.05em">📥 IA Connexionniste</h4>
-              <div id="classification-dropzone-connexionniste" class="classification-dropzone" data-type="connexionniste" style="min-height:200px;border:2px dashed rgba(255,0,128,0.4);background:rgba(255,0,128,0.04);border-radius:10px;padding:15px">
-                <div style="opacity:0.5;text-align:center;padding:20px;color:#8899aa">Glissez les systèmes connexionnistes ici</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Boutons de contrôle -->
-          <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px">
-            <button class="btn green" onclick="verifyClassificationLesson()" style="min-width:160px">
-              ✓ Vérifier ma classification
-            </button>
-            <button class="btn pink" onclick="resetClassificationLesson()" style="min-width:140px">
-              ↻ Réinitialiser
-            </button>
-          </div>
-
-          <!-- Feedback -->
-          <div id="classification-feedback" style="display:none"></div>
-        </div>
-      </div>
-
-      <div class="callout ok" style="margin-top:25px">
-        <strong>💡 Ce qu'il faut retenir :</strong> La distinction symbolique/connexionniste n'est pas qu'un débat théorique. Elle a des implications pratiques majeures : l'explicabilité des décisions, la quantité de données nécessaires, la capacité d'adaptation, les garanties formelles de sécurité... Comprendre ces différences vous permet de choisir la bonne approche pour chaque problème et d'anticiper les limites de chaque système.
-      </div>
-
-      <script>
-        if(typeof initClassificationLesson === 'function') {
-          setTimeout(initClassificationLesson, 100);
+      // Items sidebar
+      const items = document.querySelectorAll('.briefing-nav-item');
+      items.forEach((item, i) => {
+        item.classList.remove('active', 'completed');
+        if (i === currentLesson) {
+          item.classList.add('active');
+        } else if (visitedLessons.has(i)) {
+          item.classList.add('completed');
         }
-      <\/script>
-    `
-  },
-  {
-    title:"05 — La hiérarchie des concepts",
-    kicker:"IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers",
-    html:`
-      <h3>🎯 Comprendre l'emboîtement des concepts</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'un des malentendus les plus courants est de confondre "Intelligence Artificielle", "Machine Learning", "Deep Learning" et "Transformers".
-        Ces termes sont <strong>emboîtés les uns dans les autres</strong>, comme des poupées russes. Voici la hiérarchie précise :
-      </p>
+      });
+    }
 
-      <h3>🌐 Niveau 1 : Intelligence Artificielle (IA)</h3>
-      <div class="callout">
-        <strong>Définition :</strong> Ensemble de toutes les méthodes et techniques visant à faire accomplir à une machine des tâches
-        qui nécessiteraient de l'intelligence si elles étaient réalisées par un humain (raisonnement, perception, langage, planification, apprentissage...).
+    function startMission() {
+      document.getElementById('briefing-screen').classList.remove('active');
+      document.getElementById('mission-screen').classList.add('active');
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN MISSION ==================== -->
+  <div id="mission-screen">
+    <div class="mission-header">
+      <div class="mission-header-title">
+        🔍 DECODE — Opération ATLAS
       </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'IA est le terme le plus large. Il inclut <em>toutes</em> les approches : IA symbolique, systèmes experts, recherche heuristique,
-        planification automatique, robotique, vision par ordinateur, traitement du langage naturel, apprentissage automatique, etc.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Exemples non-ML :</strong> Deep Blue (échecs), système expert MYCIN, GPS de planification d'itinéraires classiques, chatbots à règles (ELIZA).
-      </p>
-
-      <h3>📊 Niveau 2 : Machine Learning (Apprentissage Automatique)</h3>
-      <div class="callout">
-        <strong>Définition :</strong> Sous-ensemble de l'IA qui se concentre sur les systèmes capables <strong>d'apprendre à partir de données</strong>,
-        sans être explicitement programmés pour chaque tâche. Le système améliore ses performances avec l'expérience (les données).
+      <div class="mission-phase-indicator">
+        <span style="color: var(--muted); font-size: 0.85em; margin-right: 8px;">Phase :</span>
+        <div class="phase-dot active" id="phase-dot-0"></div>
+        <div class="phase-dot" id="phase-dot-1"></div>
+        <div class="phase-dot" id="phase-dot-2"></div>
       </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Le Machine Learning utilise des algorithmes statistiques sophistiqués pour identifier des patterns cachés dans les données. Cette discipline se décline en plusieurs familles méthodologiques, chacune adaptée à des types de problèmes différents. L'apprentissage supervisé constitue la famille la plus courante : on fournit au système des exemples étiquetés (par exemple, des milliers de photos de chats accompagnées du label "chat"), et le modèle apprend à associer les caractéristiques visuelles au concept de "chat". L'apprentissage non supervisé adopte une approche radicalement différente : le système explore les données sans étiquettes préalables et découvre lui-même des structures sous-jacentes, comme le regroupement naturel de clients similaires (clustering) ou la réduction de données complexes à leurs dimensions essentielles. Enfin, l'apprentissage par renforcement s'inspire de la psychologie comportementale : un agent virtuel apprend par essai-erreur, recevant des récompenses quand il fait de bons choix et des pénalités quand il se trompe, affinant progressivement sa stratégie pour maximiser sa récompense cumulative.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les algorithmes classiques du Machine Learning incluent la régression linéaire pour prédire des valeurs numériques, les arbres de décision qui segmentent l'espace des possibles en règles if-then, les SVM (Support Vector Machines) qui tracent des frontières optimales entre catégories, le k-means pour regrouper des données similaires, les forêts aléatoires qui combinent des centaines d'arbres de décision, et les réseaux de neurones simples (à une ou deux couches) qui précèdent historiquement le deep learning.
-      </p>
+    </div>
 
-      <h3>🧠 Niveau 3 : Deep Learning (Apprentissage Profond)</h3>
-      <div class="callout">
-        <strong>Définition :</strong> Sous-ensemble du Machine Learning basé sur des réseaux de neurones profonds, c'est-à-dire des architectures comportant de nombreuses couches cachées superposées. Alors qu'un réseau "peu profond" comporte deux ou trois couches, un réseau profond peut en contenir des dizaines, des centaines, voire des milliers, créant une hiérarchie de représentations de plus en plus abstraites des données d'entrée.
-      </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Le deep learning a véritablement révolutionné l'intelligence artificielle depuis 2012, marquant une rupture historique dans les capacités des systèmes d'IA. Cette révolution repose sur la convergence de trois facteurs essentiels qui ont simultanément atteint une masse critique. Premièrement, l'explosion du Big Data : la disponibilité soudaine de milliards d'exemples annotés, comme les 14 millions d'images d'ImageNet ou les milliards de pages web crawlées du Common Crawl, a fourni la matière première indispensable à l'entraînement de réseaux géants. Deuxièmement, l'avènement de puissances de calcul massives : les GPU (Graphics Processing Units) initialement conçus pour les jeux vidéo, puis les TPU (Tensor Processing Units) spécialement développés par Google, ont permis de paralléliser les calculs et d'entraîner des réseaux qui auraient nécessité des années sur des processeurs classiques. Troisièmement, l'innovation architecturale : des structures comme les CNN (Convolutional Neural Networks) pour les images, les RNN/LSTM (Recurrent Neural Networks / Long Short-Term Memory) pour les séquences temporelles, et plus tard les Transformers pour le langage, ont résolu des problèmes techniques qui bloquaient auparavant la montée en échelle des réseaux de neurones.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les applications concrètes du deep learning ont envahi notre quotidien : la reconnaissance d'images atteint désormais une précision surhumaine grâce à des architectures comme ResNet ou EfficientNet, la reconnaissance vocale permet à DeepSpeech de transcrire la parole avec une justesse impressionnante, la traduction automatique de Google Translate s'est spectaculairement améliorée avec les réseaux neuronaux, la génération d'images par DALL-E ou Stable Diffusion crée des visuels photoréalistes à partir de descriptions textuelles, et les modèles de langage comme GPT ou BERT comprennent et génèrent du texte avec une fluidité qui confine parfois à l'indiscernabilité d'avec une production humaine.
-      </p>
+    <div class="mission-body">
 
-      <h3>⚡ Niveau 4 : Transformers, l'architecture qui domine l'IA moderne</h3>
-      <div class="callout">
-        <strong>Définition :</strong> Architecture de réseau de neurones profond basée sur un mécanisme d'attention, proposée en 2017 dans l'article fondateur "Attention is All You Need" publié par une équipe de Google Brain. Cette architecture a rapidement supplanté toutes les approches précédentes pour dominer aujourd'hui le traitement du langage naturel et s'étendre progressivement à d'autres domaines comme la vision par ordinateur.
-      </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les Transformers ont révolutionné le deep learning en remplaçant les architectures précédentes (RNN, LSTM) qui traitaient le langage de manière séquentielle, mot après mot. Leur innovation majeure réside dans le mécanisme d'attention qui permet au réseau de considérer simultanément tous les mots d'une phrase et de pondérer dynamiquement leur importance relative. Cette capacité à traiter des séquences longues en parallèle, plutôt que séquentiellement, et à capturer des dépendances à très longue distance entre des éléments éloignés du texte, leur confère une puissance incomparable. Ils constituent aujourd'hui la base architecturale de la quasi-totalité des LLM (Large Language Models) modernes qui font la une de l'actualité.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les exemples emblématiques de Transformers sont devenus des noms familiers du grand public. GPT (Generative Pre-trained Transformer) d'OpenAI, dans ses incarnations GPT-3, GPT-4, et sa version conversationnelle ChatGPT, génère du texte d'une fluidité remarquable. BERT (Bidirectional Encoder Representations from Transformers) de Google alimente le moteur de recherche le plus utilisé au monde, améliorant drastiquement la compréhension des requêtes utilisateurs. La liste s'allonge constamment : T5, PaLM, LLaMA, Claude (le modèle qui vous parle en ce moment), Gemini... tous reposent sur l'architecture Transformer, avec des variantes et optimisations spécifiques, mais partageant ce socle architectural commun qui a transformé le paysage de l'IA en à peine sept ans.
-      </p>
+      <!-- PHASE 1 : COLLECTE DES PREUVES -->
+      <div class="mission-phase active" id="mission-phase-0">
+        <h2 style="font-family: 'Space Mono', monospace; color: var(--neon-blue); margin-bottom: 8px;">
+          Phase 1 : Collecte des preuves
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 20px;">
+          Consultez chaque pièce à conviction. Lisez attentivement — les détails comptent.
+        </p>
 
-      <div class="callout ok">
-        <strong>À retenir :</strong> « IA » est un grand parapluie. <strong>ChatGPT est une IA</strong> (niveau 1), qui utilise du <strong>Machine Learning</strong> (niveau 2),
-        plus précisément du <strong>Deep Learning</strong> (niveau 3), avec une architecture <strong>Transformer</strong> (niveau 4).
-        Mais <em>toutes les IA ne sont pas des ChatGPT</em> : Deep Blue est une IA sans ML, les arbres de décision sont du ML sans deep learning, etc.
-      </div>
-
-      <h3>📐 Schéma mental</h3>
-      <p style="line-height:1.7;color:#cfe9ff;text-align:center;font-family:'Space Mono',monospace">
-        IA &gt; Machine Learning &gt; Deep Learning &gt; Transformers<br/>
-        <span style="font-size:0.9em;color:#8899aa">(du plus général au plus spécifique)</span>
-      </p>
-
-      <h3>🎯 Activité : Construisez la hiérarchie</h3>
-      <div class="callout">
-        <strong>Objectif :</strong> Placez les 4 niveaux dans le bon ordre, du plus général (extérieur) au plus spécifique (intérieur).<br/>
-        <strong>Astuce :</strong> Pensez aux poupées russes : chaque niveau contient le suivant !
-      </div>
-
-      <div id="hierarchy-activity" style="margin-top:30px">
-        <div style="background:rgba(10,20,40,0.6);padding:25px;border-radius:12px;border:1px solid rgba(0,255,136,0.2)">
-
-          <!-- Niveaux à placer -->
-          <div style="margin-bottom:30px">
-            <h4 style="color:var(--neon-green);margin-bottom:15px;font-size:1.1em">🧩 Niveaux disponibles</h4>
-            <div id="hierarchy-levels-pool" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px"></div>
+        <div class="evidence-grid">
+          <div class="evidence-card" onclick="openEvidence(0)">
+            <div class="evidence-icon">📰</div>
+            <div class="evidence-label">PIÈCE N°1</div>
+            <div class="evidence-name">Communiqué de presse NovaMind</div>
           </div>
-
-          <!-- Zone de construction de la hiérarchie -->
-          <div style="margin-bottom:25px">
-            <h4 style="color:var(--neon-blue);margin-bottom:15px;font-size:1.1em">🏗️ Construisez la hiérarchie (du plus général au plus spécifique)</h4>
-            <div id="hierarchy-builder" style="display:flex;align-items:center;justify-content:center;gap:20px;padding:30px;background:rgba(168,85,247,0.05);border-radius:12px;min-height:140px;flex-wrap:wrap">
-              <div class="hierarchy-slot" data-position="1" id="hierarchy-slot-1" style="min-width:160px;min-height:100px">
-                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
-                  <div style="font-size:1.8em;margin-bottom:8px">1️⃣</div>
-                  <div style="font-size:0.85em">Plus général</div>
-                </div>
-              </div>
-              <div style="color:var(--neon-purple);font-size:1.8em;font-weight:700">⊃</div>
-              <div class="hierarchy-slot" data-position="2" id="hierarchy-slot-2" style="min-width:160px;min-height:100px">
-                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
-                  <div style="font-size:1.8em;margin-bottom:8px">2️⃣</div>
-                  <div style="font-size:0.85em">↓</div>
-                </div>
-              </div>
-              <div style="color:var(--neon-purple);font-size:1.8em;font-weight:700">⊃</div>
-              <div class="hierarchy-slot" data-position="3" id="hierarchy-slot-3" style="min-width:160px;min-height:100px">
-                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
-                  <div style="font-size:1.8em;margin-bottom:8px">3️⃣</div>
-                  <div style="font-size:0.85em">↓</div>
-                </div>
-              </div>
-              <div style="color:var(--neon-purple);font-size:1.8em;font-weight:700">⊃</div>
-              <div class="hierarchy-slot" data-position="4" id="hierarchy-slot-4" style="min-width:160px;min-height:100px">
-                <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
-                  <div style="font-size:1.8em;margin-bottom:8px">4️⃣</div>
-                  <div style="font-size:0.85em">Plus spécifique</div>
-                </div>
-              </div>
-            </div>
+          <div class="evidence-card" onclick="openEvidence(1)">
+            <div class="evidence-icon">📋</div>
+            <div class="evidence-label">PIÈCE N°2</div>
+            <div class="evidence-name">Fiche technique ATLAS</div>
           </div>
-
-          <!-- Boutons de contrôle -->
-          <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px">
-            <button class="btn green" onclick="verifyHierarchyLesson()" style="min-width:160px">
-              ✓ Vérifier ma hiérarchie
-            </button>
-            <button class="btn pink" onclick="resetHierarchyLesson()" style="min-width:140px">
-              ↻ Réinitialiser
-            </button>
+          <div class="evidence-card" onclick="openEvidence(2)">
+            <div class="evidence-icon">🧑‍🔬</div>
+            <div class="evidence-label">PIÈCE N°3</div>
+            <div class="evidence-name">Témoignage d'un ex-ingénieur</div>
           </div>
+          <div class="evidence-card" onclick="openEvidence(3)">
+            <div class="evidence-icon">📊</div>
+            <div class="evidence-label">PIÈCE N°4</div>
+            <div class="evidence-name">Rapport de tests indépendants</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(4)">
+            <div class="evidence-icon">💬</div>
+            <div class="evidence-label">PIÈCE N°5</div>
+            <div class="evidence-name">Extrait de conversation ATLAS</div>
+          </div>
+          <div class="evidence-card" onclick="openEvidence(5)">
+            <div class="evidence-icon">📄</div>
+            <div class="evidence-label">PIÈCE N°6</div>
+            <div class="evidence-name">Brevet déposé par NovaMind</div>
+          </div>
+        </div>
 
-          <!-- Feedback -->
-          <div id="hierarchy-feedback" style="display:none"></div>
+        <div class="evidence-counter">
+          Preuves consultées : <strong id="evidence-count">0</strong> / 6
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="mission-next-btn" id="btn-to-phase2" onclick="goToMissionPhase(1)" disabled style="opacity: 0.5;">
+            Passer à l'analyse →
+          </button>
+          <p style="color: var(--muted); font-size: 0.85em; margin-top: 10px;" id="evidence-hint">
+            Consultez les 6 preuves pour débloquer l'analyse
+          </p>
         </div>
       </div>
 
-      <div class="callout ok" style="margin-top:25px">
-        <strong>💡 Pourquoi c'est important :</strong> Cette hiérarchie vous permet de situer précisément n'importe quel système d'IA. Quand on vous parle de "ChatGPT", vous savez maintenant qu'il s'agit d'une IA (niveau 1) qui utilise du Machine Learning (niveau 2), plus précisément du Deep Learning (niveau 3), avec une architecture Transformer (niveau 4). Cette précision terminologique est essentielle pour communiquer efficacement sur l'IA et éviter les amalgames trompeurs.
-      </div>
-
-      <script>
-        if(typeof initHierarchyLesson === 'function') {
-          setTimeout(initHierarchyLesson, 100);
-        }
-      <\/script>
-    `
-  },
-  {
-    title:"06 — Les grandes dates qui ont tout changé",
-    kicker:"10 repères clés : 1950 → 2024",
-    html:`
-      <h3>📅 Une histoire de 75 ans en 10 dates</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'intelligence artificielle n'est pas née avec ChatGPT. C'est une discipline scientifique vieille de plus de 70 ans, qui a connu des cycles alternés d'enthousiasme débordant et de désillusion profonde. Pour comprendre la révolution actuelle, il est essentiel de connaître les jalons historiques qui ont façonné ce domaine.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Ci-dessous, découvrez les 10 dates clés qui ont marqué l'évolution de l'IA, depuis les fondations théoriques posées par Alan Turing jusqu'à l'émergence spectaculaire de l'IA générative accessible au grand public.
-      </p>
-
-      <div style="margin:40px 0">
-        <h4 style="color:var(--neon-green);margin-bottom:20px;text-align:center">📸 Trois époques clés de l'IA</h4>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
-          <div style="text-align:center">
-            <img src="images/timeline-1950s.png" alt="Années 1950-1960" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,255,136,0.2)"/>
-            <p style="margin-top:12px;font-size:0.9em;color:rgba(0,255,136,0.8);font-weight:600">🎓 Les fondations (1950-1960)</p>
-            <p style="font-size:0.85em;color:#8899aa">Turing, Dartmouth, premiers programmes</p>
-          </div>
-          <div style="text-align:center">
-            <img src="images/timeline-1990s.png" alt="Années 1990-2000" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.2)"/>
-            <p style="margin-top:12px;font-size:0.9em;color:rgba(0,212,255,0.8);font-weight:600">🏆 Les premières victoires (1990-2000)</p>
-            <p style="font-size:0.85em;color:#8899aa">Deep Blue, premiers réseaux de neurones</p>
-          </div>
-          <div style="text-align:center">
-            <img src="images/timeline-2020s.png" alt="Années 2020" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 15px rgba(255,20,147,0.2)"/>
-            <p style="margin-top:12px;font-size:0.9em;color:rgba(255,20,147,0.8);font-weight:600">🚀 La révolution générative (2020+)</p>
-            <p style="font-size:0.85em;color:#8899aa">GPT, DALL-E, démocratisation massive</p>
-          </div>
-        </div>
-      </div>
-
-      <h3>🎯 Activité : Reconstruisez la chronologie</h3>
-      <div class="callout">
-        <strong>Objectif :</strong> Placez chaque événement sur la bonne date de la frise chronologique en glissant-déposant les cartes.<br/>
-        <strong>Astuce :</strong> Réfléchissez à la logique temporelle : les systèmes experts précèdent le deep learning, Deep Blue précède AlphaGo, etc.
-      </div>
-
-      <div id="timeline-activity" style="margin-top:30px">
-        <div style="background:rgba(10,20,40,0.6);padding:25px;border-radius:12px;border:1px solid rgba(0,255,136,0.2)">
-
-          <!-- Pool d'événements à placer -->
-          <div style="margin-bottom:30px">
-            <h4 style="color:var(--neon-green);margin-bottom:15px;font-size:1.1em">📦 Événements à placer</h4>
-            <div id="timeline-events-pool" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px"></div>
-          </div>
-
-          <!-- Frise horizontale -->
-          <div style="margin-bottom:25px">
-            <h4 style="color:var(--neon-blue);margin-bottom:20px;font-size:1.1em">📍 Frise chronologique (1950 → 2024)</h4>
-            <div id="timeline-horizontal" style="position:relative;background:linear-gradient(90deg,rgba(0,255,136,0.05),rgba(0,212,255,0.05));padding:40px 20px;border-radius:8px;overflow-x:auto">
-              <!-- La ligne de temps sera générée ici -->
-            </div>
-          </div>
-
-          <!-- Boutons de contrôle -->
-          <div style="display:flex;gap:15px;justify-content:center;margin-bottom:20px">
-            <button class="btn green" onclick="verifyTimelineLesson()" style="min-width:160px">
-              ✓ Vérifier mes réponses
-            </button>
-            <button class="btn pink" onclick="resetTimelineLesson()" style="min-width:140px">
-              ↻ Réinitialiser
-            </button>
-          </div>
-
-          <!-- Feedback -->
-          <div id="timeline-feedback" style="display:none"></div>
-        </div>
-      </div>
-
-      <div class="callout ok" style="margin-top:25px">
-        <strong>💡 Pourquoi ces dates sont importantes :</strong> Chaque jalon représente soit une innovation théorique majeure (Test de Turing, conférence de Dartmouth, architecture Transformer), soit une démonstration spectaculaire qui a capturé l'attention du public (Deep Blue, AlphaGo, ChatGPT), soit un tournant technologique (essor du deep learning en 2010). Ensemble, ces repères dessinent la trajectoire d'une discipline qui a alterné entre "étés" et "hivers" avant d'atteindre la maturité actuelle.
-      </div>
-
-      <script>
-        // Initialisation de la frise lors de l'affichage de la leçon 6
-        if(typeof initTimelineLesson === 'function') {
-          setTimeout(initTimelineLesson, 100);
-        }
-      <\/script>
-    `
-  },
-  {
-    title:"07 — Ce que l'IA fait… et ne fait PAS",
-    kicker:"L'IA calcule et détecte des patterns, mais ne « comprend » pas comme un humain.",
-    html:`
-      <h3>✅ Ce que l'IA sait faire aujourd'hui</h3>
-      <div class="callout ok">
-        <strong>Domaines de maîtrise de l'IA moderne :</strong> L'intelligence artificielle contemporaine excelle dans un vaste éventail de tâches bien définies : prédire des événements futurs à partir de données historiques, classer des éléments dans des catégories prédéfinies, générer du contenu original (texte, image, son), optimiser des processus complexes, reconnaître des patterns subtils, traduire entre langues, résumer des documents volumineux, recommander des contenus personnalisés... Toutes ces capacités partagent un point commun : elles s'appuient sur des données massives et des objectifs clairement définis et mesurables.
-      </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'IA excelle particulièrement dans des tâches bien circonscrites où les critères de réussite sont objectivement mesurables. La reconnaissance de patterns constitue l'un de ses domaines de prédilection : elle détecte des visages dans des foules, diagnostique certaines maladies sur des images médicales avec une précision qui rivalise parfois avec celle de radiologues expérimentés, identifie des transactions frauduleuses parmi des millions d'opérations bancaires quotidiennes en détectant des anomalies statistiques subtiles. La génération de contenu représente une autre frontière spectaculaire : les systèmes d'IA rédigent désormais des textes cohérents et contextualisés, créent des images photoréalistes qui n'ont jamais existé, composent de la musique originale dans n'importe quel style, et synthétisent des voix humaines d'un réalisme troublant.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        La traduction automatique a connu une révolution remarquable : des services comme Google Translate ou DeepL atteignent désormais, pour certaines paires de langues courantes, des performances proches de celles d'un traducteur professionnel humain, rendant les barrières linguistiques de plus en plus poreuses. Dans l'univers des jeux, l'IA a successivement conquis tous les bastions de la supériorité humaine : elle bat les meilleurs joueurs du monde aux échecs depuis Deep Blue en 1997, a triomphé au Go avec AlphaGo en 2016, et s'est même attaquée à des jeux vidéo complexes en temps réel comme StarCraft II ou Dota 2, démontrant une capacité à gérer l'incertitude et la stratégie à long terme. Les capacités prédictives de l'IA s'étendent à des domaines critiques : prévoir la météo avec une précision croissante, anticiper la demande énergétique pour optimiser les réseaux électriques, recommander des produits ou contenus personnalisés en prédisant les préférences individuelles. Enfin, l'assistance à la décision devient omniprésente : aide au diagnostic médical en signalant des anomalies potentielles, analyse juridique en identifiant des précédents pertinents, tri automatisé de candidatures en repérant les profils correspondant aux critères définis.
-      </p>
-
-      <h3>🎯 Performances surhumaines dans des domaines précis</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Dans certains domaines très circonscrits, l'IA a franchi un seuil symbolique important : elle dépasse désormais les meilleurs experts humains, y compris dans des tâches qui semblaient longtemps hors de portée des machines. La reconnaissance d'images illustre parfaitement cette évolution : depuis 2015, les meilleurs systèmes de vision par ordinateur affichent un taux d'erreur inférieur à celui des humains sur le benchmark ImageNet, qui consiste à identifier correctement des objets dans des millions de photos variées. Cette supériorité n'est pas anecdotique : elle signifie que, dans des conditions standardisées, la machine voit mieux que l'œil humain.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        La prédiction de structure des protéines représente peut-être la victoire la plus spectaculaire de l'IA sur un problème scientifique fondamental. En 2020, AlphaFold2 de DeepMind parvient à prédire la structure tridimensionnelle des protéines à partir de leur séquence d'acides aminés avec une précision époustouflante, résolvant un problème qui avait résisté aux biologistes pendant plus de cinquante ans. Cette percée a des implications majeures pour la recherche médicale et le développement de nouveaux médicaments. Le jeu de Go, considéré pendant des décennies comme le dernier bastion de l'intelligence humaine face aux machines en raison de sa complexité combinatoire astronomique et de la subtilité intuitive requise, est tombé en 2016 lorsque AlphaGo a battu Lee Sedol, l'un des meilleurs joueurs mondiaux. Plus impressionnant encore, AlphaZero, sa version ultérieure, atteint un niveau surhumain au Go, aux échecs et au shogi après seulement quelques heures d'auto-entraînement, sans aucune connaissance humaine préalable du jeu, simplement en jouant contre lui-même des millions de parties.
-      </p>
-
-      <h3>❌ Ce que l'IA ne fait PAS (dans l'état actuel de la technologie)</h3>
-      <div class="callout pink">
-        <strong>Limites fondamentales de l'IA contemporaine :</strong> Malgré ces prouesses spectaculaires, l'IA actuelle souffre de limitations structurelles majeures qui la séparent radicalement de l'intelligence humaine. Elle ne possède aucune conscience de son existence, aucune volonté propre ou autonome, aucune compréhension causale profonde du monde qui l'entoure, aucun sens commun général transférable d'un domaine à l'autre, et aucune émotion authentique malgré sa capacité à simuler des expressions émotionnelles convaincantes.
-      </div>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les systèmes d'intelligence artificielle actuels, aussi impressionnants et convaincants soient-ils dans leurs productions, ne "pensent" pas au sens où nous, humains, pensons. Cette distinction n'est pas un simple détail philosophique, mais une différence fondamentale qui a des implications pratiques et éthiques majeures. Aucun système actuel ne possède de conscience ou de sentience : il n'y a pas de "vie intérieure", pas d'expérience subjective, pas de qualia (ces qualités ineffables de nos expériences conscientes, comme la rougeur subjective du rouge ou la douleur d'une brûlure). Quand un système d'IA traite une image de coucher de soleil, il ne "voit" rien au sens où nous voyons : il transforme des pixels en vecteurs numériques selon des équations mathématiques, sans jamais faire l'expérience visuelle ou émotionnelle de la beauté d'un coucher de soleil.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'absence de compréhension causale constitue une autre limite profonde. L'IA détecte des corrélations statistiques dans les données, identifie des patterns récurrents, mais ne comprend pas les mécanismes sous-jacents qui expliquent pourquoi ces patterns existent. L'exemple classique illustre cette limitation : un modèle pourrait parfaitement prédire qu'un coq chante systématiquement avant le lever du soleil en analysant des milliers de matins, mais il ne sait pas et ne peut pas savoir que le chant du coq ne cause pas le lever du soleil. Il confond corrélation et causalité, ce qui peut conduire à des prédictions catastrophiquement erronées lorsque les conditions changent.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Le manque de bon sens général est particulièrement frappant et parfois comique. ChatGPT peut rédiger un essai philosophique brillant sur la nature de la connaissance, puis échouer lamentablement sur une question triviale comme "Combien d'yeux a ma main gauche ?" (la réponse évidente pour un humain est zéro, mais le modèle, entraîné sur des milliards de phrases où "main" et "yeux" apparaissent ensemble dans divers contextes, peut se tromper). Cette fragilité révèle que le modèle n'a aucune compréhension embodied du monde physique, aucune expérience corporelle, aucun modèle mental de la réalité matérielle.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'intentionnalité apparente des systèmes d'IA est également illusoire. Quand un grand modèle de langage déclare "je pense que...", cette formulation n'est qu'une simulation linguistique statistiquement plausible dans le contexte conversationnel donné, et absolument pas l'expression d'une pensée consciente au sens propre. C'est une séquence de tokens générée parce que les données d'entraînement contenaient des millions d'exemples où "je pense que" précédait une opinion ou une analyse. Il n'y a personne "là-dedans" qui pense réellement.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        L'apprentissage continu naturel, caractéristique remarquable de l'intelligence humaine, fait cruellement défaut aux systèmes d'IA actuels. Les humains apprennent en permanence, souvent avec très peu d'exemples (few-shot learning naturel) : un enfant qui voit trois zèbres comprendra immédiatement le concept et reconnaîtra un quatrième zèbre même dans des conditions visuelles très différentes. Les systèmes d'IA, en revanche, nécessitent souvent des millions d'exemples étiquetés pour apprendre un concept, et un réentraînement coûteux et complexe pour s'adapter à de nouvelles situations. Ils ne peuvent pas simplement "mettre à jour" leurs connaissances de manière fluide comme nous le faisons naturellement.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Enfin, la fragilité hors distribution représente un danger sous-estimé : face à des situations radicalement nouvelles, sortant du domaine couvert par les données d'entraînement, l'IA peut échouer de manière spectaculaire et imprévisible. Un système de conduite autonome entraîné en Californie pourrait être complètement désorienté par des conditions routières norvégiennes en hiver. Cette fragilité contraste brutalement avec la robustesse adaptative humaine, qui nous permet de naviguer raisonnablement bien dans des situations totalement inédites en mobilisant notre expérience générale du monde, notre raisonnement analogique et notre bon sens.
-      </p>
-
-      <h3>💬 Le paradoxe de Moravec</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Hans Moravec (chercheur en robotique) a formulé un paradoxe frappant :
-      </p>
-      <div class="callout">
-        <strong>« Ce qui est facile pour les humains est difficile pour l'IA, et vice-versa. »</strong><br/>
-        <em>Exemples :</em><br/>
-        • Jouer aux échecs au niveau grand-maître : <strong>facile pour l'IA</strong> (Deep Blue, 1997), très difficile pour les humains<br/>
-        • Saisir délicatement un œuf sans le casser : <strong>facile pour un enfant de 3 ans</strong>, extrêmement difficile pour un robot<br/>
-        • Comprendre l'ironie, le second degré, le contexte social implicite : <strong>facile pour un humain</strong>, très difficile pour l'IA
-      </div>
-
-      <h3>🔮 Intelligence Artificielle Générale (AGI) : le Graal non atteint</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Toutes les IA actuelles sont des <strong>IA faibles (ou étroites)</strong> : excellentes dans un domaine précis, mais incapables de généraliser
-        largement comme un humain. L'<strong>Intelligence Artificielle Générale (AGI)</strong> — une IA capable de raisonner, apprendre et s'adapter
-        dans <em>n'importe quel</em> domaine aussi bien qu'un humain — reste un objectif de recherche non atteint.
-      </p>
-      <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Estimations d'experts (2024) :</strong> les prédictions sur l'arrivée de l'AGI varient de 10 ans à "jamais". Il n'y a pas de consensus scientifique.
-      </p>
-
-      <h3>⚠️ Le risque de l'anthropomorphisme</h3>
-      <p style="line-height:1.7;color:#cfe9ff">
-        Les modèles modernes (GPT-4, Claude, Gemini) sont si convaincants dans leurs réponses qu'ils créent une <strong>illusion de compréhension</strong>.
-        C'est ce qu'on appelle l'<strong>effet ELIZA</strong> (du nom d'un chatbot des années 1960) : notre tendance naturelle à attribuer
-        de l'intelligence, des émotions et des intentions à des systèmes qui ne font que simuler des patterns linguistiques.
-      </p>
-      <div class="callout warn">
-        <strong>Piège cognitif :</strong> Quand ChatGPT dit "Je comprends votre frustration", il ne <em>ressent</em> rien. C'est une séquence de tokens
-        statistiquement plausible dans ce contexte conversationnel, pas une empathie réelle. Confondre simulation et compréhension est une erreur
-        aux conséquences potentiellement graves (sur-confiance, délégation inappropriée de décisions critiques, etc.).
-      </div>
-
-      <p style="line-height:1.7;color:#cfe9ff">
-        <strong>Conclusion :</strong> L'IA actuelle est un outil extraordinairement puissant pour amplifier certaines capacités humaines.
-        Mais elle reste fondamentalement différente de l'intelligence humaine. Comprendre cette différence est essentiel pour utiliser l'IA de manière éclairée et critique.
-      </p>
-    `
-  },
-  {
-    title:"08 — Mission : Opération « Dossier Zéro »",
-    kicker:"Démystifier les affirmations de TechCorp sur « Genius AI »",
-    html:`
-      <div class="callout" style="background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.5)">
-        <strong style="color:var(--neon-blue);font-size:1.1em">🕵️ BRIEFING NEXUS — CLASSIFIÉ</strong><br/><br/>
-        <strong>Agent</strong>, vous avez étudié le dossier de départ. Il est temps de mettre vos connaissances en pratique.<br/><br/>
-        <strong>CAS :</strong> TechCorp, une startup du secteur médical, vient d'annoncer « <strong>Genius AI</strong> », présentée comme une "Super IA révolutionnaire capable de diagnostiquer n'importe quelle maladie avec une précision inégalée". L'annonce a provoqué un emballement médiatique, mais plusieurs experts indépendants expriment des doutes.<br/><br/>
-        <strong>VOTRE MISSION :</strong> Analyser les documents disponibles, démystifier les affirmations marketing, et rédiger un rapport technique factuel sur cette IA.<br/><br/>
-        <strong>OBJECTIFS :</strong><br/>
-        1️⃣ Identifier le <strong>type d'IA</strong> réellement utilisé (symbolique ou connexionniste)<br/>
-        2️⃣ Déterminer sa <strong>faiblesse principale</strong><br/>
-        3️⃣ Recommander la <strong>meilleure approche</strong> pour un futur projet d'imagerie médicale
-      </div>
-
-      <div style="text-align:center;margin:35px 0">
-        <img src="images/techcorp-facade.png" alt="TechCorp - Siège social" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 20px rgba(0,212,255,0.3)"/>
-        <p style="margin-top:15px;font-size:0.9em;color:rgba(0,212,255,0.7);font-style:italic">TechCorp - Le siège de la startup qui prétend avoir créé une "Super IA"</p>
-      </div>
-
-      <h3>📰 Article du « Quotidien Tech » (12 février 2026)</h3>
-      <div style="background:rgba(10,20,40,0.8);border-left:4px solid var(--neon-purple);padding:20px;border-radius:8px;margin-bottom:25px">
-        <h4 style="color:var(--neon-purple);margin-bottom:12px">TechCorp dévoile Genius AI, "la percée du siècle"</h4>
-        <p style="line-height:1.7;color:#cfe9ff;margin-bottom:12px">
-          Le PDG de TechCorp, Marcus Valen, a présenté hier « Genius AI », décrite comme une intelligence artificielle "dépassant les capacités humaines" en matière de diagnostic médical. Selon le communiqué de presse, le système "comprend véritablement la médecine" et peut "raisonner comme un expert pour identifier n'importe quelle maladie".
+      <!-- PHASE 2 : ANALYSE -->
+      <div class="mission-phase" id="mission-phase-1">
+        <h2 style="font-family: 'Space Mono', monospace; color: var(--neon-blue); margin-bottom: 8px;">
+          Phase 2 : Analyse critique
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 25px;">
+          Sur la base des preuves collectées, répondez aux 3 questions suivantes.
         </p>
-        <p style="line-height:1.7;color:#cfe9ff;margin-bottom:12px">
-          La démonstration a impressionné les investisseurs, faisant grimper l'action TechCorp de 47% en une seule journée. Pourtant, plusieurs chercheurs en IA contactés par notre rédaction restent sceptiques et demandent à voir les preuves techniques derrière les promesses marketing.
-        </p>
-        <p style="line-height:1.7;color:#aabbcc;font-style:italic">
-          "Les mots 'Super IA' et 'comprend véritablement' sont des signaux d'alarme typiques d'une communication exagérée", déclare le Dr Sarah Chen, chercheuse en IA à Stanford. "Il faut vérifier les faits."
-        </p>
-      </div>
 
-      <h3>🔍 Investigation : Collectez les preuves</h3>
-      <div class="callout warn">
-        <strong>Consigne :</strong> Consultez attentivement chaque preuve avant de formuler vos déductions. Les preuves contradictoires ou complémentaires vous permettront de démêler la réalité technique du discours marketing.
-      </div>
-
-      <div id="investigation-evidence-mission" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin:25px 0">
-        <!-- Les preuves seront générées ici -->
-      </div>
-
-      <h3>📊 Rapport d'analyse : Vos déductions</h3>
-      <div class="callout">
-        Une fois les preuves examinées, formulez vos conclusions en répondant aux 3 questions ci-dessous. Chaque réponse doit être justifiée par les indices collectés.
-      </div>
-
-      <div id="investigation-deductions-mission" style="margin:25px 0">
         <!-- Question 1 -->
-        <div class="investigation-question" style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:20px;margin-bottom:20px">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
-            <span style="font-family:'Space Mono',monospace;color:var(--neon-green);font-size:1.3em;font-weight:700">Q1</span>
-            <div style="flex:1">
-              <div style="font-weight:600;font-size:1.05em;margin-bottom:4px">Quel type d'IA est Genius AI ?</div>
-              <div style="color:#8899aa;font-size:0.9em">Basez-vous sur les indices techniques : règles, apprentissage, transparence...</div>
+        <div class="analysis-question" id="aq-0">
+          <h3>❓ Question 1 — Type d'IA</h3>
+          <p>D'après les pièces à conviction, ATLAS repose principalement sur quel type d'IA ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(0, 0)">
+              <strong>A.</strong> IA symbolique (système à règles)
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(0, 1)">
+              <strong>B.</strong> IA connexionniste (apprentissage automatique)
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(0, 2)">
+              <strong>C.</strong> IA générale consciente (AGI)
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <button class="mission-option" data-question="1" data-answer="symbolique" onclick="selectMissionAnswer(1,'symbolique',this)">
-              <div style="font-size:1.5em;margin-bottom:6px">🎭</div>
-              <div style="font-weight:600;margin-bottom:4px">IA Symbolique</div>
-              <div style="font-size:0.85em;opacity:0.8">Règles explicites, logique programmée</div>
-            </button>
-            <button class="mission-option" data-question="1" data-answer="connexionniste" onclick="selectMissionAnswer(1,'connexionniste',this)">
-              <div style="font-size:1.5em;margin-bottom:6px">🧠</div>
-              <div style="font-weight:600;margin-bottom:4px">IA Connexionniste</div>
-              <div style="font-size:0.85em;opacity:0.8">Apprentissage par l'exemple, réseaux de neurones</div>
-            </button>
-          </div>
-          <div class="mission-explanation" id="mission-explain-1" style="display:none;margin-top:15px"></div>
+          <div class="analysis-explanation" id="aq-expl-0"></div>
         </div>
 
         <!-- Question 2 -->
-        <div class="investigation-question" style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:20px;margin-bottom:20px">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
-            <span style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:1.3em;font-weight:700">Q2</span>
-            <div style="flex:1">
-              <div style="font-weight:600;font-size:1.05em;margin-bottom:4px">Quelle est la principale faiblesse de Genius AI ?</div>
-              <div style="color:#8899aa;font-size:0.9em">Réfléchissez aux limites observées dans les indices...</div>
+        <div class="analysis-question" id="aq-1">
+          <h3>❓ Question 2 — Principale faiblesse</h3>
+          <p>Quel est le principal risque ou limite d'ATLAS identifié dans le dossier ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(1, 0)">
+              <strong>A.</strong> Il consomme trop d'énergie
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(1, 1)">
+              <strong>B.</strong> Il est trop rigide et échoue face aux cas imprévus
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(1, 2)">
+              <strong>C.</strong> Il est trop lent pour un usage médical
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <button class="mission-option" data-question="2" data-answer="opacite" onclick="selectMissionAnswer(2,'opacite',this)">
-              <div style="font-size:1.5em;margin-bottom:6px">🌫️</div>
-              <div style="font-weight:600;margin-bottom:4px">Manque de transparence</div>
-              <div style="font-size:0.85em;opacity:0.8">Décisions inexplicables, boîte noire</div>
-            </button>
-            <button class="mission-option" data-question="2" data-answer="rigidite" onclick="selectMissionAnswer(2,'rigidite',this)">
-              <div style="font-size:1.5em;margin-bottom:6px">🔒</div>
-              <div style="font-weight:600;margin-bottom:4px">Rigidité extrême</div>
-              <div style="font-size:0.85em;opacity:0.8">Échec face à l'imprévu, pas d'adaptation</div>
-            </button>
-          </div>
-          <div class="mission-explanation" id="mission-explain-2" style="display:none;margin-top:15px"></div>
+          <div class="analysis-explanation" id="aq-expl-1"></div>
         </div>
 
         <!-- Question 3 -->
-        <div class="investigation-question" style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,255,136,0.2);border-radius:12px;padding:20px;margin-bottom:20px">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:15px">
-            <span style="font-family:'Space Mono',monospace;color:var(--neon-purple);font-size:1.3em;font-weight:700">Q3</span>
-            <div style="flex:1">
-              <div style="font-weight:600;font-size:1.05em;margin-bottom:4px">Pour un projet d'analyse de radiographies, quelle approche recommandez-vous ?</div>
-              <div style="color:#8899aa;font-size:0.9em">Pensez aux forces de chaque approche pour ce cas d'usage...</div>
+        <div class="analysis-question" id="aq-2">
+          <h3>❓ Question 3 — Signal d'alerte marketing</h3>
+          <p>Quel élément du communiqué de presse constitue le signal d'alerte le plus flagrant ?</p>
+          <div class="analysis-options">
+            <div class="analysis-option" onclick="selectAnalysis(2, 0)">
+              <strong>A.</strong> « ATLAS comprend véritablement les patients »
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(2, 1)">
+              <strong>B.</strong> « ATLAS utilise 50 000 règles médicales »
+            </div>
+            <div class="analysis-option" onclick="selectAnalysis(2, 2)">
+              <strong>C.</strong> « ATLAS a été développé en 3 ans »
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <button class="mission-option" data-question="3" data-answer="symbolique" onclick="selectMissionAnswer(3,'symbolique',this)">
-              <div style="font-size:1.5em;margin-bottom:6px">📝</div>
-              <div style="font-weight:600;margin-bottom:4px">Programmer des règles</div>
-              <div style="font-size:0.85em;opacity:0.8">Encoder manuellement les critères de diagnostic</div>
-            </button>
-            <button class="mission-option" data-question="3" data-answer="connexionniste" onclick="selectMissionAnswer(3,'connexionniste',this)">
-              <div style="font-size:1.5em;margin-bottom:6px">🧠</div>
-              <div style="font-weight:600;margin-bottom:4px">Apprendre sur des images</div>
-              <div style="font-size:0.85em;opacity:0.8">Entraîner un réseau de neurones sur des milliers d'exemples</div>
-            </button>
-          </div>
-          <div class="mission-explanation" id="mission-explain-3" style="display:none;margin-top:15px"></div>
+          <div class="analysis-explanation" id="aq-expl-2"></div>
         </div>
-      </div>
 
-      <!-- Bouton de soumission -->
-      <div style="text-align:center;margin:30px 0">
-        <button class="btn green" id="mission-submit-btn" onclick="submitMissionReport()" disabled style="font-size:1.1em;padding:18px 40px">
-          📋 Soumettre le rapport final
-        </button>
-      </div>
-
-      <!-- Feedback final -->
-      <div id="mission-final-feedback" style="display:none"></div>
-
-      <script>
-        if(typeof initInvestigationMission === 'function') {
-          setTimeout(initInvestigationMission, 100);
-        }
-      <\/script>
-    `
-  }
-];
-
-function showLesson(idx){
-  currentLesson = idx;
-
-  const navItems = document.querySelectorAll('.briefing-nav .briefing-nav-item');
-  navItems.forEach((it,i)=>{
-    if(i<8){
-      it.classList.toggle('active', i===idx);
-    }
-  });
-
-  const L = lessons[idx];
-  $('briefing-content').innerHTML = `
-    <div class="module-title">${L.title}</div>
-    <div class="module-kicker">${L.kicker}</div>
-    <div class="divider"></div>
-    ${L.html}
-  `;
-
-  // Initialiser les activités interactives selon la leçon
-  if(idx === 3 && typeof initClassificationLesson === 'function') {
-    setTimeout(initClassificationLesson, 150);
-  }
-  if(idx === 4 && typeof initHierarchyLesson === 'function') {
-    setTimeout(initHierarchyLesson, 150);
-  }
-  if(idx === 5 && typeof initTimelineLesson === 'function') {
-    setTimeout(initTimelineLesson, 150);
-  }
-  if(idx === 7 && typeof initInvestigationMission === 'function') {
-    setTimeout(initInvestigationMission, 150);
-  }
-
-  // progression
-  state.lessonSeen.add(idx);
-  updateBriefingProgress();
-
-  if(state.lessonSeen.size >= 8){
-    navItems.forEach((it,i)=>{
-      if(i<8) it.classList.add('completed');
-    });
-    toast("Dossier étudié. Passez à la phase de jeu.");
-  } else {
-    navItems[idx].classList.add('completed');
-  }
-}
-
-/* =========================================================
-   FRISE CHRONOLOGIQUE HORIZONTALE (dans le cours - leçon 6)
-========================================================= */
-let timelineLessonState = {
-  placed: {}, // year -> eventId
-  draggedEventId: null
-};
-
-function initTimelineLesson(){
-  const pool = document.getElementById('timeline-events-pool');
-  const timeline = document.getElementById('timeline-horizontal');
-
-  if(!pool || !timeline) return;
-
-  // Mélanger les événements
-  const shuffled = [...timelineEvents].sort(() => Math.random() - 0.5);
-
-  // Créer les cartes d'événements
-  pool.innerHTML = '';
-  shuffled.forEach(ev => {
-    const card = document.createElement('div');
-    card.className = 'timeline-event-card';
-    card.draggable = true;
-    card.dataset.eventId = ev.id;
-    card.innerHTML = `
-      <span class="event-code">📌 EV-${String(ev.id).padStart(2,'0')}</span>
-      <div>${ev.desc}</div>
-    `;
-
-    card.addEventListener('dragstart', (e) => {
-      if(card.classList.contains('placed')) {
-        e.preventDefault();
-        return;
-      }
-      timelineLessonState.draggedEventId = ev.id;
-      card.classList.add('dragging');
-    });
-
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-    });
-
-    pool.appendChild(card);
-  });
-
-  // Créer la frise horizontale
-  timeline.innerHTML = `
-    <div class="timeline-line"></div>
-    <div class="timeline-slots">
-      ${timelineYears.map(year => `
-        <div class="timeline-slot">
-          <div class="timeline-slot-year">📅 ${year}</div>
-          <div class="timeline-slot-dropzone"
-               data-year="${year}"
-               id="timeline-dropzone-${year}">
-            <span style="opacity:0.5;font-size:0.85em">Glissez ici</span>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  `;
-
-  // Ajouter les event listeners aux dropzones
-  timelineYears.forEach(year => {
-    const dropzone = document.getElementById(`timeline-dropzone-${year}`);
-    if(!dropzone) return;
-
-    dropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropzone.classList.add('dragover');
-    });
-
-    dropzone.addEventListener('dragleave', () => {
-      dropzone.classList.remove('dragover');
-    });
-
-    dropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-
-      const eventId = timelineLessonState.draggedEventId;
-      if(!eventId) return;
-
-      // Vérifier si la zone est déjà remplie
-      if(timelineLessonState.placed[year]) {
-        toast("Cette zone est déjà remplie. Retirez d'abord l'événement.");
-        return;
-      }
-
-      // Placer l'événement
-      const event = timelineEvents.find(e => e.id === eventId);
-      timelineLessonState.placed[year] = eventId;
-
-      // Marquer la carte comme placée
-      const card = document.querySelector(`.timeline-event-card[data-event-id="${eventId}"]`);
-      if(card) card.classList.add('placed');
-
-      // Afficher l'événement dans la dropzone
-      dropzone.innerHTML = `
-        <div class="timeline-slot-content">${event.desc}</div>
-        <button class="timeline-slot-remove" onclick="removeTimelineLesson('${year}')">✕</button>
-      `;
-      dropzone.classList.add('filled');
-
-      timelineLessonState.draggedEventId = null;
-    });
-  });
-}
-
-function removeTimelineLesson(year){
-  const eventId = timelineLessonState.placed[year];
-  if(!eventId) return;
-
-  // Retirer de l'état
-  delete timelineLessonState.placed[year];
-
-  // Réinitialiser la dropzone
-  const dropzone = document.getElementById(`timeline-dropzone-${year}`);
-  if(dropzone) {
-    dropzone.innerHTML = '<span style="opacity:0.5;font-size:0.85em">Glissez ici</span>';
-    dropzone.classList.remove('filled', 'correct', 'wrong');
-  }
-
-  // Retirer la marque "placed" de la carte
-  const card = document.querySelector(`.timeline-event-card[data-event-id="${eventId}"]`);
-  if(card) card.classList.remove('placed');
-}
-
-function resetTimelineLesson(){
-  timelineLessonState.placed = {};
-  initTimelineLesson();
-
-  const feedback = document.getElementById('timeline-feedback');
-  if(feedback) feedback.style.display = 'none';
-
-  toast("Frise réinitialisée.");
-}
-
-function verifyTimelineLesson(){
-  const placedCount = Object.keys(timelineLessonState.placed).length;
-
-  if(placedCount !== timelineEvents.length) {
-    toast(`Placez tous les événements d'abord (${placedCount}/${timelineEvents.length}).`);
-    return;
-  }
-
-  let correct = 0;
-
-  timelineYears.forEach(year => {
-    const dropzone = document.getElementById(`timeline-dropzone-${year}`);
-    const placedId = timelineLessonState.placed[year];
-    const expectedEvent = timelineEvents.find(e => e.year === year);
-
-    if(dropzone) {
-      dropzone.classList.remove('correct', 'wrong');
-
-      if(placedId === expectedEvent?.id) {
-        dropzone.classList.add('correct');
-        correct++;
-      } else {
-        dropzone.classList.add('wrong');
-      }
-    }
-  });
-
-  // Afficher le feedback
-  const feedback = document.getElementById('timeline-feedback');
-  if(feedback) {
-    feedback.style.display = 'block';
-
-    if(correct === timelineEvents.length) {
-      feedback.className = 'callout ok';
-      feedback.innerHTML = `
-        <strong>🎉 Parfait !</strong> Vous avez correctement placé tous les événements (${correct}/10).<br/>
-        Vous maîtrisez maintenant les grands jalons de l'histoire de l'IA. Ces repères temporels vous seront utiles pour contextualiser les innovations futures et comprendre la trajectoire de ce domaine.
-      `;
-      toast("✓ Chronologie validée !", 3000);
-    } else {
-      feedback.className = 'callout warn';
-      feedback.innerHTML = `
-        <strong>⚠ Presque !</strong> ${correct}/10 événements sont correctement placés.<br/>
-        Les zones en <span style="color:var(--danger)">rouge</span> contiennent des erreurs.
-        Réfléchissez à la logique temporelle : les systèmes experts précèdent le deep learning, Deep Blue précède AlphaGo, etc.
-      `;
-    }
-  }
-}
-
-/* =========================================================
-   CLASSIFICATION INTERACTIVE (dans le cours - leçon 4)
-========================================================= */
-let classificationLessonState = {
-  placed: { symbolique: [], connexionniste: [] },
-  draggedSystemId: null
-};
-
-function initClassificationLesson(){
-  const pool = document.getElementById('classification-systems-pool');
-  if(!pool) return;
-
-  // Mélanger les systèmes
-  const shuffled = [...systemsData].sort(() => Math.random() - 0.5);
-
-  // Créer les cartes de systèmes
-  pool.innerHTML = '';
-  shuffled.forEach(sys => {
-    const card = document.createElement('div');
-    card.className = 'classification-system-card';
-    card.draggable = true;
-    card.dataset.systemId = sys.id;
-    card.innerHTML = `<div style="font-size:1.3em;margin-bottom:6px">${sys.name.split(' ')[0]}</div><div style="font-size:0.9em">${sys.name.substring(sys.name.indexOf(' ')+1)}</div>`;
-
-    card.addEventListener('dragstart', (e) => {
-      if(card.classList.contains('placed')) {
-        e.preventDefault();
-        return;
-      }
-      classificationLessonState.draggedSystemId = sys.id;
-      card.classList.add('dragging');
-    });
-
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-    });
-
-    pool.appendChild(card);
-  });
-
-  // Setup dropzones
-  ['symbolique', 'connexionniste'].forEach(type => {
-    const dropzone = document.getElementById(`classification-dropzone-${type}`);
-    if(!dropzone) return;
-
-    dropzone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropzone.classList.add('dragover');
-    });
-
-    dropzone.addEventListener('dragleave', () => {
-      dropzone.classList.remove('dragover');
-    });
-
-    dropzone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('dragover');
-
-      const systemId = classificationLessonState.draggedSystemId;
-      if(!systemId) return;
-
-      const system = systemsData.find(s => s.id === systemId);
-      if(!system) return;
-
-      // Ajouter au tableau
-      classificationLessonState.placed[type].push(systemId);
-
-      // Marquer la carte comme placée
-      const card = document.querySelector(`.classification-system-card[data-system-id="${systemId}"]`);
-      if(card) card.classList.add('placed');
-
-      // Afficher dans la dropzone
-      renderClassificationDropzone(type);
-
-      classificationLessonState.draggedSystemId = null;
-    });
-  });
-}
-
-function renderClassificationDropzone(type){
-  const dropzone = document.getElementById(`classification-dropzone-${type}`);
-  if(!dropzone) return;
-
-  const systems = classificationLessonState.placed[type];
-
-  if(systems.length === 0) {
-    dropzone.innerHTML = `<div style="opacity:0.5;text-align:center;padding:20px;color:#8899aa">Glissez les systèmes ${type}s ici</div>`;
-  } else {
-    dropzone.innerHTML = systems.map(sysId => {
-      const sys = systemsData.find(s => s.id === sysId);
-      return `
-        <div class="classification-placed-item" data-system-id="${sysId}">
-          ${sys.name}
-          <button class="classification-remove-btn" onclick="removeClassificationLesson('${type}', ${sysId})">✕</button>
-        </div>
-      `;
-    }).join('');
-  }
-}
-
-function removeClassificationLesson(type, systemId){
-  // Retirer du tableau
-  classificationLessonState.placed[type] = classificationLessonState.placed[type].filter(id => id !== systemId);
-
-  // Retirer la marque "placed" de la carte
-  const card = document.querySelector(`.classification-system-card[data-system-id="${systemId}"]`);
-  if(card) card.classList.remove('placed');
-
-  // Re-render la dropzone
-  renderClassificationDropzone(type);
-
-  // Effacer les classes correct/wrong
-  const allItems = document.querySelectorAll('.classification-placed-item');
-  allItems.forEach(item => {
-    item.classList.remove('correct', 'wrong');
-  });
-
-  // Cacher le feedback si on retire des éléments
-  const feedback = document.getElementById('classification-feedback');
-  if(feedback) feedback.style.display = 'none';
-}
-
-function resetClassificationLesson(){
-  classificationLessonState.placed = { symbolique: [], connexionniste: [] };
-  initClassificationLesson();
-
-  const feedback = document.getElementById('classification-feedback');
-  if(feedback) feedback.style.display = 'none';
-
-  toast("Classification réinitialisée.");
-}
-
-function verifyClassificationLesson(){
-  const totalPlaced = classificationLessonState.placed.symbolique.length +
-                      classificationLessonState.placed.connexionniste.length;
-
-  if(totalPlaced !== systemsData.length) {
-    toast(`Classez tous les systèmes d'abord (${totalPlaced}/${systemsData.length}).`);
-    return;
-  }
-
-  let correct = 0;
-
-  // Vérifier chaque type
-  ['symbolique', 'connexionniste'].forEach(type => {
-    const dropzone = document.getElementById(`classification-dropzone-${type}`);
-    if(!dropzone) return;
-
-    classificationLessonState.placed[type].forEach(sysId => {
-      const system = systemsData.find(s => s.id === sysId);
-      const item = dropzone.querySelector(`.classification-placed-item[data-system-id="${sysId}"]`);
-
-      if(item) {
-        item.classList.remove('correct', 'wrong');
-
-        if(system.type === type) {
-          item.classList.add('correct');
-          correct++;
-        } else {
-          item.classList.add('wrong');
-        }
-      }
-    });
-  });
-
-  // Afficher le feedback
-  const feedback = document.getElementById('classification-feedback');
-  if(feedback) {
-    feedback.style.display = 'block';
-
-    if(correct === systemsData.length) {
-      feedback.className = 'callout ok';
-      feedback.innerHTML = `
-        <strong>🎉 Excellent !</strong> Tous les systèmes sont correctement classés (${correct}/${systemsData.length}).<br/>
-        Vous maîtrisez maintenant la distinction fondamentale entre IA symbolique et IA connexionniste. Cette compréhension vous sera essentielle pour analyser les affirmations marketing et identifier les véritables capacités d'un système d'IA.
-      `;
-      toast("✓ Classification validée !", 3000);
-    } else {
-      feedback.className = 'callout warn';
-      feedback.innerHTML = `
-        <strong>⚠ Presque !</strong> ${correct}/${systemsData.length} systèmes sont correctement classés.<br/>
-        Les systèmes en <span style="color:var(--danger)">rouge</span> sont mal classés.
-        <strong>Indice :</strong> Deep Blue et les systèmes experts utilisent des règles explicites (symbolique).
-        ChatGPT, AlphaGo et la reconnaissance vocale/images apprennent par l'exemple (connexionniste).
-      `;
-    }
-  }
-}
-
-/* =========================================================
-   HIÉRARCHIE INTERACTIVE (dans le cours - leçon 5)
-========================================================= */
-const hierarchyCorrectOrder = ['ia', 'ml', 'dl', 'tr']; // Ordre correct
-
-let hierarchyLessonState = {
-  placed: {}, // position -> levelId
-  draggedLevelId: null
-};
-
-function initHierarchyLesson(){
-  const pool = document.getElementById('hierarchy-levels-pool');
-  if(!pool) return;
-
-  // Mélanger les niveaux
-  const shuffled = [...hierarchyLevels].sort(() => Math.random() - 0.5);
-
-  // Créer les cartes de niveaux
-  pool.innerHTML = '';
-  shuffled.forEach(level => {
-    const card = document.createElement('div');
-    card.className = 'hierarchy-level-card';
-    card.draggable = true;
-    card.dataset.levelId = level.id;
-    card.innerHTML = level.label;
-
-    card.addEventListener('dragstart', (e) => {
-      if(card.classList.contains('placed')) {
-        e.preventDefault();
-        return;
-      }
-      hierarchyLessonState.draggedLevelId = level.id;
-      card.classList.add('dragging');
-    });
-
-    card.addEventListener('dragend', () => {
-      card.classList.remove('dragging');
-    });
-
-    pool.appendChild(card);
-  });
-
-  // Setup hierarchy slots
-  for(let pos = 1; pos <= 4; pos++) {
-    const slot = document.getElementById(`hierarchy-slot-${pos}`);
-    if(!slot) continue;
-
-    slot.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      slot.classList.add('dragover');
-    });
-
-    slot.addEventListener('dragleave', () => {
-      slot.classList.remove('dragover');
-    });
-
-    slot.addEventListener('drop', (e) => {
-      e.preventDefault();
-      slot.classList.remove('dragover');
-
-      const levelId = hierarchyLessonState.draggedLevelId;
-      if(!levelId) return;
-
-      // Vérifier si la position est déjà remplie
-      if(hierarchyLessonState.placed[pos]) {
-        toast("Cette position est déjà occupée. Retirez d'abord le niveau.");
-        return;
-      }
-
-      const level = hierarchyLevels.find(l => l.id === levelId);
-      if(!level) return;
-
-      // Placer le niveau
-      hierarchyLessonState.placed[pos] = levelId;
-
-      // Marquer la carte comme placée
-      const card = document.querySelector(`.hierarchy-level-card[data-level-id="${levelId}"]`);
-      if(card) card.classList.add('placed');
-
-      // Afficher dans le slot
-      slot.innerHTML = `
-        <div class="hierarchy-placed-level" data-level-id="${levelId}">
-          ${level.label}
-          <button class="hierarchy-level-remove" onclick="removeHierarchyLesson(${pos})">✕</button>
-        </div>
-      `;
-
-      hierarchyLessonState.draggedLevelId = null;
-    });
-  }
-}
-
-function removeHierarchyLesson(position){
-  const levelId = hierarchyLessonState.placed[position];
-  if(!levelId) return;
-
-  // Retirer de l'état
-  delete hierarchyLessonState.placed[position];
-
-  // Réinitialiser le slot
-  const slot = document.getElementById(`hierarchy-slot-${position}`);
-  if(slot) {
-    const posLabels = {
-      1: 'Plus général',
-      2: '↓',
-      3: '↓',
-      4: 'Plus spécifique'
-    };
-    slot.innerHTML = `
-      <div style="opacity:0.5;text-align:center;padding:30px 20px;color:#8899aa;border:2px dashed rgba(168,85,247,0.4);border-radius:10px">
-        <div style="font-size:1.8em;margin-bottom:8px">${position}️⃣</div>
-        <div style="font-size:0.85em">${posLabels[position]}</div>
-      </div>
-    `;
-  }
-
-  // Retirer la marque "placed" de la carte
-  const card = document.querySelector(`.hierarchy-level-card[data-level-id="${levelId}"]`);
-  if(card) card.classList.remove('placed');
-
-  // Cacher le feedback
-  const feedback = document.getElementById('hierarchy-feedback');
-  if(feedback) feedback.style.display = 'none';
-}
-
-function resetHierarchyLesson(){
-  hierarchyLessonState.placed = {};
-  initHierarchyLesson();
-
-  const feedback = document.getElementById('hierarchy-feedback');
-  if(feedback) feedback.style.display = 'none';
-
-  toast("Hiérarchie réinitialisée.");
-}
-
-function verifyHierarchyLesson(){
-  const placedCount = Object.keys(hierarchyLessonState.placed).length;
-
-  if(placedCount !== 4) {
-    toast(`Placez tous les niveaux d'abord (${placedCount}/4).`);
-    return;
-  }
-
-  let correct = 0;
-
-  // Vérifier chaque position
-  for(let pos = 1; pos <= 4; pos++) {
-    const levelId = hierarchyLessonState.placed[pos];
-    const expectedLevelId = hierarchyCorrectOrder[pos - 1];
-
-    const slot = document.getElementById(`hierarchy-slot-${pos}`);
-    if(!slot) continue;
-
-    const placedDiv = slot.querySelector('.hierarchy-placed-level');
-    if(!placedDiv) continue;
-
-    placedDiv.classList.remove('correct', 'wrong');
-
-    if(levelId === expectedLevelId) {
-      placedDiv.classList.add('correct');
-      correct++;
-    } else {
-      placedDiv.classList.add('wrong');
-    }
-  }
-
-  // Afficher le feedback
-  const feedback = document.getElementById('hierarchy-feedback');
-  if(feedback) {
-    feedback.style.display = 'block';
-
-    if(correct === 4) {
-      feedback.className = 'callout ok';
-      feedback.innerHTML = `
-        <strong>🎉 Parfait !</strong> La hiérarchie est correcte : <strong>IA ⊃ ML ⊃ DL ⊃ Transformers</strong>.<br/>
-        Vous maîtrisez maintenant l'emboîtement des concepts clés de l'intelligence artificielle. Cette structure vous permet de situer précisément n'importe quel système d'IA et d'éviter les confusions terminologiques courantes. Vous êtes prêt pour analyser les affirmations marketing avec rigueur !
-      `;
-      toast("✓ Hiérarchie validée !", 3000);
-    } else {
-      feedback.className = 'callout warn';
-      feedback.innerHTML = `
-        <strong>⚠ Presque !</strong> ${correct}/4 niveaux sont correctement placés.<br/>
-        Les niveaux en <span style="color:var(--danger)">rouge</span> sont mal positionnés.
-        <strong>Rappel :</strong> IA est le plus général (contient tout), puis ML (apprendre des données), puis DL (réseaux profonds), puis Transformers (architecture spécifique).
-      `;
-    }
-  }
-}
-
-/* =========================================================
-   ENQUÊTE MISSION (dans le cours - leçon 8)
-========================================================= */
-const missionEvidence = [
-  {
-    id: 1,
-    icon: '📄',
-    title: 'Documentation technique',
-    content: `Le manuel technique interne de TechCorp révèle une base de données massive contenant plus de 50 000 règles médicales, créée par une équipe de 500 experts médicaux sur 8 ans.
-
-Chaque symptôme observé est associé à des diagnostics possibles via des instructions formelles du type : "SI [fièvre > 38.5°C ET douleur_thoracique = vive] ALORS [envisager pneumonie OU infarctus]".
-
-Le système consulte séquentiellement cette base de règles pour identifier les correspondances avec les symptômes saisis par le praticien.`
-  },
-  {
-    id: 2,
-    icon: '🏁',
-    title: 'Performance aux échecs',
-    content: `Durant la présentation, TechCorp a démontré que Genius AI peut également jouer aux échecs à un niveau grand-maître.
-
-Le système évalue jusqu'à 300 millions de positions par seconde grâce à un supercalculateur dédié. Les algorithmes de recherche et d'évaluation ont été programmés directement par des champions d'échecs internationaux.
-
-Cette capacité de calcul massif permet d'explorer toutes les variantes possibles sur plusieurs coups d'avance.`
-  },
-  {
-    id: 3,
-    icon: '⚠️',
-    title: 'Limites observées',
-    content: `Un rapport confidentiel de beta-testeurs en milieu hospitalier souligne une faiblesse critique : face à une maladie rare absente de sa base de règles (par exemple, une combinaison atypique de symptômes pour une pathologie émergente), Genius AI échoue totalement.
-
-Le système répond "aucun diagnostic correspondant trouvé" plutôt que de raisonner par analogie comme le ferait un médecin expérimenté qui s'appuierait sur sa compréhension générale de la physiologie humaine.`
-  },
-  {
-    id: 4,
-    icon: '🔍',
-    title: 'Transparence des décisions',
-    content: `Un des atouts majeurs mis en avant par TechCorp est la transparence totale du système.
-
-Pour chaque diagnostic proposé, Genius AI affiche exactement quelle règle de sa base de connaissances a été déclenchée, permettant au médecin de vérifier la logique suivie.
-
-Cette traçabilité parfaite des décisions est présentée comme un avantage décisif pour l'acceptabilité en milieu médical et la conformité réglementaire.`
-  },
-  {
-    id: 5,
-    icon: '👨‍💻',
-    title: 'Témoignage d\'ingénieur',
-    content: `Une source anonyme, ingénieure ayant travaillé sur le projet, a contacté Le Quotidien Tech :
-
-"Contrairement au discours marketing, il n'y a aucun réseau de neurones dans Genius AI, aucun apprentissage automatique, aucune IA générative. Tout repose sur une gigantesque arborescence de décisions logiques programmée manuellement par des experts. C'est puissant dans son domaine, mais appeler ça une 'Super IA qui comprend véritablement' est trompeur."`
-  }
-];
-
-const missionCorrectAnswers = {
-  1: 'symbolique',  // Type d'IA
-  2: 'rigidite',    // Faiblesse principale
-  3: 'connexionniste' // Approche pour radiographies
-};
-
-let missionState = {
-  evidenceSeen: new Set(),
-  answers: {},
-  submitted: false
-};
-
-function initInvestigationMission() {
-  const evidenceContainer = document.getElementById('investigation-evidence-mission');
-  if(!evidenceContainer) return;
-
-  // Générer les boutons de preuves
-  evidenceContainer.innerHTML = missionEvidence.map(ev => `
-    <button class="mission-evidence-btn" onclick="openMissionEvidence(${ev.id})">
-      <div class="mission-evidence-icon">${ev.icon}</div>
-      <div class="mission-evidence-number">PREUVE #${ev.id}</div>
-      <div class="mission-evidence-title">${ev.title}</div>
-    </button>
-  `).join('');
-}
-
-function openMissionEvidence(evidenceId) {
-  const evidence = missionEvidence.find(e => e.id === evidenceId);
-  if(!evidence) return;
-
-  // Marquer comme vue
-  missionState.evidenceSeen.add(evidenceId);
-
-  // Mettre à jour le bouton visuellement
-  const buttons = document.querySelectorAll('.mission-evidence-btn');
-  buttons[evidenceId - 1].classList.add('seen');
-
-  // Afficher dans une modal
-  const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modal-title');
-  const modalBody = document.getElementById('modal-body');
-
-  if(modal && modalTitle && modalBody) {
-    modalTitle.textContent = `${evidence.icon} ${evidence.title}`;
-    modalBody.innerHTML = evidence.content.split('\n\n').map(p => `<p style="margin-bottom:15px;line-height:1.7">${p}</p>`).join('');
-    modal.classList.add('show');
-  }
-
-  // Toast de progression
-  toast(`Preuve ${evidenceId}/${missionEvidence.length} consultée.`);
-
-  // Activer le bouton de soumission si toutes les questions sont répondues
-  updateMissionSubmitButton();
-}
-
-function selectMissionAnswer(question, answer, button) {
-  // Enregistrer la réponse
-  missionState.answers[question] = answer;
-
-  // Mise à jour visuelle : retirer "selected" de tous les boutons de cette question
-  const questionDiv = button.closest('.investigation-question');
-  questionDiv.querySelectorAll('.mission-option').forEach(opt => {
-    opt.classList.remove('selected');
-  });
-
-  // Ajouter "selected" au bouton cliqué
-  button.classList.add('selected');
-
-  // Cacher l'explication précédente
-  const explain = document.getElementById(`mission-explain-${question}`);
-  if(explain) explain.style.display = 'none';
-
-  // Vérifier si toutes les questions ont une réponse
-  updateMissionSubmitButton();
-}
-
-function updateMissionSubmitButton() {
-  const submitBtn = document.getElementById('mission-submit-btn');
-  if(!submitBtn) return;
-
-  const allAnswered = Object.keys(missionState.answers).length === 3;
-  submitBtn.disabled = !allAnswered;
-}
-
-function submitMissionReport() {
-  if(missionState.submitted) return;
-
-  missionState.submitted = true;
-
-  let correct = 0;
-
-  // Vérifier chaque réponse
-  for(let q = 1; q <= 3; q++) {
-    const userAnswer = missionState.answers[q];
-    const correctAnswer = missionCorrectAnswers[q];
-    const isCorrect = userAnswer === correctAnswer;
-
-    if(isCorrect) correct++;
-
-    // Mise à jour visuelle des options
-    const questionDiv = document.querySelectorAll('.investigation-question')[q - 1];
-    questionDiv.querySelectorAll('.mission-option').forEach(opt => {
-      const optAnswer = opt.getAttribute('data-answer');
-      if(optAnswer === correctAnswer) {
-        opt.classList.add('correct');
-      } else if(optAnswer === userAnswer && !isCorrect) {
-        opt.classList.add('wrong');
-      }
-    });
-
-    // Afficher l'explication
-    const explain = document.getElementById(`mission-explain-${q}`);
-    if(explain) {
-      explain.style.display = 'block';
-      explain.className = 'mission-explanation ' + (isCorrect ? 'correct' : 'wrong');
-
-      const explanations = {
-        1: {
-          symbolique: `<strong>✓ Correct !</strong> Genius AI est bien une <strong>IA symbolique</strong>. Les preuves convergent : base de 50 000 règles SI...ALORS programmées par des experts, transparence totale des décisions, aucun apprentissage automatique (témoignage ingénieur), capacité de calcul massif aux échecs (comme Deep Blue). C'est un système expert classique, pas un système d'apprentissage.`,
-          connexionniste: `<strong>✗ Incorrect.</strong> Genius AI n'est PAS connexionniste. Le témoignage de l'ingénieure est explicite : "aucun réseau de neurones, aucun apprentissage automatique". Les 50 000 règles programmées manuellement et la transparence totale caractérisent une <strong>IA symbolique</strong> classique (système expert).`
-        },
-        2: {
-          rigidite: `<strong>✓ Exact !</strong> La <strong>rigidité</strong> est la faiblesse principale. Le rapport des beta-testeurs est clair : face à une maladie absente de la base de règles, le système échoue complètement, incapable de raisonner par analogie. C'est la limite typique de l'IA symbolique : pas d'adaptation, pas de généralisation hors du cadre programmé.`,
-          opacite: `<strong>✗ Incorrect.</strong> Au contraire, Genius AI est <strong>totalement transparent</strong> (preuve #4) : chaque décision montre exactement quelle règle a été appliquée. La vraie faiblesse est la <strong>rigidité</strong> : échec face à l'imprévu (preuve #3), incapacité à généraliser hors des règles programmées.`
-        },
-        3: {
-          connexionniste: `<strong>✓ Parfait !</strong> Pour analyser des radiographies, l'<strong>IA connexionniste</strong> (Deep Learning) est l'approche idéale. Les images médicales sont des données complexes, non structurées, avec d'immenses variabilités. Programmer manuellement toutes les règles pour reconnaître tous les patterns pathologiques serait impossible. Un CNN entraîné sur des milliers d'exemples annotés apprendra automatiquement à détecter les anomalies, avec une précision qui surpasse souvent l'œil humain.`,
-          symbolique: `<strong>✗ Incorrect.</strong> Programmer manuellement des règles pour reconnaître tous les patterns visuels possibles sur des radiographies serait extrêmement difficile et rigide. L'<strong>IA connexionniste</strong> (Deep Learning, CNN) est l'approche moderne dominante : elle apprend automatiquement à partir de milliers d'images annotées, atteignant des performances surhumaines en reconnaissance d'images médicales.`
-        }
-      };
-
-      explain.innerHTML = explanations[q][userAnswer] || '';
-    }
-  }
-
-  // Feedback final global
-  const finalFeedback = document.getElementById('mission-final-feedback');
-  if(finalFeedback) {
-    finalFeedback.style.display = 'block';
-
-    if(correct === 3) {
-      finalFeedback.className = 'callout ok';
-      finalFeedback.innerHTML = `
-        <div style="text-align:center;padding:20px">
-          <div style="font-size:3em;margin-bottom:15px">🎉</div>
-          <h3 style="color:var(--domain-color);margin-bottom:15px">Enquête résolue avec succès !</h3>
-          <p style="line-height:1.8;margin-bottom:20px;font-size:1.05em">
-            Vous avez correctement identifié <strong>Genius AI</strong> comme une IA symbolique classique (système expert), démystifié le discours marketing exagéré de TechCorp, et recommandé l'approche appropriée pour l'imagerie médicale.
-          </p>
-          <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:18px;margin:20px 0;text-align:left">
-            <strong style="color:var(--neon-green)">📋 Rapport final :</strong><br/><br/>
-            <strong>1. Type d'IA :</strong> Symbolique (système expert basé sur 50 000 règles programmées)<br/>
-            <strong>2. Faiblesse :</strong> Rigidité extrême face à l'imprévu, aucune capacité de généralisation<br/>
-            <strong>3. Recommandation :</strong> Pour l'imagerie médicale, privilégier le Deep Learning (CNN) qui apprend sur des images
-          </div>
-          <p style="line-height:1.8;color:#aabbcc">
-            <strong style="color:var(--neon-blue)">Leçon retenue :</strong> Les termes "Super IA", "comprend véritablement" ou "révolutionnaire" sont souvent des signaux d'alarme marketing. Seule l'analyse technique factuelle permet de distinguer les capacités réelles des affirmations exagérées. Vous êtes maintenant équipé pour démystifier l'IA avec rigueur ! 🕵️
-          </p>
-        </div>
-      `;
-      toast("✓ Mission accomplie !", 3500);
-    } else {
-      finalFeedback.className = 'callout warn';
-      finalFeedback.innerHTML = `
-        <div style="text-align:center;padding:20px">
-          <div style="font-size:2.5em;margin-bottom:15px">🤔</div>
-          <h3 style="color:var(--neon-blue);margin-bottom:15px">Rapport partiellement correct (${correct}/3)</h3>
-          <p style="line-height:1.8;margin-bottom:15px">
-            Consultez les explications détaillées ci-dessus pour comprendre les erreurs. Les preuves contenaient tous les indices nécessaires pour identifier :
-          </p>
-          <ul style="text-align:left;max-width:600px;margin:0 auto;line-height:2">
-            <li>Genius AI = <strong>IA symbolique</strong> (règles explicites, pas d'apprentissage)</li>
-            <li>Faiblesse = <strong>rigidité</strong> (échec face à l'imprévu)</li>
-            <li>Imagerie médicale = <strong>IA connexionniste</strong> (apprentissage sur images)</li>
-          </ul>
-          <p style="margin-top:20px;color:#aabbcc">
-            Relisez les preuves et les explications pour consolider votre compréhension ! 📚
-          </p>
-        </div>
-      `;
-    }
-  }
-
-  // Désactiver le bouton de soumission + proposer le quiz
-  const submitBtn = document.getElementById('mission-submit-btn');
-  if(submitBtn) submitBtn.disabled = true;
-
-  // Si 3/3, proposer le quiz de certification
-  if(correct === 3){
-    setTimeout(()=>{
-      const quizProposal = document.createElement('div');
-      quizProposal.className = 'callout';
-      quizProposal.style.cssText = 'margin-top:30px;background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.5);';
-      quizProposal.innerHTML = `
-        <div style="text-align:center">
-          <div style="font-size:2.5em;margin-bottom:15px">🎓</div>
-          <h3 style="color:var(--neon-blue);margin-bottom:15px">Prêt pour la certification ?</h3>
-          <p style="line-height:1.8;margin-bottom:20px">
-            Vous avez brillamment terminé la mission ! Passez maintenant le <strong>quiz de certification</strong>
-            pour obtenir votre attestation officielle de réussite du module.
-          </p>
-          <button class="btn green" onclick="startCertificationQuiz()" style="font-size:1.1em;padding:15px 40px">
-            📝 Commencer le quiz de certification
+        <div style="text-align: center; margin-top: 25px;">
+          <button class="mission-next-btn" id="btn-submit-report" onclick="submitReport()" disabled style="opacity: 0.5;">
+            📝 Soumettre le rapport
           </button>
-        </div>
-      `;
-      finalFeedback.after(quizProposal);
-    }, 1000);
-  }
-}
-
-/* =========================================================
-   QUIZ DE CERTIFICATION
-========================================================= */
-let certificateUnlocked = false;
-let finalScore = 0;
-let quizState = { currentQuestion: 0, score: 0, answers: [] };
-
-const quizQuestions = [
-  {
-    question: "Quelle est la principale différence entre l'IA actuelle et l'intelligence humaine ?",
-    options: [
-      "L'IA actuelle est plus intelligente que les humains",
-      "L'IA actuelle excelle dans des tâches spécifiques mais n'a pas de conscience ni de compréhension véritable",
-      "L'IA actuelle peut comprendre et ressentir comme un humain",
-      "L'IA actuelle peut apprendre n'importe quelle tâche sans données"
-    ],
-    correct: 1
-  },
-  {
-    question: "Qu'est-ce qui caractérise l'IA symbolique ?",
-    options: [
-      "Elle apprend par l'exemple à partir de données",
-      "Elle utilise des règles explicites programmées par des humains",
-      "Elle fonctionne uniquement avec des réseaux de neurones",
-      "Elle peut s'adapter automatiquement à de nouvelles situations"
-    ],
-    correct: 1
-  },
-  {
-    question: "Quelle est la principale limite de l'IA symbolique ?",
-    options: [
-      "Elle manque de transparence (boîte noire)",
-      "Elle nécessite trop de données d'entraînement",
-      "Elle est trop rigide face à l'imprévu",
-      "Elle consomme trop d'énergie"
-    ],
-    correct: 2
-  },
-  {
-    question: "Qu'est-ce qui caractérise l'IA connexionniste (Machine Learning) ?",
-    options: [
-      "Elle fonctionne avec des règles explicites",
-      "Elle apprend des patterns à partir d'exemples",
-      "Elle ne nécessite aucune donnée d'entraînement",
-      "Elle peut expliquer toutes ses décisions facilement"
-    ],
-    correct: 1
-  },
-  {
-    question: "Quelle est la hiérarchie correcte des concepts d'IA ?",
-    options: [
-      "Transformers ⊃ Deep Learning ⊃ Machine Learning ⊃ IA",
-      "IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers",
-      "Machine Learning ⊃ IA ⊃ Deep Learning ⊃ Transformers",
-      "Deep Learning ⊃ IA ⊃ Machine Learning ⊃ Transformers"
-    ],
-    correct: 1
-  },
-  {
-    question: "Pour quelle tâche l'IA connexionniste (Deep Learning) est-elle particulièrement adaptée ?",
-    options: [
-      "Diagnostic médical basé sur des règles précises",
-      "Calculs mathématiques simples",
-      "Reconnaissance d'images et patterns complexes",
-      "Application stricte de lois et règlements"
-    ],
-    correct: 2
-  },
-  {
-    question: "Qu'est-ce qu'un 'signal d'alarme' dans une annonce d'IA selon le module ?",
-    options: [
-      "L'utilisation de termes techniques précis",
-      "La mention de limitations et faiblesses",
-      "Des termes comme 'Super IA', 'comprend véritablement', 'révolutionnaire'",
-      "La présentation de résultats de tests indépendants"
-    ],
-    correct: 2
-  },
-  {
-    question: "Quelle affirmation sur l'IA actuelle est VRAIE ?",
-    options: [
-      "L'IA peut vraiment 'comprendre' le sens des mots comme un humain",
-      "L'IA actuelle est consciente et peut ressentir des émotions",
-      "L'IA actuelle excelle dans des tâches spécifiques mais n'a pas de compréhension générale",
-      "L'IA peut apprendre n'importe quoi sans avoir besoin de données"
-    ],
-    correct: 2
-  }
-];
-
-function startCertificationQuiz(){
-  quizState = { answers: {} };
-  $('briefing-content').innerHTML = `
-    <div class="module-title" style="color:var(--neon-blue)">📝 Quiz de Certification</div>
-    <div class="module-kicker">Module 1 — Démystifier l'IA (DOSSIER ZÉRO)</div>
-    <div class="divider"></div>
-    <p style="color:#aabbcc;line-height:1.7;margin-bottom:20px">Répondez aux ${quizQuestions.length} questions ci-dessous, puis validez. Score minimum : <strong style="color:var(--neon-blue)">70%</strong>.</p>
-    ${quizQuestions.map((q, i) => `
-      <div style="background:rgba(10,20,40,0.6);border:1px solid rgba(0,212,255,0.3);border-radius:12px;padding:24px;margin-bottom:16px" id="qq-${i}">
-        <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:#8899aa;margin-bottom:8px">Q${i+1}/${quizQuestions.length}</div>
-        <div style="font-size:1em;color:var(--text);margin-bottom:16px;line-height:1.6;font-weight:600">${q.question}</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          ${q.options.map((opt, j) => `
-            <div id="qopt-${i}-${j}" onclick="selectQuizOpt(${i},${j})"
-              style="padding:13px 18px;border:1px solid rgba(0,212,255,0.2);border-radius:8px;cursor:pointer;transition:all 0.2s;color:#cfe9ff;line-height:1.5">
-              <strong>${String.fromCharCode(65+j)}.</strong> ${opt}
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `).join('')}
-    <div id="quiz-progress-lbl" style="text-align:center;margin:10px 0;font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)">0/${quizQuestions.length} questions répondues</div>
-    <div style="text-align:center;margin:20px 0">
-      <button id="quiz-submit-all" onclick="submitAllQuiz()" class="btn green"
-        style="font-size:1.1em;padding:15px 40px;opacity:0.5;cursor:not-allowed;" disabled>
-        ✅ Valider mes réponses
-      </button>
-    </div>
-    <div id="quiz-result-all"></div>
-  `;
-}
-
-function selectQuizOpt(qi, oi){
-  quizState.answers[qi] = oi;
-  quizQuestions[qi].options.forEach((_, j) => {
-    const el = $('qopt-'+qi+'-'+j);
-    if (!el) return;
-    if (j === oi) {
-      el.style.background = 'rgba(0,212,255,0.12)';
-      el.style.borderColor = 'var(--neon-blue)';
-      el.style.color = 'var(--neon-blue)';
-    } else {
-      el.style.background = '';
-      el.style.borderColor = 'rgba(0,212,255,0.2)';
-      el.style.color = '#cfe9ff';
-    }
-  });
-  const done = Object.keys(quizState.answers).length;
-  const lbl = $('quiz-progress-lbl');
-  if (lbl) lbl.textContent = done+'/'+quizQuestions.length+' questions répondues';
-  if (done === quizQuestions.length) {
-    const btn = $('quiz-submit-all');
-    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
-  }
-}
-
-function submitAllQuiz(){
-  let score = 0;
-  quizQuestions.forEach((q, i) => { if (quizState.answers[i] === q.correct) score++; });
-  const pct = Math.round(score / quizQuestions.length * 100);
-  const passed = pct >= 70;
-
-  const btn = $('quiz-submit-all');
-  if (btn) btn.style.display = 'none';
-
-  if (passed) {
-    quizQuestions.forEach((q, i) => {
-      const chosen = quizState.answers[i];
-      q.options.forEach((_, j) => {
-        const el = $('qopt-'+i+'-'+j);
-        if (!el) return;
-        el.onclick = null; el.style.cursor = 'default';
-        if (j === q.correct) {
-          el.style.background = 'rgba(0,60,30,0.5)';
-          el.style.borderColor = 'var(--neon-green)';
-          el.style.color = 'var(--neon-green)';
-        } else if (j === chosen && j !== q.correct) {
-          el.style.background = 'rgba(60,10,10,0.5)';
-          el.style.borderColor = 'var(--danger)';
-          el.style.color = 'var(--danger)';
-        }
-      });
-    });
-    certificateUnlocked = true;
-    finalScore = pct;
-    unlockCertificate(pct);
-  } else {
-    document.querySelectorAll('[id^="qopt-"]').forEach(el => { el.onclick = null; el.style.cursor = 'default'; });
-  }
-
-  const resultEl = $('quiz-result-all');
-  if (resultEl) {
-    resultEl.innerHTML = passed ? `
-      <div class="callout ok" style="text-align:center;padding:30px;margin-top:20px">
-        <div style="font-size:2.5em;margin-bottom:12px">🎉</div>
-        <h3 style="color:var(--domain-color);margin-bottom:12px">Quiz réussi !</h3>
-        <p style="font-size:1.3em;margin-bottom:12px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
-        <p style="line-height:1.7;margin-bottom:18px">Félicitations ! Vous avez validé le quiz de certification.</p>
-        <button class="btn green" onclick="showCertificateInFolder()" style="font-size:1.1em;padding:15px 40px">📥 Accéder à l'attestation</button>
-      </div>` : `
-      <div class="callout warn" style="text-align:center;padding:30px;margin-top:20px">
-        <div style="font-size:2.5em;margin-bottom:12px">📚</div>
-        <h3 style="color:var(--warn);margin-bottom:12px">Score insuffisant</h3>
-        <p style="font-size:1.3em;margin-bottom:12px"><strong>${score}/${quizQuestions.length} — ${pct}%</strong></p>
-        <p style="line-height:1.7;margin-bottom:18px">Le score minimum requis est de 70%. Révisez les leçons et réessayez.</p>
-        <button class="btn" onclick="startCertificationQuiz()" style="font-size:1.1em;padding:15px 40px">↺ Réessayer le quiz</button>
-      </div>`;
-    resultEl.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-function unlockCertificate(score){
-  const navItem = $('certificate-nav-item');
-  navItem.style.opacity = '1';
-  navItem.style.cursor = 'pointer';
-  navItem.style.background = 'rgba(0,255,136,0.05)';
-
-  const icon = navItem.querySelector('.nav-icon');
-  if(icon) icon.textContent = '🎓';
-
-  const num = navItem.querySelector('.nav-number');
-  if(num){
-    num.style.background = 'rgba(0,255,136,0.2)';
-    num.style.color = 'var(--neon-green)';
-    num.textContent = '✓';
-  }
-
-  toast("🎓 Attestation débloquée ! Consultez l'onglet Attestation.", 4000);
-}
-
-function showCertificateInFolder(){
-  if(!certificateUnlocked){
-    $('briefing-content').innerHTML = `
-      <div class="module-title" style="color:var(--neon-pink)">🔒 Attestation de réussite</div>
-      <div class="module-kicker">Attestation verrouillée</div>
-      <div class="divider"></div>
-
-      <div class="callout warn" style="text-align:center;padding:40px 20px">
-        <div style="font-size:4em;margin-bottom:20px">🔒</div>
-        <h3 style="color:var(--neon-pink);margin-bottom:20px">Attestation verrouillée</h3>
-        <p style="margin-bottom:20px;line-height:1.8">
-          Pour obtenir votre attestation de réussite au module, vous devez :
-        </p>
-
-        <div style="background:rgba(0,50,100,0.3);border-radius:10px;padding:25px;margin:25px auto;max-width:500px;text-align:left">
-          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
-            <span style="font-size:1.2em">1️⃣</span>
-            <span>Compléter la <strong>Mission</strong> avec succès (3/3 bonnes réponses)</span>
-          </p>
-          <p style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
-            <span style="font-size:1.2em">2️⃣</span>
-            <span>Réussir le <strong>Quiz de certification</strong> avec au moins <strong>70%</strong></span>
+          <p style="color: var(--muted); font-size: 0.85em; margin-top: 10px;" id="analysis-hint">
+            Répondez aux 3 questions pour soumettre votre rapport
           </p>
         </div>
-
-        <button class="btn" onclick="goToLesson(7)" style="margin-top:20px">
-          🎮 Commencer la mission
-        </button>
-      </div>
-    `;
-    return;
-  }
-
-  // Attestation débloquée
-  $('briefing-content').innerHTML = `
-    <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
-    <div class="module-kicker">Module 1 — Démystifier l'IA (DOSSIER ZÉRO)</div>
-    <div class="divider"></div>
-
-    <div class="callout ok" style="text-align:center;padding:30px 20px">
-      <div style="font-size:3em;margin-bottom:15px">🎉</div>
-      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
-      <p style="line-height:1.8;margin-bottom:15px">
-        Vous avez terminé avec succès le <strong>Module 1 - Démystifier l'IA</strong> de la formation
-        <strong>Intelligence Artificielle Responsable</strong>.
-      </p>
-      <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;
-        padding:20px;margin:20px auto;max-width:400px">
-        <p style="margin-bottom:10px"><strong>Score certification :</strong>
-          <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span>
-        </p>
-        <p style="font-family:'Space Mono',monospace;color:var(--neon-blue);font-size:0.9em">
-          Référence : IA-DEMYST-${String(Math.floor(Math.random()*90000)+10000)}
-        </p>
-      </div>
-    </div>
-
-    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">📜 Télécharger votre attestation</h3>
-    <div class="callout" style="padding:30px">
-      <p style="margin-bottom:20px;line-height:1.8">
-        Renseignez votre nom pour générer votre attestation officielle de réussite au format HTML.
-        Vous pourrez ensuite l'ouvrir dans votre navigateur et l'imprimer en PDF si nécessaire.
-      </p>
-      <div style="margin-bottom:15px">
-        <label style="display:block;margin-bottom:8px;font-family:'Space Mono',monospace;color:var(--neon-blue)">
-          Nom sur l'attestation :
-        </label>
-        <input id="certificate-name-folder" type="text" placeholder="Prénom NOM"
-          style="width:100%;max-width:500px;padding:12px;border-radius:10px;border:1px solid rgba(0,212,255,0.35);
-          background:rgba(0,0,0,0.2);color:var(--text);font-family:'Exo 2',sans-serif;font-size:1em;outline:none"/>
-      </div>
-      <button class="btn green" onclick="downloadCertificateFromFolder()" style="font-size:1.1em;padding:15px 40px;margin-top:15px">
-        📥 Télécharger l'attestation (HTML)
-      </button>
-      <p style="margin-top:15px;color:#8899aa;font-size:0.9em">
-        💡 <strong>Astuce :</strong> Ouvrez le fichier HTML téléchargé et utilisez Ctrl+P (Cmd+P sur Mac) pour l'imprimer en PDF.
-      </p>
-    </div>
-
-    <h3 style="margin:30px 0 20px;color:var(--neon-blue)">✅ Compétences validées</h3>
-    <div class="callout">
-      <ul style="line-height:2;margin-left:20px">
-        <li>Distinguer IA actuelle et intelligence humaine</li>
-        <li>Connaître les origines de l'IA (1950–2024)</li>
-        <li>Différencier IA symbolique et connexionniste</li>
-        <li>Comprendre la hiérarchie IA ⊃ ML ⊃ DL ⊃ Transformers</li>
-        <li>Identifier le type d'un système d'IA</li>
-        <li>Évaluer forces et faiblesses des approches</li>
-        <li>Démystifier les affirmations marketing exagérées</li>
-      </ul>
-    </div>
-  `;
-}
-
-function downloadCertificateFromFolder(){
-  const name = ($('certificate-name-folder')?.value || '').trim() || 'Participant';
-  const date = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
-  generateCertificateHTML(name, date, finalScore);
-}
-
-function generateCertificateHTML(name, date, score){
-  const certificateHTML = `<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attestation - Module 1 : Démystifier l'IA</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Open Sans', sans-serif;
-      background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .certificate {
-      background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
-      border: 3px solid #00ff88;
-      border-radius: 20px;
-      padding: 50px 60px;
-      max-width: 800px;
-      width: 100%;
-      position: relative;
-      box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
-    }
-    .certificate::before {
-      content: '';
-      position: absolute;
-      top: 15px; left: 15px; right: 15px; bottom: 15px;
-      border: 1px solid rgba(0,212,255,0.3);
-      border-radius: 15px;
-      pointer-events: none;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    .logo {
-      font-size: 3em;
-      margin-bottom: 10px;
-    }
-    .title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5em;
-      background: linear-gradient(90deg, #00ff88, #00d4ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 5px;
-    }
-    .subtitle {
-      color: #00d4ff;
-      font-size: 1.1em;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-    .content {
-      text-align: center;
-      color: #e0e0e0;
-      line-height: 1.8;
-    }
-    .certifies {
-      font-size: 1.1em;
-      margin: 30px 0 15px;
-    }
-    .name {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2em;
-      color: #ffffff;
-      margin: 20px 0;
-      padding: 15px 0;
-      border-top: 1px solid rgba(0,212,255,0.3);
-      border-bottom: 1px solid rgba(0,212,255,0.3);
-    }
-    .module {
-      background: rgba(0,255,136,0.1);
-      border: 1px solid rgba(0,255,136,0.3);
-      border-radius: 10px;
-      padding: 20px;
-      margin: 30px 0;
-    }
-    .module-title {
-      color: #00ff88;
-      font-size: 1.3em;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-    .score {
-      display: inline-block;
-      background: linear-gradient(135deg, #00ff88, #00d4ff);
-      color: #0a1628;
-      padding: 8px 25px;
-      border-radius: 20px;
-      font-weight: 600;
-      margin-top: 10px;
-    }
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 40px;
-      padding-top: 30px;
-      border-top: 1px solid rgba(0,212,255,0.2);
-    }
-    .footer-item {
-      text-align: center;
-    }
-    .footer-label {
-      color: #888;
-      font-size: 0.85em;
-      margin-bottom: 5px;
-    }
-    .footer-value {
-      color: #00d4ff;
-      font-weight: 600;
-    }
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 15px;
-    }
-    .skill {
-      background: rgba(0,212,255,0.1);
-      border: 1px solid rgba(0,212,255,0.3);
-      padding: 5px 15px;
-      border-radius: 15px;
-      font-size: 0.85em;
-      color: #00d4ff;
-    }
-    @media print {
-      body { background: white; }
-      .certificate { box-shadow: none; border-width: 2px; }
-    }
-  </style>
-</head>
-<body>
-  <div class="certificate">
-    <div class="header">
-      <div class="logo">🤖🕵️</div>
-      <div class="title">Attestation de Réussite</div>
-    </div>
-
-    <div class="content">
-      <p class="certifies">Cette attestation certifie que</p>
-      <div class="name">${name}</div>
-      <p>a complété avec succès le</p>
-
-      <div class="module">
-        <div class="module-title">Module 1 : Démystifier l'Intelligence Artificielle</div>
-        <p style="color: #b0b0b0; margin-top: 10px;">Dossier Zéro — Mythes, Réalité et Fondamentaux</p>
-        <div class="score">Score : ${score}%</div>
       </div>
 
-      <p style="margin-bottom: 15px;">Compétences validées :</p>
-      <div class="skills">
-        <span class="skill">IA vs Intelligence Humaine</span>
-        <span class="skill">Origines (1950-2024)</span>
-        <span class="skill">IA Symbolique vs Connexionniste</span>
-        <span class="skill">Hiérarchie IA ⊃ ML ⊃ DL</span>
-        <span class="skill">Analyse Critique</span>
-        <span class="skill">Démystification</span>
-      </div>
-
-      <div class="footer">
-        <div class="footer-item">
-          <div class="footer-label">Date</div>
-          <div class="footer-value">${date}</div>
+      <!-- PHASE 3 : RÉSULTAT -->
+      <div class="mission-phase" id="mission-phase-2">
+        <div class="mission-result" id="mission-result">
+          <!-- Contenu injecté par JS -->
         </div>
-        <div class="footer-item">
-          <div class="footer-label">Programme</div>
-          <div class="footer-value">IA Responsable</div>
-        </div>
-        <div class="footer-item">
-          <div class="footer-label">Organisme</div>
-          <div class="footer-value">Prof Express</div>
-        </div>
+      </div>
+
+    </div><!-- fin mission-body -->
+  </div>
+
+  <!-- MODAL PREUVE -->
+  <div class="modal-overlay" id="evidence-modal">
+    <div class="modal-card">
+      <h3 id="evidence-modal-title"></h3>
+      <div id="evidence-modal-body"></div>
+      <div style="display: flex; justify-content: flex-end;">
+        <button class="modal-close-btn" onclick="closeEvidence()">Fermer le dossier</button>
       </div>
     </div>
   </div>
+
+  <script>
+    /* ==================== DONNÉES MISSION ==================== */
+    const evidenceData = [
+      {
+        title: '📰 Pièce N°1 — Communiqué de presse NovaMind',
+        body: `
+          <div class="callout pink">
+            <p style="font-size: 1.05em; font-weight: 600; color: var(--neon-pink);">
+              « ATLAS : LA PREMIÈRE IA VÉRITABLEMENT CONSCIENTE AU SERVICE DE LA MÉDECINE »
+            </p>
+          </div>
+          <p>NovaMind Corp annonce aujourd'hui le lancement d'ATLAS, <strong style="color: var(--neon-pink);">une super IA révolutionnaire</strong>
+          qui <strong style="color: var(--neon-pink);">comprend véritablement</strong> les patients et peut établir des diagnostics
+          médicaux avec une précision « sans précédent ».</p>
+          <p>« ATLAS ne se contente pas d'analyser des données — elle comprend réellement la souffrance
+          humaine et adapte ses recommandations avec empathie », déclare le PDG de NovaMind, Viktor Leroy.</p>
+          <p>Le système serait capable de diagnostiquer plus de 200 pathologies avec
+          « une fiabilité supérieure à celle de n'importe quel médecin humain ».</p>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indices à noter :</strong> les termes « consciente », « comprend véritablement »,
+            « super IA révolutionnaire », « empathie ».
+          </div>
+        `
+      },
+      {
+        title: '📋 Pièce N°2 — Fiche technique ATLAS',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Spécifications techniques (document interne intercepté) :</strong></p>
+          <ul>
+            <li><strong>Architecture :</strong> Système à base de règles (rule-based expert system)</li>
+            <li><strong>Base de connaissances :</strong> 50 000 règles médicales SI/ALORS</li>
+            <li><strong>Moteur d'inférence :</strong> Chaînage avant et arrière</li>
+            <li><strong>Sources :</strong> Protocoles médicaux validés, guidelines OMS</li>
+            <li><strong>Couverture :</strong> 200 pathologies, 3 spécialités (cardiologie, pneumologie, dermatologie)</li>
+            <li><strong>Explicabilité :</strong> Trace de raisonnement complète pour chaque diagnostic</li>
+          </ul>
+          <div class="callout" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> ATLAS est un <strong>système expert à règles</strong> (IA symbolique),
+            pas un réseau de neurones ni un modèle de langage.
+          </div>
+        `
+      },
+      {
+        title: '🧑‍🔬 Pièce N°3 — Témoignage d\'un ex-ingénieur',
+        body: `
+          <div class="callout blue">
+            <p style="font-style: italic;">
+              « J'ai travaillé 18 mois chez NovaMind sur ATLAS. C'est un bon système expert,
+              bien conçu, avec des règles médicales solides. Mais ce n'est absolument pas
+              une IA qui "comprend" quoi que ce soit. »
+            </p>
+            <p style="font-style: italic;">
+              « Le problème principal, c'est que le système est <strong>très rigide</strong>.
+              Quand un patient présente des symptômes inhabituels ou combinés qui ne correspondent
+              à aucune de nos 50 000 règles, ATLAS ne sait pas quoi faire. Il dit simplement
+              "diagnostic impossible" ou, pire, force un diagnostic erroné. »
+            </p>
+            <p style="font-style: italic;">
+              « J'ai quitté l'entreprise quand le marketing a commencé à parler de "conscience".
+              C'est du mensonge pur. ATLAS n'a pas plus de conscience qu'une calculatrice. »
+            </p>
+            <p style="font-style: italic; color: var(--neon-blue);">
+              — Témoignage anonyme, ancien ingénieur NovaMind (vérifié par DECODE)
+            </p>
+          </div>
+        `
+      },
+      {
+        title: '📊 Pièce N°4 — Rapport de tests indépendants',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Tests réalisés par le Laboratoire HealthCheck (indépendant) :</strong></p>
+          <div class="callout">
+            <p><strong>Cas standards (symptômes classiques) :</strong></p>
+            <p style="font-size: 1.2em; color: var(--neon-green);">✅ Précision : 94.2 %</p>
+            <p style="color: var(--muted);">Excellent résultat, comparable aux meilleurs médecins spécialistes.</p>
+          </div>
+          <div class="callout pink">
+            <p><strong>Cas atypiques (symptômes inhabituels ou combinés) :</strong></p>
+            <p style="font-size: 1.2em; color: var(--danger);">❌ Précision : 31.7 %</p>
+            <p style="color: var(--muted);">Résultat catastrophique. Le système échoue massivement
+            dès que les cas sortent de ses règles prédéfinies.</p>
+          </div>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> Cet écart de performance (94% → 31%) est typique
+            d'un système à règles rigide — excellent dans son domaine, mais incapable d'adaptation.
+          </div>
+        `
+      },
+      {
+        title: '💬 Pièce N°5 — Extrait de conversation ATLAS',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Transcription d'une session de démonstration :</strong></p>
+          <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 18px; margin: 12px 0; font-family: 'Space Mono', monospace; font-size: 0.88em; line-height: 1.8;">
+            <p><span style="color: var(--neon-green);">Patient :</span> J'ai mal à la poitrine depuis 3 jours et j'ai du mal à respirer.</p>
+            <p><span style="color: var(--neon-blue);">ATLAS :</span> Je comprends votre inquiétude. D'après vos symptômes, voici les diagnostics possibles :</p>
+            <p style="padding-left: 20px; color: #aabbcc;">
+              — Angine de poitrine (probabilité : 0.72)<br>
+              — Pneumothorax (probabilité : 0.15)<br>
+              — Anxiété (probabilité : 0.13)
+            </p>
+            <p><span style="color: var(--neon-green);">Patient :</span> Est-ce que ça pourrait être lié au fait que je sois tombé d'une échelle hier ?</p>
+            <p><span style="color: var(--neon-blue);">ATLAS :</span> Je comprends votre inquiétude. D'après vos symptômes, voici les diagnostics possibles :</p>
+            <p style="padding-left: 20px; color: #aabbcc;">
+              [Mêmes résultats identiques — la chute n'est pas prise en compte]
+            </p>
+          </div>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> ATLAS répète la même phrase d'empathie scriptée
+            (« Je comprends votre inquiétude ») et ignore le contexte de la chute — preuve
+            qu'il ne « comprend » pas, il exécute des règles prédéfinies.
+          </div>
+        `
+      },
+      {
+        title: '📄 Pièce N°6 — Brevet déposé par NovaMind',
+        body: `
+          <p><strong style="color: var(--neon-blue);">Extrait du brevet N° EP-2024-ATLAS-0847 :</strong></p>
+          <div class="callout blue">
+            <p style="font-style: italic;">
+              « Le présent brevet décrit un <strong>système expert médical à base de règles</strong>
+              utilisant un moteur d'inférence avec chaînage avant et arrière.
+              Le système comprend une base de connaissances de règles de production
+              de la forme SI [conditions] ALORS [conclusions] avec des facteurs de certitude associés. »
+            </p>
+          </div>
+          <p>Le brevet confirme sans ambiguïté la nature du système : c'est de l'<strong>IA symbolique classique</strong>,
+          une technologie qui existe depuis les années 1970.</p>
+          <div class="callout warn" style="margin-top: 14px;">
+            <strong>🔍 Indice clé :</strong> Le brevet contredit directement le marketing.
+            Aucune mention de « conscience », de « compréhension » ni d'apprentissage automatique.
+            C'est un système à règles, ni plus ni moins.
+          </div>
+        `
+      }
+    ];
+
+    const analysisQuestions = [
+      {
+        correct: 0,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> La fiche technique et le brevet confirment qu\'ATLAS est un système expert à base de 50 000 règles SI/ALORS — c\'est de l\'IA symbolique classique. Ce n\'est ni du Machine Learning, ni une IA consciente.',
+          wrong: '❌ Les preuves montrent clairement qu\'ATLAS est un <strong>système à règles</strong> (IA symbolique). La fiche technique mentionne « 50 000 règles SI/ALORS » et le brevet décrit un « système expert à base de règles ». Ce n\'est pas du connexionnisme, et l\'IA générale consciente n\'existe pas encore.'
+        }
+      },
+      {
+        correct: 1,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> Le rapport de tests montre un effondrement de 94 % à 31 % sur les cas atypiques, et l\'ex-ingénieur confirme que le système est « très rigide ». C\'est la limite classique de l\'IA symbolique.',
+          wrong: '❌ Le principal risque identifié est la <strong>rigidité</strong>. Le rapport de tests montre un effondrement spectaculaire (de 94 % à 31 %) sur les cas atypiques. L\'ex-ingénieur confirme : ATLAS échoue quand les symptômes sortent de ses règles prédéfinies.'
+        }
+      },
+      {
+        correct: 0,
+        explanations: {
+          correct: '✅ <strong>Exact !</strong> Affirmer qu\'une IA « comprend véritablement » est un signal d\'alerte majeur. Aucune IA actuelle ne comprend quoi que ce soit au sens humain — elle calcule des probabilités. C\'est de l\'anthropomorphisme marketing (effet ELIZA).',
+          wrong: '❌ Le signal d\'alerte le plus flagrant est <strong>« comprend véritablement les patients »</strong>. Aucune IA actuelle ne comprend quoi que ce soit — et encore moins un système à règles. C\'est l\'exploitation de l\'effet ELIZA à des fins marketing.'
+        }
+      }
+    ];
+
+    let evidenceViewed = new Set();
+    let analysisAnswers = [null, null, null];
+    let analysisLocked = [false, false, false];
+    let missionScore = 0;
+
+    function openEvidence(index) {
+      evidenceViewed.add(index);
+      document.querySelectorAll('.evidence-card')[index].classList.add('viewed');
+      document.getElementById('evidence-count').textContent = evidenceViewed.size;
+
+      document.getElementById('evidence-modal-title').innerHTML = evidenceData[index].title;
+      document.getElementById('evidence-modal-body').innerHTML = evidenceData[index].body;
+      document.getElementById('evidence-modal').classList.add('show');
+
+      if (evidenceViewed.size === 6) {
+        const btn = document.getElementById('btn-to-phase2');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        document.getElementById('evidence-hint').textContent = '✅ Toutes les preuves consultées — vous pouvez passer à l\'analyse';
+        document.getElementById('evidence-hint').style.color = 'var(--neon-green)';
+      }
+    }
+
+    function closeEvidence() {
+      document.getElementById('evidence-modal').classList.remove('show');
+    }
+
+    function goToMissionPhase(phase) {
+      document.querySelectorAll('.mission-phase').forEach(p => p.classList.remove('active'));
+      document.getElementById('mission-phase-' + phase).classList.add('active');
+
+      document.querySelectorAll('.phase-dot').forEach((dot, i) => {
+        dot.classList.remove('active', 'done');
+        if (i < phase) dot.classList.add('done');
+        if (i === phase) dot.classList.add('active');
+      });
+
+      document.querySelector('.mission-body').scrollTop = 0;
+    }
+
+    function selectAnalysis(qIndex, optionIndex) {
+      if (analysisLocked[qIndex]) return;
+      analysisLocked[qIndex] = true;
+      analysisAnswers[qIndex] = optionIndex;
+
+      const q = analysisQuestions[qIndex];
+      const isCorrect = optionIndex === q.correct;
+      if (isCorrect) missionScore++;
+
+      const options = document.querySelectorAll('#aq-' + qIndex + ' .analysis-option');
+      options.forEach((opt, i) => {
+        opt.style.cursor = 'default';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
+      });
+
+      const expl = document.getElementById('aq-expl-' + qIndex);
+      expl.innerHTML = isCorrect ? q.explanations.correct : q.explanations.wrong;
+      expl.classList.add('show', isCorrect ? 'correct-expl' : 'wrong-expl');
+
+      const allAnswered = analysisAnswers.every(a => a !== null);
+      if (allAnswered) {
+        const btn = document.getElementById('btn-submit-report');
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        document.getElementById('analysis-hint').textContent = '✅ Toutes les questions traitées — soumettez votre rapport';
+        document.getElementById('analysis-hint').style.color = 'var(--neon-green)';
+      }
+    }
+
+    function submitReport() {
+      goToMissionPhase(2);
+
+      const resultDiv = document.getElementById('mission-result');
+      const perfect = missionScore === 3;
+
+      resultDiv.innerHTML = `
+        <div class="mission-result-icon">${perfect ? '🏆' : '📋'}</div>
+        <h2 style="color: ${perfect ? 'var(--neon-green)' : 'var(--neon-blue)'};">
+          ${perfect ? 'RAPPORT EXEMPLAIRE' : 'RAPPORT SOUMIS'}
+        </h2>
+        <div class="mission-result-score" style="color: ${perfect ? 'var(--neon-green)' : 'var(--warn)'};">
+          ${missionScore} / 3
+        </div>
+        <p style="color: var(--muted); max-width: 600px; margin: 0 auto 15px; line-height: 1.7;">
+          ${perfect
+            ? 'Excellent travail, analyste ! Vous avez correctement identifié qu\'ATLAS est un système expert symbolique, que sa rigidité est son principal défaut, et que le marketing exploite l\'effet ELIZA. La directrice Chen est impressionnée.'
+            : 'Votre rapport contient des analyses pertinentes, mais certaines conclusions méritent d\'être affinées. Relisez les preuves et les leçons pour renforcer votre esprit critique.'}
+        </p>
+        <div class="callout" style="max-width: 600px; margin: 20px auto; text-align: left;">
+          <strong>📋 Conclusion DECODE sur ATLAS :</strong><br>
+          ATLAS est un <strong>système expert classique</strong> (IA symbolique) performant sur les cas standards
+          mais <strong>rigide et limité</strong> face aux situations imprévues. Les affirmations de « conscience »
+          et de « compréhension véritable » sont du <strong>marketing trompeur</strong> exploitant l'anthropomorphisme.
+        </div>
+        <button class="mission-next-btn" onclick="startQuiz()">
+          Passer au quiz de certification →
+        </button>
+      `;
+    }
+
+    function startQuiz() {
+      document.getElementById('mission-screen').classList.remove('active');
+      document.getElementById('quiz-screen').classList.add('active');
+      renderQuizQuestion();
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN QUIZ ==================== -->
+  <div id="quiz-screen">
+    <div class="quiz-header">
+      <div class="quiz-header-title">
+        📝 Quiz de certification — Module 1
+      </div>
+      <div class="quiz-progress-info">
+        <span id="quiz-progress-text">Question 1/8</span>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 12.5%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-body">
+      <div class="quiz-card" id="quiz-card">
+        <!-- Contenu injecté par JS -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==================== QUIZ DE CERTIFICATION ==================== */
+    const quizQuestions = [
+      {
+        q: 'Quelle est la principale différence entre l\'IA actuelle et l\'intelligence humaine ?',
+        options: [
+          'L\'IA est plus intelligente que les humains dans tous les domaines',
+          'L\'IA excelle dans des tâches spécifiques mais n\'a ni conscience ni compréhension réelle',
+          'L\'IA comprend le monde comme un humain mais plus rapidement',
+          'L\'IA apprend sans avoir besoin de données'
+        ],
+        correct: 1,
+        explanation: 'L\'IA actuelle est spécialisée : elle peut surpasser l\'humain sur certaines tâches précises (jeu d\'échecs, reconnaissance d\'images) mais elle n\'a aucune conscience, aucune compréhension et aucune capacité de généralisation comme un humain.'
+      },
+      {
+        q: 'Qu\'est-ce qui caractérise l\'IA symbolique ?',
+        options: [
+          'Elle apprend à partir d\'exemples',
+          'Elle utilise des règles logiques explicites programmées par des humains',
+          'Elle fonctionne uniquement avec des réseaux de neurones',
+          'Elle s\'adapte automatiquement aux nouvelles situations'
+        ],
+        correct: 1,
+        explanation: 'L\'IA symbolique repose sur des règles SI/ALORS écrites par des experts humains. C\'est l\'approche des systèmes experts comme MYCIN (médecine) ou Deep Blue (échecs). Elle est explicable mais rigide.'
+      },
+      {
+        q: 'Quelle est la principale limite de l\'IA symbolique ?',
+        options: [
+          'C\'est une boîte noire impossible à comprendre',
+          'Elle nécessite trop de données d\'entraînement',
+          'Elle est trop rigide et échoue face aux situations imprévues',
+          'Elle consomme trop d\'énergie'
+        ],
+        correct: 2,
+        explanation: 'L\'IA symbolique est limitée aux cas prévus par ses règles. Dès qu\'une situation sort du cadre, elle ne peut pas s\'adapter. C\'est le « goulot d\'étranglement de la connaissance » : il faudrait prévoir une règle pour chaque cas possible, ce qui est impossible.'
+      },
+      {
+        q: 'Comment fonctionne l\'IA connexionniste (Machine Learning) ?',
+        options: [
+          'Elle utilise des règles explicites programmées à la main',
+          'Elle apprend des patterns à partir de grandes quantités de données',
+          'Elle n\'a besoin d\'aucune donnée d\'entraînement',
+          'Elle explique facilement chacune de ses décisions'
+        ],
+        correct: 1,
+        explanation: 'L\'IA connexionniste apprend en analysant des milliers ou millions d\'exemples pour en extraire des patterns statistiques. Elle ne suit pas de règles écrites par des humains — elle les découvre elle-même dans les données.'
+      },
+      {
+        q: 'Quel est le bon ordre d\'emboîtement des concepts ?',
+        options: [
+          'Machine Learning ⊃ IA ⊃ Deep Learning ⊃ Transformers',
+          'IA ⊃ Machine Learning ⊃ Deep Learning ⊃ Transformers',
+          'Transformers ⊃ Deep Learning ⊃ Machine Learning ⊃ IA',
+          'IA ⊃ Deep Learning ⊃ Machine Learning ⊃ Transformers'
+        ],
+        correct: 1,
+        explanation: 'L\'IA est le domaine le plus large, qui inclut le Machine Learning, qui inclut le Deep Learning (réseaux profonds), qui inclut les Transformers (architecture derrière ChatGPT, Claude, etc.).'
+      },
+      {
+        q: 'Dans quelle situation le Deep Learning est-il le plus adapté ?',
+        options: [
+          'Appliquer des règles médicales strictes et traçables',
+          'Résoudre des calculs mathématiques simples',
+          'Reconnaître des images complexes ou traiter du langage naturel',
+          'Suivre une procédure légale sans ambiguïté'
+        ],
+        correct: 2,
+        explanation: 'Le Deep Learning excelle dans le traitement de données complexes et non structurées : images, audio, texte. C\'est la technologie derrière la reconnaissance faciale, la traduction automatique, et les modèles de langage comme ChatGPT.'
+      },
+      {
+        q: 'Quel est le signe d\'un marketing trompeur autour de l\'IA ?',
+        options: [
+          'Publier les résultats de tests indépendants',
+          'Mentionner les limites connues du système',
+          'Utiliser des termes comme « super IA », « comprend véritablement », « révolutionnaire »',
+          'Décrire précisément la technologie utilisée'
+        ],
+        correct: 2,
+        explanation: 'Les termes vagues et grandiloquents (« super IA », « comprend véritablement », « révolutionnaire ») sont des signaux d\'alerte classiques. Un acteur sérieux décrit sa technologie avec précision et mentionne ses limites.'
+      },
+      {
+        q: 'Quelle affirmation sur l\'IA actuelle est correcte ?',
+        options: [
+          'L\'IA peut comprendre véritablement le sens de ce qu\'elle traite',
+          'L\'IA est consciente d\'elle-même depuis 2022',
+          'L\'IA excelle sur des tâches spécifiques mais ne possède ni compréhension ni conscience',
+          'L\'IA apprend de manière autonome sans aucune donnée humaine'
+        ],
+        correct: 2,
+        explanation: 'L\'IA actuelle est un outil puissant pour des tâches spécifiques, mais elle ne comprend pas, ne ressent pas et n\'est pas consciente. Elle calcule des probabilités statistiques sur des données fournies par des humains.'
+      }
+    ];
+
+    let quizCurrent = 0;
+    let quizScore = 0;
+    let quizLocked = false;
+
+    function renderQuizQuestion() {
+      if (quizCurrent >= quizQuestions.length) {
+        showQuizResult();
+        return;
+      }
+
+      const q = quizQuestions[quizCurrent];
+      const pct = ((quizCurrent + 1) / quizQuestions.length * 100).toFixed(1);
+      document.getElementById('quiz-progress-fill').style.width = pct + '%';
+      document.getElementById('quiz-progress-text').textContent = 'Question ' + (quizCurrent + 1) + '/' + quizQuestions.length;
+
+      quizLocked = false;
+
+      let html = `
+        <div class="quiz-question-number">QUESTION ${quizCurrent + 1} / ${quizQuestions.length}</div>
+        <div class="quiz-question-text">${q.q}</div>
+        <div class="quiz-options">
+      `;
+
+      q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(65 + i);
+        html += `<div class="quiz-option" onclick="answerQuiz(${i})"><strong>${letter}.</strong> ${opt}</div>`;
+      });
+
+      html += `
+        </div>
+        <div class="quiz-explanation" id="quiz-expl"></div>
+        <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuizQuestion()">
+          ${quizCurrent < quizQuestions.length - 1 ? 'Question suivante →' : 'Voir le résultat →'}
+        </button>
+      `;
+
+      document.getElementById('quiz-card').innerHTML = html;
+    }
+
+    function answerQuiz(optionIndex) {
+      if (quizLocked) return;
+      quizLocked = true;
+
+      const q = quizQuestions[quizCurrent];
+      const isCorrect = optionIndex === q.correct;
+      if (isCorrect) quizScore++;
+
+      const options = document.querySelectorAll('.quiz-option');
+      options.forEach((opt, i) => {
+        opt.style.cursor = 'default';
+        if (i === q.correct) opt.classList.add('correct');
+        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
+      });
+
+      const expl = document.getElementById('quiz-expl');
+      expl.innerHTML = (isCorrect ? '✅ ' : '❌ ') + q.explanation;
+      expl.classList.add('show');
+      expl.style.borderLeftColor = isCorrect ? 'var(--neon-green)' : 'var(--danger)';
+      expl.style.background = isCorrect ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 77, 77, 0.06)';
+
+      document.getElementById('quiz-next-btn').classList.add('show');
+    }
+
+    function nextQuizQuestion() {
+      quizCurrent++;
+      renderQuizQuestion();
+      document.querySelector('.quiz-body').scrollTop = 0;
+    }
+
+    function showQuizResult() {
+      const pct = Math.round(quizScore / quizQuestions.length * 100);
+      const passed = pct >= 70;
+
+      document.getElementById('quiz-progress-fill').style.width = '100%';
+      document.getElementById('quiz-progress-text').textContent = 'Terminé !';
+
+      document.getElementById('quiz-card').innerHTML = `
+        <div class="quiz-result">
+          <div class="quiz-result-icon">${passed ? '🎓' : '📖'}</div>
+          <h2 style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
+            ${passed ? 'CERTIFICATION RÉUSSIE !' : 'SCORE INSUFFISANT'}
+          </h2>
+          <div class="quiz-score-display" style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
+            ${quizScore} / ${quizQuestions.length}
+          </div>
+          <div class="quiz-score-bar-container">
+            <div class="quiz-score-bar-fill" style="width: ${pct}%; background: ${passed ? 'linear-gradient(90deg, var(--neon-green), var(--neon-blue))' : 'linear-gradient(90deg, var(--warn), var(--danger))'};">
+            </div>
+          </div>
+          <p style="color: var(--muted); font-size: 1.1em; margin-top: 10px;">${pct}% — Seuil requis : 70%</p>
+          <p style="color: var(--muted); margin-top: 15px; line-height: 1.6;">
+            ${passed
+              ? 'Félicitations, analyste ! Vous avez démontré une solide compréhension des fondamentaux de l\'IA. Vous pouvez maintenant télécharger votre attestation de réussite.'
+              : 'Vous n\'avez pas atteint le seuil de 70%. Relisez les leçons et retentez le quiz pour obtenir votre attestation.'}
+          </p>
+          ${passed
+            ? '<button class="mission-next-btn" onclick="showAttestation()" style="margin-top: 25px;">🎓 Obtenir mon attestation</button>'
+            : '<button class="mission-next-btn" onclick="retryQuiz()" style="margin-top: 25px; background: var(--warn); border-color: var(--warn); color: var(--dark-bg);">🔄 Retenter le quiz</button>'}
+        </div>
+      `;
+
+      setTimeout(() => {
+        const bar = document.querySelector('.quiz-score-bar-fill');
+        if (bar) bar.style.width = pct + '%';
+      }, 100);
+    }
+
+    function retryQuiz() {
+      quizCurrent = 0;
+      quizScore = 0;
+      renderQuizQuestion();
+    }
+
+    function showAttestation() {
+      document.getElementById('quiz-screen').classList.remove('active');
+      document.getElementById('attestation-screen').classList.add('active');
+      document.getElementById('attestation-score').textContent = Math.round(quizScore / quizQuestions.length * 100) + '%';
+    }
+  </script>
+
+  <!-- ==================== ÉCRAN ATTESTATION ==================== -->
+  <div id="attestation-screen">
+    <div class="attestation-card">
+      <div class="attestation-icon">🎓</div>
+      <h2>Attestation de réussite</h2>
+      <p style="color: var(--muted); margin-bottom: 8px;">Vous avez validé le micro-module</p>
+      <p class="attestation-module-name">
+        <strong>« Démystifier l'Intelligence Artificielle »</strong>
+      </p>
+
+      <div class="attestation-score-box">
+        <p style="margin-bottom: 10px;">Score obtenu :</p>
+        <p style="font-family: 'Space Mono', monospace; font-size: 1.8em; color: var(--neon-green); margin: 0;" id="attestation-score">0%</p>
+      </div>
+
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label style="display: block; margin-bottom: 8px; color: var(--neon-blue); font-size: 0.9em;">
+          Votre nom (pour l'attestation) :
+        </label>
+        <input type="text" id="certificate-name" placeholder="Prénom NOM"
+               class="attestation-name-input">
+      </div>
+
+      <button class="attestation-download-btn" onclick="downloadCertificate()">
+        📥 Télécharger l'attestation
+      </button>
+
+      <br>
+      <a href="modules.html" class="attestation-back-link">← Retour à la liste des modules</a>
+    </div>
+  </div>
+
+  <script>
+    function downloadCertificate() {
+      const name = document.getElementById('certificate-name').value.trim() || 'Participant';
+      const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const score = Math.round(quizScore / quizQuestions.length * 100);
+      const refId = 'IA-DECODE-' + Date.now().toString(36).toUpperCase();
+
+      const certificateHTML = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attestation - Démystifier l'IA - ${name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: #0a1628;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #e0f0ff;
+  }
+  .certificate {
+    background: linear-gradient(180deg, #0d1f35 0%, #162840 100%);
+    border: 3px solid #00ff88;
+    border-radius: 20px;
+    padding: 50px 60px;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,255,136,0.3), inset 0 0 60px rgba(0,212,255,0.1);
+  }
+  .certificate::before {
+    content: '';
+    position: absolute;
+    top: 15px; left: 15px; right: 15px; bottom: 15px;
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 15px;
+    pointer-events: none;
+  }
+  .header { text-align: center; margin-bottom: 40px; }
+  .logo { font-size: 3em; margin-bottom: 10px; }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5em;
+    background: linear-gradient(90deg, #00ff88, #00d4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 5px;
+  }
+  .subtitle-cert {
+    color: #00d4ff;
+    font-size: 1.1em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .content { text-align: center; }
+  .certifies { color: #8899aa; font-size: 1em; margin-bottom: 5px; }
+  .name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2em;
+    color: #ffffff;
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid rgba(0,212,255,0.3);
+    border-bottom: 1px solid rgba(0,212,255,0.3);
+  }
+  .module-box {
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0;
+  }
+  .module-box-title {
+    font-family: 'Space Mono', monospace;
+    color: #00ff88;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+  .score-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #00ff88, #00d4ff);
+    color: #0a1628;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  .skill {
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    color: #00d4ff;
+  }
+  .footer-cert {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(0,212,255,0.2);
+  }
+  .footer-item { text-align: center; }
+  .footer-label { color: #888; font-size: 0.85em; margin-bottom: 5px; }
+  .footer-value { color: #00d4ff; font-weight: 600; }
+  .provider {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0,212,255,0.15);
+    color: #8899aa;
+    font-size: 0.9em;
+  }
+  .provider a { color: #00d4ff; text-decoration: none; }
+  @media print {
+    body { background: white; }
+    .certificate { box-shadow: none; border-width: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="certificate">
+  <div class="header">
+    <div class="logo">🔍🤖</div>
+    <div class="title">Attestation de Réussite</div>
+    <div class="subtitle-cert">Formation IA Responsable</div>
+  </div>
+  <div class="content">
+    <p class="certifies">Cette attestation certifie que</p>
+    <div class="name">${name}</div>
+    <p>a complété avec succès le micro-module</p>
+    <div class="module-box">
+      <div class="module-box-title">🔍 Démystifier l'Intelligence Artificielle</div>
+      <p>via la mission immersive "DECODE : Mission Vérité"</p>
+      <div class="score-badge">Score : ${score}%</div>
+    </div>
+    <p>Compétences validées :</p>
+    <div class="skills">
+      <span class="skill">🧠 IA vs Intelligence Humaine</span>
+      <span class="skill">📜 Origines de l'IA (1950-2025)</span>
+      <span class="skill">⚙️ IA Symbolique vs Connexionniste</span>
+      <span class="skill">📊 Hiérarchie IA ⊃ ML ⊃ DL</span>
+      <span class="skill">🔍 Analyse critique</span>
+      <span class="skill">🛡️ Démystification marketing</span>
+    </div>
+  </div>
+  <div class="footer-cert">
+    <div class="footer-item">
+      <div class="footer-label">Date d'obtention</div>
+      <div class="footer-value">${date}</div>
+    </div>
+    <div class="footer-item">
+      <div class="footer-label">Programme</div>
+      <div class="footer-value">IA Responsable</div>
+    </div>
+    <div class="footer-item">
+      <div class="footer-label">Référence</div>
+      <div class="footer-value">${refId}</div>
+    </div>
+  </div>
+  <div class="provider">
+    Formation proposée par <a href="https://www.profexpress.com" target="_blank">Prof Express</a>
+  </div>
+</div>
 </body>
 </html>`;
 
-  const blob = new Blob([certificateHTML], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `Attestation_Module1_Demystifier_IA_${name.replace(/\s+/g, '_')}.html`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+      const blob = new Blob([certificateHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Attestation_IA_Demystifier_' + name.replace(/\\s+/g, '_') + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
 
-  toast("✅ Attestation téléchargée ! Ouvrez le fichier HTML pour l'imprimer en PDF.", 4000);
-}
-
-
-</script>
 </body>
 </html>
