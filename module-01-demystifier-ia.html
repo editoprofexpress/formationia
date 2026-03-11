@@ -834,8 +834,20 @@
     .briefing-title { font-size: 1.3em !important; }
     #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 
-    .briefing-progress{display:none!important}
-    .briefing-footer{display:none!important}
+    /* briefing-progress and briefing-footer are intentionally visible */
+
+    .lesson { display: none; }
+    .lesson.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .callout.blue {
+      background: rgba(0, 212, 255, 0.08);
+      border-color: rgba(0, 212, 255, 0.30);
+      box-shadow: 0 0 18px rgba(0, 212, 255, 0.16);
+    }
+
+    .pill.blue { border-color: rgba(0, 212, 255, .5); color: var(--neon-blue); background: rgba(0, 212, 255, .05); }
+    .pill.pink { border-color: rgba(255, 0, 128, .5); color: var(--neon-pink); background: rgba(255, 0, 128, .05); }
 </style>
 </head>
 <body>
@@ -938,7 +950,19 @@
       </nav>
 
       <!-- Content area -->
-      <div class="briefing-content" id="briefing-content"></div>
+      <div class="briefing-content" id="briefing-content">
+        <!-- les leçons seront insérées ici -->
+      </div>
+    </div>
+
+    <!-- Footer navigation -->
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
+        ← Précédent
+      </button>
+      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
+        Suivant →
+      </button>
     </div>
 
   </div>
