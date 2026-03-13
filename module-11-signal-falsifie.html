@@ -1334,25 +1334,6 @@ const dossiers = [
   },
   {
     id:3,
-    type:'🎤',
-    typeLabel:'Audio',
-    title:'Message vocal du PDG',
-    media:{type:'audio',src:'audio/audio-pdg-marc.mp3'},
-    description:'Une entreprise reçoit un message vocal urgent de son PDG parti en déplacement à l\'étranger. Il demande à la comptable de réaliser un virement exceptionnel de 85 000 € avant 18h, pour finaliser une acquisition confidentielle. "Ne passez pas par les canaux habituels, c\'est trop urgent."',
-    meta:[
-      {k:'Canal',v:'WhatsApp (numéro inconnu du PDG)'},
-      {k:'Durée',v:'1 min 12 sec'},
-      {k:'Qualité',v:'Bonne — légère compression'},
-      {k:'Urgence déclarée',v:'Virement avant 18h'},
-    ],
-    tools:[
-      {icon:'🎵',name:'Analyse spectrale',desc:'Examiner les fréquences audio',result:'Détection d\'un <strong style="color:var(--neon-pink)">artefact de clonage vocal</strong> : les fréquences entre 8kHz et 12kHz présentent une coupure nette non naturelle. La respiration entre les phrases est absente sur 9 des 12 pauses. Transition consonnes → voyelles trop nette (synthèse TTS).',suspicious:true},
-      {icon:'🗣️',name:'Analyse de la prosodie',desc:'Rythme, intonation, hésitations',result:'Le discours est <strong style="color:var(--neon-pink)">parfaitement fluide sans aucune hésitation</strong>, atypique pour une conversation spontanée et urgente. L\'intonation finale des phrases est systématiquement descendante (pattern TTS). Aucun bruit de fond cohérent avec un déplacement à l\'étranger.',suspicious:true},
-      {icon:'📞',name:'Vérification d\'identité',desc:'Contacter le PDG par un canal connu',result:'Rappel du PDG sur son numéro professionnel habituel : <strong style="color:var(--neon-green)">il ne sait pas de quoi on parle</strong>, il n\'a envoyé aucun message vocal. Il est bien à l\'étranger mais n\'a fait aucune demande de virement. Arnaque confirmée.',suspicious:true},
-    ],
-    answer:'fake',
-  {
-    id:3,
     type:'📹',
     typeLabel:'Vidéo',
     title:'Interview NASA — Mission PUNCH',
