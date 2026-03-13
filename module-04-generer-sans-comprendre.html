@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module n°4 — Générer sans comprendre</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
+
+    :root {
+      --neon-red:    #ff6b6b;
+      --neon-orange: #ff9f43;
+      --neon-green:  #00ff88;
+      --neon-blue:   #00d4ff;
+      --neon-pink:   #ff0080;
+      --dark-bg:     #0a0e17;
+      --panel-bg:    rgba(10, 20, 40, 0.95);
+      --text:        #e0f0ff;
+      --muted:       #8899aa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--dark-bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ==================== ÉCRAN TITRE ==================== */
+    #title-screen {
+      position: fixed;
+      inset: 0;
+      background:
+        url('images/module4-title-bg.png') center/cover no-repeat,
+        linear-gradient(135deg, #0a0e17 0%, #1a0505 50%, #0a0e17 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity .6s, visibility .6s;
+    }
+
+    #title-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 14, 23, 0.75);
+      z-index: -1;
+    }
+
+    /* grille cyberpunk pulsante */
+    #title-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 107, 107, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 107, 107, 0.06) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      animation: gridPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    #title-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* lien retour discret */
+    .back-link-title {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #8899aa;
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all .3s;
+    }
+    .back-link-title:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.3);
+      color: #aabbcc;
+    }
+
+    /* badge module */
+    .module-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--neon-red);
+      border: 1px solid rgba(255, 107, 107, 0.4);
+      padding: 5px 16px;
+      border-radius: 20px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      background: rgba(255, 107, 107, 0.08);
+    }
+
+    /* icône flottante */
+    .title-logo {
+      font-size: 5em;
+      margin-bottom: 18px;
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 107, 107, 0.6));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-16px); }
+    }
+
+    .main-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 3em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-orange), var(--neon-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      text-align: center;
+      animation: titleGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes titleGlow {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255,107,107,0.3)); }
+      50%       { filter: drop-shadow(0 0 30px rgba(255,107,107,0.7)); }
+    }
+
+    .subtitle {
+      font-size: 1.15em;
+      color: #8899aa;
+      margin-bottom: 14px;
+      font-weight: 300;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .intro-text {
+      max-width: 700px;
+      text-align: center;
+      line-height: 1.85;
+      margin: 0 20px 40px;
+      color: #aabbcc;
+      font-size: 1.05em;
+    }
+    .intro-text strong { color: var(--neon-red); }
+
+    /* terminal typing effect */
+    .terminal-line {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      color: var(--neon-green);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(0,255,136,0.2);
+      border-radius: 6px;
+      padding: 10px 20px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 600px;
+    }
+    .terminal-line::before {
+      content: '>';
+      color: var(--neon-green);
+      font-size: 1.2em;
+    }
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.1em;
+      background: var(--neon-green);
+      animation: blink .8s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* bouton démarrer */
+    .start-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      padding: 18px 60px;
+      background: transparent;
+      border: 2px solid var(--neon-red);
+      color: var(--neon-red);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      transition: all .3s;
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .start-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,107,107,0.25), transparent);
+      transition: left .5s;
+    }
+    .start-btn:hover::before { left: 100%; }
+    .start-btn:hover {
+      background: rgba(255,107,107,0.1);
+      box-shadow: 0 0 30px rgba(255,107,107,0.5), inset 0 0 30px rgba(255,107,107,0.08);
+      transform: scale(1.05);
+    }
+
+    /* infos module (durée, niveaux) */
+    .module-info {
+      display: flex;
+      gap: 30px;
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 0.85em;
+    }
+    .module-info span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==================== BRIEFING ==================== */
+    #briefing-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #1a0505 50%, #0a0e17 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #briefing-screen.active { display: flex; }
+
+    .briefing-header {
+      background: rgba(10,20,40,0.95);
+      border-bottom: 1px solid rgba(255,107,107,0.3);
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .briefing-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: var(--neon-red);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .briefing-progress { display: flex; align-items: center; gap: 10px; color: #8899aa; font-size: 0.9em; }
+    .briefing-progress-bar { width: 180px; height: 5px; background: rgba(255,107,107,0.15); border-radius: 3px; overflow: hidden; }
+    .briefing-progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-red), var(--neon-orange)); transition: width .4s ease; }
+
+    .briefing-body { display: flex; flex: 1; overflow: hidden; }
+
+    .briefing-nav {
+      width: 270px;
+      background: rgba(10,14,23,0.9);
+      border-right: 1px solid rgba(255,107,107,0.2);
+      padding: 20px 0;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .briefing-nav::-webkit-scrollbar { width: 4px; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 2px; }
+
+    .back-link-sidebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      margin: 0 15px 15px;
+      background: rgba(0,212,255,0.05);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 8px;
+      color: var(--neon-blue);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all .3s;
+    }
+    .back-link-sidebar:hover { background: rgba(0,212,255,0.12); border-color: var(--neon-blue); transform: translateX(-3px); }
+
+    .briefing-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all .3s;
+      color: #8899aa;
+      font-size: 0.9em;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05); color: var(--text); }
+    .briefing-nav-item.active { border-left-color: var(--neon-red); background: rgba(255,107,107,0.1); color: var(--neon-red); }
+    .briefing-nav-item.completed { color: var(--neon-orange); }
+    .briefing-nav-item.completed::after { content: '✓'; margin-left: auto; color: var(--neon-green); font-size: 0.85em; }
+    .nav-icon { font-size: 1.2em; width: 28px; text-align: center; flex-shrink: 0; }
+    .nav-number {
+      margin-left: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7em;
+      background: rgba(255,107,107,0.2);
+      color: var(--neon-red);
+      padding: 2px 7px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .briefing-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .briefing-content::-webkit-scrollbar { width: 6px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(255,107,107,0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 3px; }
+
+    .briefing-footer {
+      background: rgba(10,20,40,0.95);
+      border-top: 1px solid rgba(255,107,107,0.2);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 10px 25px;
+      background: transparent;
+      border: 1px solid rgba(255,107,107,0.4);
+      color: var(--neon-red);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all .3s;
+      border-radius: 3px;
+    }
+    .nav-btn:hover { background: rgba(255,107,107,0.1); border-color: var(--neon-red); }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .nav-btn.next { background: rgba(255,107,107,0.15); border-color: var(--neon-red); }
+    .nav-btn.next:hover { background: rgba(255,107,107,0.25); box-shadow: 0 0 15px rgba(255,107,107,0.3); }
+    .nav-btn.launch {
+      background: linear-gradient(135deg, rgba(255,107,107,0.3), rgba(255,159,67,0.3));
+      border-color: var(--neon-orange);
+      color: var(--neon-orange);
+    }
+    .nav-btn.launch:hover { box-shadow: 0 0 20px rgba(255,159,67,0.4); transform: scale(1.03); }
+
+    /* Styles contenu briefing */
+    .lesson-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6em;
+      color: var(--neon-red);
+      margin-bottom: 6px;
+    }
+    .lesson-kicker {
+      font-size: 0.9em;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--neon-red), transparent);
+      margin: 20px 0;
+      opacity: 0.4;
+    }
+    .callout {
+      background: rgba(255,107,107,0.06);
+      border: 1px solid rgba(255,107,107,0.25);
+      border-radius: 10px;
+      padding: 20px 25px;
+      margin: 20px 0;
+      line-height: 1.75;
+    }
+    .callout.blue { background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.25); }
+    .callout.green { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.25); }
+    .callout.orange { background: rgba(255,159,67,0.06); border-color: rgba(255,159,67,0.25); }
+    .callout.pink { background: rgba(255,0,128,0.06); border-color: rgba(255,0,128,0.25); }
+    .callout.warn { background: rgba(255,204,0,0.06); border-color: rgba(255,204,0,0.25); }
+    .highlight { color: var(--neon-red); font-weight: 600; }
+    .highlight-blue { color: var(--neon-blue); font-weight: 600; }
+    .highlight-orange { color: var(--neon-orange); font-weight: 600; }
+    .highlight-green { color: var(--neon-green); font-weight: 600; }
+
+    /* Schéma tokens inline */
+    .token-demo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 15px 0;
+      align-items: center;
+    }
+    .token-chip {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+    .token-chip.t1 { background: rgba(255,107,107,0.15); border-color: var(--neon-red); color: var(--neon-red); }
+    .token-chip.t2 { background: rgba(0,212,255,0.15); border-color: var(--neon-blue); color: var(--neon-blue); }
+    .token-chip.t3 { background: rgba(0,255,136,0.15); border-color: var(--neon-green); color: var(--neon-green); }
+    .token-chip.t4 { background: rgba(255,159,67,0.15); border-color: var(--neon-orange); color: var(--neon-orange); }
+    .token-arrow { color: var(--muted); font-size: 1.2em; }
+
+    /* Schéma probabilités */
+    .prob-bars { margin: 15px 0; display: flex; flex-direction: column; gap: 8px; }
+    .prob-row { display: flex; align-items: center; gap: 12px; }
+    .prob-word { font-family: 'Space Mono', monospace; font-size: 0.85em; width: 120px; color: var(--text); }
+    .prob-bar-outer { flex: 1; height: 20px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+    .prob-bar-inner { height: 100%; border-radius: 4px; transition: width .6s ease; }
+    .prob-pct { font-family: 'Space Mono', monospace; font-size: 0.8em; width: 40px; text-align: right; color: var(--muted); }
+
+    /* scanlines */
+    .scanline {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* particules flottantes */
+    .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1; }
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--neon-red);
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.3; }
+      100% { opacity: 0; transform: translateY(-20px) scale(1.5); }
+    }
+
+    /* ==================== ÉCRAN JEU ==================== */
+    #game-screen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e17 0%, #0d0a1a 50%, #0a0e17 100%);
+      z-index: 998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #game-screen.active { display: flex; }
+
+    .game-header {
+      background: rgba(10,20,40,0.97);
+      border-bottom: 1px solid rgba(255,159,67,0.3);
+      padding: 12px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .game-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1em;
+      color: var(--neon-orange);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .game-score-display {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      color: var(--neon-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .score-val { font-size: 1.3em; font-weight: 700; }
+
+    /* Level tabs */
+    .level-tabs {
+      display: flex;
+      gap: 0;
+      background: rgba(10,14,23,0.8);
+      border-bottom: 1px solid rgba(255,159,67,0.15);
+      flex-shrink: 0;
+    }
+    .level-tab {
+      flex: 1;
+      padding: 14px 20px;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all .3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .level-tab.active { color: var(--neon-orange); border-bottom-color: var(--neon-orange); background: rgba(255,159,67,0.05); }
+    .level-tab.done { color: var(--neon-green); }
+    .level-tab.done::after { content: ' ✓'; }
+    .level-tab.locked { opacity: 0.4; cursor: default; }
+
+    /* Game body */
+    .game-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 30px 50px;
+    }
+    .game-body::-webkit-scrollbar { width: 5px; }
+    .game-body::-webkit-scrollbar-thumb { background: rgba(255,159,67,0.3); border-radius: 3px; }
+
+    /* Level panels */
+    .level-panel { display: none; }
+    .level-panel.active { display: block; }
+
+    .level-intro {
+      background: rgba(255,159,67,0.05);
+      border: 1px solid rgba(255,159,67,0.3);
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 25px;
+    }
+    .level-intro h2 {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-orange);
+      font-size: 1.2em;
+      margin-bottom: 8px;
+    }
+    .level-intro p { color: #cfe9ff; line-height: 1.7; font-size: 0.95em; }
+
+    /* ---- NIVEAU 1 : Sois le modèle ---- */
+    .prediction-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255,107,107,0.25);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      transition: border-color .3s;
+    }
+    .prediction-card.done { border-color: rgba(0,255,136,0.4); }
+    .prediction-card.done-wrong { border-color: rgba(255,0,128,0.4); }
+
+    .prediction-context {
+      font-size: 1.1em;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .prediction-context .blank {
+      display: inline-block;
+      min-width: 100px;
+      border-bottom: 2px dashed var(--neon-orange);
+      color: var(--neon-orange);
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 8px;
+      transition: all .3s;
+    }
+    .prediction-context .blank.filled-correct { color: var(--neon-green); border-bottom-color: var(--neon-green); }
+    .prediction-context .blank.filled-wrong { color: var(--neon-pink); border-bottom-color: var(--neon-pink); }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .choice-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      padding: 12px 16px;
+      background: rgba(255,107,107,0.05);
+      border: 1px solid rgba(255,107,107,0.3);
+      color: var(--text);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all .25s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .choice-btn:hover:not(:disabled) { background: rgba(255,107,107,0.15); border-color: var(--neon-red); transform: translateX(3px); }
+    .choice-btn.correct { background: rgba(0,255,136,0.1); border-color: var(--neon-green); color: var(--neon-green); }
+    .choice-btn.wrong { background: rgba(255,0,128,0.1); border-color: var(--neon-pink); color: var(--neon-pink); }
+    .choice-btn.revealed { background: rgba(0,255,136,0.05); border-color: rgba(0,255,136,0.3); color: var(--neon-green); opacity: 0.7; }
+    .choice-btn:disabled { cursor: default; }
+    .choice-letter {
+      background: rgba(255,107,107,0.2);
+      color: var(--neon-red);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 0.8em;
+      flex-shrink: 0;
+    }
+    .choice-btn.correct .choice-letter { background: rgba(0,255,136,0.2); color: var(--neon-green); }
+    .choice-btn.wrong .choice-letter { background: rgba(255,0,128,0.2); color: var(--neon-pink); }
+
+    /* Probability bars after answer */
+    .prob-reveal {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 14px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+    }
+    .prob-reveal.show { display: flex; }
+    .prob-row-r { display: flex; align-items: center; gap: 10px; font-size: 0.85em; }
+    .prob-word-r { font-family: 'Space Mono', monospace; width: 110px; color: var(--text); flex-shrink: 0; }
+    .prob-bar-outer-r { flex: 1; height: 16px; background: rgba(255,255,255,0.04); border-radius: 3px; overflow: hidden; }
+    .prob-bar-inner-r { height: 100%; border-radius: 3px; animation: barGrow .6s ease forwards; transform-origin: left; }
+    @keyframes barGrow { from { width: 0 !important; } }
+    .prob-pct-r { font-family: 'Space Mono', monospace; font-size: 0.8em; width: 36px; text-align: right; color: var(--muted); flex-shrink: 0; }
+    .feedback-msg {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    .feedback-msg.good { background: rgba(0,255,136,0.1); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.3); }
+    .feedback-msg.bad { background: rgba(255,0,128,0.1); color: var(--neon-pink); border: 1px solid rgba(255,0,128,0.3); }
+
+    /* ---- NIVEAU 2 : Température ---- */
+    .temp-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .temp-slider-block {
+      background: var(--panel-bg);
+      border: 1px solid rgba(255,159,67,0.3);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 20px;
+    }
+    .temp-slider-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .temp-slider-label span {
+      font-family: 'Space Mono', monospace;
+      color: var(--neon-orange);
+      font-size: 0.9em;
+    }
+    .temp-value-big {
+      font-family: 'Space Mono', monospace;
+      font-size: 2em;
+      color: var(--neon-orange);
+      font-weight: 700;
+    }
+    input[type=range].temp-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-green), var(--neon-orange), var(--neon-pink));
+      border-radius: 4px;
+      outline: none;
+      margin: 10px 0;
+    }
+    input[type=range].temp-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      background: var(--neon-orange);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255,159,67,0.5);
+      transition: box-shadow .2s;
+    }
+    input[type=range].temp-slider::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 20px rgba(255,159,67,0.8);
+    }
+    .temp-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75em;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .temp-prompt {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9em;
+      color: var(--neon-blue);
+    }
+    .temp-prompt::before { content: '> Prompt : '; color: var(--muted); }
+
+    .temp-output {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 18px 22px;
+      min-height: 90px;
+      line-height: 1.75;
+      color: var(--text);
+      font-size: 0.95em;
+      transition: all .4s;
+      position: relative;
+    }
+    .temp-output::before {
+      content: 'SYNTHÈSE génère…';
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .temp-mode-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7em;
+      padding: 3px 9px;
+      border-radius: 10px;
+    }
+
+    .temp-insight {
+      background: rgba(255,159,67,0.06);
+      border: 1px solid rgba(255,159,67,0.25);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      line-height: 1.7;
+      font-size: 0.9em;
+      color: #cfe9ff;
+    }
+    .temp-insight strong { color: var(--neon-orange); }
+
+    /* ---- NIVEAU 3 : Turing inversé ---- */
+    .turing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .turing-card {
+      background: var(--panel-bg);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all .3s;
+      position: relative;
+    }
+    .turing-card:hover:not(.answered) { border-color: rgba(0,212,255,0.5); transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,212,255,0.1); }
+    .turing-card.answered { cursor: default; }
+    .turing-card.correct-human { border-color: var(--neon-green); background: rgba(0,255,136,0.05); }
+    .turing-card.correct-ai { border-color: var(--neon-blue); background: rgba(0,212,255,0.05); }
+    .turing-card.wrong-answer { border-color: var(--neon-pink); background: rgba(255,0,128,0.05); }
+
+    .turing-text {
+      font-size: 0.9em;
+      line-height: 1.7;
+      color: #cfe9ff;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+    .turing-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .turing-btn {
+      flex: 1;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid;
+      transition: all .2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .turing-btn.human-btn { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.4); color: var(--neon-green); }
+    .turing-btn.human-btn:hover:not(:disabled) { background: rgba(0,255,136,0.15); }
+    .turing-btn.ai-btn { background: rgba(0,212,255,0.06); border-color: rgba(0,212,255,0.4); color: var(--neon-blue); }
+    .turing-btn.ai-btn:hover:not(:disabled) { background: rgba(0,212,255,0.15); }
+    .turing-btn:disabled { cursor: default; }
+
+    .turing-verdict {
+      display: none;
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8em;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    .turing-verdict.show { display: block; }
+    .turing-verdict.good { background: rgba(0,255,136,0.1); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.3); }
+    .turing-verdict.bad { background: rgba(255,0,128,0.1); color: var(--neon-pink); border: 1px solid rgba(255,0,128,0.3); }
+
+    .turing-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7em;
+      padding: 3px 10px;
+      border-radius: 10px;
+      display: none;
+    }
+    .turing-tag.show-human { display: block; background: rgba(0,255,136,0.15); color: var(--neon-green); border: 1px solid rgba(0,255,136,0.4); }
+    .turing-tag.show-ai { display: block; background: rgba(0,212,255,0.15); color: var(--neon-blue); border: 1px solid rgba(0,212,255,0.4); }
+
+    /* Bouton passer au niveau suivant / quiz */
+    .level-next-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95em;
+      padding: 14px 35px;
+      background: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,159,67,0.2));
+      border: 2px solid var(--neon-orange);
+      color: var(--neon-orange);
+      cursor: pointer;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: all .3s;
+      margin-top: 20px;
+      display: block;
+    }
+    .level-next-btn:hover { box-shadow: 0 0 20px rgba(255,159,67,0.4); transform: scale(1.03); }
+    .level-next-btn:disabled { opacity: 0.3; cursor: default; transform: none; box-shadow: none; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(10,20,40,0.95);
+      border: 1px solid rgba(0,255,136,0.4);
+      color: var(--neon-green);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85em;
+      padding: 12px 25px;
+      border-radius: 8px;
+      z-index: 9999;
+      transition: transform .4s ease;
+      box-shadow: 0 0 20px rgba(0,255,136,0.2);
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.error { border-color: rgba(255,0,128,0.4); color: var(--neon-pink); box-shadow: 0 0 20px rgba(255,0,128,0.2); }
+
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      text-align: center;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#ff6b6b,#ff8c00,#ff0080) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(255,107,107,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #ff6b6b !important;
+      color: #ff6b6b !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(255,107,107,0.08) !important;
+      box-shadow: 0 0 30px rgba(255,107,107,0.5), inset 0 0 30px rgba(255,107,107,0.08) !important;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(255,107,107,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(255,107,107,0.05) !important;
+      border-color: rgba(255,107,107,0.3) !important;
+      color: #ff6b6b !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(255,107,107,0.15) !important;
+      border-color: #ff6b6b !important;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #ff6b6b !important;
+      background: rgba(255,107,107,0.1) !important;
+      color: #ff6b6b !important;
+    }
+    .nav-number { background: rgba(255,107,107,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
+
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
+    #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
+</style>
+</head>
+<body>
+
+  <!-- ==================== ÉCRAN TITRE ==================== -->
+  <div id="title-screen">
+    <div class="scanline"></div>
+
+    <!-- Particules décoratives -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Retour aux modules -->
+    <a href="modules.html" class="back-link-title">← Tous les modules</a>
+
+    <div class="domain-badge-std" style="background:#ff6b6b22;border:1px solid #ff6b6b88;color:#ff6b6b;">Fondations IA - Module n°04</div>
+
+    <!-- Badge -->
+
+    <!-- Logo flottant -->
+    <div class="title-logo">🧠</div>
+
+    <!-- Titre principal -->
+    <h1 class="main-title">Générer sans comprendre</h1>
+    <p class="mission-label">SYNTHÈSE</p>
+
+    <!-- Texte d'intro narratif -->
+    <p class="intro-text">
+      Nous sommes en 2034. Tu viens d'être téléporté dans la <strong>matrice de génération</strong> de SYNTHÈSE, une IA de dernière génération. Tu vas vivre, de l'intérieur, comment le texte est produit — <strong>token après token</strong> — sans aucune compréhension du sens. Ton défi : démonter l'illusion, comprendre le mécanisme, et ne plus jamais voir les IA de la même façon.
+    </p>
+
+
+    <!-- Bouton -->
+    <div class="activity-badge-std">🎮 Simulation</div>
+    <button class="start-btn" onclick="startModule()">▶ Entrer dans la matrice</button>
+
+    <!-- Infos -->
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== BRIEFING ==================== -->
+  <div id="briefing-screen">
+
+    <!-- Header -->
+    <div class="briefing-header">
+      <div class="briefing-title">🧠 SYNTHÈSE — Dossier de Préparation</div>
+      <div class="briefing-progress">
+        <span id="progress-text">Section 1/6</span>
+        <div class="briefing-progress-bar">
+          <div class="briefing-progress-fill" id="progress-fill" style="width:16%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="briefing-body">
+
+      <!-- Sidebar nav -->
+      <nav class="briefing-nav">
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
+        <div class="briefing-nav-item active" onclick="showLesson(0)" id="nav-0">
+          <span class="nav-icon">⚡</span><span class="nav-number">01</span>Qu'est-ce que "générer" ?
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(1)" id="nav-1">
+          <span class="nav-icon">🎯</span><span class="nav-number">02</span>Prédire le prochain token
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(2)" id="nav-2">
+          <span class="nav-icon">🌡️</span><span class="nav-number">03</span>Température et sampling
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(3)" id="nav-3">
+          <span class="nav-icon">🪄</span><span class="nav-number">04</span>L'illusion de compréhension
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(4)" id="nav-4">
+          <span class="nav-icon">🔬</span><span class="nav-number">05</span>Génération vs. raisonnement
+        </div>
+        <div class="briefing-nav-item" onclick="showLesson(5)" id="nav-5">
+          <span class="nav-icon">⚠️</span><span class="nav-number">06</span>Hallucinations et limites
+        </div>
+      
+        <div style="border-top:1px solid rgba(255,107,107,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" id="game-nav-item" onclick="launchGame()">
+            <span class="nav-icon">🤖</span>
+            <span class="nav-number">▶</span>
+            Lancer la simulation
+          </div>
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
+        </div>
+      </nav>
+
+      <!-- Content -->
+      <div class="briefing-content" id="lesson-content"></div>
+
+    </div><!-- /briefing-body -->
+
+    <!-- Footer -->
+
+  </div><!-- /briefing-screen -->
+
+  <!-- ==================== ÉCRAN JEU ==================== -->
+  <div id="game-screen">
+
+    <!-- Game header -->
+    <div class="game-header">
+      <div class="game-title">🎮 SIMULATION SYNTHÈSE</div>
+      <div class="game-score-display">Score : <span class="score-val" id="score-display">0</span></div>
+    </div>
+
+    <!-- Level tabs -->
+    <div class="level-tabs">
+      <div class="level-tab active" id="tab-0" onclick="switchLevel(0)">Niveau 1 — Sois le modèle</div>
+      <div class="level-tab locked" id="tab-1">Niveau 2 — Température</div>
+      <div class="level-tab locked" id="tab-2">Niveau 3 — Turing inversé</div>
+    </div>
+
+    <!-- Game body -->
+    <div class="game-body">
+
+      <!-- ====== NIVEAU 1 ====== -->
+      <div class="level-panel active" id="level-0">
+        <div class="level-intro">
+          <h2>🎯 Niveau 1 : Sois le modèle</h2>
+          <p>Tu es maintenant SYNTHÈSE. À chaque étape, tu dois prédire le prochain token le plus probable pour compléter la phrase. Comme un vrai LLM, tu n'as pas accès au "sens" global — seulement aux probabilités. Après chaque choix, tu verras la vraie distribution de probabilités.</p>
+        </div>
+
+        <div id="pred-cards"></div>
+
+        <button class="level-next-btn" id="lvl1-next" onclick="unlockLevel(1)" disabled>
+          Passer au Niveau 2 — Jouer avec la Température →
+        </button>
+      </div><!-- /level-0 -->
+
+      <!-- ====== NIVEAU 2 ====== -->
+      <div class="level-panel" id="level-1">
+        <div class="level-intro">
+          <h2>🌡️ Niveau 2 : Joue avec la température</h2>
+          <p>Déplace le curseur pour changer la température de SYNTHÈSE et observe comment le même prompt produit des textes radicalement différents. Température basse = précis mais prévisible. Haute = créatif mais incohérent.</p>
+        </div>
+
+        <div class="temp-container">
+          <div class="temp-slider-block">
+            <div class="temp-slider-label">
+              <span>Température de SYNTHÈSE</span>
+              <span class="temp-value-big" id="temp-val-display">0.7</span>
+            </div>
+            <input type="range" class="temp-slider" id="temp-slider" min="1" max="20" value="7" oninput="updateTemp(this.value)">
+            <div class="temp-labels">
+              <span>🥶 0.1 — Précis/Répétitif</span>
+              <span>🌡️ 1.0 — Équilibré</span>
+              <span>🔥 2.0 — Créatif/Incohérent</span>
+            </div>
+          </div>
+
+          <div class="temp-prompt" id="temp-prompt-text">Continue cette phrase : "L'intelligence artificielle va bientôt…"</div>
+
+          <div class="temp-output" id="temp-output-text">
+            <span class="temp-mode-badge" id="temp-mode-badge" style="background:rgba(0,255,136,0.15);color:var(--neon-green);border:1px solid rgba(0,255,136,0.4)">ÉQUILIBRÉ</span>
+            Changer le monde du travail en automatisant les tâches répétitives, permettant aux humains de se concentrer sur la créativité et la prise de décision stratégique.
+          </div>
+
+          <div class="temp-insight" id="temp-insight-text">
+            <strong>📊 À température 0.7</strong> — Le modèle choisit des tokens probables mais pas systématiquement les plus fréquents. Le résultat est fluide et naturel, fidèle aux patterns appris lors de l'entraînement.
+          </div>
+
+          <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="level-next-btn" style="margin-top:0;flex:1;min-width:200px" onclick="switchPrompt()">
+              🔄 Changer de prompt
+            </button>
+            <button class="level-next-btn" style="margin-top:0;flex:1;min-width:200px" onclick="unlockLevel(2)">
+              Passer au Niveau 3 — Turing inversé →
+            </button>
+          </div>
+        </div>
+      </div><!-- /level-1 -->
+
+      <!-- ====== NIVEAU 3 ====== -->
+      <div class="level-panel" id="level-2">
+        <div class="level-intro">
+          <h2>🔍 Niveau 3 : Le Turing inversé</h2>
+          <p>Grâce à ce que tu viens d'apprendre sur la génération statistique, peux-tu repérer quels textes ont été <strong style="color:var(--neon-blue)">générés par une IA</strong> et lesquels ont été <strong style="color:var(--neon-green)">écrits par un humain</strong> ? Clique sur ta réponse pour chaque extrait.</p>
+        </div>
+
+        <div class="turing-grid" id="turing-grid"></div>
+
+        <div id="turing-result" style="display:none;background:rgba(255,159,67,0.06);border:1px solid rgba(255,159,67,0.3);border-radius:12px;padding:20px 25px;margin-top:20px">
+          <h3 style="font-family:'Space Mono',monospace;color:var(--neon-orange);margin-bottom:10px">Résultat du Turing inversé</h3>
+          <p id="turing-result-text" style="color:#cfe9ff;line-height:1.7"></p>
+        </div>
+
+        <button class="level-next-btn" id="lvl3-next" onclick="startQuiz()" disabled>
+          Passer au Quiz final →
+        </button>
+      </div><!-- /level-2 -->
+
+    </div><!-- /game-body -->
+  </div><!-- /game-screen -->
+
+  <!-- ==================== QUIZ SCREEN ==================== -->
+  <div id="quiz-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#1a0505 50%,#0a0e17 100%);z-index:997;display:none;flex-direction:column;overflow:hidden;">
+
+    <div style="background:rgba(10,20,40,0.97);border-bottom:1px solid rgba(255,107,107,0.3);padding:15px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div style="font-family:'Space Mono',monospace;font-size:1.1em;color:var(--neon-red);">🎓 QUIZ DE CERTIFICATION — SYNTHÈSE</div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted)">Score minimum : 70%</div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:30px 60px;max-width:860px;width:100%;margin:0 auto;" id="quiz-content"></div>
+  </div>
+
+  <!-- ==================== CERT SCREEN ==================== -->
+  <div id="cert-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#0d1a0d 50%,#0a0e17 100%);z-index:996;display:none;flex-direction:column;overflow:hidden;align-items:center;justify-content:center;">
+    <div style="overflow-y:auto;padding:30px;width:100%;max-width:740px;" id="cert-content"></div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    // ==================== PARTICULES ====================
+    (function() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.cssText = `
+          left: ${Math.random() * 100}%;
+          animation-duration: ${4 + Math.random() * 8}s;
+          animation-delay: ${Math.random() * 6}s;
+          width: ${2 + Math.random() * 3}px;
+          height: ${2 + Math.random() * 3}px;
+          background: ${Math.random() > 0.5 ? 'var(--neon-red)' : 'var(--neon-orange)'};
+        `;
+        container.appendChild(p);
+      }
+    })();
+
+    // ==================== CONTENU DES LEÇONS ====================
+    const lessons = [
+      /* ---- LEÇON 1 ---- */
+      {
+        title: '01 — Qu\'est-ce que "générer" du texte ?',
+        kicker: 'Écrire et générer : deux processus radicalement différents.',
+        html: `
+          <p style="line-height:1.8;color:#cfe9ff">
+            Quand tu écris une phrase, tu mobilises ta <span class="highlight">mémoire</span>, tes <span class="highlight">émotions</span>, ton vécu, ton intention. Tu sais ce que tu veux dire <em>avant</em> de le dire. Un modèle d'IA comme GPT-4, Claude ou Gemini fonctionne d'une manière radicalement différente : il <span class="highlight">génère</span> — c'est-à-dire qu'il produit du texte mot après mot (ou plutôt token après token), uniquement en estimant ce qui est statistiquement probable de venir ensuite.
+          </p>
+
+          <div class="callout">
+            <strong>La différence fondamentale :</strong><br/>
+            <strong style="color:var(--neon-blue)">Un humain qui écrit</strong> : part d'une intention, d'une idée globale → choisit les mots pour l'exprimer.<br/>
+            <strong style="color:var(--neon-red)">Un modèle qui génère</strong> : part du texte déjà écrit → prédit le mot le plus probable pour la suite. Il n'y a pas de plan, pas d'intention — seulement une probabilité.
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🔤 Un token, c'est quoi ?</h3>
+          <p style="line-height:1.8;color:#cfe9ff">
+            Un <span class="highlight">token</span> est la plus petite unité de texte traitée par le modèle. Ce n'est ni un mot, ni une lettre : c'est un morceau de mot, parfois un mot entier, parfois un espace + un mot. La phrase <em>"Les chats dorment."</em> pourrait être découpée ainsi :
+          </p>
+          <div class="token-demo">
+            <span class="token-chip t1">Les</span>
+            <span class="token-chip t2"> chat</span>
+            <span class="token-chip t3">s</span>
+            <span class="token-chip t4"> dorm</span>
+            <span class="token-chip t1">ent</span>
+            <span class="token-chip t2">.</span>
+          </div>
+          <p style="line-height:1.8;color:#cfe9ff;margin-top:10px">
+            GPT-4 travaille avec un vocabulaire d'environ <strong style="color:var(--neon-orange)">100 000 tokens</strong>. À chaque étape, il choisit parmi tous ces tokens lequel doit venir ensuite.
+          </p>
+
+          <div class="callout green">
+            <strong>À retenir :</strong> Générer du texte, c'est faire des milliers de choix probabilistes, l'un après l'autre, sans jamais avoir de vue d'ensemble sur ce qu'on est en train de produire.
+          </div>
+        `
+      },
+      /* ---- LEÇON 2 ---- */
+      {
+        title: '02 — La prédiction du prochain token',
+        kicker: 'Le cœur du mécanisme : calculer ce qui vient ensuite.',
+        html: `
+          <p style="line-height:1.8;color:#cfe9ff">
+            Voici comment fonctionne un modèle de langage à chaque étape de la génération. Supposons que le modèle a déjà généré : <em>"La capitale de la France est"</em>. Il doit maintenant choisir le prochain token.
+          </p>
+
+          <p style="line-height:1.8;color:#cfe9ff;margin-top:12px">
+            Le modèle calcule une <span class="highlight">distribution de probabilité</span> sur tous les tokens possibles. Voici (de façon simplifiée) ce qu'il pourrait obtenir :
+          </p>
+
+          <div class="prob-bars">
+            <div class="prob-row">
+              <span class="prob-word">"Paris"</span>
+              <div class="prob-bar-outer"><div class="prob-bar-inner" style="width:72%;background:linear-gradient(90deg,var(--neon-green),#00ff88aa)"></div></div>
+              <span class="prob-pct" style="color:var(--neon-green)">72%</span>
+            </div>
+            <div class="prob-row">
+              <span class="prob-word">"Lyon"</span>
+              <div class="prob-bar-outer"><div class="prob-bar-inner" style="width:10%;background:linear-gradient(90deg,var(--neon-blue),#00d4ffaa)"></div></div>
+              <span class="prob-pct" style="color:var(--neon-blue)">10%</span>
+            </div>
+            <div class="prob-row">
+              <span class="prob-word">"une"</span>
+              <div class="prob-bar-outer"><div class="prob-bar-inner" style="width:7%;background:linear-gradient(90deg,var(--neon-orange),#ff9f43aa)"></div></div>
+              <span class="prob-pct" style="color:var(--neon-orange)">7%</span>
+            </div>
+            <div class="prob-row">
+              <span class="prob-word">"…"</span>
+              <div class="prob-bar-outer"><div class="prob-bar-inner" style="width:11%;background:linear-gradient(90deg,var(--muted),#8899aa44)"></div></div>
+              <span class="prob-pct">11%</span>
+            </div>
+          </div>
+
+          <div class="callout blue">
+            <strong>Comment ces probabilités sont-elles calculées ?</strong><br/>
+            Le modèle a été entraîné sur des milliards de textes. Il a appris que dans le contexte "La capitale de la France est", le token "Paris" suit dans la très grande majorité des cas. Cette probabilité n'est pas codée en dur — elle <em>émerge</em> des milliards de paramètres ajustés pendant l'entraînement.
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🔁 Un processus autorégressif</h3>
+          <p style="line-height:1.8;color:#cfe9ff">
+            Une fois "Paris" choisi, il est ajouté au contexte : <em>"La capitale de la France est Paris"</em>. Le modèle recommence alors exactement le même processus pour prédire le token suivant. C'est ce qu'on appelle la génération <span class="highlight">autorégressive</span> : chaque prédiction dépend de toutes les précédentes.
+          </p>
+
+          <div class="callout orange">
+            <strong>Conséquence importante :</strong> Une erreur au début de la génération peut orienter toute la suite dans une direction inattendue. Le modèle n'a aucun moyen de "revenir en arrière" ou de corriger une incohérence qu'il ne peut pas détecter.
+          </div>
+
+          <div class="callout green">
+            <strong>À retenir :</strong> À chaque étape, le modèle pose une seule question : "Étant donné tout ce qui précède, quel token est le plus probable ?" Il n'y a pas de vérification de sens, pas de contrôle de cohérence globale.
+          </div>
+        `
+      },
+      /* ---- LEÇON 3 ---- */
+      {
+        title: '03 — Température et stratégies de sampling',
+        kicker: 'Le paramètre qui règle la créativité… et l\'incohérence.',
+        html: `
+          <p style="line-height:1.8;color:#cfe9ff">
+            Si le modèle choisissait toujours le token le plus probable, il produirait des textes très répétitifs et prévisibles. Pour introduire de la variété et de la créativité, on utilise différentes <span class="highlight">stratégies de sampling</span>, contrôlées par un paramètre clé : la <span class="highlight">température</span>.
+          </p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:20px 0">
+            <div class="callout" style="text-align:center">
+              <div style="font-size:1.8em;margin-bottom:8px">🥶</div>
+              <strong style="color:var(--neon-blue)">Température basse</strong><br/>
+              <span style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)">T = 0.1 à 0.5</span><br/>
+              <p style="margin-top:10px;font-size:0.9em;color:#cfe9ff">Le modèle choisit presque toujours le token le plus probable. Texte <strong>prévisible, précis, mais répétitif</strong>.</p>
+            </div>
+            <div class="callout green" style="text-align:center">
+              <div style="font-size:1.8em;margin-bottom:8px">🌡️</div>
+              <strong style="color:var(--neon-green)">Température équilibrée</strong><br/>
+              <span style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)">T = 0.7 à 1.0</span><br/>
+              <p style="margin-top:10px;font-size:0.9em;color:#cfe9ff">Bon équilibre entre cohérence et variété. Texte <strong>fluide et naturel</strong>. Valeur par défaut.</p>
+            </div>
+            <div class="callout pink" style="text-align:center">
+              <div style="font-size:1.8em;margin-bottom:8px">🔥</div>
+              <strong style="color:var(--neon-pink)">Température haute</strong><br/>
+              <span style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)">T = 1.5 à 2.0+</span><br/>
+              <p style="margin-top:10px;font-size:0.9em;color:#cfe9ff">Le modèle pioche dans des tokens improbables. Texte <strong>créatif, surréaliste, parfois incohérent</strong>.</p>
+            </div>
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🎯 Top-p et Top-k : les autres curseurs</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+            <div class="callout blue">
+              <strong style="color:var(--neon-blue)">Top-k sampling</strong><br/>
+              On ne considère que les <strong>k tokens les plus probables</strong>. Si k=50, le modèle choisit parmi les 50 meilleures options seulement, éliminant les tokens très improbables.
+            </div>
+            <div class="callout orange">
+              <strong style="color:var(--neon-orange)">Top-p (nucleus) sampling</strong><br/>
+              On ne considère que les tokens dont la <strong>somme des probabilités atteint p</strong>. Si p=0.9, on garde les tokens qui couvrent 90% de la probabilité totale.
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <strong>Ce que ces paramètres révèlent :</strong> Le fait même qu'il faille des paramètres comme "température" montre que la génération est fondamentalement un processus <em>stochastique</em> (aléatoire). La même requête peut produire des réponses différentes à chaque exécution. Ce n'est pas un bug — c'est le design même du système.
+          </div>
+
+          <div class="callout green">
+            <strong>À retenir :</strong> La qualité et la cohérence d'un texte généré dépendent autant des paramètres de sampling que du modèle lui-même. Un ingénieur qui "prompt" doit comprendre ces paramètres pour obtenir les résultats souhaités.
+          </div>
+        `
+      },
+      /* ---- LEÇON 4 ---- */
+      {
+        title: '04 — L\'illusion de la compréhension',
+        kicker: 'Pourquoi ça ressemble à de l\'intelligence, mais ça n\'en est pas.',
+        html: `
+          <p style="line-height:1.8;color:#cfe9ff">
+            Tu as demandé à une IA d'expliquer la photosynthèse, de rédiger une lettre de motivation, de résoudre un problème de maths. Le résultat était convaincant, cohérent, parfois même impressionnant. Alors tu as peut-être pensé : <em>"Cette IA comprend vraiment ce qu'elle dit."</em> C'est l'<span class="highlight">illusion de la compréhension</span> — et c'est l'un des phénomènes les plus importants à comprendre dans l'IA.
+          </p>
+
+          <div class="callout pink">
+            <strong>Le test du perroquet stochastique :</strong><br/>
+            En 2021, la chercheuse Emily Bender et ses collègues ont proposé la métaphore du <strong>"stochastic parrot"</strong> (perroquet stochastique). Un modèle de langage est comme un perroquet extraordinairement doué : il peut reproduire et recombiner des séquences de sons (tokens) qui ressemblent à du langage humain, sans jamais avoir accès au sens de ce qu'il dit. Il ne "sait" pas, il <em>imite</em>.
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🧪 Quelques preuves de cette illusion</h3>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+            <div class="callout">
+              <strong>Les inversions simples</strong><br/>
+              Demande à un LLM : "Combien de lettres 'r' dans le mot 'fraise' ?" Beaucoup de modèles se trompent. Pourquoi ? Ils n'ont jamais "lu" les lettres une par une — ils ont traité des tokens, pas des caractères. Ils n'ont pas de représentation des lettres individuelles.
+            </div>
+            <div class="callout">
+              <strong>Les contradictions internes</strong><br/>
+              Un modèle peut affirmer dans un même texte des choses contradictoires sans jamais s'en rendre compte, car il n'a pas de <em>modèle du monde</em> cohérent — seulement des probabilités de tokens qui cohabitent dans son espace de paramètres.
+            </div>
+            <div class="callout">
+              <strong>L'absence de conscience</strong><br/>
+              Le modèle ne "sait" pas qu'il génère du texte. Il n'a pas d'intention, pas de but, pas de conscience de son propre processus. Les phrases comme "Je pense que..." ou "Je comprends que..." sont générées parce qu'elles sont statistiquement fréquentes dans les textes humains.
+            </div>
+            <div class="callout">
+              <strong>La dépendance au contexte</strong><br/>
+              La "compréhension" d'un LLM est entièrement dépendante du contexte fourni. Modifie légèrement un problème de maths, et le même modèle qui "comprenait" parfaitement peut échouer complètement — car il n'a plus le pattern de tokens qu'il reconnaissait.
+            </div>
+          </div>
+
+          <div class="callout green">
+            <strong>À retenir :</strong> La fluidité et la cohérence du langage généré par une IA n'impliquent pas la compréhension. Ce sont les statistiques des données d'entraînement qui créent cette apparence de sens — pas un processus cognitif.
+          </div>
+        `
+      },
+      /* ---- LEÇON 5 ---- */
+      {
+        title: '05 — Génération vs. raisonnement',
+        kicker: 'Peut-on vraiment "penser" en prédisant des tokens ?',
+        html: `
+          <p style="line-height:1.8;color:#cfe9ff">
+            C'est l'un des grands débats de l'IA actuelle : est-ce que les grands modèles de langage <span class="highlight">raisonnent vraiment</span>, ou ne font-ils que de la génération statistique sophistiquée ? La réponse est nuancée — et passionnante.
+          </p>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🧩 Ce que les modèles semblent faire</h3>
+          <div class="callout blue">
+            <strong>Le "Chain of Thought" (chaîne de pensée) :</strong><br/>
+            En 2022, des chercheurs de Google ont découvert que demander au modèle de raisonner "étape par étape" (chain of thought prompting) améliore drastiquement ses performances sur des problèmes complexes. Pourquoi ? Parce que <em>écrire les étapes intermédiaires</em> fournit davantage de tokens de contexte qui orientent les prédictions suivantes. C'est comme si l'IA "pensait tout haut" — mais ce n'est peut-être que de la génération guidée plus efficacement.
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">⚠️ Les limites révélatrices</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+            <div class="callout pink">
+              <strong>La logique formelle</strong><br/>
+              Les LLMs échouent de façon systématique sur des problèmes de logique formelle simples quand ils sont présentés de façon légèrement différente des exemples d'entraînement. Cela suggère de la reconnaissance de patterns, pas de la déduction logique.
+            </div>
+            <div class="callout pink">
+              <strong>La consistance</strong><br/>
+              Un vrai raisonnement est <em>consistant</em> : si A implique B, et B implique C, alors A implique C. Les LLMs violent régulièrement ce principe élémentaire, concluant différemment selon l'ordre de présentation des prémisses.
+            </div>
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🔭 Ce que dit la recherche récente</h3>
+          <p style="line-height:1.8;color:#cfe9ff">
+            Des modèles comme OpenAI o1/o3 ou Claude avec "extended thinking" intègrent désormais une phase de <strong>réflexion interne</strong> avant de répondre, tentant de simuler un vrai processus de raisonnement. Les résultats sont impressionnants sur des benchmarks de mathématiques et de logique. Mais reste la question fondamentale : est-ce du raisonnement, ou une meilleure simulation du raisonnement ?
+          </p>
+
+          <div class="callout warn">
+            <strong>La position de la communauté scientifique :</strong> Il n'y a pas de consensus. Certains chercheurs (Gary Marcus, Yann LeCun) soutiennent que les LLMs ne raisonnent pas vraiment. D'autres (Ilya Sutskever, Geoffrey Hinton) pensent que des capacités de raisonnement émergent à grande échelle. Ce débat n'est pas résolu.
+          </div>
+
+          <div class="callout green">
+            <strong>À retenir :</strong> La génération de tokens peut produire des outputs qui ressemblent à du raisonnement, et peut même être utile pour résoudre des problèmes. Mais confondre cela avec le raisonnement humain peut mener à des décisions dangereuses sur la fiabilité de l'IA.
+          </div>
+        `
+      },
+      /* ---- LEÇON 6 ---- */
+      {
+        title: '06 — Hallucinations et limites structurelles',
+        kicker: 'Quand générer sans comprendre déraille.',
+        html: `
+          <p style="line-height:1.8;color:#cfe9ff">
+            Les <span class="highlight">hallucinations</span> — inventions confiantes de faits inexistants — ne sont pas des bugs qu'on peut corriger avec un meilleur entraînement. Elles sont une <strong>conséquence directe</strong> du mécanisme de génération token par token que tu viens d'étudier.
+          </p>
+
+          <div class="callout pink">
+            <strong>Pourquoi les hallucinations sont inévitables :</strong><br/>
+            Le modèle n'a pas accès à une base de données de faits vérifiés. Il a des probabilités. Quand il écrit "Le professeur Jean Dupont de l'Université de Lyon a publié en 2018...", il ne vérifie pas si cela est vrai — il génère ce qui est statistiquement plausible après "Le professeur [prénom courant] [nom courant] de l'Université de [ville française] a publié en [année récente]...". Le résultat est cohérent, bien rédigé, et faux.
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">📊 L'ampleur du problème</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
+            <div class="callout">
+              <strong>Études médicales</strong><br/>
+              Des études ont montré que les LLMs hallucinent des références médicales dans <strong>30 à 70% des cas</strong> quand on les interroge sur des études scientifiques spécifiques. Les citations inventées ressemblent parfaitement à de vraies citations.
+            </div>
+            <div class="callout">
+              <strong>Cas juridique réel (2023)</strong><br/>
+              Un avocat américain a soumis des précédents juridiques générés par ChatGPT devant un tribunal. Tous étaient inventés. Il a été sanctionné par le juge. L'affaire <em>Mata v. Avianca</em> est devenue un cas d'école sur les risques des hallucinations.
+            </div>
+          </div>
+
+          <h3 style="color:var(--neon-green);margin:25px 0 12px">🛡️ Comment s'en protéger</h3>
+          <div class="callout">
+            <strong>1. Vérification systématique</strong> — Tout fait spécifique (date, nom, chiffre, citation) doit être vérifié dans une source primaire.<br/><br/>
+            <strong>2. Utiliser la RAG (Retrieval-Augmented Generation)</strong> — Connecter le modèle à une base de données de faits vérifiés pour ancrer sa génération dans des informations réelles.<br/><br/>
+            <strong>3. Reconnaître les signaux d'alerte</strong> — Références très spécifiques, noms et dates précises, citations avec guillemets : ces éléments sont souvent hallucinations car ils demandent une précision factuelle que le modèle ne peut pas garantir.
+          </div>
+
+          <div class="callout warn">
+            <strong>L'avenir de la génération :</strong> Les architectures futures pourraient réduire les hallucinations via la RAG, le raisonnement symbolique, ou des mécanismes de vérification internes. Mais tant que la génération reste fondamentalement probabiliste, un certain niveau d'hallucination est <em>structurellement</em> difficile à éliminer.
+          </div>
+
+          <div class="callout green">
+            <strong>Tu es prêt(e) pour la simulation !</strong> Tu comprends maintenant les mécanismes fondamentaux de la génération. Place à la pratique : dans la simulation, tu vas <em>jouer le rôle du modèle</em> et vivre ces mécanismes de l'intérieur. 🚀
+          </div>
+        `
+      }
+    ];
+
+    let currentLesson = 0;
+    const totalLessons = lessons.length;
+
+    // ==================== NAVIGATION TITRE → BRIEFING ====================
+    function startModule() {
+      document.getElementById('title-screen').classList.add('hidden');
+      setTimeout(() => {
+        const briefing = document.getElementById('briefing-screen');
+        briefing.classList.add('active');
+        showLesson(0);
+      }, 600);
+    }
+
+    // ==================== AFFICHAGE D'UNE LEÇON ====================
+    function showLesson(idx) {
+      currentLesson = idx;
+      const lesson = lessons[idx];
+
+      // Contenu
+      const content = document.getElementById('lesson-content');
+      content.innerHTML = `
+        <h2 class="lesson-title">${lesson.title}</h2>
+        <p class="lesson-kicker">${lesson.kicker}</p>
+        <div class="divider"></div>
+        ${lesson.html}
+      `;
+      content.scrollTop = 0;
+
+      // Bouton lancement jeu sur dernière leçon
+      if (idx === totalLessons - 1) {
+        content.innerHTML += `<div style="text-align:center;margin-top:35px;padding-bottom:20px">
+          <button onclick="launchGame()" style="font-family:'Space Mono',monospace;padding:16px 50px;background:rgba(255,107,107,0.15);border:2px solid #ff6b6b;color:#ff6b6b;cursor:pointer;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;border-radius:6px;transition:all .3s" onmouseover="this.style.background='rgba(255,107,107,0.3)'" onmouseout="this.style.background='rgba(255,107,107,0.15)'">▶ Lancer la simulation</button>
+        </div>`;
+      }
+
+      // Progress bar
+      const pct = Math.round(((idx + 1) / totalLessons) * 100);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = `Section ${idx + 1}/${totalLessons}`;
+
+      // Sidebar nav
+      document.querySelectorAll('.briefing-nav-item').forEach((el, i) => {
+        el.classList.remove('active');
+        if (i < idx) el.classList.add('completed');
+        else el.classList.remove('completed');
+      });
+      const navEl = document.getElementById(`nav-${idx}`);
+      if (navEl) { navEl.classList.add('active'); navEl.classList.remove('completed'); }
+
+      // Boutons
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = (idx === 0); }
+      const btnNext = document.getElementById('btn-next');
+      if (idx === totalLessons - 1) {
+        if (btnNext) btnNext.textContent = '▶ Lancer la simulation';
+        btnNext.classList.add('launch');
+        document.getElementById('footer-hint').textContent = 'Toutes les sections vues — bonne chance !';
+      } else {
+        if (btnNext) btnNext.textContent = 'Suivant →';
+        btnNext.classList.remove('launch');
+        document.getElementById('footer-hint').textContent = 'Lis chaque section avant de passer à la simulation';
+      }
+    }
+
+    function nextLesson() {
+      if (currentLesson < totalLessons - 1) {
+        showLesson(currentLesson + 1);
+      } else {
+        launchGame();
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) showLesson(currentLesson - 1);
+    }
+
+    function launchGame() {
+      document.getElementById('briefing-screen').classList.remove('active');
+      document.getElementById('game-screen').classList.add('active');
+      buildLevel1();
+      buildLevel3();
+    }
+
+    // ==================== SCORE ====================
+    let totalScore = 0;
+    function addScore(pts) {
+      totalScore += pts;
+      document.getElementById('score-display').textContent = totalScore;
+    }
+
+    // ==================== LEVEL SWITCHING ====================
+    let currentLevel = 0;
+    function switchLevel(idx) {
+      document.querySelectorAll('.level-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+      document.querySelectorAll('.level-tab').forEach((t, i) => {
+        t.classList.remove('active');
+        if (i === idx) t.classList.add('active');
+      });
+      currentLevel = idx;
+    }
+
+    function unlockLevel(idx) {
+      const tab = document.getElementById(`tab-${idx}`);
+      tab.classList.remove('locked');
+      switchLevel(idx);
+      showToast(`Niveau ${idx + 1} débloqué ! +50 pts`, false);
+      addScore(50);
+    }
+
+    // ==================== TOAST ====================
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = isError ? 'error' : '';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // ==================== NIVEAU 1 : Prédiction ====================
+    const predQuestions = [
+      {
+        before: 'La capitale de la France est',
+        options: ['Paris', 'une ville', 'depuis', 'Lyon'],
+        correct: 0,
+        probs: [72, 10, 5, 13],
+        colors: ['var(--neon-green)', 'var(--neon-blue)', 'var(--muted)', 'var(--neon-orange)'],
+        feedbackGood: '✓ Exactement ! "Paris" obtient 72% de probabilité dans ce contexte. Le modèle avait la même réponse.',
+        feedbackBad: '✗ Le modèle aurait choisi "Paris" (72%). Les probabilités reflètent la fréquence dans les données d\'entraînement.'
+      },
+      {
+        before: 'Pour apprendre à nager, il faut d\'abord',
+        options: ['voler', 'acheter', 'pratiquer', 'chanter'],
+        correct: 2,
+        probs: [3, 15, 68, 14],
+        colors: ['var(--neon-pink)', 'var(--neon-blue)', 'var(--neon-green)', 'var(--neon-orange)'],
+        feedbackGood: '✓ Bien joué ! "pratiquer" est le token le plus probable (68%) dans ce contexte d\'apprentissage.',
+        feedbackBad: '✗ Le modèle aurait choisi "pratiquer" (68%). C\'est le mot statistiquement dominant après "il faut d\'abord" dans un contexte d\'apprentissage.'
+      },
+      {
+        before: 'Les étoiles brillent la nuit parce qu\'elles',
+        options: ['dorment', 'émettent de la lumière', 'mangent', 'parlent'],
+        correct: 1,
+        probs: [5, 74, 2, 19],
+        colors: ['var(--neon-pink)', 'var(--neon-green)', 'var(--neon-pink)', 'var(--neon-orange)'],
+        feedbackGood: '✓ Parfait ! "émettent de la lumière" (74%) — le modèle connaît ce pattern scientifique par cœur.',
+        feedbackBad: '✗ "émettent de la lumière" (74%) aurait été choisi. Notez que "parlent" arrive à 19% — le modèle a vu des textes poétiques attribuant des paroles aux étoiles !'
+      },
+      {
+        before: 'Je n\'ai pas pu dormir cette nuit, j\'ai',
+        options: ['nagé', 'réfléchi toute la nuit', 'construit', 'telefonné'],
+        correct: 1,
+        probs: [4, 62, 8, 26],
+        colors: ['var(--muted)', 'var(--neon-green)', 'var(--muted)', 'var(--neon-blue)'],
+        feedbackGood: '✓ Correct ! "réfléchi toute la nuit" est la suite la plus cohérente (62%). Le contexte émotionnel oriente les probabilités.',
+        feedbackBad: '✗ "réfléchi toute la nuit" (62%). Curieusement, "telefonné" arrive à 26% — probable dans des textes narratifs !'
+      },
+      {
+        before: 'Un réseau de neurones artificiels est inspiré du',
+        options: ['ciel', 'cerveau humain', 'système solaire', 'moteur électrique'],
+        correct: 1,
+        probs: [5, 81, 4, 10],
+        colors: ['var(--muted)', 'var(--neon-green)', 'var(--muted)', 'var(--neon-blue)'],
+        feedbackGood: '✓ Évident pour toi maintenant ! "cerveau humain" (81%) — ce pattern est omniprésent dans les textes sur l\'IA.',
+        feedbackBad: '✗ "cerveau humain" (81%) est la réponse du modèle. Ce n\'est pas une coïncidence — c\'est statistiquement dominant dans tous les textes sur l\'IA.'
+      }
+    ];
+
+    let pred1Done = 0;
+
+    function buildLevel1() {
+      const container = document.getElementById('pred-cards');
+      container.innerHTML = '';
+      predQuestions.forEach((q, qi) => {
+        const card = document.createElement('div');
+        card.className = 'prediction-card';
+        card.id = `pred-card-${qi}`;
+
+        const letters = ['A', 'B', 'C', 'D'];
+        const choiceHTML = q.options.map((opt, oi) => `
+          <button class="choice-btn" id="choice-${qi}-${oi}" onclick="chooseToken(${qi}, ${oi})">
+            <span class="choice-letter">${letters[oi]}</span>${opt}
+          </button>
+        `).join('');
+
+        const probHTML = q.options.map((opt, oi) => `
+          <div class="prob-row-r">
+            <span class="prob-word-r">${opt}</span>
+            <div class="prob-bar-outer-r">
+              <div class="prob-bar-inner-r" style="width:${q.probs[oi]}%;background:${q.colors[oi]}"></div>
+            </div>
+            <span class="prob-pct-r">${q.probs[oi]}%</span>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="prediction-context">
+            ${q.before} <span class="blank" id="blank-${qi}">___</span>
+          </div>
+          <div class="choice-grid">${choiceHTML}</div>
+          <div class="prob-reveal" id="prob-${qi}">${probHTML}</div>
+          <div class="feedback-msg" id="fb-${qi}" style="display:none"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function chooseToken(qi, oi) {
+      const q = predQuestions[qi];
+      const blank = document.getElementById(`blank-${qi}`);
+      const card = document.getElementById(`pred-card-${qi}`);
+      const fb = document.getElementById(`fb-${qi}`);
+      const probDiv = document.getElementById(`prob-${qi}`);
+      const letters = ['A', 'B', 'C', 'D'];
+
+      // Disable all buttons
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`choice-${qi}-${i}`);
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('correct');
+        else if (i === oi && oi !== q.correct) btn.classList.add('wrong');
+        else btn.classList.add('revealed');
+      }
+
+      const isCorrect = (oi === q.correct);
+      blank.textContent = q.options[oi];
+      blank.className = 'blank ' + (isCorrect ? 'filled-correct' : 'filled-wrong');
+      card.className = 'prediction-card ' + (isCorrect ? 'done' : 'done-wrong');
+
+      fb.style.display = 'block';
+      fb.className = 'feedback-msg ' + (isCorrect ? 'good' : 'bad');
+      fb.textContent = isCorrect ? q.feedbackGood : q.feedbackBad;
+
+      probDiv.classList.add('show');
+
+      if (isCorrect) addScore(20);
+      pred1Done++;
+      if (pred1Done === predQuestions.length) {
+        document.getElementById('lvl1-next').disabled = false;
+        showToast('Niveau 1 terminé ! 🎉 Tous les tokens prédits.');
+      }
+    }
+
+    // ==================== NIVEAU 2 : Température ====================
+    const tempPrompts = [
+      {
+        text: 'Continue cette phrase : "L\'intelligence artificielle va bientôt…"',
+        outputs: {
+          cold:     'transformer les emplois dans de nombreux secteurs, selon les experts du domaine économique.',
+          balanced: 'changer le monde du travail en automatisant les tâches répétitives, permettant aux humains de se concentrer sur la créativité et la prise de décision stratégique.',
+          warm:     'être utilisée pour améliorer les systèmes de santé, d\'éducation et de transport dans les villes intelligentes, tout en soulevant des questions éthiques complexes.',
+          hot:      'révolutionner nos rêves, traversant les murs de la perception ordinaire comme un poisson multicolore dans l\'océan des possibilités quantiques… et aussi faire du café.'
+        }
+      },
+      {
+        text: 'Continue cette phrase : "Cette nuit-là, dans la ville endormie…"',
+        outputs: {
+          cold:     'personne ne s\'attendait à ce qui allait se passer dans les rues.',
+          balanced: 'les lumières des néons se reflétaient sur le sol mouillé et une silhouette traversait rapidement le pont désert.',
+          warm:     'les derniers cafés fermaient leurs volets tandis qu\'un homme au chapeau froissé vérifiait pour la troisième fois le numéro inscrit sur le papier chiffonné dans sa poche.',
+          hot:      'les horloges refusèrent de tourner, les pigeons parlèrent en morse et la lune se dégonfla légèrement, comme un pneu trop longtemps oublié sur un trottoir philosophique.'
+        }
+      },
+      {
+        text: 'Continue cette phrase : "Pour bien apprendre, il faut…"',
+        outputs: {
+          cold:     'travailler régulièrement et réviser les leçons.',
+          balanced: 'être curieux, pratiquer régulièrement et accepter de faire des erreurs, car c\'est en se trompant qu\'on comprend vraiment.',
+          warm:     'allier la théorie à la pratique, cultiver sa curiosité naturelle, trouver ses propres méthodes et ne pas craindre le jugement des autres face à ses questions.',
+          hot:      'danser avec ses neurones, chanter les équations, sentir les concepts comme un parfum nouveau, et parfois dormir avec un manuel sur la tête pour en absorber les vibrations mathématiques.'
+        }
+      }
+    ];
+
+    let currentPromptIdx = 0;
+
+    function updateTemp(val) {
+      const t = parseFloat(val) / 10;
+      document.getElementById('temp-val-display').textContent = t.toFixed(1);
+
+      const p = tempPrompts[currentPromptIdx];
+      let outputText, badgeText, badgeStyle;
+
+      if (t <= 0.4) {
+        outputText = p.outputs.cold;
+        badgeText = 'PRÉCIS';
+        badgeStyle = 'background:rgba(0,212,255,0.15);color:var(--neon-blue);border:1px solid rgba(0,212,255,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🥶 À température ${t.toFixed(1)}</strong> — Le modèle choisit quasi-systématiquement le token le plus probable. Résultat : texte cohérent mais <strong>prévisible et court</strong>. Peu de surprise, peu de créativité.`;
+      } else if (t <= 1.0) {
+        outputText = p.outputs.balanced;
+        badgeText = 'ÉQUILIBRÉ';
+        badgeStyle = 'background:rgba(0,255,136,0.15);color:var(--neon-green);border:1px solid rgba(0,255,136,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🌡️ À température ${t.toFixed(1)}</strong> — Bon équilibre entre cohérence et variété. Le modèle explore des tokens moins fréquents tout en restant <strong>cohérent</strong>. C'est la valeur par défaut de la plupart des applications.`;
+      } else if (t <= 1.5) {
+        outputText = p.outputs.warm;
+        badgeText = 'CRÉATIF';
+        badgeStyle = 'background:rgba(255,159,67,0.15);color:var(--neon-orange);border:1px solid rgba(255,159,67,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🌶️ À température ${t.toFixed(1)}</strong> — Le modèle diversifie davantage ses choix. Résultat : texte <strong>plus riche et plus détaillé</strong>, mais au risque de dériver légèrement du sujet initial.`;
+      } else {
+        outputText = p.outputs.hot;
+        badgeText = 'CHAOS';
+        badgeStyle = 'background:rgba(255,0,128,0.15);color:var(--neon-pink);border:1px solid rgba(255,0,128,0.4)';
+        document.getElementById('temp-insight-text').innerHTML = `<strong>🔥 À température ${t.toFixed(1)}</strong> — Le modèle pioche dans des tokens très improbables. Le texte devient <strong>surréaliste, incohérent</strong> — révélant que la "créativité" peut rapidement basculer dans le non-sens absolu.`;
+      }
+
+      const output = document.getElementById('temp-output-text');
+      const badge = document.getElementById('temp-mode-badge');
+      badge.textContent = badgeText;
+      badge.style.cssText = `position:absolute;top:10px;right:12px;font-family:'Space Mono',monospace;font-size:0.7em;padding:3px 9px;border-radius:10px;${badgeStyle}`;
+      output.childNodes[output.childNodes.length - 1].textContent = outputText;
+    }
+
+    function switchPrompt() {
+      currentPromptIdx = (currentPromptIdx + 1) % tempPrompts.length;
+      const p = tempPrompts[currentPromptIdx];
+      document.getElementById('temp-prompt-text').textContent = p.text;
+      updateTemp(document.getElementById('temp-slider').value);
+      showToast('Nouveau prompt chargé !');
+    }
+
+    // ==================== NIVEAU 3 : Turing inversé ====================
+    const turingExamples = [
+      {
+        text: '"Le matin, je me réveille toujours avec cette impression étrange que la journée m\'appartient, avant que la réalité ne vienne doucement m\'en convaincre du contraire."',
+        isAI: false,
+        explanation: '✓ Texte humain ! La construction légèrement paradoxale et l\'ironie douce sont des marques d\'un style personnel. Un LLM aurait tendance à être plus direct et moins ambigu dans la formulation.'
+      },
+      {
+        text: '"L\'intelligence artificielle représente une avancée technologique majeure qui transforme de nombreux secteurs de l\'économie mondiale, notamment la santé, l\'éducation et les transports."',
+        isAI: true,
+        explanation: '🤖 Texte IA ! Les indices : structure très généraliste, accumulation prévisible de secteurs ("santé, éducation, transports"), formulation sans opinion personnelle ni tournure originale — typique d\'un LLM générant du texte "neutre".'
+      },
+      {
+        text: '"Hier j\'ai raté mon bus à cause d\'un pigeon. Je dis bien à cause d\'un pigeon. Il était là, planté au milieu du trottoir, me fixant avec cet air de propriétaire qu\'ont parfois les pigeons."',
+        isAI: false,
+        explanation: '✓ Texte humain ! L\'humour absurde, la répétition intentionnelle ("à cause d\'un pigeon. Je dis bien..."), et la personnification décalée sont difficiles à imiter pour un LLM sans être trop mécanique.'
+      },
+      {
+        text: '"La photosynthèse est un processus biologique fondamental par lequel les plantes convertissent l\'énergie solaire en énergie chimique stockée sous forme de glucose, en utilisant le dioxyde de carbone et l\'eau."',
+        isAI: true,
+        explanation: '🤖 Texte IA ! Définition encyclopédique parfaite, syntaxe complexe mais sans ambiguïté, vocabulaire technique prévisible ("processus biologique fondamental", "énergie chimique"). C\'est exactement le type de texte très représenté dans les données d\'entraînement.'
+      },
+      {
+        text: '"Je n\'arrive pas à finir ce roman. Chaque soir je lis dix pages, pose le livre et reste les yeux au plafond à penser à des gens qui n\'existent pas."',
+        isAI: false,
+        explanation: '✓ Texte humain ! L\'introspection personnelle, la simplicité volontaire et l\'image finale ("penser à des gens qui n\'existent pas") ont une authenticité émotionnelle que les LLMs reproduisent rarement sans être trop lisses.'
+      },
+      {
+        text: '"Pour réussir dans la vie professionnelle, il est essentiel de développer plusieurs compétences clés, notamment la communication, le leadership, la gestion du temps et l\'adaptabilité aux changements."',
+        isAI: true,
+        explanation: '🤖 Texte IA ! Structure de liste prévisible ("notamment X, Y, Z et W"), vocabulaire de développement personnel très fréquent dans les corpus d\'entraînement, ton générique sans point de vue. Ce type de contenu est hyper-représenté dans les textes sur lesquels les LLMs sont entraînés.'
+      }
+    ];
+
+    let turingAnswered = 0;
+
+    function buildLevel3() {
+      const grid = document.getElementById('turing-grid');
+      grid.innerHTML = '';
+      turingExamples.forEach((ex, ei) => {
+        const card = document.createElement('div');
+        card.className = 'turing-card';
+        card.id = `turing-${ei}`;
+        card.innerHTML = `
+          <div class="turing-text">${ex.text}</div>
+          <div class="turing-btns">
+            <button class="turing-btn human-btn" onclick="turingGuess(${ei}, false)">👤 Humain</button>
+            <button class="turing-btn ai-btn" onclick="turingGuess(${ei}, true)">🤖 IA</button>
+          </div>
+          <div class="turing-verdict" id="tv-${ei}"></div>
+          <div class="turing-tag" id="tt-${ei}"></div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function turingGuess(ei, guessedAI) {
+      const ex = turingExamples[ei];
+      const card = document.getElementById(`turing-${ei}`);
+      const verdict = document.getElementById(`tv-${ei}`);
+      const tag = document.getElementById(`tt-${ei}`);
+
+      card.classList.add('answered');
+      card.querySelectorAll('.turing-btn').forEach(b => b.disabled = true);
+
+      const correct = (guessedAI === ex.isAI);
+      if (correct) {
+        addScore(30);
+        card.classList.add(ex.isAI ? 'correct-ai' : 'correct-human');
+        verdict.className = 'turing-verdict show good';
+      } else {
+        card.classList.add('wrong-answer');
+        verdict.className = 'turing-verdict show bad';
+      }
+      verdict.textContent = ex.explanation;
+
+      tag.className = 'turing-tag ' + (ex.isAI ? 'show-ai' : 'show-human');
+      tag.textContent = ex.isAI ? '🤖 IA' : '👤 Humain';
+
+      turingAnswered++;
+      if (turingAnswered === turingExamples.length) {
+        const btn = document.getElementById('lvl3-next');
+        btn.disabled = false;
+        const pct = Math.round((totalScore / (5*20 + 2*50 + 6*30)) * 100);
+        document.getElementById('turing-result').style.display = 'block';
+        document.getElementById('turing-result-text').innerHTML =
+          `Tu as répondu à tous les extraits ! Score actuel : <strong style="color:var(--neon-orange)">${totalScore} pts</strong>.<br/>
+          Le Turing inversé révèle quelque chose d'important : <strong style="color:var(--neon-red)">même les humains sont parfois trompés</strong>. La frontière entre texte humain et texte généré s'amincit — c'est pourquoi comprendre le mécanisme de génération est crucial.`;
+        showToast('Niveau 3 terminé ! Place au quiz final 🏆');
+      }
+    }
+
+    function startQuiz() {
+      document.getElementById('game-screen').classList.remove('active');
+      const qs = document.getElementById('quiz-screen');
+      qs.style.display = 'flex';
+      buildQuiz();
+    }
+
+    // ==================== QUIZ ====================
+    const quizQuestions = [
+      {
+        q: 'Qu\'est-ce qu\'un "token" dans un modèle de langage comme GPT-4 ?',
+        opts: [
+          'Un mot entier et uniquement un mot entier',
+          'Un fragment de texte : mot, partie de mot ou ponctuation',
+          'Un paramètre numérique du réseau de neurones',
+          'Une couche d\'attention dans le transformer'
+        ],
+        correct: 1,
+        explain: 'Un token est la plus petite unité textuelle traitée. GPT-4 utilise ~100 000 tokens distincts — certains sont des mots entiers, d\'autres des syllabes ou des fragments.'
+      },
+      {
+        q: 'Comment un LLM choisit-il le prochain token à générer ?',
+        opts: [
+          'Il sélectionne aléatoirement dans un dictionnaire',
+          'Il calcule une distribution de probabilité sur tous les tokens possibles',
+          'Il cherche dans une base de données de faits vérifiés',
+          'Il demande validation à un humain pour chaque token'
+        ],
+        correct: 1,
+        explain: 'Le modèle calcule, pour chaque token possible, la probabilité qu\'il soit le suivant dans le contexte actuel. Il choisit ensuite selon une stratégie de sampling (greedy, top-k, top-p…).'
+      },
+      {
+        q: 'Qu\'est-ce que la "température" dans un modèle de génération de texte ?',
+        opts: [
+          'La chaleur dégagée par le serveur pendant le calcul',
+          'La vitesse de génération des tokens',
+          'Un paramètre qui contrôle l\'aléatoire dans le choix des tokens',
+          'Le nombre maximum de tokens à générer'
+        ],
+        correct: 2,
+        explain: 'La température ajuste la distribution de probabilité. Température basse → choix prévisibles. Température haute → choix plus diversifiés et créatifs, mais risque d\'incohérence.'
+      },
+      {
+        q: 'Pourquoi dit-on que les LLMs ne "comprennent" pas vraiment le texte qu\'ils génèrent ?',
+        opts: [
+          'Parce qu\'ils sont trop lents pour traiter le sens',
+          'Parce qu\'ils produisent des prédictions statistiques sans modèle du monde ni intention',
+          'Parce qu\'ils ont besoin d\'images pour comprendre',
+          'Parce qu\'ils ne peuvent lire que l\'anglais'
+        ],
+        correct: 1,
+        explain: 'Les LLMs n\'ont ni conscience, ni intention, ni représentation du monde réel. Ils prédisent des séquences de tokens statistiquement plausibles, ce qui peut ressembler à de la compréhension sans en être.'
+      },
+      {
+        q: 'Qu\'est-ce qu\'une "hallucination" dans le contexte des LLMs ?',
+        opts: [
+          'Une erreur de syntaxe dans le code généré',
+          'Un texte généré trop long et répétitif',
+          'La génération confiante d\'informations fausses ou inventées',
+          'Une réponse dans une mauvaise langue'
+        ],
+        correct: 2,
+        explain: 'Une hallucination est une information fausse mais présentée avec assurance : citations inventées, faits incorrects, noms inexistants. Elle résulte directement du mécanisme probabiliste : le modèle génère ce qui est statistiquement plausible, pas ce qui est vrai.'
+      },
+      {
+        q: 'Qu\'est-ce que la génération "autorégressive" ?',
+        opts: [
+          'Chaque token est généré en s\'appuyant sur tous les tokens précédents',
+          'Le modèle génère tous les tokens simultanément',
+          'Le modèle revient en arrière pour corriger ses erreurs',
+          'La génération s\'arrête automatiquement après 100 tokens'
+        ],
+        correct: 0,
+        explain: 'Dans la génération autorégressive, chaque nouveau token est prédit en prenant en compte tout le contexte précédent (prompt + tokens déjà générés). C\'est un processus séquentiel : une erreur au début peut orienter toute la suite.'
+      },
+      {
+        q: 'Qu\'est-ce que le "chain of thought" (chaîne de pensée) prompting ?',
+        opts: [
+          'Demander au modèle de générer plusieurs réponses et choisir la meilleure',
+          'Guider le modèle à décomposer son raisonnement étape par étape',
+          'Donner au modèle une liste de faits vérifiés avant de poser la question',
+          'Limiter la température à 0.1 pour plus de précision'
+        ],
+        correct: 1,
+        explain: 'En demandant au modèle de détailler ses étapes intermédiaires, on lui fournit davantage de contexte de tokens, ce qui améliore ses performances sur des problèmes complexes — même si cela reste fondamentalement de la génération.'
+      },
+      {
+        q: 'Parmi ces affirmations, laquelle est correcte ?',
+        opts: [
+          'Un LLM à haute température produit toujours des textes plus intelligents',
+          'Les hallucinations sont un bug qu\'on peut totalement éliminer avec un meilleur entraînement',
+          'Un LLM génère sans avoir accès à une base de faits vérifiés en temps réel',
+          'La génération token par token garantit la cohérence logique du texte produit'
+        ],
+        correct: 2,
+        explain: 'Par défaut, un LLM n\'a pas accès à Internet ou à une base de données lors de la génération. Il s\'appuie uniquement sur les patterns statistiques appris. C\'est pourquoi les hallucinations sont structurellement difficiles à éliminer.'
+      }
+    ];
+
+    let quizAnswers = {};
+    let finalQuizScore = 0;
+    let participantName = '';
+
+    function buildQuiz() {
+      const container = document.getElementById('quiz-content');
+      let html = `
+        <div style="text-align:center;margin-bottom:30px">
+          <div style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);letter-spacing:3px;margin-bottom:8px">CERTIFICATION SYNTHÈSE</div>
+          <h2 style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-red);margin-bottom:8px">Quiz de Certification</h2>
+          <p style="color:#8899aa;line-height:1.7">Réponds aux ${quizQuestions.length} questions pour valider ta mission.<br>Score minimum : <strong style="color:var(--neon-red)">70%</strong> pour obtenir ton attestation.</p>
+        </div>
+      `;
+      quizQuestions.forEach((q, i) => {
+        html += `
+          <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(255,107,107,0.2);border-radius:12px;padding:22px 26px;margin-bottom:18px" id="qq-${i}">
+            <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);margin-bottom:8px;letter-spacing:2px">Q${i+1}/${quizQuestions.length}</div>
+            <div style="font-size:1em;color:var(--text);margin-bottom:14px;line-height:1.6">${q.q}</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              ${q.opts.map((opt, j) => `
+                <div id="qq-opt-${i}-${j}" onclick="answerQuiz(${i},${j})"
+                  style="padding:12px 16px;border:1px solid rgba(255,107,107,0.25);border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;background:rgba(255,107,107,0.03)">
+                  <span style="font-family:'Space Mono',monospace;font-size:0.75em;background:rgba(255,107,107,0.2);color:var(--neon-red);padding:2px 8px;border-radius:4px;flex-shrink:0">${String.fromCharCode(65+j)}</span>
+                  <span style="color:var(--text);font-size:0.95em">${opt}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div id="qq-explain-${i}" style="display:none;margin-top:12px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.25);border-radius:8px;padding:12px 16px;font-size:0.9em;color:#cfe9ff;line-height:1.6">${q.explain}</div>
+          </div>
+        `;
+      });
+      html += `
+        <div style="text-align:center;margin:20px 0 40px">
+          <button id="quiz-submit-btn" onclick="submitQuiz()"
+            style="font-family:'Space Mono',monospace;font-size:0.95em;padding:14px 40px;background:rgba(255,107,107,0.15);border:2px solid var(--neon-red);color:var(--neon-red);border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s;opacity:0.5;cursor:not-allowed;" disabled>
+            ✅ Valider mes réponses
+          </button>
+        </div>
+        <div id="quiz-result"></div>
+      `;
+      container.innerHTML = html;
+    }
+
+    function answerQuiz(qi, oi) {
+      quizAnswers[qi] = oi;
+      document.querySelectorAll(`[id^="qq-opt-${qi}-"]`).forEach(el => {
+        const j = parseInt(el.id.split('-').pop());
+        el.style.background = j === oi ? 'rgba(255,107,107,0.15)' : 'rgba(255,107,107,0.03)';
+        el.style.borderColor = j === oi ? 'var(--neon-red)' : 'rgba(255,107,107,0.25)';
+      });
+      // Enable submit when all questions answered
+      if (Object.keys(quizAnswers).length === quizQuestions.length) {
+        const btn = document.getElementById('quiz-submit-btn');
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+      }
+    }
+
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
+      const pct = Math.round(score / quizQuestions.length * 100);
+      if (pct >= 70) unlockCertificate(pct);
+      finalQuizScore = pct;
+      const success = pct >= 70;
+
+      document.getElementById('quiz-submit-btn').style.display = 'none';
+
+      if (success) {
+        quizQuestions.forEach((q, i) => {
+          const userAns = quizAnswers[i];
+          document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
+            el.style.cursor = 'default'; el.onclick = null;
+            const j = parseInt(el.id.split('-').pop());
+            if (j === q.correct) {
+              el.style.background = 'rgba(0,255,136,0.1)';
+              el.style.borderColor = 'var(--neon-green)';
+              el.style.color = 'var(--neon-green)';
+            } else if (j === userAns && j !== q.correct) {
+              el.style.background = 'rgba(255,0,128,0.1)';
+              el.style.borderColor = 'var(--neon-pink)';
+            }
+          });
+          document.getElementById(`qq-explain-${i}`).style.display = 'block';
+        });
+      } else {
+        document.querySelectorAll('[id^="qq-opt-"]').forEach(el => { el.onclick = null; el.style.cursor = 'default'; });
+      }
+
+      document.getElementById('quiz-result').innerHTML = `
+        <div style="text-align:center;padding:30px;margin:20px 0;
+             background:${success ? 'rgba(0,255,136,0.08)' : 'rgba(255,204,0,0.08)'};
+             border:1px solid ${success ? 'rgba(0,255,136,0.3)' : 'rgba(255,204,0,0.3)'};
+             border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">${success ? '🎉' : '📚'}</div>
+          <h3 style="font-family:'Space Mono',monospace;color:${success ? 'var(--neon-green)' : '#ffcc00'};margin-bottom:10px;font-size:1.2em">
+            ${success ? 'Mission SYNTHÈSE accomplie !' : 'Score insuffisant'}
+          </h3>
+          <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
+            ${score}/${quizQuestions.length} — <span style="color:${success ? 'var(--neon-green)' : '#ffcc00'}">${pct}%</span>
+          </div>
+          <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
+            ${success
+              ? 'Tu comprends maintenant comment les LLMs génèrent du texte sans comprendre. Ton attestation est débloquée !'
+              : 'Score insuffisant. Relis les sections du briefing et réessaie.'}
+          </p>
+          ${success
+            ? `<div style="margin:0 auto;max-width:380px">
+                <input type="text" id="name-input" placeholder="Ton prénom et nom"
+                  style="width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(0,255,136,0.4);border-radius:8px;color:var(--neon-green);font-family:'Space Mono',monospace;font-size:0.9em;margin-bottom:12px;outline:none">
+                <button onclick="showCert()"
+                  style="width:100%;font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 20px;background:rgba(0,255,136,0.15);border:2px solid var(--neon-green);color:var(--neon-green);cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s">
+                  🎓 Obtenir mon attestation →
+                </button>
+              </div>`
+            : `<button onclick="retryQuiz()"
+                style="font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 30px;background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.5);color:#ffcc00;cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;transition:all .3s">
+                🔄 Réessayer le quiz
+              </button>`}
+        </div>
+      `;
+      document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function retryQuiz() {
+      quizAnswers = {};
+      buildQuiz();
+      document.getElementById('quiz-content').scrollTop = 0;
+    }
+
+    function showCert() {
+      const nameInput = document.getElementById('name-input');
+      participantName = nameInput ? nameInput.value.trim() : '';
+      if (!participantName) { showToast('⚠️ Entre ton prénom et ton nom !', true); return; }
+
+      document.getElementById('quiz-screen').style.display = 'none';
+      const cs = document.getElementById('cert-screen');
+      cs.style.display = 'flex';
+      renderCert();
+    }
+
+    // ==================== ATTESTATION ====================
+    function renderCert() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+      const skills = [
+        'Comprendre le mécanisme de prédiction token par token',
+        'Distinguer génération et compréhension dans les LLMs',
+        'Maîtriser l\'impact de la température sur la génération',
+        'Identifier les textes générés par IA (Turing inversé)',
+        'Reconnaître les causes et risques des hallucinations',
+        'Analyser la génération autorégressive et ses limites'
+      ];
+
+      document.getElementById('cert-content').innerHTML = `
+        <div id="cert-card" style="
+          background: linear-gradient(135deg, rgba(10,20,40,0.98), rgba(20,5,5,0.98));
+          border: 2px solid rgba(255,107,107,0.5);
+          border-radius: 16px;
+          padding: 45px 50px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 0 60px rgba(255,107,107,0.15), inset 0 0 60px rgba(0,0,0,0.3);
+        ">
+          <!-- Grille fond -->
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,107,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,107,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none"></div>
+
+          <!-- Coins décoratifs -->
+          <div style="position:absolute;top:16px;left:16px;width:30px;height:30px;border-left:2px solid rgba(255,107,107,0.5);border-top:2px solid rgba(255,107,107,0.5)"></div>
+          <div style="position:absolute;top:16px;right:16px;width:30px;height:30px;border-right:2px solid rgba(255,107,107,0.5);border-top:2px solid rgba(255,107,107,0.5)"></div>
+          <div style="position:absolute;bottom:16px;left:16px;width:30px;height:30px;border-left:2px solid rgba(255,107,107,0.5);border-bottom:2px solid rgba(255,107,107,0.5)"></div>
+          <div style="position:absolute;bottom:16px;right:16px;width:30px;height:30px;border-right:2px solid rgba(255,107,107,0.5);border-bottom:2px solid rgba(255,107,107,0.5)"></div>
+
+          <!-- Logo -->
+          <img src="images/logo-profexpress.png" alt="Prof Express" style="height:38px;object-fit:contain;margin-bottom:20px;opacity:0.9">
+
+          <!-- Badge -->
+          <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:rgba(255,107,107,0.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px">Formation IA Citoyenne — Module 04</div>
+
+          <!-- Titre -->
+          <div style="font-family:'Space Mono',monospace;font-size:1.8em;font-weight:700;text-transform:uppercase;letter-spacing:4px;
+               background:linear-gradient(90deg,var(--neon-red),var(--neon-orange),var(--neon-pink));
+               -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+               margin-bottom:6px">ATTESTATION DE RÉUSSITE</div>
+
+          <!-- Sous-titre module -->
+          <div style="font-family:'Space Mono',monospace;font-size:0.9em;color:var(--neon-orange);letter-spacing:2px;margin-bottom:24px">SYNTHÈSE — Générer sans comprendre</div>
+
+          <!-- Séparateur -->
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.5),transparent);margin:0 0 22px"></div>
+
+          <!-- Texte attestation -->
+          <p style="color:#8899aa;font-size:0.85em;margin-bottom:10px;font-family:'Exo 2',sans-serif">Nous attestons que</p>
+          <div style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-green);
+               text-shadow:0 0 20px rgba(0,255,136,0.5);margin-bottom:10px;letter-spacing:2px">
+            ${participantName}
+          </div>
+          <p style="color:#8899aa;font-size:0.85em;margin-bottom:22px;font-family:'Exo 2',sans-serif">
+            a complété avec succès ce module avec un score de<br>
+            <strong style="color:var(--neon-orange);font-size:1.3em">${finalQuizScore}%</strong>
+          </p>
+
+          <!-- Séparateur -->
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent);margin:0 0 20px"></div>
+
+          <!-- Compétences -->
+          <div style="text-align:left;max-width:480px;margin:0 auto 24px">
+            <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">Compétences validées :</div>
+            ${skills.map(s => `
+              <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:0.88em;color:#cfe9ff">
+                <span style="color:var(--neon-green);flex-shrink:0;margin-top:2px">✓</span>
+                <span>${s}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Séparateur -->
+          <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent);margin:0 0 18px"></div>
+
+          <!-- Date et domaine -->
+          <div style="display:flex;justify-content:space-between;align-items:center;max-width:480px;margin:0 auto 25px;font-size:0.82em">
+            <span style="color:var(--muted);font-family:'Space Mono',monospace">${dateStr}</span>
+            <span style="background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.4);color:var(--neon-red);padding:3px 12px;border-radius:10px;font-family:'Space Mono',monospace;font-size:0.8em">FONDATIONS IA</span>
+          </div>
+
+          <!-- Bouton télécharger -->
+          <button onclick="downloadCert()"
+            style="font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 35px;
+                   background:linear-gradient(135deg,rgba(255,107,107,0.2),rgba(255,159,67,0.2));
+                   border:2px solid var(--neon-orange);color:var(--neon-orange);
+                   cursor:pointer;border-radius:6px;text-transform:uppercase;letter-spacing:2px;
+                   transition:all .3s;margin-bottom:12px">
+            📥 Télécharger l'attestation
+          </button>
+          <br>
+          <a href="modules.html"
+            style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted);text-decoration:none;
+                   border:1px solid rgba(255,255,255,0.1);padding:8px 20px;border-radius:6px;display:inline-block;
+                   transition:all .3s">
+            ← Retour aux modules
+          </a>
+        </div>
+      `;
+    }
+
+    function downloadCert() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+      const skills = [
+        'Comprendre le mécanisme de prédiction token par token',
+        'Distinguer génération et compréhension dans les LLMs',
+        'Maîtriser l\'impact de la température sur la génération',
+        'Identifier les textes générés par IA (Turing inversé)',
+        'Reconnaître les causes et risques des hallucinations',
+        'Analyser la génération autorégressive et ses limites'
+      ];
+      const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Attestation — SYNTHÈSE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@400;600&display=swap');
+  body{margin:0;padding:40px;background:#0a0e17;color:#e0f0ff;font-family:'Exo 2',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .cert{max-width:700px;width:100%;background:linear-gradient(135deg,rgba(10,20,40,0.98),rgba(20,5,5,0.98));border:2px solid rgba(255,107,107,0.5);border-radius:16px;padding:50px;text-align:center;box-shadow:0 0 60px rgba(255,107,107,0.2);position:relative}
+  .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,107,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,107,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;border-radius:14px}
+  .corner{position:absolute;width:30px;height:30px;border-color:rgba(255,107,107,0.5);border-style:solid}
+  .corner.tl{top:16px;left:16px;border-width:2px 0 0 2px}
+  .corner.tr{top:16px;right:16px;border-width:2px 2px 0 0}
+  .corner.bl{bottom:16px;left:16px;border-width:0 0 2px 2px}
+  .corner.br{bottom:16px;right:16px;border-width:0 2px 2px 0}
+  .sep{height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.5),transparent);margin:20px 0}
+  .title{font-family:'Space Mono',monospace;font-size:1.8em;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:#ff6b6b;margin-bottom:6px}
+  .subtitle{font-family:'Space Mono',monospace;font-size:0.9em;color:#ff9f43;letter-spacing:2px;margin-bottom:20px}
+  .name{font-family:'Space Mono',monospace;font-size:1.5em;color:#00ff88;text-shadow:0 0 20px rgba(0,255,136,0.5);margin:8px 0;letter-spacing:2px}
+  .skill{display:flex;align-items:flex-start;gap:10px;margin:7px 0;font-size:0.88em;color:#cfe9ff;text-align:left}
+  .skill-check{color:#00ff88;flex-shrink:0}
+  .badge{background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.4);color:#ff6b6b;padding:3px 12px;border-radius:10px;font-family:'Space Mono',monospace;font-size:0.75em}
+  @media print{body{padding:0}}
+</style>
+</head>
+<body>
+<div class="cert">
+  <div class="grid-bg"></div>
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+  <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:rgba(255,107,107,0.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px">Formation IA Citoyenne — Module 04</div>
+  <div class="title">ATTESTATION DE RÉUSSITE</div>
+  <div class="sep"></div>
+  <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Nous attestons que</p>
+  <div class="name">${participantName}</div>
+  <p style="color:#8899aa;font-size:0.85em;margin:8px 0 20px">a complété avec succès ce module<br>Score : <strong style="color:#ff9f43;font-size:1.2em">${finalQuizScore}%</strong></p>
+  <div class="sep"></div>
+  <div style="max-width:480px;margin:0 auto 20px;text-align:left">
+    <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:#8899aa;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">Compétences validées :</div>
+    ${skills.map(s => `<div class="skill"><span class="skill-check">✓</span><span>${s}</span></div>`).join('')}
+  </div>
+  <div class="sep"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;max-width:480px;margin:0 auto;font-size:0.82em">
+    <span style="color:#8899aa;font-family:'Space Mono',monospace">${dateStr}</span>
+    <span class="badge">FONDATIONS IA</span>
+  </div>
+</div>
+</body>
+</html>`;
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `attestation-module04-synthese-${participantName.toLowerCase().replace(/\s+/g, '-')}.html`;
+      a.click();
+    }
+  
+/* ==================== ATTESTATION SIDEBAR ==================== */
+let certFinalPct04 = 0;
+function unlockCertificate(pct) {
+  certFinalPct04 = pct || certFinalPct04;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(255,107,107,0.2)'; num.style.color = '#ff6b6b'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() {
+  // Show quiz/cert screen for attestation
+  const qs = document.getElementById('quiz-screen');
+  if (qs) { qs.style.display = 'flex'; }
+  const bs = document.getElementById('briefing-screen');
+  if (bs) { bs.classList.remove('active'); }
+}
+</script>
+
+</body>
+</html>

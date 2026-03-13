@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Tribunal de l'IA — Module 15 (Responsabilité humaine)</title>
+    <title>Module n°15 — Responsabilité humaine</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
         :root {
+  --domain-color: #95e1d3;
             --neon-green: #00ff88;
             --neon-blue: #00d4ff;
             --neon-pink: #ff0080;
@@ -243,7 +244,7 @@
         .briefing-title {
             font-family: 'Space Mono', monospace;
             font-size: 1.3em;
-            color: var(--neon-green);
+            color:var(--domain-color);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -1799,35 +1800,114 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
-    </style>
+    
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      text-align: center;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem) !important;
+      margin: 8px 0 16px;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(149,225,211,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(149,225,211,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(149,225,211,0.05) !important;
+      border-color: rgba(149,225,211,0.3) !important;
+      color: #95e1d3 !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(149,225,211,0.15) !important;
+      border-color: #95e1d3 !important;
+    }
+    .briefing-nav-item:hover { background: rgba(149,225,211,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #95e1d3 !important;
+      background: rgba(149,225,211,0.1) !important;
+      color: #95e1d3 !important;
+    }
+    .nav-number { background: rgba(149,225,211,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(149,225,211,0.4) !important; }
+
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
+</style>
 </head>
 <body>
     <!-- ÉCRAN TITRE -->
     <div id="title-screen">
         <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
             <span>←</span>
-            <span>Modules</span>
+            <span>Tous les modules</span>
         </a>
+
+    <div class="domain-badge-std" style="background:#95e1d322;border:1px solid #95e1d388;color:#95e1d3;">Enjeux Citoyens - Module n°15</div>
         <div class="title-logo">⚖️</div>
         <h1 class="main-title">Le Tribunal de l'IA</h1>
-        <p class="subtitle">Module 15 — Responsabilité Humaine & Éthique</p>
 
         <p class="intro-text">
             Une série d'affaires impliquant des IA défaillantes attend votre verdict.
             Votre mission : <strong>examiner les preuves</strong>, <strong>reconstituer la chaîne de responsabilité</strong>,
             et <strong>prononcer des sanctions justes</strong> avant que votre crédibilité ne s'effondre.
         </p>
+    <div class="activity-badge-std">⚖️ Tribunal simulé</div>
 
         <button class="start-btn" onclick="showBriefing()">
             Accéder au Dossier du Juré
         </button>
 
-        <div style="margin-top: 40px; opacity: 0.7;">
-            <p style="color: #8899aa; font-size: 0.85em; margin-bottom: 8px;">Une formation proposée par</p>
-            <a href="https://www.profexpress.com" target="_blank" rel="noopener">
-                <img src="images/logo-profexpress.png" alt="Prof Express" style="height: 30px; object-fit: contain;">
-            </a>
-        </div>
+        <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
+    </div>
     </div>
 
     <!-- SECTION BRIEFING / COURS -->
@@ -1846,9 +1926,8 @@
             <nav class="briefing-nav">
                 <!-- Lien retour vers modules -->
                 <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
-                    <span class="back-arrow">←</span>
-                    <span>Tous les modules</span>
-                </a>
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
 
                 <div class="briefing-nav-item active" onclick="showLesson(0)">
                     <span class="nav-icon">🧠</span>
@@ -1906,23 +1985,15 @@
             </div>
         </div>
 
-        <div class="briefing-footer">
-            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
-                ← Fichier précédent
-            </button>
-            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
-                Fichier suivant →
-            </button>
-        </div>
     </div>
 
     <!-- CONTAINER JEU -->
     <div id="game-container">
         <div class="top-bar">
-            <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+            <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier">
                 <span>←</span>
-                <span>Modules</span>
-            </a>
+                <span>Retour au dossier</span>
+            </button>
             <div class="hud-items">
                 <div class="hud-box">
                     <span class="hud-label">Crédibilité</span>
@@ -2300,6 +2371,10 @@
                         <p style="font-size: 1.2em; color: var(--neon-green); margin-bottom: 20px;">
                             ⚖️ Briefing terminé. La séance est sur le point de commencer.
                         </p>
+
+        <div style="text-align:center;margin-top:30px;padding-bottom:20px">
+            <button onclick="startGame()" style="font-family:'Space Mono',monospace;padding:16px 50px;background:rgba(149,225,211,0.15);border:2px solid var(--domain-color);color:var(--domain-color);cursor:pointer;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;border-radius:6px;transition:all .3s" onmouseover="this.style.background='rgba(149,225,211,0.3)'" onmouseout="this.style.background='rgba(149,225,211,0.15)'">⚖️ Entrer dans la salle d'audience →</button>
+        </div>
                     </div>
                 `
             }
@@ -2600,6 +2675,11 @@
             showLesson(0);
         }
 
+        function returnToDossier() {
+            $('game-container').classList.remove('active');
+            $('briefing-screen').classList.add('active');
+        }
+
         function showLesson(index) {
             currentLesson = index;
             const lesson = briefingLessons[index];
@@ -2626,17 +2706,17 @@
                 $('progress-text').textContent = `Fichier ${index + 1}/8`;
             }
 
-            $('prev-btn').disabled = index === 0;
+            { const _pb = $('prev-btn'); if (_pb) _pb.disabled = index === 0; }
 
             const nextBtn = $('next-btn');
             if (index === briefingLessons.length - 1) {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = '⚖️ Commencer le tribunal';
-                nextBtn.onclick = startGame;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = '⚖️ Commencer le tribunal';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = 'Fichier suivant →';
-                nextBtn.onclick = nextLesson;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = 'Fichier suivant →';
+                if (nextBtn) nextBtn.onclick = nextLesson;
             }
         }
 
@@ -2677,7 +2757,7 @@
                     <h2 class="module-title" style="color:var(--neon-green);">🎓 Attestation de réussite</h2>
                     <div class="module-section" style="text-align:center;padding:40px 20px;">
                         <div style="font-size:4em;margin-bottom:20px;">🎓</div>
-                        <h3 style="color:var(--neon-green);margin-bottom:20px;">Félicitations !</h3>
+                        <h3 style="color:var(--domain-color);margin-bottom:20px;">Félicitations !</h3>
                         <p style="margin-bottom:10px;">Vous avez validé le micro-module</p>
                         <p style="font-size:1.2em;color:var(--neon-blue);margin-bottom:25px;"><strong>"Responsabilité Humaine & IA"</strong></p>
 
@@ -2753,9 +2833,9 @@
 
             // Update footer button to allow return to game
             const nextBtn = $('next-btn');
-            nextBtn.style.visibility = 'visible';
-            nextBtn.textContent = '⚖️ Retour au tribunal';
-            nextBtn.onclick = returnToGame;
+            if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+            if (nextBtn) nextBtn.textContent = '⚖️ Retour au tribunal';
+            if (nextBtn) nextBtn.onclick = returnToGame;
         }
 
         function returnToGame() {
@@ -3427,7 +3507,7 @@
                 <div class="hr"></div>
                 <div class="quiz" id="quizHost">${quizHTML()}</div>
                 <div class="hr"></div>
-                <button class="btn primary" onclick="gradeQuiz()"><span>🧾</span> Corriger & calculer le score</button>
+                <button class="btn primary" id="quiz15-submit" onclick="gradeQuiz()" style="opacity:0.5;cursor:not-allowed;" disabled><span>🧾</span> Corriger & calculer le score</button>
                 <div id="quizResult" class="muted" style="margin-top:12px; line-height:1.55"></div>
             `;
 
@@ -3442,6 +3522,23 @@
                     <div class="item"><strong>RGPD (art. 22)</strong><small>Droit de ne pas être soumis à une décision fondée uniquement sur un traitement automatisé.</small></div>
                 </div>
             `;
+
+            // Enable submit when all questions have at least one answer
+            function checkQuiz15Complete() {
+                const radioGroups = ['q1','q2','q3','q4','q6','q7','q9'];
+                const checkGroups = ['q5','q10'];
+                const allRadio = radioGroups.every(n => !!document.querySelector(`input[name="${n}"]:checked`));
+                const allCheck = checkGroups.every(n => !!document.querySelector(`input[name="${n}"]:checked`));
+                const q8val = (document.getElementById('q8') ? document.getElementById('q8').value.trim() : '');
+                const btn = $('quiz15-submit');
+                const allDone = allRadio && allCheck && q8val.length >= 5;
+                if (btn) { btn.disabled = !allDone; btn.style.opacity = allDone ? '1' : '0.5'; btn.style.cursor = allDone ? 'pointer' : 'not-allowed'; }
+            }
+            const quizHost = document.getElementById('quizHost');
+            if (quizHost) {
+                quizHost.addEventListener('change', checkQuiz15Complete);
+                quizHost.addEventListener('input', checkQuiz15Complete);
+            }
         }
 
         function quizHTML() {
@@ -3573,16 +3670,11 @@
             state.finalScorePct = finalPct;
 
             const passed = finalPct >= 70;
-            const msg = passed
-                ? `✅ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-green)">${finalPct}%</strong><br><span class="mono">Attestation débloquée.</span>`
-                : `❌ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-pink)">${finalPct}%</strong><br>Objectif : <strong>70%</strong>. Relisez le briefing et recommencez.`;
-
-            document.getElementById("quizResult").innerHTML = msg;
-
-            // Highlight correct/incorrect answers
-            highlightQuizAnswers(key);
-
             if (passed) {
+                const msg = `✅ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-green)">${finalPct}%</strong><br><span class="mono">Attestation débloquée.</span>`;
+                document.getElementById("quizResult").innerHTML = msg;
+                // Success: highlight correct/incorrect answers
+                highlightQuizAnswers(key);
                 unlockCertificate(finalPct);
                 toast("🎓 Attestation débloquée !");
                 launchCelebration();
@@ -3593,6 +3685,10 @@
                     </div>
                 `;
             } else {
+                // Failure: show only score + retry (no highlights)
+                const msg = `❌ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-pink)">${finalPct}%</strong><br>Objectif : <strong>70%</strong>. Révisez et réessayez.`;
+                document.getElementById("quizResult").innerHTML = msg + `<div style="margin-top:14px;"><button class="btn" onclick="renderFinalQuiz()">↺ Réessayer le quiz</button></div>`;
+                state.quiz.done = false;
                 setCredibility(-6);
                 toast("Score insuffisant : pénalité de crédibilité (-6).");
             }

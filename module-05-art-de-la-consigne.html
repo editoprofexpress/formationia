@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARIA-7 — L'Art de la Consigne — Module 05</title>
+    <title>Module n°5 — L'Art de la consigne</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
@@ -246,7 +246,7 @@
         .briefing-title {
             font-family: 'Space Mono', monospace;
             font-size: 1.3em;
-            color: var(--neon-green);
+            color:var(--domain-color);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -950,6 +950,7 @@
             line-height: 1.55;
         }
         .quiz-option:hover { border-color: rgba(78,205,196,0.5); background: rgba(78,205,196,0.04); }
+        .quiz-option.selected { border-color: var(--domain-color) !important; background: rgba(78,205,196,0.08) !important; }
         .quiz-opt-letter {
             font-family: 'Space Mono', monospace;
             font-weight: 700;
@@ -987,7 +988,120 @@
         }
         .game-footer a:hover { color: var(--domain-color); }
 
-    </style>
+    
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      text-align: center;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#4ecdc4,#00d4ff,#a855f7) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(78,205,196,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #4ecdc4;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #4ecdc4 !important;
+      color: #4ecdc4 !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(78,205,196,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(78,205,196,0.08) !important;
+      box-shadow: 0 0 30px rgba(78,205,196,0.5), inset 0 0 30px rgba(78,205,196,0.08) !important;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(78,205,196,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(78,205,196,0.05) !important;
+      border-color: rgba(78,205,196,0.3) !important;
+      color: #4ecdc4 !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(78,205,196,0.15) !important;
+      border-color: #4ecdc4 !important;
+    }
+    .briefing-nav-item:hover { background: rgba(78,205,196,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #4ecdc4 !important;
+      background: rgba(78,205,196,0.1) !important;
+      color: #4ecdc4 !important;
+    }
+    .nav-number, .nav-num { background: rgba(78,205,196,0.2) !important; }
+    .briefing-nav-item.active .nav-number, .briefing-nav-item.active .nav-num { background: rgba(78,205,196,0.4) !important; }
+
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
+    #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
+</style>
 </head>
 <body>
 
@@ -999,17 +1113,19 @@
 
         <!-- Retour — style module 2 -->
         <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
-            <span>←</span><span>Modules</span>
+            <span>←</span><span>Tous les modules</span>
         </a>
+
+    <div class="domain-badge-std" style="background:#4ecdc422;border:1px solid #4ecdc488;color:#4ecdc4;">Interaction Raisonnée - Module n°05</div>
 
         <!-- Logo flottant -->
         <div class="title-logo">🤖</div>
 
         <!-- Titre principal -->
-        <h1 class="main-title">L'Art de la Consigne</h1>
+        <h1 class="main-title">L'art de la consigne</h1>
+    <p class="mission-label">ARIA-7 LAB</p>
 
         <!-- Sous-titre -->
-        <p class="subtitle">Module 05 — Escape Room des Prompts ARIA-7</p>
 
         <!-- Texte d'intro -->
         <p class="intro-text">
@@ -1020,15 +1136,16 @@
         </p>
 
         <!-- Bouton démarrer -->
+    <div class="activity-badge-std">🔐 Escape Room</div>
         <button class="start-btn" onclick="startMission()">Accéder au Lab</button>
 
         <!-- Logo Prof Express — style module 2 -->
-        <div style="margin-top:40px;opacity:0.7;">
-            <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px;text-align:center;">Une formation proposée par</p>
-            <a href="https://www.profexpress.com" target="_blank" rel="noopener">
-                <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain;display:block;margin:0 auto;">
-            </a>
-        </div>
+        <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
+    </div>
     </div>
 
     <!-- ==================== BRIEFING ==================== -->
@@ -1051,8 +1168,8 @@
             <!-- Nav latérale — style module 2 avec emoji icons -->
             <nav class="briefing-nav" id="briefing-nav">
                 <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
-                    <span>←</span><span>Tous les modules</span>
-                </a>
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
                 <div class="briefing-nav-item active" data-section="0" onclick="goToSection(0)">
                     <span class="nav-icon">💬</span><span class="nav-num">01</span>La consigne, c'est quoi ?
                 </div>
@@ -1071,18 +1188,26 @@
                 <div class="briefing-nav-item" data-section="5" onclick="goToSection(5)">
                     <span class="nav-icon">📐</span><span class="nav-num">06</span>Le Format
                 </div>
-            </nav>
+            
+        <div style="border-top:1px solid rgba(78,205,196,0.2);margin-top:15px;padding-top:15px">
+          <div class="briefing-nav-item" id="game-nav-item" onclick="startGame()">
+            <span class="nav-icon">🔐</span>
+            <span class="nav-number">▶</span>
+            Entrer dans le Lab
+          </div>
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
+          </div>
+        </div>
+      </nav>
 
             <!-- Contenu -->
             <div class="briefing-content" id="briefing-content"></div>
         </div>
 
         <!-- Pied de page -->
-        <div class="briefing-footer">
-            <button class="briefing-btn" id="prev-btn" onclick="prevSection()" disabled>← Précédent</button>
-            <a href="modules.html" style="color:var(--muted);font-family:'Space Mono',monospace;font-size:0.8em;text-decoration:none;">↩ Modules</a>
-            <button class="briefing-btn primary" id="next-btn" onclick="nextSection()">Suivant →</button>
-        </div>
     </div>
 
     <!-- ==================== JEU : ESCAPE ROOM ==================== -->
@@ -1123,7 +1248,6 @@
                     <div class="terminal-line t-system">// Système ARIA-7 en ligne</div>
                     <div class="terminal-line t-system">// Opérateur requis pour débloquer</div>
                     <div class="terminal-line t-system">// En attente de vos instructions...</div>
-                    <div class="terminal-line">&nbsp;</div>
                     <div class="terminal-line t-prompt">ARIA-7 &gt; <span class="blink">█</span></div>
                 </div>
             </div>
@@ -1132,10 +1256,9 @@
         <!-- Footer -->
         <div class="game-footer">
             <button onclick="showBriefing()" style="font-family:'Space Mono',monospace;padding:8px 20px;border:1px solid rgba(78,205,196,0.3);background:transparent;color:var(--muted);cursor:pointer;font-size:0.8em;">
-                ← Briefing
+                ← Retour au dossier
             </button>
             <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);">ARIA_LAB :: MISSION ACTIVE</span>
-            <a href="modules.html" style="font-family:'Space Mono',monospace;font-size:0.75em;">↩ Modules</a>
         </div>
     </div>
 
@@ -1551,6 +1674,13 @@
             `;
             content.scrollTop = 0;
 
+            // Bouton lancement jeu sur dernière section
+            if (index === TOTAL_SECTIONS - 1) {
+                content.innerHTML += `<div style="text-align:center;margin-top:35px;padding-bottom:20px">
+                    <button onclick="startGame()" style="font-family:inherit;padding:16px 50px;background:rgba(78,205,196,0.15);border:2px solid #4ecdc4;color:#4ecdc4;cursor:pointer;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;border-radius:6px;transition:all .3s" onmouseover="this.style.background='rgba(78,205,196,0.3)'" onmouseout="this.style.background='rgba(78,205,196,0.15)'">🔐 Entrer dans le Lab</button>
+                </div>`;
+            }
+
             // Nav items
             document.querySelectorAll('.briefing-nav-item').forEach((item, i) => {
                 item.classList.remove('active');
@@ -1565,14 +1695,14 @@
             document.getElementById('progress-label').textContent = `Dossier ${index + 1}/${TOTAL_SECTIONS}`;
 
             // Buttons
-            document.getElementById('prev-btn').disabled = (index === 0);
+            { const _pb = document.getElementById('prev-btn'); if (_pb) _pb.disabled = (index === 0); }
             const nextBtn = document.getElementById('next-btn');
             if (index === TOTAL_SECTIONS - 1) {
-                nextBtn.textContent = '🔐 Entrer dans le Lab →';
-                nextBtn.onclick = startGame;
+                if (nextBtn) nextBtn.textContent = '🔐 Entrer dans le Lab →';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else {
-                nextBtn.textContent = 'Suivant →';
-                nextBtn.onclick = nextSection;
+                if (nextBtn) nextBtn.textContent = 'Suivant →';
+                if (nextBtn) nextBtn.onclick = nextSection;
             }
         }
 
@@ -2345,125 +2475,109 @@
             }
         ];
 
-        let quizCurrent = 0;
-        let quizScore = 0;
-        let quizAnswered = false;
+        let quizAnswers5 = {};
 
         function initQuiz() {
-            quizCurrent = 0;
-            quizScore = 0;
-            quizAnswered = false;
-            renderQuizQuestion();
-        }
-
-        function renderQuizQuestion() {
+            quizAnswers5 = {};
             const screen = document.getElementById('quiz-screen');
-            const q = quizQuestions[quizCurrent];
-            quizAnswered = false;
             screen.innerHTML = `
                 <div class="quiz-container">
                     <div class="quiz-header">
                         <div style="font-family:'Space Mono',monospace;color:var(--domain-color);font-size:1em;">📜 QUIZ DE CERTIFICATION</div>
-                        <div style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);">Question ${quizCurrent + 1}/${quizQuestions.length} • Score : ${quizScore}/${quizCurrent}</div>
+                        <div id="quiz5-progress" style="font-family:'Space Mono',monospace;font-size:0.85em;color:var(--muted);">0/${quizQuestions.length} répondues</div>
                     </div>
                     <div class="quiz-progress-bar">
-                        <div class="quiz-progress-fill" style="width:${((quizCurrent)/quizQuestions.length*100).toFixed(0)}%"></div>
+                        <div class="quiz-progress-fill" id="quiz5-fill" style="width:0%"></div>
                     </div>
                     <div class="quiz-body">
-                        <div class="quiz-question">${q.question}</div>
-                        <div class="quiz-options" id="quiz-options">
-                            ${q.options.map((opt, i) => `
-                                <div class="quiz-option" id="qopt-${i}" onclick="answerQuiz(${i})">
-                                    <span class="quiz-opt-letter">${String.fromCharCode(65+i)}</span>
-                                    <span class="quiz-opt-text">${opt}</span>
+                        <p style="color:#aabbcc;font-size:0.92em;margin-bottom:18px;">Répondez aux ${quizQuestions.length} questions puis validez. Score minimum : <strong style="color:var(--domain-color)">70%</strong>.</p>
+                        ${quizQuestions.map((q, i) => `
+                            <div style="background:rgba(10,20,40,0.6);border:1px solid rgba(78,205,196,0.2);border-radius:10px;padding:20px;margin-bottom:16px;" id="qq5-${i}">
+                                <div style="font-family:'Space Mono',monospace;font-size:0.78em;color:var(--muted);margin-bottom:8px;">Q${i+1}/${quizQuestions.length}</div>
+                                <div class="quiz-question" style="margin-bottom:14px;">${q.question}</div>
+                                <div class="quiz-options" id="qopts5-${i}">
+                                    ${q.options.map((opt, j) => `
+                                        <div class="quiz-option" id="qopt5-${i}-${j}" onclick="selectOpt5(${i},${j})">
+                                            <span class="quiz-opt-letter">${String.fromCharCode(65+j)}</span>
+                                            <span class="quiz-opt-text">${opt}</span>
+                                        </div>
+                                    `).join('')}
                                 </div>
-                            `).join('')}
-                        </div>
-                        <div class="quiz-explain" id="quiz-explain" style="display:none;"></div>
-                        <div style="margin-top:20px;text-align:center;">
-                            <button class="validate-btn" id="quiz-next-btn" onclick="nextQuizQuestion()" style="display:none;">
-                                ${quizCurrent + 1 < quizQuestions.length ? 'Question suivante →' : '📜 Voir mes résultats'}
+                                <div class="quiz-explain" id="qexpl5-${i}" style="display:none;"></div>
+                            </div>
+                        `).join('')}
+                        <div style="text-align:center;margin-top:20px;">
+                            <button class="validate-btn" id="quiz5-submit" onclick="submitQuiz5()"
+                                style="opacity:0.5;cursor:not-allowed;" disabled>
+                                ✅ Valider mes réponses
                             </button>
                         </div>
+                        <div id="quiz5-result"></div>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
 
-        function answerQuiz(idx) {
-            if (quizAnswered) return;
-            quizAnswered = true;
-            const q = quizQuestions[quizCurrent];
-            const correct = idx === q.correct;
-            if (correct) quizScore++;
-
-            document.querySelectorAll('.quiz-option').forEach((el, i) => {
-                el.style.pointerEvents = 'none';
-                if (i === q.correct) {
-                    el.style.borderColor = 'var(--neon-green)';
-                    el.style.background = 'rgba(0,255,136,0.08)';
-                } else if (i === idx && !correct) {
-                    el.style.borderColor = 'var(--danger)';
-                    el.style.background = 'rgba(255,77,77,0.08)';
-                }
+        function selectOpt5(qi, oi) {
+            quizAnswers5[qi] = oi;
+            document.querySelectorAll(`#qopts5-${qi} .quiz-option`).forEach((el, j) => {
+                el.classList.toggle('selected', j === oi);
             });
-
-            const explain = document.getElementById('quiz-explain');
-            explain.style.display = 'block';
-            explain.innerHTML = `
-                <div style="display:flex;align-items:flex-start;gap:10px;">
-                    <span style="font-size:1.4em;">${correct ? '✅' : '❌'}</span>
-                    <div>
-                        <strong style="color:${correct ? 'var(--neon-green)' : 'var(--danger)'}">
-                            ${correct ? 'Bonne réponse !' : 'Pas tout à fait...'}
-                        </strong>
-                        <p style="margin-top:6px;color:#aabbcc;font-size:0.92em;line-height:1.6;">${q.explain}</p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('quiz-next-btn').style.display = 'inline-block';
-        }
-
-        function nextQuizQuestion() {
-            quizCurrent++;
-            if (quizCurrent < quizQuestions.length) {
-                renderQuizQuestion();
-            } else {
-                showQuizResults();
+            const done = Object.keys(quizAnswers5).length;
+            const prog = document.getElementById('quiz5-progress');
+            if (prog) prog.textContent = `${done}/${quizQuestions.length} répondues`;
+            const fill = document.getElementById('quiz5-fill');
+            if (fill) fill.style.width = Math.round(done/quizQuestions.length*100) + '%';
+            if (done === quizQuestions.length) {
+                const btn = document.getElementById('quiz5-submit');
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
             }
         }
 
-        function showQuizResults() {
-            const screen = document.getElementById('quiz-screen');
-            const pct = Math.round(quizScore / quizQuestions.length * 100);
-            const pass = quizScore >= 6;
-            screen.innerHTML = `
-                <div class="quiz-container">
-                    <div class="quiz-header">
-                        <div style="font-family:'Space Mono',monospace;color:var(--domain-color);">📜 RÉSULTATS</div>
-                    </div>
-                    <div class="quiz-body" style="text-align:center;">
-                        <div style="font-size:4em;margin:20px 0;">${pass ? '🏆' : '🔄'}</div>
-                        <div style="font-family:'Space Mono',monospace;font-size:2em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};">
-                            ${quizScore}/${quizQuestions.length}
-                        </div>
-                        <div style="font-size:1.3em;color:${pass ? 'var(--neon-green)' : 'var(--warn)'};margin:10px 0 25px;">
-                            ${pct}% — ${pass ? 'Mission accomplie !' : 'Presque...'}
-                        </div>
-                        <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 30px;">
-                            ${pass
-                                ? 'Tu as démontré que tu maîtrises l\'art de la consigne. ARIA-7 est entièrement réactivée grâce à toi. Télécharge ton attestation.'
-                                : `Tu as ${quizScore} bonnes réponses. Il faut 6/8 pour valider. Revois le briefing et réessaie !`
-                            }
-                        </p>
+        function submitQuiz5() {
+            let score = 0;
+            quizQuestions.forEach((q, i) => { if (quizAnswers5[i] === q.correct) score++; });
+            const pct = Math.round(score / quizQuestions.length * 100);
+            const pass = pct >= 70;
+    if (pass) unlockCertificate(pct);
+
+            const submitBtn = document.getElementById('quiz5-submit');
+            if (submitBtn) submitBtn.style.display = 'none';
+
+            if (pass) {
+                quizQuestions.forEach((q, i) => {
+                    const chosen = quizAnswers5[i];
+                    document.querySelectorAll(`#qopts5-${i} .quiz-option`).forEach((el, j) => {
+                        el.classList.remove('selected');
+                        el.style.pointerEvents = 'none';
+                        if (j === q.correct) { el.style.borderColor = 'var(--neon-green)'; el.style.background = 'rgba(0,255,136,0.08)'; }
+                        else if (j === chosen && j !== q.correct) { el.style.borderColor = 'var(--danger)'; el.style.background = 'rgba(255,77,77,0.08)'; }
+                    });
+                    const exEl = document.getElementById(`qexpl5-${i}`);
+                    if (exEl) { exEl.style.display = 'block'; exEl.innerHTML = `<p style="color:#aabbcc;font-size:0.92em;line-height:1.6;">💡 ${q.explain}</p>`; }
+                });
+            } else {
+                document.querySelectorAll('.quiz-option').forEach(el => { el.classList.remove('selected'); el.style.pointerEvents = 'none'; });
+            }
+
+            const resultEl = document.getElementById('quiz5-result');
+            if (resultEl) {
+                resultEl.innerHTML = pass ? `
+                    <div style="text-align:center;margin-top:24px;padding:28px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.25);border-radius:10px;">
+                        <div style="font-size:3em;margin-bottom:12px;">🏆</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-green);">${score}/${quizQuestions.length} — ${pct}%</div>
+                        <p style="color:#aabbcc;line-height:1.7;margin:14px 0 20px;">Tu as démontré que tu maîtrises l'art de la consigne. ARIA-7 est entièrement réactivée grâce à toi.</p>
                         <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            ${pass ? `<button class="validate-btn success-btn" onclick="showAttestation()">🎓 Télécharger l'attestation</button>` : ''}
-                            <button class="validate-btn" onclick="initQuiz()" style="${pass ? 'opacity:0.6;font-size:0.9em;' : ''}">🔄 ${pass ? 'Refaire le quiz' : 'Réessayer'}</button>
-                            <a href="modules.html" style="font-family:'Space Mono',monospace;padding:13px 25px;border:2px solid rgba(78,205,196,0.3);color:var(--muted);text-decoration:none;font-size:0.9em;">↩ Modules</a>
+                            <button class="validate-btn success-btn" onclick="showAttestation()">🎓 Télécharger l'attestation</button>
                         </div>
-                    </div>
-                </div>
-            `;
+                    </div>` : `
+                    <div style="text-align:center;margin-top:24px;padding:28px;background:rgba(255,204,0,0.06);border:1px solid rgba(255,204,0,0.25);border-radius:10px;">
+                        <div style="font-size:3em;margin-bottom:12px;">📚</div>
+                        <div style="font-family:'Space Mono',monospace;font-size:1.8em;color:var(--warn);">${score}/${quizQuestions.length} — ${pct}%</div>
+                        <p style="color:#aabbcc;line-height:1.7;margin:14px 0 20px;">Il faut au moins 70% pour valider. Revois le briefing et réessaie !</p>
+                        <button class="validate-btn" onclick="initQuiz()">↺ Réessayer le quiz</button>
+                    </div>`;
+                resultEl.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // ==================== ATTESTATION ====================
@@ -2571,7 +2685,6 @@
         <div class="header">
             <div class="logo">🤖</div>
             <div class="title">Attestation de Réussite</div>
-            <div class="subtitle">Formation IA Responsable</div>
         </div>
         <div class="divider"></div>
         <p class="certifies">Cette attestation certifie que</p>
@@ -2625,7 +2738,27 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-    </script>
+    
+/* ==================== ATTESTATION SIDEBAR ==================== */
+let certFinalPct05 = 0;
+function unlockCertificate(pct) {
+  certFinalPct05 = pct || certFinalPct05;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(78,205,196,0.2)'; num.style.color = '#4ecdc4'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() {
+  // Show the quiz screen which has the attestation section
+  const qs = document.getElementById('quiz-screen');
+  if (qs) { qs.style.display = 'flex'; }
+  const bs = document.getElementById('briefing-screen');
+  if (bs) { bs.classList.remove('active'); }
+}
+</script>
 
     <!-- ==================== QUIZ ==================== -->
     <div id="quiz-screen">

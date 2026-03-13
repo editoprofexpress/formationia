@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Itération & Amélioration — Module 6 (Prompt Engineering)</title>
+  <title>Module n°6 — Itération & Amélioration</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
     :root{
+  --domain-color: #4ecdc4;
       --neon-green:#00ff88;
       --neon-blue:#00d4ff;
       --neon-pink:#ff0080;
@@ -88,7 +89,7 @@
       padding:15px 30px;display:flex;align-items:center;justify-content:space-between;
     }
     .briefing-title{
-      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--neon-green);
+      font-family:'Space Mono',monospace;font-size:1.3em;color:var(--domain-color);
       display:flex;align-items:center;gap:15px;
     }
     .briefing-title::before{content:'🎯';font-size:1.5em}
@@ -265,28 +266,144 @@
       .briefing-btn{width:100%;justify-content:center}
       .exp-grid{grid-template-columns:1fr}
     }
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      text-align: center;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#4ecdc4,#00d4ff,#a855f7) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(78,205,196,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #4ecdc4;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #4ecdc4 !important;
+      color: #4ecdc4 !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(78,205,196,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(78,205,196,0.08) !important;
+      box-shadow: 0 0 30px rgba(78,205,196,0.5), inset 0 0 30px rgba(78,205,196,0.08) !important;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(78,205,196,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(78,205,196,0.05) !important;
+      border-color: rgba(78,205,196,0.3) !important;
+      color: #4ecdc4 !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(78,205,196,0.15) !important;
+      border-color: #4ecdc4 !important;
+    }
+    .briefing-nav-item:hover { background: rgba(78,205,196,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #4ecdc4 !important;
+      background: rgba(78,205,196,0.1) !important;
+      color: #4ecdc4 !important;
+    }
+    .nav-number { background: rgba(78,205,196,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(78,205,196,0.4) !important; }
+
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
+    #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
+</style>
 </head>
 <body>
 
   <!-- ==================== TITLE SCREEN ==================== -->
   <section id="title-screen">
     <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
-      <span>←</span><span>Modules</span>
+      <span>←</span><span>Tous les modules</span>
     </a>
+
+    <div class="domain-badge-std" style="background:#4ecdc422;border:1px solid #4ecdc488;color:#4ecdc4;">Interaction Raisonnée - Module n°06</div>
     <div class="title-logo">🎯</div>
-    <h1 class="main-title">ITÉRATION & AMÉLIORATION</h1>
-    <p class="subtitle">Module 6 — Prompt Engineering & Raffinement</p>
+    <h1 class="main-title">Itération et amélioration</h1>
+    <p class="mission-label">STUDIO ITERATEK</p>
     <p class="intro-text">
       <strong>Studio ITERATEK.</strong> Vous rejoignez le studio créatif ITERATEK, spécialisé dans l'art du dialogue avec l'IA.
       Votre mission : maîtriser les techniques de prompt engineering pour obtenir des résultats précis,
       apprendre à itérer sur vos requêtes et transformer un premier essai approximatif en résultat optimal.
     </p>
+    <div class="activity-badge-std">🎯 Défi progressif</div>
     <button class="start-btn" onclick="startModule()">Entrer dans le Studio</button>
-    <div style="margin-top:40px;opacity:0.7">
-      <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Une formation proposée par</p>
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
       <a href="https://www.profexpress.com" target="_blank" rel="noopener">
-        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
       </a>
     </div>
   </section>
@@ -345,10 +462,6 @@
       <div class="briefing-content" id="briefing-content"></div>
     </div>
 
-    <div class="briefing-footer">
-      <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>← Dossier précédent</button>
-      <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">Dossier suivant →</button>
-    </div>
   </div>
 
   <!-- ==================== TOAST ==================== -->
@@ -398,13 +511,13 @@ function updateBriefingProgress(){
   const pct=Math.round(((currentLesson+1)/totalLessons)*100);
   $('progress-text').textContent=`Dossier ${currentLesson+1}/${totalLessons}`;
   $('progress-fill').style.width=pct+'%';
-  const prevBtn=$('prev-btn'), nextBtn=$('next-btn');
-  if(prevBtn) prevBtn.disabled=(currentLesson===0);
+  const prevBtn = document.getElementById('prev-btn'), nextBtn = document.getElementById('next-btn');
+  if(prevBtn) if (prevBtn) prevBtn.disabled = (currentLesson===0);
   if(nextBtn){
     if(currentLesson===totalLessons-1){
-      nextBtn.textContent='Terminé ✓';nextBtn.disabled=true;nextBtn.style.opacity='0.5';
+      if (nextBtn) nextBtn.textContent = 'Terminé ✓';if (nextBtn) nextBtn.disabled = true;if (nextBtn) if (nextBtn) nextBtn.style.opacity = '0.5';
     } else {
-      nextBtn.innerHTML='Dossier suivant →';nextBtn.onclick=nextLesson;nextBtn.disabled=false;nextBtn.style.opacity='1';
+      if (nextBtn) nextBtn.innerHTML = 'Dossier suivant →';if (nextBtn) nextBtn.onclick = nextLesson;if (nextBtn) nextBtn.disabled = false;if (nextBtn) if (nextBtn) nextBtn.style.opacity = '1';
     }
   }
 }
@@ -441,7 +554,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Fondamentaux</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Le mythe du prompt parfait</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎯 Le mythe du prompt parfait</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Beaucoup de gens pensent qu'il existe un "prompt magique" qui donnera immédiatement le résultat parfait. C'est un mythe. En réalité, obtenir un résultat de qualité avec une IA générative est un <strong>processus itératif</strong> : on commence par une première tentative, on analyse le résultat, on ajuste sa demande, et on recommence jusqu'à obtenir ce qu'on veut.
       </p>
@@ -455,7 +568,7 @@ const lessons = [
         Chaque itération vous rapproche du résultat souhaité. L'important n'est pas de réussir du premier coup, mais de savoir <strong>comment améliorer</strong> sa demande.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Premier essai vs résultat itéré</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Premier essai vs résultat itéré</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Voici un exemple concret de la puissance de l'itération :
       </p>
@@ -473,7 +586,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Les 3 types d'itération</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔄 Les 3 types d'itération</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout" style="text-align:center">
           <div style="font-size:2em;margin-bottom:8px">🔧</div>
@@ -501,7 +614,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Structure</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔄 Qu'est-ce qu'un prompt ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔄 Qu'est-ce qu'un prompt ?</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un <strong>prompt</strong> est le texte que vous envoyez à une IA générative pour obtenir une réponse. C'est votre seul moyen de communication avec le modèle. La qualité de votre prompt détermine directement la qualité de la réponse. C'est comme donner des instructions à quelqu'un : plus vos instructions sont claires et complètes, plus le résultat sera conforme à vos attentes.
       </p>
@@ -510,7 +623,7 @@ const lessons = [
         <strong>Analogie :</strong> Imaginez que vous commandez un meuble sur mesure à un artisan. Si vous dites simplement "faites-moi une table", vous aurez une table... mais peut-être pas celle que vous vouliez. Si vous précisez les dimensions, le matériau, le style, la couleur et l'usage prévu, vous obtiendrez exactement ce que vous aviez en tête.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🧩 Les composants d'un prompt</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🧩 Les composants d'un prompt</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un prompt efficace peut contenir plusieurs éléments, même si tous ne sont pas toujours nécessaires :
       </p>
@@ -538,7 +651,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📝 Exemple décortiqué</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📝 Exemple décortiqué</h3>
       <div class="callout ok">
         <p style="line-height:1.8;font-family:'Space Mono',monospace;font-size:0.9em">
           <span style="color:var(--neon-blue)">[Contexte]</span> Tu es un nutritionniste spécialisé pour adolescents.<br/>
@@ -563,7 +676,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Méthode</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🏗️ La méthode RCTFC</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🏗️ La méthode RCTFC</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Au studio ITERATEK, nous utilisons un framework en 5 piliers pour construire des prompts efficaces. Chaque pilier ajoute une couche de précision qui rapproche le résultat de l'objectif. Ce n'est pas obligatoire d'utiliser les 5 à chaque fois, mais plus vous en utilisez, plus le résultat sera ciblé.
       </p>
@@ -605,7 +718,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 L'impact de chaque pilier</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 L'impact de chaque pilier</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Chaque pilier ajouté améliore significativement la pertinence du résultat :
       </p>
@@ -664,12 +777,12 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Précision</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔍 Vague vs Spécifique</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔍 Vague vs Spécifique</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         La spécificité est la compétence n°1 en prompt engineering. Un prompt vague laisse l'IA deviner ce que vous voulez — et elle devinera souvent mal. Un prompt spécifique réduit l'espace des réponses possibles et guide l'IA vers exactement ce dont vous avez besoin.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Avant / Après : 5 transformations</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📋 Avant / Après : 5 transformations</h3>
 
       <div class="callout pink" style="margin-bottom:8px">
         <strong>❌ Vague :</strong> <em>"Écris un email professionnel"</em>
@@ -692,7 +805,7 @@ const lessons = [
         <strong>✅ Spécifique :</strong> <em>"Propose 5 idées de micro-entreprises réalisables par un étudiant avec moins de 500€ de budget initial, dans le domaine du numérique. Pour chaque idée : description en 2 lignes, investissement requis, potentiel de revenus mensuels."</em>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Les 4 dimensions de la spécificité</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎯 Les 4 dimensions de la spécificité</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout">
           <strong style="color:var(--neon-green)">Qui ?</strong><br/>
@@ -728,12 +841,12 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Format</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📐 Pourquoi le format compte autant que le fond</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📐 Pourquoi le format compte autant que le fond</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Vous pouvez obtenir la bonne information dans le mauvais format — et ça la rend inutilisable. Imaginez : vous demandez une comparaison entre 3 produits. L'IA vous répond en 5 paragraphes denses. La même information en tableau serait 10 fois plus lisible et utile. <strong>Spécifier le format de sortie</strong> est l'un des leviers les plus puissants du prompt engineering.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Les formats courants</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Les formats courants</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout" style="text-align:center">
           <div style="font-size:2em;margin-bottom:8px">📝</div>
@@ -761,7 +874,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🚧 Les contraintes qui changent tout</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🚧 Les contraintes qui changent tout</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Les contraintes sont des règles que l'IA doit respecter. Elles canalisent la créativité du modèle et évitent les réponses trop longues, hors-sujet ou inadaptées.
       </p>
@@ -803,12 +916,12 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Personas</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎭 Le pouvoir du rôle</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎭 Le pouvoir du rôle</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Quand vous dites à l'IA <strong>"Tu es un nutritionniste"</strong>, vous ne faites pas semblant. Vous activez un ensemble de connaissances, un vocabulaire spécifique et un angle d'approche qui transforment radicalement la réponse. Le même prompt avec des rôles différents produit des résultats complètement différents.
       </p>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🔬 Même question, 4 rôles différents</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🔬 Même question, 4 rôles différents</h3>
       <p style="line-height:1.7;color:#cfe9ff;margin-bottom:15px">
         Question : <strong><em>"Explique pourquoi le ciel est bleu."</em></strong>
       </p>
@@ -832,7 +945,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📋 Construire un persona efficace</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📋 Construire un persona efficace</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Un bon persona va au-delà du simple titre. Plus vous le détaillez, plus l'IA s'y conformera :
       </p>
@@ -844,7 +957,7 @@ const lessons = [
         <em style="color:var(--neon-green)">"Tu es un professeur de français au lycée, passionné de littérature contemporaine. Tu utilises souvent des références à la pop culture pour rendre tes cours vivants. Tu t'adresses à des élèves de Première. Tu es exigeant sur l'orthographe mais bienveillant dans tes corrections."</em>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🌍 Le contexte : le décor de la scène</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🌍 Le contexte : le décor de la scène</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Le contexte donne à l'IA les informations de fond qu'elle ne peut pas deviner. Sans contexte, l'IA fait des suppositions qui peuvent être complètement fausses.
       </p>
@@ -874,7 +987,7 @@ const lessons = [
       <div class="pill">ITERATEK</div><div class="pill">Module 6</div><div class="pill">Few-shot</div>
       <div class="divider"></div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">💡 Montrer plutôt qu'expliquer</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">💡 Montrer plutôt qu'expliquer</h3>
       <p style="line-height:1.7;color:#cfe9ff">
         Parfois, la meilleure façon de dire à l'IA ce que vous voulez n'est pas de l'expliquer avec des mots, mais de lui <strong>montrer un exemple</strong>. C'est le principe du <strong>few-shot learning</strong> : fournir quelques exemples du résultat attendu pour que l'IA comprenne le pattern et le reproduise.
       </p>
@@ -883,7 +996,7 @@ const lessons = [
         <strong>Analogie :</strong> Imaginez que vous voulez apprendre à quelqu'un un jeu de cartes. Vous pouvez lire les 3 pages de règles... ou jouer 2-3 tours en montrant comment ça marche. La deuxième approche est souvent plus efficace. Le few-shot, c'est pareil.
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📊 Zero-shot, One-shot, Few-shot</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📊 Zero-shot, One-shot, Few-shot</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout" style="text-align:center;border-color:rgba(255,0,128,.4)">
           <div style="font-size:2em;margin-bottom:8px">0️⃣</div>
@@ -908,7 +1021,7 @@ const lessons = [
         </div>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">📝 Exemple concret : créer des flashcards</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">📝 Exemple concret : créer des flashcards</h3>
       <div class="callout pink" style="margin-bottom:8px">
         <strong>❌ Sans exemple (zero-shot) :</strong><br/>
         <em>"Crée des flashcards sur la Révolution française."</em><br/>
@@ -926,7 +1039,7 @@ const lessons = [
         </span>
       </div>
 
-      <h3 style="color:var(--neon-green);margin:25px 0 15px">🎯 Quand utiliser le few-shot ?</h3>
+      <h3 style="color:var(--domain-color);margin:25px 0 15px">🎯 Quand utiliser le few-shot ?</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0">
         <div class="callout ok">
           <strong>Utilisez le few-shot quand :</strong><br/>
@@ -1416,7 +1529,7 @@ function showQuiz(){
   zone.style.display='block';
   zone.innerHTML=`
     <div class="divider" style="margin:30px 0"></div>
-    <h3 style="color:var(--neon-green);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 6</h3>
+    <h3 style="color:var(--domain-color);margin-bottom:20px;font-family:'Space Mono',monospace">📝 Quiz de certification — Module 6</h3>
     <p style="color:var(--muted);margin-bottom:20px">Répondez aux 10 questions pour obtenir votre attestation. Score minimum : 70%.</p>
     <div id="quiz-questions">
       ${quizQuestions.map((q,i)=>`
@@ -1433,7 +1546,7 @@ function showQuiz(){
       `).join('')}
     </div>
     <div style="text-align:center;margin-top:25px">
-      <button class="btn green" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px">Valider mes réponses</button>
+      <button class="btn green" id="quiz-submit-btn" onclick="submitQuiz()" style="font-size:1.1em;padding:15px 40px;opacity:0.5;cursor:not-allowed;" disabled>Valider mes réponses</button>
     </div>
     <div id="quiz-result" style="margin-top:20px"></div>
   `;
@@ -1447,39 +1560,57 @@ function answerQuiz(qIdx,oIdx){
     el.classList.remove('selected');
     if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
   });
+  // Enable submit button when all questions answered
+  if(Object.keys(quizAnswers).length===quizQuestions.length){
+    const btn=$('quiz-submit-btn');
+    if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
+  }
 }
 
 function submitQuiz(){
   let score=0;
-  quizQuestions.forEach((q,i)=>{
-    const userAns=quizAnswers[i];
-    const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
-    opts.forEach(el=>{
-      const oIdx=parseInt(el.dataset.o);
-      el.style.pointerEvents='none';
-      if(oIdx===q.correct) el.classList.add('correct');
-      if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
-    });
-    if(userAns===q.correct) score++;
-    $('explain-'+i).classList.add('show');
-  });
-
+  quizQuestions.forEach((q,i)=>{ if(quizAnswers[i]===q.correct) score++; });
   const pct=Math.round(score/quizQuestions.length*100);
-  state.quizScore=score;state.quizTotal=quizQuestions.length;
+  state.quizScore=score; state.quizTotal=quizQuestions.length;
   finalScore=pct;
 
   $('quiz-submit-btn').style.display='none';
-  $('quiz-result').innerHTML=`
-    <div class="callout ${pct>=70?'ok':'warn'}" style="text-align:center;padding:30px">
-      <h3 style="color:${pct>=70?'var(--neon-green)':'var(--warn)'};margin-bottom:15px">${pct>=70?'Félicitations !':'Score insuffisant'}</h3>
-      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
-      <p style="line-height:1.6">${pct>=70
-        ?'Vous maîtrisez les techniques de prompt engineering et d\'itération. Votre attestation est débloquée !'
-        :'Il faut au moins 70% pour valider. Relisez les dossiers et réessayez.'
-      }</p>
-    </div>`;
 
-  if(pct>=70) unlockCertificate();
+  if(pct>=70){
+    // Success: show highlights + explanations
+    quizQuestions.forEach((q,i)=>{
+      const userAns=quizAnswers[i];
+      const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
+      opts.forEach(el=>{
+        const oIdx=parseInt(el.dataset.o);
+        el.style.pointerEvents='none';
+        if(oIdx===q.correct) el.classList.add('correct');
+        if(oIdx===userAns&&userAns!==q.correct) el.classList.add('wrong');
+      });
+      $('explain-'+i).classList.add('show');
+    });
+    $('quiz-result').innerHTML=`
+    <div class="callout ok" style="text-align:center;padding:30px">
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">Vous maîtrisez les techniques de prompt engineering et d'itération. Votre attestation est débloquée !</p>
+    </div>`;
+    unlockCertificate();
+  } else {
+    // Failure: show only score + retry (no answer details)
+    $('quiz-result').innerHTML=`
+    <div class="callout warn" style="text-align:center;padding:30px">
+      <h3 style="color:var(--warn);margin-bottom:15px">Score insuffisant</h3>
+      <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+      <p style="line-height:1.6">Il faut au moins 70% pour valider. Réessayez !</p>
+      <button class="btn" onclick="retryQuiz()" style="margin-top:20px;background:var(--neon-green);color:#000;padding:12px 30px">↺ Réessayer</button>
+    </div>`;
+  }
+}
+
+function retryQuiz(){
+  Object.keys(quizAnswers).forEach(k => delete quizAnswers[k]);
+  showQuiz();
 }
 
 /* =========================================================
@@ -1523,7 +1654,7 @@ function showCertificateInFolder(){
     <div class="divider"></div>
     <div class="callout ok" style="text-align:center;padding:30px 20px">
       <div style="font-size:3em;margin-bottom:15px">🎉</div>
-      <h3 style="color:var(--neon-green);margin-bottom:15px">Félicitations !</h3>
+      <h3 style="color:var(--domain-color);margin-bottom:15px">Félicitations !</h3>
       <p style="line-height:1.8;margin-bottom:15px">Vous avez terminé avec succès le <strong>Module 6 - Itération & Amélioration</strong>.</p>
       <div style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:10px;padding:20px;margin:20px auto;max-width:400px">
         <p style="margin-bottom:10px"><strong>Score certification :</strong> <span style="color:var(--neon-green);font-size:1.3em">${finalScore}%</span></p>

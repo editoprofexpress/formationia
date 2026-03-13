@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Infiltration - Escape Game IA & Environnement</title>
+    <title>Module n°12 — IA & Environnement</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
         :root {
+  --domain-color: #95e1d3;
             --neon-green: #00ff88;
             --neon-blue: #00d4ff;
             --neon-pink: #ff0080;
@@ -1239,7 +1240,7 @@
         .briefing-title {
             font-family: 'Space Mono', monospace;
             font-size: 1.3em;
-            color: var(--neon-green);
+            color:var(--domain-color);
             display: flex;
             align-items: center;
             gap: 15px;
@@ -1705,7 +1706,120 @@
             }
             #skip-btn { display: none; }
         }
-    </style>
+    
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      text-align: center;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#95e1d3,#7ecdc4,#b5f5ec) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(149,225,211,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #95e1d3;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #95e1d3 !important;
+      color: #95e1d3 !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(149,225,211,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(149,225,211,0.08) !important;
+      box-shadow: 0 0 30px rgba(149,225,211,0.5), inset 0 0 30px rgba(149,225,211,0.08) !important;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(149,225,211,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(149,225,211,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(149,225,211,0.05) !important;
+      border-color: rgba(149,225,211,0.3) !important;
+      color: #95e1d3 !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(149,225,211,0.15) !important;
+      border-color: #95e1d3 !important;
+    }
+    .briefing-nav-item:hover { background: rgba(149,225,211,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #95e1d3 !important;
+      background: rgba(149,225,211,0.1) !important;
+      color: #95e1d3 !important;
+    }
+    .nav-number { background: rgba(149,225,211,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(149,225,211,0.4) !important; }
+
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
+    #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
+</style>
 </head>
 <body>
     <!-- ÉCRAN TITRE -->
@@ -1713,28 +1827,31 @@
         <!-- Lien retour discret -->
         <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
             <span>←</span>
-            <span>Modules</span>
+            <span>Tous les modules</span>
         </a>
+
+    <div class="domain-badge-std" style="background:#95e1d322;border:1px solid #95e1d388;color:#95e1d3;">Enjeux Citoyens - Module n°12</div>
         <div class="title-logo">🔐</div>
-        <h1 class="main-title">Green Infiltration</h1>
-        <p class="subtitle">Escape Game - L'Impact Environnemental de l'IA</p>
+        <h1 class="main-title">Impact environnemental de l'IA</h1>
+    <p class="mission-label">INFILTRATION VERTE</p>
 
         <p class="intro-text">
             Vous êtes journaliste d'investigation. Une source anonyme vous a donné accès à un data center high-tech.
             Votre mission : <strong>infiltrer les lieux</strong>, <strong>collecter des preuves</strong> sur l'impact environnemental de l'IA,
             et <strong>vous échapper</strong> avant que la sécurité ne vous repère.
         </p>
+    <div class="activity-badge-std">🔐 Escape Game</div>
 
         <button class="start-btn" onclick="showBriefing()">
             Accéder au Dossier d'Infiltration
         </button>
 
-        <div style="margin-top: 40px; opacity: 0.7;">
-            <p style="color: #8899aa; font-size: 0.85em; margin-bottom: 8px;">Une formation proposée par</p>
-            <a href="https://www.profexpress.com" target="_blank" rel="noopener">
-                <img src="images/logo-profexpress.png" alt="Prof Express" style="height: 30px; object-fit: contain;">
-            </a>
-        </div>
+        <div class="profexpress-std">
+      <p>Une formation proposée par</p>
+      <a href="https://www.profexpress.com" target="_blank" rel="noopener">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
+      </a>
+    </div>
     </div>
 
     <!-- SECTION BRIEFING / COURS -->
@@ -1753,9 +1870,8 @@
             <nav class="briefing-nav">
                 <!-- Lien retour vers modules -->
                 <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
-                    <span class="back-arrow">←</span>
-                    <span>Tous les modules</span>
-                </a>
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
 
                 <div class="briefing-nav-item active" onclick="showLesson(0)">
                     <span class="nav-icon">🎬</span>
@@ -1813,14 +1929,6 @@
             </div>
         </div>
 
-        <div class="briefing-footer">
-            <button class="briefing-btn" id="prev-btn" onclick="prevLesson()" disabled>
-                ← Fichier précédent
-            </button>
-            <button class="briefing-btn primary" id="next-btn" onclick="nextLesson()">
-                Fichier suivant →
-            </button>
-        </div>
     </div>
 
     <!-- CONTAINER PRINCIPAL -->
@@ -1836,11 +1944,11 @@
             <!-- Barre supérieure -->
             <div class="top-bar">
                 <div style="display: flex; align-items: center;">
-                    <!-- Bouton retour modules -->
-                    <a href="modules.html" class="back-btn-game" title="Retour à la liste des modules">
+                    <!-- Bouton retour dossier -->
+                    <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier" style="cursor:pointer;border:none;">
                         <span>←</span>
-                        <span>Modules</span>
-                    </a>
+                        <span>Retour au dossier</span>
+                    </button>
                     <div class="location-name">
                         <span class="location-icon" id="location-icon">📍</span>
                         <span id="location-name">Couloir Principal</span>
@@ -2343,6 +2451,10 @@
                         <p style="font-size: 1.2em; color: var(--neon-green); margin-bottom: 20px;">
                             🔐 Briefing terminé. Vous êtes prêt(e) pour l'infiltration.
                         </p>
+
+        <div style="text-align:center;margin-top:30px;padding-bottom:20px">
+            <button onclick="startGame()" style="font-family:'Space Mono',monospace;padding:16px 50px;background:rgba(149,225,211,0.15);border:2px solid var(--domain-color);color:var(--domain-color);cursor:pointer;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;border-radius:6px;transition:all .3s" onmouseover="this.style.background='rgba(149,225,211,0.3)'" onmouseout="this.style.background='rgba(149,225,211,0.15)'">🎮 Commencer l'infiltration</button>
+        </div>
                     </div>
                 `
             }
@@ -2352,6 +2464,13 @@
             document.getElementById('title-screen').classList.add('hidden');
             document.getElementById('briefing-screen').classList.add('active');
             showLesson(0);
+        }
+
+        // Retour au dossier depuis l'écran de jeu
+        function returnToDossier() {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('briefing-screen').classList.add('active');
+            showCertificateInFolder();
         }
 
         // Variable pour suivre si le quiz est réussi (session courante uniquement)
@@ -2392,7 +2511,7 @@
                     <h2 class="module-title" style="color:var(--neon-green);">🎓 Attestation de réussite</h2>
                     <div class="module-section" style="text-align:center;padding:40px 20px;">
                         <div style="font-size:4em;margin-bottom:20px;">🎓</div>
-                        <h3 style="color:var(--neon-green);margin-bottom:20px;">Félicitations !</h3>
+                        <h3 style="color:var(--domain-color);margin-bottom:20px;">Félicitations !</h3>
                         <p style="margin-bottom:10px;">Vous avez validé le micro-module</p>
                         <p style="font-size:1.2em;color:var(--neon-cyan);margin-bottom:25px;"><strong>"Impact Environnemental de l'IA"</strong></p>
 
@@ -2489,21 +2608,21 @@
             }
 
             // Gérer les boutons
-            document.getElementById('prev-btn').disabled = index === 0;
+            { const _pb = document.getElementById('prev-btn'); if (_pb) _pb.disabled = index === 0; }
 
             const nextBtn = document.getElementById('next-btn');
             if (index === briefingLessons.length - 1) {
                 // Sur la page Mission : bouton pour lancer le jeu
-                nextBtn.style.visibility = 'visible';
-                nextBtn.textContent = '🎮 Commencer la mission';
-                nextBtn.onclick = startGame;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.textContent = '🎮 Commencer la mission';
+                if (nextBtn) nextBtn.onclick = startGame;
             } else if (index === 6) {
                 // Dernier fichier : masquer le bouton suivant (accès mission via menu)
-                nextBtn.style.visibility = 'hidden';
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'hidden';
             } else {
-                nextBtn.style.visibility = 'visible';
-                nextBtn.innerHTML = 'Fichier suivant →';
-                nextBtn.onclick = nextLesson;
+                if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
+                if (nextBtn) nextBtn.innerHTML = 'Fichier suivant →';
+                if (nextBtn) nextBtn.onclick = nextLesson;
             }
 
             // Scroll en haut
@@ -3919,7 +4038,7 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                         </div>
 
                         <div style="background:rgba(0,255,136,0.1);border:1px solid var(--neon-green);border-radius:15px;padding:25px;margin:30px 0;">
-                            <h3 style="color:var(--neon-green);margin-bottom:15px;">💡 Les 6 règles d'or pour une IA responsable :</h3>
+                            <h3 style="color:var(--domain-color);margin-bottom:15px;">💡 Les 6 règles d'or pour une IA responsable :</h3>
                             <ol style="margin-left:20px;line-height:2;">
                                 <li>Choisir le bon modèle (×210 de différence !)</li>
                                 <li>Limiter les régénérations inutiles</li>
@@ -4032,155 +4151,110 @@ Tapez <span class="info">help</span> pour la liste des commandes.
             }
         ];
 
-        let quizState = {
-            currentQuestion: 0,
-            score: 0,
-            answers: []
-        };
+        let quizState = { answers: {} };
 
         function startCertificationQuiz() {
-            quizState = { currentQuestion: 0, score: 0, answers: [] };
-            showQuizQuestion();
-        }
-
-        function showQuizQuestion() {
-            const q = quizQuestions[quizState.currentQuestion];
-            const progress = ((quizState.currentQuestion) / quizQuestions.length * 100).toFixed(0);
-
-            const content = `
+            quizState = { answers: {} };
+            const html = `
                 <div class="final-report" style="max-width:700px;">
                     <div class="final-title" style="font-size:1.5em;">📜 Quiz d'Attestation</div>
-                    <p style="color:var(--neon-cyan);margin-bottom:20px;">Impact Environnemental de l'IA</p>
-
-                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:25px;">
-                        <div style="background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan));height:8px;border-radius:8px;width:${progress}%;transition:width 0.5s;"></div>
+                    <p style="color:var(--neon-cyan);margin-bottom:10px;">Impact Environnemental de l'IA</p>
+                    <p style="color:#888;margin-bottom:16px;font-size:0.92em;">Répondez aux ${quizQuestions.length} questions puis validez. Score minimum : <strong>70%</strong>.</p>
+                    <div style="background:rgba(0,212,255,0.1);border-radius:10px;padding:3px;margin-bottom:8px;">
+                        <div id="quiz12-fill" style="background:linear-gradient(90deg,var(--neon-green),var(--neon-cyan));height:8px;border-radius:8px;width:0%;transition:width 0.3s;"></div>
                     </div>
-
-                    <p style="color:#888;margin-bottom:10px;">Question ${quizState.currentQuestion + 1} / ${quizQuestions.length}</p>
-
-                    <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:25px;margin-bottom:25px;">
-                        <p style="font-size:1.15em;line-height:1.6;">${q.question}</p>
+                    <div id="quiz12-prog" style="color:#888;font-size:0.88em;margin-bottom:20px;">0/${quizQuestions.length} répondues</div>
+                    ${quizQuestions.map((q, i) => `
+                        <div style="background:rgba(0,50,100,0.3);border:1px solid rgba(0,212,255,0.3);border-radius:15px;padding:20px;margin-bottom:18px;" id="qq12-${i}">
+                            <p style="color:#888;font-size:0.88em;margin-bottom:8px;">Question ${i+1} / ${quizQuestions.length}</p>
+                            <p style="font-size:1.1em;line-height:1.6;margin-bottom:16px;">${q.question}</p>
+                            <div style="display:flex;flex-direction:column;gap:10px;" id="qopts12-${i}">
+                                ${q.options.map((opt, j) => `
+                                    <button id="qopt12-${i}-${j}" onclick="selectQ12(${i},${j})" style="
+                                        background:rgba(20,40,60,0.8);border:2px solid rgba(0,212,255,0.3);
+                                        border-radius:10px;padding:13px 18px;color:white;font-size:0.97em;
+                                        cursor:pointer;transition:all 0.3s;text-align:left;"
+                                        onmouseover="this.style.borderColor='var(--neon-cyan)';this.style.background='rgba(0,100,150,0.4)'"
+                                        onmouseout="if(!this.dataset.sel)this.style.borderColor='rgba(0,212,255,0.3)';if(!this.dataset.sel)this.style.background='rgba(20,40,60,0.8)'">
+                                        <span style="color:var(--neon-cyan);margin-right:10px;font-weight:bold;">${String.fromCharCode(65+j)}.</span>${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div style="text-align:center;margin-top:20px;">
+                        <button id="quiz12-submit" onclick="submitQ12()" style="
+                            background:rgba(0,255,136,0.15);border:2px solid var(--neon-green);
+                            border-radius:10px;padding:15px 40px;color:var(--neon-green);
+                            font-size:1em;opacity:0.5;cursor:not-allowed;transition:all 0.3s;" disabled>
+                            ✅ Valider mes réponses
+                        </button>
                     </div>
-
-                    <div style="display:flex;flex-direction:column;gap:12px;" id="quiz-options">
-                        ${q.options.map((opt, i) => `
-                            <button class="quiz-option" onclick="selectQuizAnswer(${i})" style="
-                                background:rgba(20,40,60,0.8);
-                                border:2px solid rgba(0,212,255,0.3);
-                                border-radius:10px;
-                                padding:15px 20px;
-                                color:white;
-                                font-size:1em;
-                                cursor:pointer;
-                                transition:all 0.3s;
-                                text-align:left;
-                            " onmouseover="this.style.borderColor='var(--neon-cyan)';this.style.background='rgba(0,100,150,0.4)'"
-                               onmouseout="this.style.borderColor='rgba(0,212,255,0.3)';this.style.background='rgba(20,40,60,0.8)'">
-                                <span style="color:var(--neon-cyan);margin-right:10px;font-weight:bold;">${String.fromCharCode(65 + i)}.</span>
-                                ${opt}
-                            </button>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            showModal(content);
+                    <div id="quiz12-result"></div>
+                </div>`;
+            showModal(html);
             document.querySelector('.modal-close').style.display = 'none';
         }
 
-        function selectQuizAnswer(index) {
-            const q = quizQuestions[quizState.currentQuestion];
-            const isCorrect = index === q.correct;
-
-            if (isCorrect) {
-                quizState.score++;
-            }
-            quizState.answers.push({ question: quizState.currentQuestion, selected: index, correct: isCorrect });
-
-            // Afficher feedback
-            const options = document.querySelectorAll('#quiz-options button');
-            options.forEach((btn, i) => {
-                btn.style.pointerEvents = 'none';
-                if (i === q.correct) {
-                    btn.style.borderColor = 'var(--neon-green)';
-                    btn.style.background = 'rgba(0,255,136,0.2)';
-                } else if (i === index && !isCorrect) {
-                    btn.style.borderColor = 'var(--neon-pink)';
-                    btn.style.background = 'rgba(255,51,102,0.2)';
-                }
+        function selectQ12(qi, oi) {
+            quizState.answers[qi] = oi;
+            document.querySelectorAll(`#qopts12-${qi} button`).forEach((btn, j) => {
+                delete btn.dataset.sel;
+                btn.style.borderColor = 'rgba(0,212,255,0.3)'; btn.style.background = 'rgba(20,40,60,0.8)';
             });
-
-            // Passer à la question suivante
-            setTimeout(() => {
-                quizState.currentQuestion++;
-                if (quizState.currentQuestion < quizQuestions.length) {
-                    showQuizQuestion();
-                } else {
-                    showQuizResults();
-                }
-            }, 1200);
+            const chosen = document.getElementById(`qopt12-${qi}-${oi}`);
+            if (chosen) { chosen.dataset.sel = '1'; chosen.style.borderColor = 'var(--neon-cyan)'; chosen.style.background = 'rgba(0,100,150,0.4)'; }
+            const done = Object.keys(quizState.answers).length;
+            const txt = document.getElementById('quiz12-prog');
+            if (txt) txt.textContent = `${done}/${quizQuestions.length} répondues`;
+            const fill = document.getElementById('quiz12-fill');
+            if (fill) fill.style.width = Math.round(done/quizQuestions.length*100) + '%';
+            if (done === quizQuestions.length) {
+                const btn = document.getElementById('quiz12-submit');
+                if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+            }
         }
 
-        function showQuizResults() {
-            const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+        function submitQ12() {
+            let score = 0;
+            quizQuestions.forEach((q, i) => { if (quizState.answers[i] === q.correct) score++; });
+            const percentage = Math.round(score / quizQuestions.length * 100);
             const passed = percentage >= 70;
 
-            // Débloquer l'attestation si réussi
+            const submitBtn = document.getElementById('quiz12-submit');
+            if (submitBtn) submitBtn.style.display = 'none';
+
             if (passed) {
+                quizQuestions.forEach((q, i) => {
+                    const chosen = quizState.answers[i];
+                    document.querySelectorAll(`#qopts12-${i} button`).forEach((btn, j) => {
+                        btn.style.pointerEvents = 'none'; btn.onmouseover = null; btn.onmouseout = null;
+                        if (j === q.correct) { btn.style.borderColor = 'var(--neon-green)'; btn.style.background = 'rgba(0,255,136,0.2)'; }
+                        else if (j === chosen && j !== q.correct) { btn.style.borderColor = 'var(--neon-pink)'; btn.style.background = 'rgba(255,51,102,0.2)'; }
+                    });
+                });
                 unlockCertificate(percentage);
+            } else {
+                document.querySelectorAll('[id^="qopts12-"] button').forEach(btn => { btn.style.pointerEvents = 'none'; btn.onmouseover = null; btn.onmouseout = null; });
             }
 
-            const content = `
-                <div class="final-report" style="max-width:600px;">
-                    <div class="final-title" style="font-size:1.5em;">
-                        ${passed ? '🎓 Attestation Obtenue !' : '📚 Continuez à apprendre'}
-                    </div>
-
-                    <div class="final-stats" style="margin:30px 0;">
-                        <div class="final-stat">
-                            <div class="final-stat-value" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${quizState.score}/${quizQuestions.length}</div>
-                            <div class="final-stat-label">Bonnes réponses</div>
-                        </div>
-                        <div class="final-stat">
-                            <div class="final-stat-value" style="color:${passed ? 'var(--neon-green)' : 'var(--neon-pink)'};">${percentage}%</div>
-                            <div class="final-stat-label">Score</div>
-                        </div>
-                    </div>
-
-                    ${passed ? `
-                        <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:25px 0;">
-                            <p style="font-size:1.1em;margin-bottom:15px;">🎉 Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
-                            <p style="color:#aaa;">Votre attestation de réussite est maintenant disponible dans le dossier d'infiltration.</p>
-                        </div>
-
-                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="start-btn" onclick="goToFolderCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));">
-                                📂 Récupérer l'attestation
-                            </button>
-                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
-                                🔄 Rejouer
-                            </button>
-                        </div>
-                    ` : `
-                        <div style="background:rgba(255,51,102,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:25px 0;">
-                            <p style="font-size:1.1em;margin-bottom:15px;">Vous devez obtenir au moins <strong>70%</strong> pour valider le module.</p>
-                            <p style="color:#aaa;">Rejouez pour réviser les concepts et retentez le quiz !</p>
-                        </div>
-
-                        <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                            <button class="start-btn" onclick="startCertificationQuiz()" style="border-color:var(--neon-cyan);">
-                                🔄 Retenter le quiz
-                            </button>
-                            <button class="start-btn" onclick="location.reload()" style="opacity:0.7;font-size:0.9em;">
-                                🎮 Rejouer la mission
-                            </button>
-                        </div>
-                    `}
-                </div>
-            `;
-
-            showModal(content);
-            document.querySelector('.modal-close').style.display = 'none';
+            const resultEl = document.getElementById('quiz12-result');
+            if (resultEl) {
+                resultEl.innerHTML = passed ? `
+                    <div style="background:rgba(0,255,136,0.1);border:2px solid var(--neon-green);border-radius:15px;padding:25px;margin:20px 0;text-align:center;">
+                        <div style="font-size:2em;margin-bottom:10px;">🎓</div>
+                        <p style="color:var(--neon-green);font-size:1.2em;margin-bottom:10px;"><strong>${score}/${quizQuestions.length} — ${percentage}%</strong></p>
+                        <p style="margin-bottom:12px;">🎉 Félicitations ! Vous avez validé le micro-module <strong>"Impact Environnemental de l'IA"</strong>.</p>
+                        <button class="start-btn" onclick="goToFolderCertificate()" style="background:linear-gradient(135deg,rgba(0,255,136,0.3),rgba(0,212,255,0.3));margin-top:12px;">📂 Récupérer l'attestation</button>
+                    </div>` : `
+                    <div style="background:rgba(255,51,102,0.1);border:2px solid var(--neon-pink);border-radius:15px;padding:25px;margin:20px 0;text-align:center;">
+                        <div style="font-size:2em;margin-bottom:10px;">📚</div>
+                        <p style="color:var(--neon-pink);font-size:1.2em;margin-bottom:10px;"><strong>${score}/${quizQuestions.length} — ${percentage}%</strong></p>
+                        <p style="margin-bottom:12px;">Vous devez obtenir au moins <strong>70%</strong> pour valider.</p>
+                        <button class="start-btn" onclick="startCertificationQuiz()" style="border-color:var(--neon-cyan);margin-top:8px;">↺ Réessayer le quiz</button>
+                    </div>`;
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
 
         // ==================== ATTESTATION ====================
@@ -4337,7 +4411,6 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                         <div class="header">
                             <div class="logo">🌿🤖</div>
                             <div class="title">Attestation de Réussite</div>
-                            <div class="subtitle">Formation IA Responsable</div>
                         </div>
 
                         <div class="content">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEURONAUTE — Module 3 : Dans la tête d'un modèle</title>
+  <title>Module n°3 — Dans la tête d'un modèle</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
@@ -724,7 +724,120 @@
       box-shadow: 0 0 20px rgba(0,255,136,0.2);
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
-  </style>
+  
+    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    .domain-badge-std {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .module-official-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1em;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      text-align: center;
+      opacity: 1;
+    }
+    #title-screen .main-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
+      margin: 8px 0 4px !important;
+      text-transform: none !important;
+      letter-spacing: 2px !important;
+      background: linear-gradient(90deg,#ff6b6b,#ff8c00,#ff0080) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-shadow: 0 0 40px rgba(255,107,107,.5) !important;
+    }
+    .mission-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78em;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff6b6b;
+      opacity: 0.6;
+      margin: 2px 0 22px;
+      text-align: center;
+    }
+    #title-screen .start-btn {
+      border-color: #ff6b6b !important;
+      color: #ff6b6b !important;
+    }
+    #title-screen .start-btn::before {
+      background: linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent) !important;
+    }
+    #title-screen .start-btn:hover {
+      background: rgba(255,107,107,0.08) !important;
+      box-shadow: 0 0 30px rgba(255,107,107,0.5), inset 0 0 30px rgba(255,107,107,0.08) !important;
+    }
+    .activity-badge-std {
+      display: inline-block;
+      padding: 5px 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.06);
+      color: #aabbcc;
+      font-size: 0.82em;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .profexpress-std {
+      margin-top: 32px;
+      opacity: 0.82;
+      text-align: center;
+    }
+    .profexpress-std p {
+      color: #8899aa;
+      font-size: 0.8em;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+
+    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
+    .briefing-nav { border-right-color: rgba(255,107,107,0.2) !important; }
+    .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3) !important; border-radius: 2px; }
+    .back-link-sidebar {
+      background: rgba(255,107,107,0.05) !important;
+      border-color: rgba(255,107,107,0.3) !important;
+      color: #ff6b6b !important;
+    }
+    .back-link-sidebar:hover {
+      background: rgba(255,107,107,0.15) !important;
+      border-color: #ff6b6b !important;
+    }
+    .briefing-nav-item:hover { background: rgba(255,107,107,0.05) !important; }
+    .briefing-nav-item.active {
+      border-left-color: #ff6b6b !important;
+      background: rgba(255,107,107,0.1) !important;
+      color: #ff6b6b !important;
+    }
+    .nav-number { background: rgba(255,107,107,0.2) !important; }
+    .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
+
+    /* === STANDARDISATION FORMAT SIDEBAR === */
+    .briefing-nav { width: 280px !important; }
+    .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
+    .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .nav-number { font-family: 'Space Mono', monospace !important; font-size: 0.75em !important; padding: 2px 6px !important; border-radius: 3px !important; min-width: 24px !important; text-align: center !important; flex-shrink: 0 !important; }
+    .briefing-title { font-size: 1.3em !important; }
+    #title-screen .intro-text { max-width: 680px !important; margin: 0 auto 32px !important; text-align: center !important; line-height: 1.85 !important; color: #aabbcc !important; font-size: 1.05em !important; padding: 0 20px !important; background: none !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+
+    .briefing-progress{display:none!important}
+    .briefing-footer{display:none!important}
+</style>
 </head>
 <body>
 
@@ -734,25 +847,28 @@
     <a href="modules.html" class="back-link-title">
       <span>←</span> <span>Tous les modules</span>
     </a>
+
+    <div class="domain-badge-std" style="background:#ff6b6b22;border:1px solid #ff6b6b88;color:#ff6b6b;">Fondations IA - Module n°03</div>
     <div class="particles" id="particles"></div>
     <div class="title-logo">
       <img src="images/module3-neuronaut.png" alt="Neuronaute"
            style="height:120px;filter:drop-shadow(0 0 20px rgba(255,107,107,0.7)) drop-shadow(0 0 40px rgba(0,212,255,0.4))">
     </div>
-    <h1 class="main-title">NEURONAUTE</h1>
-    <p class="subtitle">Module 3 — Voyage au Cœur du Modèle</p>
+    <h1 class="main-title">Dans la tête du modèle</h1>
+    <p class="mission-label">NEURONAUTE</p>
     <p class="intro-text">
       Comment une IA lit-elle un texte, en comprend-elle le sens, et prédit-elle la suite ?
       Plonge <strong>à l'intérieur d'un modèle de langage</strong> pour explorer ses trois couches essentielles :
       tokenisation, embeddings et prédiction probabiliste.
     </p>
+    <div class="activity-badge-std">🧠 Exploration interactive</div>
     <button class="start-btn" onclick="startModule()">
       ⚡ Initier le voyage
     </button>
-    <div style="margin-top:40px;opacity:0.7;text-align:center">
-      <p style="color:#8899aa;font-size:0.85em;margin-bottom:8px">Une formation proposée par</p>
+    <div class="profexpress-std">
+      <p>Une formation proposée par</p>
       <a href="https://www.profexpress.com" target="_blank" rel="noopener">
-        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:30px;object-fit:contain">
+        <img src="images/logo-profexpress.png" alt="Prof Express" style="height:32px;object-fit:contain;display:block;margin:0 auto;">
       </a>
     </div>
   </div>
@@ -776,32 +892,34 @@
 
       <!-- Sidebar -->
       <nav class="briefing-nav">
-        <a href="modules.html" class="back-link-sidebar">← Tous les modules</a>
+        <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
+          <span class="back-arrow">←</span><span>Tous les modules</span>
+        </a>
 
         <div class="briefing-nav-item active" onclick="showLesson(0)" id="nav-0">
           <span class="nav-icon">🌐</span>
-          <span>Qu'est-ce qu'un LLM ?</span>
-          <span class="nav-number">1</span>
+          <span class="nav-number">01</span>
+          Qu'est-ce qu'un LLM ?
         </div>
         <div class="briefing-nav-item" onclick="showLesson(1)" id="nav-1">
           <span class="nav-icon">⚙️</span>
-          <span>La Tokenisation</span>
-          <span class="nav-number">2</span>
+          <span class="nav-number">02</span>
+          La Tokenisation
         </div>
         <div class="briefing-nav-item" onclick="showLesson(2)" id="nav-2">
           <span class="nav-icon">🌌</span>
-          <span>Les Embeddings</span>
-          <span class="nav-number">3</span>
+          <span class="nav-number">03</span>
+          Les Embeddings
         </div>
         <div class="briefing-nav-item" onclick="showLesson(3)" id="nav-3">
           <span class="nav-icon">🔍</span>
-          <span>Le Mécanisme d'Attention</span>
-          <span class="nav-number">4</span>
+          <span class="nav-number">04</span>
+          Le Mécanisme d'Attention
         </div>
         <div class="briefing-nav-item" onclick="showLesson(4)" id="nav-4">
           <span class="nav-icon">🎲</span>
-          <span>La Prédiction</span>
-          <span class="nav-number">5</span>
+          <span class="nav-number">05</span>
+          La Prédiction
         </div>
 
         <!-- Séparation : sections spéciales -->
@@ -817,11 +935,10 @@
             <span class="nav-icon">📜</span>
             <span>Quiz de certification</span>
           </div>
-          <div class="briefing-nav-item" id="cert-nav-item"
-               onclick="showCertInBriefing()"
-               style="display:none">
+          <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
             <span class="nav-icon">🔒</span>
-            <span>Attestation de réussite</span>
+            <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
+            Attestation de réussite
           </div>
         </div>
       </nav>
@@ -833,11 +950,6 @@
     </div>
 
     <!-- Footer -->
-    <div class="briefing-footer">
-      <button class="nav-btn" id="btn-prev" onclick="prevLesson()" disabled>← Précédent</button>
-      <span id="footer-hint" style="color:#8899aa;font-size:0.85em;font-family:'Space Mono',monospace"></span>
-      <button class="nav-btn next" id="btn-next" onclick="nextLesson()">Suivant →</button>
-    </div>
   </div>
 
 
@@ -1343,11 +1455,11 @@
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Mission';
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = () => showLesson(4);
       const btnNext = document.getElementById('btn-next');
-      btnNext.textContent = '⚡ Lancer l\'exploration →';
-      btnNext.onclick = launchGame;
+      if (btnNext) btnNext.textContent = '⚡ Lancer l\'exploration →';
+      if (btnNext) btnNext.onclick = launchGame;
       document.getElementById('footer-hint').textContent = '3 zones interactives t\'attendent !';
     }
 
@@ -1373,15 +1485,15 @@
       document.getElementById('progress-fill').style.width = pct + '%';
       document.getElementById('progress-text').textContent = `Section ${idx + 1}/${totalLessons}`;
 
-      document.getElementById('btn-prev').disabled = idx === 0;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = idx === 0; }
       document.getElementById('btn-prev').onclick = prevLesson;
       const btnNext = document.getElementById('btn-next');
       if (idx === totalLessons - 1) {
-        btnNext.textContent = '🚀 Exploration →';
-        btnNext.onclick = () => showLesson(5);
+        if (btnNext) btnNext.textContent = '🚀 Exploration →';
+        if (btnNext) btnNext.onclick = () => showLesson(5);
       } else {
-        btnNext.textContent = 'Suivant →';
-        btnNext.onclick = nextLesson;
+        if (btnNext) btnNext.textContent = 'Suivant →';
+        if (btnNext) btnNext.onclick = nextLesson;
       }
 
       const hints = [
@@ -1435,10 +1547,13 @@
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Quiz de certification';
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = () => showLesson(5);
       document.getElementById('btn-next').textContent = '✅ Valider';
       document.getElementById('btn-next').onclick = submitQuiz;
+      // Disable until all questions answered
+      const btnNext = document.getElementById('btn-next');
+      if (btnNext) { btnNext.disabled = true; btnNext.style.opacity = '0.5'; btnNext.style.cursor = 'not-allowed'; }
       document.getElementById('footer-hint').textContent = 'Score minimum : 70%';
 
       document.getElementById('briefing-content').innerHTML = renderQuizHTML();
@@ -1473,7 +1588,7 @@
       });
       html += `
         <div style="text-align:center;margin:25px 0 10px">
-          <button onclick="submitQuiz()" class="zone-btn" style="max-width:380px;margin:0 auto">
+          <button id="quiz-inline-submit" onclick="submitQuiz()" class="zone-btn" style="max-width:380px;margin:0 auto;opacity:0.5;cursor:not-allowed;" disabled>
             ✅ Valider mes réponses
           </button>
         </div>
@@ -1483,62 +1598,78 @@
     }
 
     function answerQuiz(qIdx, oIdx) {
-      if (quizAnswers.hasOwnProperty(qIdx)) return;
       quizAnswers[qIdx] = oIdx;
       document.querySelectorAll(`[id^="qq-opt-${qIdx}-"]`).forEach(el => {
         el.classList.remove('selected');
         const j = parseInt(el.id.split('-').pop());
         if (j === oIdx) el.classList.add('selected');
       });
+      // Enable submit buttons when all questions answered
+      if (Object.keys(quizAnswers).length === quizQuestions.length) {
+        const btn = document.getElementById('btn-next');
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+        const btnInline = document.getElementById('quiz-inline-submit');
+        if (btnInline) { btnInline.disabled = false; btnInline.style.opacity = '1'; btnInline.style.cursor = 'pointer'; }
+      }
     }
 
     function submitQuiz() {
-      if (Object.keys(quizAnswers).length < quizQuestions.length) {
-        toast('⚠️ Réponds à toutes les questions avant de valider !', 3000);
-        return;
-      }
+      // Calculate score first (no DOM changes yet)
       let score = 0;
-      quizQuestions.forEach((q, i) => {
-        const userAns = quizAnswers[i];
-        document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
-          el.classList.remove('selected');
-          el.style.pointerEvents = 'none';
-          const j = parseInt(el.id.split('-').pop());
-          if (j === q.correct) el.classList.add('correct');
-          else if (j === userAns) el.classList.add('wrong');
-        });
-        document.getElementById(`qq-explain-${i}`).classList.add('show');
-        if (userAns === q.correct) score++;
-      });
-
+      quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
       const pct = Math.round(score / quizQuestions.length * 100);
       finalQuizScore = pct;
       const success = pct >= 70;
 
-      document.getElementById('quiz-result').innerHTML = `
+      if (success) {
+        // Show highlights + explanations only on success
+        quizQuestions.forEach((q, i) => {
+          const userAns = quizAnswers[i];
+          document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
+            el.classList.remove('selected');
+            el.style.pointerEvents = 'none';
+            const j = parseInt(el.id.split('-').pop());
+            if (j === q.correct) el.classList.add('correct');
+            else if (j === userAns) el.classList.add('wrong');
+          });
+          document.getElementById(`qq-explain-${i}`).classList.add('show');
+        });
+      } else {
+        // Failure: lock options without revealing answers
+        document.querySelectorAll(`[id^="qq-opt-"]`).forEach(el => {
+          el.style.pointerEvents = 'none';
+        });
+      }
+
+      document.getElementById('quiz-result').innerHTML = success ? `
         <div style="text-align:center;padding:30px;margin:20px 0;
-             background:${success ? 'rgba(0,255,136,0.08)' : 'rgba(255,204,0,0.08)'};
-             border:1px solid ${success ? 'rgba(0,255,136,0.3)' : 'rgba(255,204,0,0.3)'};
-             border-radius:12px">
-          <div style="font-size:2.5em;margin-bottom:12px">${success ? '🎉' : '📚'}</div>
-          <h3 style="font-family:'Space Mono',monospace;color:${success ? 'var(--neon-green)' : '#ffcc00'};margin-bottom:10px">
-            ${success ? 'Mission accomplie !' : 'Score insuffisant'}
-          </h3>
+             background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">🎉</div>
+          <h3 style="font-family:'Space Mono',monospace;color:var(--neon-green);margin-bottom:10px">Mission accomplie !</h3>
           <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
-            ${score}/${quizQuestions.length} — <span style="color:${success ? 'var(--neon-green)' : '#ffcc00'}">${pct}%</span>
+            ${score}/${quizQuestions.length} — <span style="color:var(--neon-green)">${pct}%</span>
           </div>
           <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
-            ${success
-              ? 'Tu maîtrises les fondamentaux du fonctionnement d\'un LLM. Ton attestation est débloquée !'
-              : 'Il faut au moins 70% pour valider. Relis les cours et réessaie.'}
+            Tu maîtrises les fondamentaux du fonctionnement d'un LLM. Ton attestation est débloquée !
           </p>
-          ${success
-            ? `<button class="zone-btn" style="max-width:340px;margin:0 auto;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="unlockCertificate()">
-                🎓 Accéder à mon attestation →
-               </button>`
-            : `<button class="zone-btn" style="max-width:340px;margin:0 auto" onclick="showQuizInBriefing()">
-                🔄 Réessayer le quiz
-               </button>`}
+          <button class="zone-btn" style="max-width:340px;margin:0 auto;border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.12)" onclick="unlockCertificate()">
+            🎓 Accéder à mon attestation →
+          </button>
+        </div>
+      ` : `
+        <div style="text-align:center;padding:30px;margin:20px 0;
+             background:rgba(255,204,0,0.08);border:1px solid rgba(255,204,0,0.3);border-radius:12px">
+          <div style="font-size:2.5em;margin-bottom:12px">📚</div>
+          <h3 style="font-family:'Space Mono',monospace;color:#ffcc00;margin-bottom:10px">Score insuffisant</h3>
+          <div style="font-size:1.8em;font-family:'Space Mono',monospace;color:var(--text);margin-bottom:12px">
+            ${score}/${quizQuestions.length} — <span style="color:#ffcc00">${pct}%</span>
+          </div>
+          <p style="color:#aabbcc;line-height:1.7;max-width:500px;margin:0 auto 20px">
+            Il faut au moins 70% pour valider. Réessaie !
+          </p>
+          <button class="zone-btn" style="max-width:340px;margin:0 auto" onclick="showQuizInBriefing()">
+            🔄 Réessayer le quiz
+          </button>
         </div>
       `;
 
@@ -1548,27 +1679,32 @@
 
     function unlockCertificate() {
       certificateUnlocked = true;
-      const cNav = document.getElementById('cert-nav-item');
-      if (cNav) {
-        cNav.style.display = '';
-        cNav.querySelector('.nav-icon').textContent = '🎓';
+      const navItem = document.getElementById('certificate-nav-item');
+      if (navItem) {
+        navItem.style.opacity = '1';
+        navItem.style.cursor = 'pointer';
+        navItem.style.background = '';
+        const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+        const num = navItem.querySelector('.nav-number');
+        if (num) { num.style.background = 'rgba(0,255,136,0.2)'; num.style.color = 'var(--neon-green)'; num.textContent = '✓'; }
       }
-      showCertInBriefing();
+      showCertificateInFolder();
     }
+    function showCertificateInFolder() { showCertInBriefing(); }
 
     // ==================== ATTESTATION DANS LE BRIEFING ====================
     function showCertInBriefing() {
       if (!certificateUnlocked) return;
       currentLesson = 'cert';
       document.querySelectorAll('.briefing-nav-item').forEach(el => el.classList.remove('active'));
-      const cNav = document.getElementById('cert-nav-item');
+      const cNav = document.getElementById('certificate-nav-item');
       if (cNav) cNav.classList.add('active');
 
       document.getElementById('progress-fill').style.width = '100%';
       document.getElementById('progress-text').textContent = 'Attestation';
       document.getElementById('btn-next').textContent = '📥 Télécharger';
       document.getElementById('btn-next').onclick = downloadCertificate;
-      document.getElementById('btn-prev').disabled = false;
+      { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = false; }
       document.getElementById('btn-prev').onclick = showQuizInBriefing;
       document.getElementById('footer-hint').textContent = 'Ctrl+P → Enregistrer en PDF';
 
