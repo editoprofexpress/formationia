@@ -1241,10 +1241,8 @@ const dossiers = [
       {icon:'📞',name:'Vérification d\'identité',desc:'Contacter le PDG par un canal connu',result:'Rappel du PDG sur son numéro professionnel habituel : <strong style="color:var(--neon-green)">il ne sait pas de quoi on parle</strong>, il n\'a envoyé aucun message vocal. Il est bien à l\'étranger mais n\'a fait aucune demande de virement. Arnaque confirmée.',suspicious:true},
     ],
     answer:'fake',
-    explanation:'Arnaque au "faux PDG" utilisant un clone vocal IA. Les artefacts spectraux, l\'absence de prosodie naturelle, et la confirmation directe avec le vrai PDG le démontrent. Ces attaques ciblent des PME et causent des millions d\'euros de pertes chaque année en France.',
-  },
   {
-    id:4,
+    id:3,
     type:'📹',
     typeLabel:'Vidéo',
     title:'Interview NASA — Mission PUNCH',
@@ -1265,7 +1263,7 @@ const dossiers = [
     explanation:'Contenu authentique. La chercheuse est une scientifique NASA identifiable et vérifiable, la vidéo provient du SVS officiel en domaine public, et aucun artefact IA n\'est détecté. Face à une source institutionnelle établie avec identité vérifiable, le niveau de confiance est très élevé.',
   },
   {
-    id:5,
+    id:4,
     type:'🖼️',
     typeLabel:'Image',
     title:'Marche républicaine — Paris, janvier 2015',
@@ -1286,7 +1284,7 @@ const dossiers = [
     explanation:'Photographie authentique largement documentée. La présence dans de nombreuses archives de presse accréditées, la géolocalisation confirmée et l\'absence totale d\'artefacts IA en font un contenu fiable. C\'est l\'une des manifestations les plus photographiées de l\'histoire récente de France.',
   },
   {
-    id:6,
+    id:5,
     type:'📰',
     typeLabel:'Article',
     title:'Déclaration du Prix Nobel — Nanoparticules',
@@ -1316,7 +1314,7 @@ const dossiers = [
     explanation:'Article de désinformation entièrement généré par IA. La citation est inventée, le site est un clone frauduleux créé récemment, et l\'analyse textuelle révèle une rédaction IA à 94%. Le concept cité ("nanoparticules d\'IA dans l\'eau") est scientifiquement absurde.',
   },
   {
-    id:7,
+    id:6,
     type:'📰',
     typeLabel:'Article',
     title:'Hugo Duminil-Copin — Médaille Fields 2022',
@@ -1562,7 +1560,7 @@ function showSummary(){
   document.getElementById('summary-score-text').textContent = gameState.score+'/'+dossiers.length;
   document.getElementById('summary-score-text').style.color = gameState.score>=4?'var(--neon-green)':'var(--neon-pink)';
   let msg = '';
-  if(gameState.score===7) msg = '🏆 Score parfait ! Vous êtes un expert de la détection de deepfakes.';
+  if(gameState.score===6) msg = '🏆 Score parfait ! Vous êtes un expert de la détection de deepfakes.';
   else if(gameState.score>=4) msg = '✅ Bon score ! Vous avez les compétences de base pour détecter les deepfakes.';
   else msg = '⚠️ Entraînez-vous encore. Relisez le briefing et réessayez.';
   document.getElementById('summary-msg').textContent = msg;
