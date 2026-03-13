@@ -745,8 +745,7 @@
         <span class="nav-number">7</span>
       </div>
       <div class="briefing-nav-item" id="nav-7" onclick="goToGame()"
-        style="opacity:0.4;cursor:not-allowed;margin-top:10px;border-top:1px solid rgba(255,230,109,0.15);padding-top:18px"
-        id="game-nav-item">
+        style="margin-top:10px;border-top:1px solid rgba(255,230,109,0.15);padding-top:18px">
         <span class="nav-icon">🔍</span>
         <span>Salle d'analyse</span>
         <span class="nav-number" id="game-nav-num">▶</span>
@@ -1131,12 +1130,6 @@ function showLesson(idx){
   }
   document.getElementById('nav-'+idx)?.classList.add('active');
 
-  // Débloquer accès jeu si toutes sections vues
-  if(visitedLessons.size >= TOTAL_LESSONS){
-    const gn = document.getElementById('nav-7');
-    if(gn){ gn.style.opacity='1'; gn.style.cursor='pointer'; }
-  }
-
   // Progress bar
   const pct = Math.round((idx+1)/TOTAL_LESSONS*100);
   document.getElementById('progress-fill').style.width = pct+'%';
@@ -1166,10 +1159,6 @@ function prevLesson(){
 }
 
 function goToGame(){
-  if(visitedLessons.size < TOTAL_LESSONS){
-    toast('📖 Lisez d\'abord toutes les sections de formation !');
-    return;
-  }
   document.getElementById('briefing-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
   initGame();
@@ -1663,7 +1652,6 @@ function selectOpt(qIdx, oIdx){
   // Afficher bouton soumettre si tout répondu
   if(answered === quizQuestions.length){
     document.getElementById('quiz-submit-btn').style.display='flex';
-    toast('✅ Toutes les questions répondues — validez vos réponses !');
   }
 }
 
@@ -1705,6 +1693,7 @@ function submitQuiz(){
         :'Il faut au moins 70 % pour valider. Relisez le briefing et retentez le quiz.'
       }</p>
       ${pct>=70?`<button class="briefing-btn primary" onclick="showCertificate()" style="margin-top:18px;font-size:1em;padding:14px 35px">🎓 Obtenir mon attestation →</button>`:''}
+      <button class="briefing-btn" onclick="initQuiz()" style="margin-top:12px;font-size:0.95em;padding:12px 28px">🔄 Retenter le quiz</button>
     </div>`;
 
   if(pct>=70) unlockCertificate();
