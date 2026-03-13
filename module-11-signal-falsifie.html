@@ -433,6 +433,44 @@
       padding:10px;font-family:'Space Mono',monospace;font-size:0.7em;
       color:rgba(255,230,109,0.7);
     }
+    /* ---- Types de médias spécifiques ---- */
+    .media-video{aspect-ratio:16/9;padding:0;background:#000;border:none}
+    .media-video iframe{width:100%;height:100%;border-radius:10px;display:block}
+    .media-img-box{
+      border-radius:10px;overflow:hidden;border:1px solid rgba(255,230,109,0.2);
+      max-height:200px;display:flex;align-items:center;justify-content:center;background:#000;
+    }
+    .media-img-box img{width:100%;height:200px;object-fit:cover;display:block}
+    .media-audio-box{
+      background:rgba(0,0,0,0.4);border-radius:10px;padding:16px;
+      display:flex;flex-direction:column;align-items:center;gap:10px;
+      border:1px dashed rgba(0,212,255,0.3);
+    }
+    .media-audio-box .audio-icon{font-size:2.5em}
+    .media-audio-box audio{width:100%;accent-color:var(--neon-blue)}
+    .media-article-card{
+      border-radius:10px;overflow:hidden;
+      border:1px solid rgba(255,255,255,0.1);
+      display:flex;flex-direction:column;
+    }
+    .article-site-bar{
+      padding:7px 12px;font-family:'Space Mono',monospace;font-size:0.72em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .article-site-bar.suspicious{background:rgba(255,0,128,0.12);color:var(--neon-pink)}
+    .article-site-bar.clear{background:rgba(0,255,136,0.08);color:var(--neon-green)}
+    .article-body{padding:12px;background:rgba(255,255,255,0.03);display:flex;flex-direction:column;gap:8px}
+    .article-headline{font-weight:700;font-size:0.9em;line-height:1.4;color:var(--text)}
+    .article-byline{font-size:0.75em;color:var(--muted);font-family:'Space Mono',monospace}
+    .article-excerpt{font-size:0.82em;line-height:1.6;color:#b0c4de;border-top:1px solid rgba(255,255,255,0.07);padding-top:8px;user-select:text}
+    .article-link{
+      display:inline-block;margin-top:4px;padding:5px 10px;border-radius:6px;
+      background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);
+      color:var(--neon-blue);font-size:0.78em;text-decoration:none;
+      font-family:'Space Mono',monospace;transition:background .2s;
+    }
+    .article-link:hover{background:rgba(0,212,255,0.2)}
+
     .media-description{
       font-size:0.88em;line-height:1.7;color:#b0c4de;
       background:rgba(255,255,255,0.03);border-radius:8px;padding:12px;
@@ -1256,47 +1294,50 @@ const dossiers = [
     id:1,
     type:'📹',
     typeLabel:'Vidéo',
-    title:'Allocution du Ministre',
-    description:'Une vidéo circule sur les réseaux sociaux : le ministre de l\'Économie y annonce la suppression des retraites pour les moins de 50 ans à partir du 1er janvier. Durée : 45 secondes. La vidéo est de bonne qualité, tournée dans ce qui ressemble à un bureau officiel.',
+    title:'Présentation d\'une fondation internationale',
+    media:{type:'youtube',src:'qaQN_EMHBJA'},
+    description:'Une vidéo de 35 secondes, très professionnelle et en anglais, présente Claire Henderson en tant que "Research Director" de la "North Atlantic Digital Literacy Foundation". Elle y annonce la publication d\'un rapport annuel sur la confiance dans les médias. La vidéo circule sur les réseaux assortie d\'un appel à "partager pour informer".',
     meta:[
-      {k:'Source',v:'Compte Twitter @InfosNation — 12 000 abonnés'},
-      {k:'Date',v:'Il y a 2 heures'},
-      {k:'Vues',v:'847 000'},
-      {k:'Vérification officielle',v:'Aucune confirmation du ministère'},
+      {k:'Source',v:'YouTube @NADLFoundation'},
+      {k:'Date',v:'Il y a 4 jours'},
+      {k:'Vues',v:'23 000'},
+      {k:'Fondation',v:'Introuvable dans les registres officiels'},
     ],
     tools:[
-      {icon:'🔬',name:'Analyse des pixels',desc:'Examiner les zones de transition',result:'Zone autour du cou et des oreilles : <strong style="color:var(--neon-pink)">halo lumineux détecté</strong>. Résolution du visage supérieure au reste du cadre (artifact de compositing). Cheveux aux tempes : flou artificiel caractéristique d\'un face-swap.',suspicious:true},
-      {icon:'👁️',name:'Analyse des yeux',desc:'Clignements et cohérence des reflets',result:'<strong style="color:var(--neon-pink)">Clignements : 0 en 45 secondes</strong> (norme humaine : 15-20/min). Reflets dans les pupilles incohérents entre l\'œil gauche et droit. Léger tremblement de la paupière droite toutes les 8 secondes : signature typique de GAN.',suspicious:true},
-      {icon:'🔍',name:'Vérification source',desc:'Recouper avec les sources officielles',result:'Le ministère de l\'Économie n\'a émis <strong>aucun communiqué</strong> sur ce sujet. Le compte Twitter @InfosNation a été créé il y a 3 jours. Aucun grand média ne reprend cette information. La video n\'est pas dans les archives officielles de la chaîne YouTube du ministère.',suspicious:true},
+      {icon:'🔬',name:'Analyse de la peau et du cadrage',desc:'Examiner la texture du visage et le rendu vidéo',result:'Lissage de peau <strong style="color:var(--neon-pink)">trop uniforme et artificiel</strong> — absence totale de pores ou d\'imperfections naturelles. Transition cou/arrière-plan légèrement floue par endroits. La qualité du rendu du visage est supérieure au reste de la scène, caractéristique d\'un avatar vidéo synthétique (HeyGen / Synthesia).',suspicious:true},
+      {icon:'👁️',name:'Analyse des yeux et clignements',desc:'Observer les micro-mouvements oculaires',result:'<strong style="color:var(--neon-pink)">Clignements anormalement réguliers</strong> : 1 clignement toutes les 6 secondes exactement (pattern mécanique). Les mouvements des yeux sont limités et répétitifs. L\'iris présente un reflet fixe qui ne varie pas malgré les légères variations de position de tête.',suspicious:true},
+      {icon:'🔍',name:'Vérification de la source',desc:'Retrouver la fondation mentionnée',result:'La "North Atlantic Digital Literacy Foundation" est <strong style="color:var(--neon-pink)">introuvable</strong> dans les registres d\'ONG, les bases de données d\'associations internationales ou LinkedIn. Le site web associé a été créé il y a 52 jours. "Claire Henderson" n\'apparaît dans aucun annuaire académique ou professionnel reconnu.',suspicious:true},
     ],
     answer:'fake',
-    explanation:'C\'est un deepfake. Les trois outils révèlent l\'absence de clignements (signature GAN), le halo de compositing autour du visage, et l\'absence totale de confirmation officielle. Le compte source très récent est aussi un signal d\'alarme.',
+    explanation:'Vidéo entièrement générée par IA (avatar vidéo de type HeyGen). Le lissage artificiel de la peau, les clignements mécaniques et l\'absence totale de traces de la fondation le confirment. Ce type de contenu peut servir à crédibiliser de faux organismes ou à diffuser de la désinformation avec une apparence professionnelle.',
   },
   {
     id:2,
     type:'🖼️',
     typeLabel:'Image',
-    title:'Photo de catastrophe',
-    description:'Une photographie choc montre une ville entière inondée. Des immeubles à moitié submergés, des gens sur les toits. La légende indique : "Catastrophe à Lyon, 50 000 personnes évacuées, situation hors de contrôle." Elle est partagée avec le hashtag #InondationLyon.',
+    title:'Cérémonie du Prix Nobel de Mathématiques',
+    media:{type:'image',src:'images/module11-nobel-maths.png'},
+    description:'Une image circule sur les réseaux sociaux montrant une cérémonie officielle de remise du "Prix Nobel de Mathématiques" à Stockholm. La légende indique qu\'un chercheur vient d\'être récompensé. L\'image est très réaliste et semble provenir d\'une grande cérémonie académique internationale.',
     meta:[
-      {k:'Source',v:'Post Instagram @AlerteMeteo_FR'},
+      {k:'Source',v:'@ScienceDaily_FR — Twitter/X'},
       {k:'Date',v:'Ce matin'},
-      {k:'Géolocalisation',v:'Absente'},
-      {k:'Résolution',v:'4096 x 2304 px (très haute)'},
+      {k:'Légende',v:'"Remise du Prix Nobel de Mathématiques à Stockholm"'},
+      {k:'Partages',v:'15 000'},
     ],
     tools:[
-      {icon:'🔎',name:'Recherche inversée',desc:'Retrouver la source originale de l\'image',result:'<strong style="color:var(--neon-pink)">Aucune correspondance trouvée</strong> sur TinEye ou Google Images. L\'image n\'apparaît dans aucune archive médiatique. La résolution extrêmement élevée (4K) est atypique pour une photo prise en urgence sur un smartphone.',suspicious:true},
-      {icon:'🏙️',name:'Analyse de l\'architecture',desc:'Identifier la ville sur l\'image',result:'Les bâtiments visibles ne correspondent à <strong style="color:var(--neon-pink)">aucun quartier lyonnais connu</strong>. Les enseignes de commerces sont illisibles ou inexistantes. L\'architecture mélange des styles incohérents (haussmannien + brutalisme + buildings modernes). Artefact détecté : reflet de l\'eau non physique sur 3 bâtiments.',suspicious:true},
-      {icon:'📡',name:'Vérification terrain',desc:'Croiser avec les médias locaux et météo',result:'<strong style="color:var(--neon-green)">Aucune alerte inondation</strong> en cours à Lyon selon Météo-France, les pompiers du Rhône, et la préfecture. Radio Lyon confirme : la ville est normale ce matin. Le compte Instagram @AlerteMeteo_FR ne figure pas dans la liste des comptes officiels reconnus.',suspicious:true},
+      {icon:'📚',name:'Vérification des faits',desc:'Le Prix Nobel de Mathématiques existe-t-il ?',result:'<strong style="color:var(--neon-pink)">Le Prix Nobel de Mathématiques n\'existe pas.</strong> Alfred Nobel n\'a jamais créé de Nobel en mathématiques. L\'équivalent reconnu est la <strong>Médaille Fields</strong> (décernée tous les 4 ans depuis 1936) et le <strong>Prix Abel</strong> (créé en 2003). Cette erreur factuelle de base est en elle-même un signal d\'alarme majeur.',suspicious:true},
+      {icon:'🔎',name:'Recherche d\'image inversée',desc:'Retrouver la source originale de l\'image',result:'<strong style="color:var(--neon-pink)">Aucune correspondance trouvée</strong> sur Google Images, TinEye, ni dans les archives AFP, Reuters ou Getty Images. L\'image n\'apparaît dans aucun média accrédité. Une cérémonie Nobel réelle générerait des centaines de photos d\'agence facilement retrouvables.',suspicious:true},
+      {icon:'🔬',name:'Analyse des artefacts IA',desc:'Détecter les incohérences visuelles',result:'<strong style="color:var(--neon-pink)">Artefacts IA détectés</strong> : les mains des personnages à l\'arrière-plan présentent des doigts en nombre incorrect ou déformés. Les inscriptions sur les panneaux officiels sont floues et illisibles (caractéristique des modèles génératifs). Frange lumineuse artificielle autour de certaines silhouettes.',suspicious:true},
     ],
     answer:'fake',
-    explanation:'Image entièrement synthétique générée par IA. L\'architecture irréelle, l\'absence de résultat en recherche inversée, et le démenti des autorités locales le confirment. Ce type d\'image est conçu pour provoquer la panique et se propager rapidement.',
+    explanation:'Double fake : l\'image est générée par IA ET le "Prix Nobel de Mathématiques" n\'existe tout simplement pas. C\'est un cas typique où une vérification factuelle de base (un dictionnaire suffit !) permet de détecter la désinformation, avant même d\'analyser l\'image techniquement.',
   },
   {
     id:3,
     type:'🎤',
     typeLabel:'Audio',
     title:'Message vocal du PDG',
+    media:{type:'audio',src:'audio/audio-pdg-marc.mp3'},
     description:'Une entreprise reçoit un message vocal urgent de son PDG parti en déplacement à l\'étranger. Il demande à la comptable de réaliser un virement exceptionnel de 85 000 € avant 18h, pour finaliser une acquisition confidentielle. "Ne passez pas par les canaux habituels, c\'est trop urgent."',
     meta:[
       {k:'Canal',v:'WhatsApp (numéro inconnu du PDG)'},
@@ -1310,33 +1351,63 @@ const dossiers = [
       {icon:'📞',name:'Vérification d\'identité',desc:'Contacter le PDG par un canal connu',result:'Rappel du PDG sur son numéro professionnel habituel : <strong style="color:var(--neon-green)">il ne sait pas de quoi on parle</strong>, il n\'a envoyé aucun message vocal. Il est bien à l\'étranger mais n\'a fait aucune demande de virement. Arnaque confirmée.',suspicious:true},
     ],
     answer:'fake',
-    explanation:'Arnaque au "faux PDG" utilisant un clone vocal IA. Les artefacts spectraux, l\'absence de prosodie naturelle, et la confirmation directe avec le vrai PDG le démontrent. Ces attaques ciblent des PME et causent des millions d\'euros de pertes chaque année en France.',
+  {
+    id:3,
+    type:'📹',
+    typeLabel:'Vidéo',
+    title:'Interview NASA — Mission PUNCH',
+    media:{type:'youtube',src:'TPWA6-E54Qg'},
+    description:'Une vidéo institutionnelle de la NASA présente le Dr Nicholeen Viall, astrophysicienne au Goddard Space Flight Center, qui explique les objectifs de la mission PUNCH (Polarimeter to UNify the Corona and Heliosphere). La vidéo provient du SVS — Scientific Visualization Studio de la NASA.',
+    meta:[
+      {k:'Source',v:'NASA Goddard / SVS (Scientific Visualization Studio)'},
+      {k:'Référence',v:'SVS14783'},
+      {k:'Chercheuse',v:'Dr. Nicholeen Viall — NASA Goddard'},
+      {k:'Licence',v:'Domaine public (NASA)'},
+    ],
+    tools:[
+      {icon:'🔬',name:'Analyse visuelle',desc:'Examiner la qualité et le rendu vidéo',result:'<strong style="color:var(--neon-green)">Aucun artefact détecté.</strong> Grain naturel de la peau, mouvements variés, respiration visible, légères imperfections cutanées cohérentes avec une vraie personne filmée. La profondeur de champ correspond à une caméra professionnelle réelle.',suspicious:false},
+      {icon:'👁️',name:'Analyse des clignements',desc:'Observer les micro-mouvements naturels',result:'<strong style="color:var(--neon-green)">Clignements naturels et irréguliers</strong> : fréquence variable, durée variable, micro-saccades oculaires présentes entre les phrases. Les reflets dans les yeux sont cohérents. Aucun signe de synthèse IA.',suspicious:false},
+      {icon:'🔍',name:'Vérification de la source',desc:'Confirmer l\'identité et l\'organisation',result:'Le Dr Nicholeen Viall est <strong style="color:var(--neon-green)">confirmée</strong> sur le site officiel NASA Goddard (science.gsfc.nasa.gov). Elle est effectivement mission scientist pour PUNCH. La vidéo est référencée dans le SVS officiel. La NASA est une source institutionnelle de premier ordre.',suspicious:false},
+    ],
+    answer:'authentic',
+    explanation:'Contenu authentique. La chercheuse est une scientifique NASA identifiable et vérifiable, la vidéo provient du SVS officiel en domaine public, et aucun artefact IA n\'est détecté. Face à une source institutionnelle établie avec identité vérifiable, le niveau de confiance est très élevé.',
   },
   {
     id:4,
-    type:'📹',
-    typeLabel:'Vidéo',
-    title:'Interview du climatologue',
-    description:'Une vidéo de 3 minutes présente une interview du professeur Renaud, climatologue à l\'INRAE. Il explique les mécanismes des vagues de chaleur amplifiées par le changement climatique, dans un langage accessible. La vidéo est issue de la chaîne YouTube officielle de l\'INRAE.',
+    type:'🖼️',
+    typeLabel:'Image',
+    title:'Marche républicaine — Paris, janvier 2015',
+    media:{type:'image',src:'images/module11-charlie.jpg'},
+    description:'Une photographie montre une grande marche à Paris. Des centaines de milliers de personnes défilent dans les rues, des banderoles sont visibles, des personnalités en première ligne. L\'image est attribuée à une grande agence de presse internationale.',
     meta:[
-      {k:'Source',v:'YouTube / INRAE officiel (590 000 abonnés)'},
-      {k:'Date',v:'Publiée il y a 3 semaines'},
-      {k:'Vues',v:'42 000'},
-      {k:'Commentaires',v:'890, modérés par l\'INRAE'},
+      {k:'Source',v:'Reuters / archives de presse'},
+      {k:'Événement',v:'Marche républicaine du 11 janvier 2015'},
+      {k:'Lieu',v:'Paris, France'},
+      {k:'Crédit',v:'© Reuters / Christophe Ena'},
     ],
     tools:[
-      {icon:'🔬',name:'Analyse des pixels',desc:'Examiner les zones de transition',result:'<strong style="color:var(--neon-green)">Aucun artefact détecté.</strong> La texture de peau présente un grain naturel homogène. Les transitions cheveux/peau sont nettes et cohérentes. La résolution est uniforme sur tout le cadre. Pas de halo de compositing autour du visage.',suspicious:false},
-      {icon:'👁️',name:'Analyse des yeux',desc:'Clignements et cohérence des reflets',result:'<strong style="color:var(--neon-green)">Clignements normaux</strong> : 14 en 3 minutes (≈ 4,7/min, légèrement inférieur à la normale car il lit des notes, cohérent). Les reflets lumineux sont identiques dans les deux yeux. Micro-mouvements oculaires naturels présents.',suspicious:false},
-      {icon:'🔍',name:'Vérification source',desc:'Confirmer l\'authenticité de la source',result:'La chaîne YouTube INRAE est <strong style="color:var(--neon-green)">vérifiée avec la coche officielle</strong>. Le Pr. Renaud figure bien dans l\'annuaire des chercheurs INRAE. La vidéo est référencée dans les actualités du site inrae.fr. D\'autres interviews de ce chercheur sont disponibles et cohérentes.',suspicious:false},
+      {icon:'🔎',name:'Recherche d\'image inversée',desc:'Retrouver la source originale',result:'<strong style="color:var(--neon-green)">Image retrouvée</strong> dans de nombreuses archives médiatiques : Le Monde, BBC, The Guardian, Reuters, AP. Plusieurs versions de la même scène existent avec des angles légèrement différents (prises par plusieurs photographes). Aucune version antérieure identique (pas de recyclage d\'archive).',suspicious:false},
+      {icon:'🏙️',name:'Vérification géographique',desc:'Confirmer le lieu de la prise de vue',result:'<strong style="color:var(--neon-green)">Éléments parisiens confirmés</strong> : les monuments, la largeur des boulevards et l\'architecture haussmannienne sont cohérents avec Paris. Les éléments visibles correspondent aux archives de la marche du 11 janvier 2015, documentée simultanément par des dizaines d\'agences.',suspicious:false},
+      {icon:'🔬',name:'Analyse de cohérence visuelle',desc:'Vérifier la physique et les détails',result:'<strong style="color:var(--neon-green)">Aucun artefact IA</strong> : la foule dense présente des visages flous de manière cohérente (profondeur de champ réelle). Les ombres sont uniformes et naturelles. Le grain photographique est cohérent avec du matériel de presse professionnel. Aucune anomalie de mains, texte ou éclairage.',suspicious:false},
     ],
     answer:'authentic',
-    explanation:'Ce contenu est authentique. La chaîne YouTube officielle et vérifiée, l\'absence de tout artefact visuel, des clignements normaux et une source croisée avec le site institutionnel le confirment. Tous les signaux pointent vers un contenu légitime.',
+    explanation:'Photographie authentique largement documentée. La présence dans de nombreuses archives de presse accréditées, la géolocalisation confirmée et l\'absence totale d\'artefacts IA en font un contenu fiable. C\'est l\'une des manifestations les plus photographiées de l\'histoire récente de France.',
   },
   {
     id:5,
     type:'📰',
     typeLabel:'Article',
-    title:'Déclaration du Prix Nobel',
+    title:'Déclaration du Prix Nobel — Nanoparticules',
+    media:{
+      type:'article',
+      site:'ScienceAlert-Today.com',
+      suspicious:true,
+      headline:'EXCLUSIF — Ce Prix Nobel révèle ce que l\'on vous cache sur votre eau du robinet',
+      author:'Rédaction Science',
+      date:'Hier, 14h37',
+      excerpt:'Le Professeur Haruto Sato, Prix Nobel de Chimie 2022, a accordé un entretien exclusif à notre rédaction. Ses révélations sur les nanoparticules d\'IA présentes dans l\'eau potable européenne sont bouleversantes. "Les gouvernements savent depuis 2019 que ces particules modifient subtilement le comportement cognitif", aurait-il déclaré...',
+      url:null,
+    },
     description:'Un article largement partagé cite le professeur Haruto Sato, Prix Nobel de chimie 2022, qui affirme : "L\'eau du robinet en Europe contient des nanoparticules d\'IA capables de modifier le comportement humain." L\'article est publié sur le site ScienceAlert-Today.com.',
     meta:[
       {k:'Site',v:'ScienceAlert-Today.com'},
@@ -1347,30 +1418,40 @@ const dossiers = [
     tools:[
       {icon:'👤',name:'Vérification de l\'auteur',desc:'Le prix Nobel a-t-il réellement dit ça ?',result:'<strong style="color:var(--neon-pink)">Le professeur Sato n\'a fait aucune déclaration de ce type.</strong> Son profil sur le site de l\'Université de Tokyo ne mentionne pas de travaux sur ce sujet. L\'AFP a publié un démenti : il ne se souvient pas de cet "entretien". Le concept de "nanoparticules d\'IA" n\'existe pas scientifiquement.',suspicious:true},
       {icon:'🌐',name:'Analyse du site',desc:'Vérifier la crédibilité de la source',result:'ScienceAlert-Today.com est <strong style="color:var(--neon-pink)">enregistré il y a 47 jours</strong>. Aucune équipe éditoriale identifiable. Le design copie celui de ScienceAlert.com (site légitime australien). Aucun article sur ce site n\'est repris par des médias reconnus. Whois : domaine enregistré anonymement.',suspicious:true},
-      {icon:'📝',name:'Analyse du texte',desc:'Tester si le texte est généré par IA',result:'<strong style="color:var(--neon-pink)">Score GPTZero : 94 % de probabilité IA</strong>. Le texte présente une "perplexité" très basse (structure trop prévisible) et une "burstiness" nulle (aucune variation de longueur de phrases). Le champ lexical mélange jargon scientifique et affirmations non falsifiables — technique rhétorique typique de la désinformation.',suspicious:true},
+      {icon:'📝',name:'Analyse du texte',desc:'Tester si le texte est généré par IA',result:'<strong style="color:var(--neon-pink)">Score GPTZero : 94 % de probabilité IA</strong>. Le texte présente une "perplexité" très basse (structure trop prévisible) et une "burstiness" nulle (aucune variation de longueur de phrases). Jargon pseudo-scientifique mélangé à des affirmations non falsifiables — technique rhétorique typique de la désinformation.',suspicious:true},
     ],
     answer:'fake',
     explanation:'Article de désinformation entièrement généré par IA. La citation est inventée, le site est un clone frauduleux créé récemment, et l\'analyse textuelle révèle une rédaction IA à 94%. Le concept cité ("nanoparticules d\'IA dans l\'eau") est scientifiquement absurde.',
   },
   {
     id:6,
-    type:'🖼️',
-    typeLabel:'Image',
-    title:'Manifestation place de la République',
-    description:'Une photographie montre une grande manifestation place de la République à Paris. Des milliers de personnes, banderoles syndicales visibles, présence de CRS en arrière-plan. La photo est diffusée par l\'AFP avec légende géolocalisée.',
+    type:'📰',
+    typeLabel:'Article',
+    title:'Hugo Duminil-Copin — Médaille Fields 2022',
+    media:{
+      type:'article',
+      site:'CNRS Le Journal',
+      suspicious:false,
+      headline:'Hugo Duminil-Copin, lauréat de la médaille Fields',
+      author:'CNRS Le Journal',
+      date:'5 juillet 2022',
+      excerpt:'Le mathématicien Hugo Duminil-Copin, professeur à l\'université de Genève et à l\'IHES, a reçu la médaille Fields lors du Congrès International des Mathématiciens à Helsinki. Cette récompense, souvent surnommée le "Nobel des mathématiques", est décernée tous les quatre ans à des mathématiciens de moins de 40 ans pour des contributions exceptionnelles à leur domaine.',
+      url:'https://lejournal.cnrs.fr/articles/hugo-duminil-copin-laureat-de-la-medaille-fields',
+    },
+    description:'Un article publié par le CNRS Le Journal présente Hugo Duminil-Copin, mathématicien français lauréat de la médaille Fields 2022 — la plus haute distinction en mathématiques. Il rejoint ainsi la liste des 16 médaillés Fields français depuis la création du prix.',
     meta:[
-      {k:'Source',v:'AFP — Agence France-Presse'},
-      {k:'Photographe',v:'Marco Bertorello / AFP'},
-      {k:'Date',v:'03/02/2025 — 14h22'},
-      {k:'Crédits',v:'© AFP 2025'},
+      {k:'Site',v:'CNRS Le Journal (lejournal.cnrs.fr)'},
+      {k:'Date',v:'5 juillet 2022'},
+      {k:'Auteur',v:'CNRS Le Journal'},
+      {k:'Sources citées',v:'ICM Helsinki, IHES, Université de Genève'},
     ],
     tools:[
-      {icon:'🔎',name:'Recherche inversée',desc:'Retrouver la source originale',result:'<strong style="color:var(--neon-green)">Image trouvée dans la base AFP</strong> avec les mêmes métadonnées. Elle apparaît dans plusieurs articles de presse : Le Monde, Libération, Le Figaro. Aucune version antérieure identique trouvée (exclut le recyclage d\'une ancienne photo).',suspicious:false},
-      {icon:'🏙️',name:'Vérification géographique',desc:'Confirmer le lieu photographié',result:'<strong style="color:var(--neon-green)">Architecture confirmée</strong> : la colonne de Juillet, les immeubles haussmanniens et la fontaine Molière sont bien ceux de la place de la République. Les enseignes visibles (pharmacie, restaurant) correspondent aux commerces répertoriés sur Google Street View à cette date.',suspicious:false},
-      {icon:'🔬',name:'Analyse de cohérence',desc:'Vérifier la physique et les détails',result:'<strong style="color:var(--neon-green)">Aucun artefact IA</strong> : les visages en arrière-plan sont flous de manière cohérente (profondeur de champ réelle). Les ombres sont uniformes et correspondent à une heure du jour en février. Le grain photographique est cohérent avec un capteur Canon EOS R5 (matériel courant AFP).',suspicious:false},
+      {icon:'👤',name:'Vérification du chercheur',desc:'Hugo Duminil-Copin est-il une personne réelle ?',result:'<strong style="color:var(--neon-green)">Confirmé.</strong> Hugo Duminil-Copin est un mathématicien français né en 1985, professeur à l\'IHES et à l\'Université de Genève. Sa médaille Fields 2022 est documentée par le site officiel de l\'ICM, l\'IHES, Le Monde, et des dizaines de sources accréditées indépendantes.',suspicious:false},
+      {icon:'🌐',name:'Analyse du site source',desc:'Vérifier la crédibilité du CNRS Le Journal',result:'Le CNRS est <strong style="color:var(--neon-green)">l\'organisme public de recherche français de référence</strong>, fondé en 1939. Son journal (lejournal.cnrs.fr) est une publication institutionnelle avec équipe éditoriale identifiée, publiée depuis 2010. Le même article est référencé sur le site de l\'IHES et dans des articles du Monde et de Libération.',suspicious:false},
+      {icon:'📝',name:'Analyse du texte',desc:'Vérifier le style rédactionnel',result:'<strong style="color:var(--neon-green)">Texte journalistique authentique</strong> : style éditorial naturel avec variations de rythme humaines. Sources explicitement citées (ICM Helsinki, IHES, Université de Genève). Toutes les affirmations sont vérifiables et falsifiables. Aucun jargon pseudo-scientifique ni affirmation alarmiste.',suspicious:false},
     ],
     answer:'authentic',
-    explanation:'Photo authentique de l\'AFP. La crédibilité de l\'agence, la présence dans plusieurs sources de presse reconnues, la géolocalisation confirmée et l\'absence de tout artefact IA le prouvent. Face à une source AFP avec crédit photographe identifié, le niveau de confiance est élevé.',
+    explanation:'Article authentique du CNRS. Le chercheur est réel et sa distinction vérifiable dans de nombreuses sources indépendantes. Le site éditeur est l\'institution scientifique française de référence. Tous les signaux — style, sources, vérifiabilité, concordance entre médias — confirment l\'authenticité.',
   },
 ];
 
@@ -1440,11 +1521,40 @@ function openDossier(id){
 
   // Panneau média
   const mediaPanel = document.getElementById('media-panel');
+  let mediaHtml = '';
+  const m = d.media;
+  if(m.type === 'youtube'){
+    mediaHtml = `<div class="media-preview media-video">
+      <iframe src="https://www.youtube.com/embed/${m.src}" frameborder="0" allowfullscreen></iframe>
+    </div>`;
+  } else if(m.type === 'image'){
+    mediaHtml = `<div class="media-img-box">
+      <img src="${m.src}" alt="${d.title}">
+    </div>`;
+  } else if(m.type === 'audio'){
+    mediaHtml = `<div class="media-audio-box">
+      <div class="audio-icon">🎤</div>
+      <audio controls>
+        <source src="${m.src}" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'audio HTML5.
+      </audio>
+      <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:var(--muted)">Message vocal — Dossier VERITAS-${String(id).padStart(3,'0')}</div>
+    </div>`;
+  } else if(m.type === 'article'){
+    mediaHtml = `<div class="media-article-card">
+      <div class="article-site-bar ${m.suspicious?'suspicious':'clear'}">
+        ${m.suspicious?'⚠️':'✓'} ${m.site}
+      </div>
+      <div class="article-body">
+        <div class="article-headline">${m.headline}</div>
+        <div class="article-byline">${m.author} · ${m.date}</div>
+        <div class="article-excerpt">${m.excerpt}</div>
+        ${m.url ? `<a href="${m.url}" target="_blank" rel="noopener" class="article-link">🔗 Lire l'article original →</a>` : '<div style="font-size:0.75em;color:var(--muted);font-family:\'Space Mono\',monospace;margin-top:4px">⛔ Aucun lien source disponible</div>'}
+      </div>
+    </div>`;
+  }
   mediaPanel.innerHTML = `
-    <div class="media-preview">
-      <div class="media-preview-icon">${d.type}</div>
-      <div class="media-preview-overlay">${d.typeLabel} · Dossier VERITAS-${String(id).padStart(3,'0')}</div>
-    </div>
+    ${mediaHtml}
     <div class="media-description">${d.description}</div>
     <div class="media-metadata">
       ${d.meta.map(m=>`<div class="meta-row"><span class="meta-key">${m.k}</span><span class="meta-val">${m.v}</span></div>`).join('')}
