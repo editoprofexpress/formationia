@@ -855,8 +855,7 @@
         Se protéger &amp; vérifier
       </div>
       <div class="briefing-nav-item" id="nav-7" onclick="goToGame()"
-        style="opacity:0.4;cursor:not-allowed;margin-top:10px;border-top:1px solid rgba(255,230,109,0.15);padding-top:18px"
-        id="game-nav-item">
+        style="margin-top:10px;border-top:1px solid rgba(255,230,109,0.15);padding-top:18px">
         <span class="nav-icon">🔍</span>
         <span class="nav-number" id="game-nav-num">▶</span>
         Salle d'analyse
@@ -1276,10 +1275,6 @@ function prevLesson(){
 }
 
 function goToGame(){
-  if(visitedLessons.size < TOTAL_LESSONS){
-    toast('📖 Lisez d\'abord toutes les sections de formation !');
-    return;
-  }
   document.getElementById('briefing-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');
   initGame();
@@ -1775,7 +1770,6 @@ function selectOpt(qIdx, oIdx){
   if(answered === quizQuestions.length){
     const btn = document.getElementById('quiz-submit-btn');
     if(btn){ btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
-    toast('✅ Toutes les questions répondues — validez vos réponses !');
   }
 }
 
@@ -1831,10 +1825,8 @@ function submitQuiz(){
         ?'Vous avez prouvé votre maîtrise de la détection des deepfakes. Votre attestation Unité VERITAS est débloquée !'
         :'Il faut au moins 70 % pour valider. Relisez le briefing et retentez le quiz.'
       }</p>
-      ${passed
-        ?`<button class="briefing-btn primary" onclick="showCertificate()" style="margin-top:18px;font-size:1em;padding:14px 35px">🎓 Obtenir mon attestation →</button>`
-        :`<button class="briefing-btn" onclick="retryQuiz()" style="margin-top:18px;">↺ Réessayer le quiz</button>`
-      }
+      ${passed?`<button class="briefing-btn primary" onclick="showCertificate()" style="margin-top:18px;font-size:1em;padding:14px 35px">🎓 Obtenir mon attestation →</button>`:''}
+      <button class="briefing-btn" onclick="retryQuiz()" style="margin-top:12px;font-size:0.95em;padding:12px 28px">🔄 Retenter le quiz</button>
     </div>`;
 
   if(pct>=70) unlockCertificate();
