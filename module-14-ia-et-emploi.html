@@ -2405,7 +2405,7 @@ function downloadCertificate() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `attestation-ia-emploi-${name.replace(/\s+/g,'-').toLowerCase()}.html`;
+    a.download = `Attestation_Module14_${name.replace(/\s+/g,'_')}.html`;
     a.click();
     URL.revokeObjectURL(url);
 }
