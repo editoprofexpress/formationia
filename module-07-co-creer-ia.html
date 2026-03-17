@@ -2443,7 +2443,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'attestation-module07-synapse-studio.html';
+    a.download = `Attestation_Module07_${name.replace(/\s+/g, '_')}.html`;
     a.click();
     URL.revokeObjectURL(url);
   }

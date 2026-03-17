@@ -1957,7 +1957,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
   const blob = new Blob([html],{type:'text/html'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href=url; a.download=`Attestation_Module11_Signal_Falsifie_${name.replace(/\s+/g,'_')}.html`;
+  a.href=url; a.download=`Attestation_Module11_${name.replace(/\s+/g,'_')}.html`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
   toast('✅ Attestation téléchargée !',4000);

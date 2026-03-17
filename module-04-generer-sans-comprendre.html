@@ -2334,7 +2334,7 @@
       const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `attestation-module04-synthese-${participantName.toLowerCase().replace(/\s+/g, '-')}.html`;
+      a.download = `Attestation_Module04_${participantName.replace(/\s+/g, '_')}.html`;
       a.click();
     }
   
