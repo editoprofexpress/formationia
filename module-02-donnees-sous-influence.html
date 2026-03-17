@@ -1070,7 +1070,9 @@ function toggleDataItem(id){
   exp1Selected.forEach(sid=>{const d=dataItems.find(x=>x.id===sid);if(d)counts[d.type]++});
   $('exp1-count').textContent=exp1Selected.size;
   const vals=Object.values(counts).filter(v=>v>0);
-  const balance=vals.length>0?Math.min(...vals)/Math.max(...vals):0;
+  // Balance = 0 si une seule catégorie, sinon ratio min/max * (catégories présentes / 4)
+  const internalBal=vals.length>1?Math.min(...vals)/Math.max(...vals):0;
+  const balance=(vals.length/4)*internalBal;
   $('exp1-balance').textContent=Math.round(balance*100)+'%';
   $('exp1-balance-bar').style.width=Math.round(balance*100)+'%';
   $('exp1-balance-bar').style.background=balance>0.7?'var(--neon-green)':balance>0.4?'var(--warn)':'var(--danger)';
@@ -1082,10 +1084,11 @@ function trainExp1(){
   exp1Selected.forEach(sid=>{const d=dataItems.find(x=>x.id===sid);if(d)counts[d.type]++});
   const total=exp1Selected.size;
   const vals=Object.values(counts).filter(v=>v>0);
-  const balance=vals.length>0?Math.min(...vals)/Math.max(...vals):0;
+  const internalBal=vals.length>1?Math.min(...vals)/Math.max(...vals):0;
+  const balance=(vals.length/4)*internalBal;
   const typesUsed=vals.length;
   const accuracy=Math.min(96,35+balance*35+Math.min(total,12)*2+typesUsed*5);
-  const isGood=accuracy>=75&&balance>=0.6;
+  const isGood=accuracy>=75&&balance>=0.6&&typesUsed>=3;
 
   $('exp1-result').innerHTML=`
     <div class="callout ${isGood?'ok':'warn'}" style="margin-top:15px">
