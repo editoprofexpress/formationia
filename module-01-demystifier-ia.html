@@ -485,16 +485,7 @@
     em { color: var(--neon-blue); font-style: normal; }
 
     /* ==================== MISSION INTERACTIVE ==================== */
-    #mission-screen {
-      position: fixed; inset: 0;
-      background: linear-gradient(135deg, #0a0e17 0%, #0d1a2d 50%, #0a0e17 100%);
-      z-index: 998;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    #mission-screen.active { display: flex; }
+    #lesson-8 { position: relative; min-height: 60vh; }
 
     .mission-header {
       background: rgba(10, 20, 40, 0.95);
@@ -537,8 +528,6 @@
     }
 
     .mission-body {
-      flex: 1;
-      overflow-y: auto;
       padding: 30px;
     }
 
@@ -775,16 +764,6 @@
     }
 
     /* ==================== QUIZ ==================== */
-    #quiz-screen {
-      position: fixed; inset: 0;
-      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
-      z-index: 997;
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    #quiz-screen.active { display: flex; }
 
     .quiz-header {
       background: rgba(10, 20, 40, 0.95);
@@ -1732,10 +1711,16 @@
         <!-- Séparateur -->
         <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent); margin: 15px 20px;"></div>
 
-        <div class="briefing-nav-item" onclick="startMission()" style="color: var(--neon-blue); opacity: 0.6;" id="nav-mission">
+        <div class="briefing-nav-item" onclick="goToLesson(8)" id="nav-mission">
           <span class="nav-icon">🔍</span>
-          <span class="nav-number" style="background: rgba(0, 212, 255, 0.2);">▶</span>
+          <span class="nav-number" style="background:rgba(0,212,255,0.2);color:var(--neon-blue)">▶</span>
           Activité : Enquête
+        </div>
+
+        <div class="briefing-nav-item" onclick="goToLesson(9)" id="quiz-nav-item">
+          <span class="nav-icon">📝</span>
+          <span class="nav-number" style="background:rgba(168,85,247,0.2);color:#a855f7">✎</span>
+          Quiz de certification
         </div>
 
         <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
@@ -2355,103 +2340,8 @@
           </div>
         </div>
 
-      </div><!-- fin briefing-content -->
-    </div><!-- fin briefing-body -->
-
-    <div class="briefing-footer">
-      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
-        ← Précédent
-      </button>
-      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
-        Suivant →
-      </button>
-    </div>
-  </div>
-
-  <script>
-    /* ==================== NAVIGATION BRIEFING ==================== */
-    const TOTAL_LESSONS = 8;
-    let currentLesson = 0;
-    let visitedLessons = new Set([0]);
-
-    function startModule() {
-      document.getElementById('title-screen').classList.add('hidden');
-      document.getElementById('briefing-screen').classList.add('active');
-    }
-
-    function goToLesson(index) {
-      if (index < 0 || index >= TOTAL_LESSONS) return;
-
-      // Masquer la leçon actuelle
-      const current = document.getElementById('lesson-' + currentLesson);
-      if (current) current.classList.remove('active');
-
-      // Afficher la nouvelle
-      currentLesson = index;
-      visitedLessons.add(index);
-      const next = document.getElementById('lesson-' + index);
-      if (next) next.classList.add('active');
-
-      // Scroll en haut
-      document.getElementById('briefing-content').scrollTop = 0;
-
-      updateNav();
-    }
-
-    function nextLesson() {
-      if (currentLesson < TOTAL_LESSONS - 1) {
-        goToLesson(currentLesson + 1);
-      }
-    }
-
-    function prevLesson() {
-      if (currentLesson > 0) {
-        goToLesson(currentLesson - 1);
-      }
-    }
-
-    function updateNav() {
-      // Barre de progression
-      const pct = ((currentLesson + 1) / TOTAL_LESSONS * 100).toFixed(1);
-      document.getElementById('progress-fill').style.width = pct + '%';
-      document.getElementById('progress-text').textContent = 'Fichier ' + (currentLesson + 1) + '/' + TOTAL_LESSONS;
-
-      // Boutons prev/next
-      document.getElementById('btn-prev').disabled = (currentLesson === 0);
-      const btnNext = document.getElementById('btn-next');
-      if (currentLesson === TOTAL_LESSONS - 1) {
-        btnNext.textContent = '🎯 Lancer la mission';
-        btnNext.onclick = startMission;
-      } else {
-        btnNext.innerHTML = 'Suivant →';
-        btnNext.onclick = nextLesson;
-      }
-
-      // Items sidebar
-      const items = document.querySelectorAll('.briefing-nav-item');
-      items.forEach((item, i) => {
-        item.classList.remove('active', 'completed');
-        if (i === currentLesson) {
-          item.classList.add('active');
-        } else if (visitedLessons.has(i)) {
-          item.classList.add('completed');
-        }
-      });
-    }
-
-    function startMission() {
-      document.getElementById('briefing-screen').classList.remove('active');
-      document.getElementById('mission-screen').classList.add('active');
-      // Run boot sequence on first visit
-      if (typeof runBootSequence === 'function' && !window._missionBooted) {
-        window._missionBooted = true;
-        runBootSequence();
-      }
-    }
-  </script>
-
-  <!-- ==================== ÉCRAN MISSION ==================== -->
-  <div id="mission-screen">
+        <!-- ===== LEÇON 8 : ENQUÊTE ===== -->
+        <div class="lesson" id="lesson-8">
 
     <!-- BOOT SEQUENCE -->
     <div class="decode-boot" id="decode-boot">
@@ -2677,7 +2567,138 @@
       </div>
 
     </div><!-- fin mission-body -->
+
+        </div>
+
+        <!-- ===== LEÇON 9 : QUIZ ===== -->
+        <div class="lesson" id="lesson-9">
+          <h2 class="module-title">📝 Quiz de certification — Module 1</h2>
+          <p class="module-kicker">Répondez aux 8 questions pour obtenir votre attestation. Score minimum : 70%.</p>
+          <div class="divider"></div>
+          <div id="quiz-questions-container"></div>
+          <div style="text-align:center;margin-top:25px" id="quiz-submit-area">
+            <button class="mission-next-btn" id="quiz-submit-btn" onclick="submitQuiz()" disabled style="opacity:0.5;cursor:not-allowed">
+              Valider mes réponses
+            </button>
+            <p style="color:var(--muted);font-size:0.9em;margin-top:8px" id="quiz-submit-hint">
+              Répondez aux 8 questions pour valider
+            </p>
+          </div>
+          <div id="quiz-result-area" style="margin-top:20px"></div>
+        </div>
+
+        <!-- ===== LEÇON 10 : ATTESTATION ===== -->
+        <div class="lesson" id="lesson-10">
+          <div id="certificate-content"></div>
+        </div>
+
+      </div><!-- fin briefing-content -->
+    </div><!-- fin briefing-body -->
+
+    <div class="briefing-footer">
+      <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
+        ← Précédent
+      </button>
+      <button class="briefing-btn primary" id="btn-next" onclick="nextLesson()">
+        Suivant →
+      </button>
+    </div>
   </div>
+
+  <script>
+    /* ==================== NAVIGATION BRIEFING ==================== */
+    const TOTAL_LESSONS = 8;
+    let currentLesson = 0;
+    let visitedLessons = new Set([0]);
+
+    function startModule() {
+      document.getElementById('title-screen').classList.add('hidden');
+      document.getElementById('briefing-screen').classList.add('active');
+    }
+
+    function goToLesson(index) {
+      if (index < 0) return;
+
+      // Masquer la leçon actuelle
+      const current = document.getElementById('lesson-' + currentLesson);
+      if (current) current.classList.remove('active');
+
+      // Afficher la nouvelle
+      currentLesson = index;
+      visitedLessons.add(index);
+      const next = document.getElementById('lesson-' + index);
+      if (next) next.classList.add('active');
+
+      // Scroll en haut
+      document.getElementById('briefing-content').scrollTop = 0;
+
+      updateNav();
+    }
+
+    function nextLesson() {
+      if (currentLesson < TOTAL_LESSONS - 1) {
+        goToLesson(currentLesson + 1);
+      }
+    }
+
+    function prevLesson() {
+      if (currentLesson > 0) {
+        goToLesson(currentLesson - 1);
+      }
+    }
+
+    function updateNav() {
+      // Barre de progression
+      if (currentLesson < TOTAL_LESSONS) {
+        const pct = ((currentLesson + 1) / TOTAL_LESSONS * 100).toFixed(1);
+        document.getElementById('progress-fill').style.width = pct + '%';
+        document.getElementById('progress-text').textContent = 'Fichier ' + (currentLesson + 1) + '/' + TOTAL_LESSONS;
+      } else if (currentLesson === 8) {
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('progress-text').textContent = 'Enquête';
+      } else {
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('progress-text').textContent = currentLesson === 9 ? 'Quiz' : 'Attestation';
+      }
+
+      // Boutons prev/next
+      document.getElementById('btn-prev').disabled = (currentLesson === 0);
+      const btnNext = document.getElementById('btn-next');
+      btnNext.style.display = '';
+      if (currentLesson === TOTAL_LESSONS - 1) {
+        btnNext.textContent = '🎯 Lancer la mission';
+        btnNext.onclick = startMission;
+      } else if (currentLesson === 8) {
+        btnNext.textContent = '📝 Passer au quiz →';
+        btnNext.onclick = startQuiz;
+      } else if (currentLesson >= 9) {
+        btnNext.style.display = 'none';
+      } else {
+        btnNext.innerHTML = 'Suivant →';
+        btnNext.onclick = nextLesson;
+      }
+
+      // Items sidebar
+      const items = document.querySelectorAll('.briefing-nav-item');
+      items.forEach((item, i) => {
+        item.classList.remove('active', 'completed');
+        if (i === currentLesson) {
+          item.classList.add('active');
+        } else if (visitedLessons.has(i)) {
+          item.classList.add('completed');
+        }
+      });
+    }
+
+    function startMission() {
+      goToLesson(8);
+      if (!window._missionBooted) {
+        window._missionBooted = true;
+        runBootSequence();
+      }
+    }
+  </script>
+
 
   <!-- MODAL PREUVE CINÉMATIQUE -->
   <div class="modal-overlay" id="evidence-modal">
@@ -3014,35 +3035,14 @@
     }
 
     function startQuiz() {
-      document.getElementById('mission-screen').classList.remove('active');
-      document.getElementById('quiz-screen').classList.add('active');
-      renderQuizQuestion();
+      goToLesson(9);
+      renderAllQuizQuestions();
     }
 
     /* Boot state tracked globally */
     window._missionBooted = false;
   </script>
 
-  <!-- ==================== ÉCRAN QUIZ ==================== -->
-  <div id="quiz-screen">
-    <div class="quiz-header">
-      <div class="quiz-header-title">
-        📝 Quiz de certification — Module 1
-      </div>
-      <div class="quiz-progress-info">
-        <span id="quiz-progress-text">Question 1/8</span>
-        <div class="quiz-progress-bar">
-          <div class="quiz-progress-fill" id="quiz-progress-fill" style="width: 12.5%"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="quiz-body">
-      <div class="quiz-card" id="quiz-card">
-        <!-- Contenu injecté par JS -->
-      </div>
-    </div>
-  </div>
 
   <script>
     /* ==================== QUIZ DE CERTIFICATION ==================== */
@@ -3137,119 +3137,145 @@
       }
     ];
 
-    let quizCurrent = 0;
-    let quizScore = 0;
-    let quizLocked = false;
+    let quizAnswers = {};
 
-    function renderQuizQuestion() {
-      if (quizCurrent >= quizQuestions.length) {
-        showQuizResult();
-        return;
+    function renderAllQuizQuestions() {
+      quizAnswers = {};
+      const container = document.getElementById('quiz-questions-container');
+      if (!container) return;
+
+      let html = '';
+      quizQuestions.forEach((q, i) => {
+        html += `
+          <div class="callout" id="qcard-${i}" style="margin-bottom:20px;border-color:rgba(0,212,255,0.25)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <span style="font-family:'Space Mono',monospace;font-size:0.8em;color:var(--muted)">QUESTION ${i+1} / ${quizQuestions.length}</span>
+            </div>
+            <div style="color:#e0f0ff;font-size:1.05em;margin-bottom:16px;line-height:1.5;font-weight:500">${q.q}</div>
+            <div id="q-opts-${i}">
+        `;
+        q.options.forEach((opt, j) => {
+          const letter = String.fromCharCode(65 + j);
+          html += `
+              <div class="iq-option" id="qopt-${i}-${j}" onclick="selectQuizAnswer(${i}, ${j})" style="cursor:pointer">
+                <div class="iq-option-key">${letter}</div>
+                <div class="iq-option-text">${opt}</div>
+              </div>
+          `;
+        });
+        html += `
+            </div>
+            <div id="qexpl-${i}" style="display:none;margin-top:12px;padding:12px 16px;border-radius:8px;font-size:0.9em;line-height:1.5;border-left:3px solid"></div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+
+      const btn = document.getElementById('quiz-submit-btn');
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+      const area = document.getElementById('quiz-result-area');
+      if (area) area.innerHTML = '';
+      const submitArea = document.getElementById('quiz-submit-area');
+      if (submitArea) submitArea.style.display = '';
+      const hint = document.getElementById('quiz-submit-hint');
+      if (hint) hint.textContent = 'Répondez aux 8 questions pour valider';
+    }
+
+    function selectQuizAnswer(qIdx, optIdx) {
+      const card = document.getElementById('qcard-' + qIdx);
+      if (card && card.dataset.locked) return;
+
+      quizAnswers[qIdx] = optIdx;
+
+      const opts = document.querySelectorAll('#q-opts-' + qIdx + ' .iq-option');
+      opts.forEach((opt, i) => {
+        opt.classList.remove('correct', 'wrong');
+        opt.style.background = (i === optIdx) ? 'rgba(0,212,255,0.12)' : '';
+        opt.style.borderColor = (i === optIdx) ? 'rgba(0,212,255,0.5)' : '';
+      });
+
+      const answered = Object.keys(quizAnswers).length;
+      const btn = document.getElementById('quiz-submit-btn');
+      const hint = document.getElementById('quiz-submit-hint');
+      if (answered === quizQuestions.length) {
+        if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+        if (hint) hint.textContent = '✅ Toutes les questions répondues — cliquez pour valider';
+      } else {
+        if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'not-allowed'; }
+        if (hint) hint.textContent = answered + ' / ' + quizQuestions.length + ' questions répondues';
       }
-
-      const q = quizQuestions[quizCurrent];
-      const pct = ((quizCurrent + 1) / quizQuestions.length * 100).toFixed(1);
-      document.getElementById('quiz-progress-fill').style.width = pct + '%';
-      document.getElementById('quiz-progress-text').textContent = 'Question ' + (quizCurrent + 1) + '/' + quizQuestions.length;
-
-      quizLocked = false;
-
-      let html = `
-        <div class="quiz-question-number">QUESTION ${quizCurrent + 1} / ${quizQuestions.length}</div>
-        <div class="quiz-question-text">${q.q}</div>
-        <div class="quiz-options">
-      `;
-
-      q.options.forEach((opt, i) => {
-        const letter = String.fromCharCode(65 + i);
-        html += `<div class="quiz-option" onclick="answerQuiz(${i})"><strong>${letter}.</strong> ${opt}</div>`;
-      });
-
-      html += `
-        </div>
-        <div class="quiz-explanation" id="quiz-expl"></div>
-        <button class="quiz-next-btn" id="quiz-next-btn" onclick="nextQuizQuestion()">
-          ${quizCurrent < quizQuestions.length - 1 ? 'Question suivante →' : 'Voir le résultat →'}
-        </button>
-      `;
-
-      document.getElementById('quiz-card').innerHTML = html;
     }
 
-    function answerQuiz(optionIndex) {
-      if (quizLocked) return;
-      quizLocked = true;
-
-      const q = quizQuestions[quizCurrent];
-      const isCorrect = optionIndex === q.correct;
-      if (isCorrect) quizScore++;
-
-      const options = document.querySelectorAll('.quiz-option');
-      options.forEach((opt, i) => {
-        opt.style.cursor = 'default';
-        if (i === q.correct) opt.classList.add('correct');
-        else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
-      });
-
-      const expl = document.getElementById('quiz-expl');
-      expl.innerHTML = (isCorrect ? '✅ ' : '❌ ') + q.explanation;
-      expl.classList.add('show');
-      expl.style.borderLeftColor = isCorrect ? 'var(--neon-green)' : 'var(--danger)';
-      expl.style.background = isCorrect ? 'rgba(0, 255, 136, 0.08)' : 'rgba(255, 77, 77, 0.06)';
-
-      document.getElementById('quiz-next-btn').classList.add('show');
-    }
-
-    function nextQuizQuestion() {
-      quizCurrent++;
-      renderQuizQuestion();
-      document.querySelector('.quiz-body').scrollTop = 0;
-    }
-
-    function showQuizResult() {
-      const pct = Math.round(quizScore / quizQuestions.length * 100);
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
+      const pct = Math.round(score / quizQuestions.length * 100);
       const passed = pct >= 70;
 
-      document.getElementById('quiz-progress-fill').style.width = '100%';
-      document.getElementById('quiz-progress-text').textContent = 'Terminé !';
+      quizQuestions.forEach((q, i) => {
+        const card = document.getElementById('qcard-' + i);
+        if (card) card.dataset.locked = '1';
 
-      document.getElementById('quiz-card').innerHTML = `
-        <div class="quiz-result">
-          <div class="quiz-result-icon">${passed ? '🎓' : '📖'}</div>
-          <h2 style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
-            ${passed ? 'CERTIFICATION RÉUSSIE !' : 'SCORE INSUFFISANT'}
-          </h2>
-          <div class="quiz-score-display" style="color: ${passed ? 'var(--neon-green)' : 'var(--warn)'};">
-            ${quizScore} / ${quizQuestions.length}
-          </div>
-          <div class="quiz-score-bar-container">
-            <div class="quiz-score-bar-fill" style="width: ${pct}%; background: ${passed ? 'linear-gradient(90deg, var(--neon-green), var(--neon-blue))' : 'linear-gradient(90deg, var(--warn), var(--danger))'};">
-            </div>
-          </div>
-          <p style="color: var(--muted); font-size: 1.1em; margin-top: 10px;">${pct}% — Seuil requis : 70%</p>
-          <p style="color: var(--muted); margin-top: 15px; line-height: 1.6;">
-            ${passed
-              ? 'Félicitations, analyste ! Vous avez démontré une solide compréhension des fondamentaux de l\'IA. Vous pouvez maintenant télécharger votre attestation de réussite.'
-              : 'Vous n\'avez pas atteint le seuil de 70%. Relisez les leçons et retentez le quiz pour obtenir votre attestation.'}
-          </p>
-          ${passed
-            ? '<button class="mission-next-btn" onclick="backToBriefing()" style="margin-top: 25px;">← Retour au dossier</button>'
-            : '<button class="mission-next-btn" onclick="retryQuiz()" style="margin-top: 25px; background: var(--warn); border-color: var(--warn); color: var(--dark-bg);">🔄 Retenter le quiz</button>'}
-        </div>
-      `;
+        const opts = document.querySelectorAll('#q-opts-' + i + ' .iq-option');
+        opts.forEach(opt => { opt.onclick = null; opt.style.cursor = 'default'; });
 
-      if (passed) unlockCertificate(pct);
+        if (passed) {
+          opts.forEach((opt, j) => {
+            opt.style.background = '';
+            opt.style.borderColor = '';
+            if (j === q.correct) {
+              opt.style.background = 'rgba(0,255,136,0.15)';
+              opt.style.borderColor = 'rgba(0,255,136,0.5)';
+            } else if (j === quizAnswers[i] && quizAnswers[i] !== q.correct) {
+              opt.style.background = 'rgba(255,77,77,0.12)';
+              opt.style.borderColor = 'rgba(255,77,77,0.4)';
+            } else {
+              opt.style.opacity = '0.5';
+            }
+          });
+          const expl = document.getElementById('qexpl-' + i);
+          if (expl) {
+            const isCorrect = quizAnswers[i] === q.correct;
+            expl.innerHTML = (isCorrect ? '✅ ' : '❌ ') + q.explanation;
+            expl.style.display = 'block';
+            expl.style.background = isCorrect ? 'rgba(0,255,136,0.08)' : 'rgba(255,77,77,0.06)';
+            expl.style.borderLeftColor = isCorrect ? 'var(--neon-green)' : 'var(--danger)';
+          }
+        }
+      });
 
-      setTimeout(() => {
-        const bar = document.querySelector('.quiz-score-bar-fill');
-        if (bar) bar.style.width = pct + '%';
-      }, 100);
+      const submitArea = document.getElementById('quiz-submit-area');
+      if (submitArea) submitArea.style.display = 'none';
+
+      const resultArea = document.getElementById('quiz-result-area');
+      if (resultArea) {
+        if (passed) {
+          resultArea.innerHTML = `
+            <div class="callout" style="text-align:center;padding:30px;border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.05)">
+              <div style="font-size:3em;margin-bottom:15px">🎓</div>
+              <h3 style="color:var(--neon-green);margin-bottom:15px">CERTIFICATION RÉUSSIE !</h3>
+              <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+              <p style="color:var(--muted);line-height:1.6">Félicitations, analyste ! Vous avez démontré une solide compréhension des fondamentaux de l'IA.</p>
+              <button class="mission-next-btn" onclick="showCertificateInFolder()" style="margin-top:20px">🎓 Voir l'attestation →</button>
+            </div>`;
+          unlockCertificate(pct);
+        } else {
+          resultArea.innerHTML = `
+            <div class="callout warn" style="text-align:center;padding:30px">
+              <div style="font-size:3em;margin-bottom:15px">📖</div>
+              <h3 style="color:var(--neon-pink);margin-bottom:15px">Score insuffisant</h3>
+              <p style="font-size:1.3em;margin-bottom:10px">${score}/${quizQuestions.length} — <strong>${pct}%</strong></p>
+              <p style="color:var(--muted);line-height:1.6">Il faut au moins 70% pour valider. Révisez les leçons et réessayez !</p>
+              <button class="mission-next-btn" onclick="retryQuiz()" style="margin-top:20px;background:var(--neon-pink);border-color:var(--neon-pink);color:#000">🔄 Réessayer</button>
+            </div>`;
+        }
+      }
     }
 
     function retryQuiz() {
-      quizCurrent = 0;
-      quizScore = 0;
-      renderQuizQuestion();
+      renderAllQuizQuestions();
+      document.getElementById('briefing-content').scrollTop = 0;
     }
 
     let certificateUnlocked = false;
@@ -3280,13 +3306,13 @@
     }
 
     function backToBriefing() {
-      document.getElementById('quiz-screen').classList.remove('active');
-      document.getElementById('briefing-screen').classList.add('active');
+      goToLesson(8);
     }
 
     function showCertificateInFolder() {
+      const certDiv = document.getElementById('certificate-content');
       if (!certificateUnlocked) {
-        document.getElementById('briefing-content').innerHTML = `
+        certDiv.innerHTML = `
           <h2 class="module-title" style="color:var(--neon-pink)">🔒 Attestation</h2>
           <div class="divider"></div>
           <div class="callout warn" style="text-align:center;padding:40px 20px">
@@ -3294,10 +3320,11 @@
             <h3 style="color:var(--neon-pink);margin-bottom:20px">Attestation verrouillée</h3>
             <p style="line-height:1.8">Réussissez le quiz de certification avec au moins <strong>70%</strong> pour débloquer votre attestation.</p>
           </div>`;
+        goToLesson(10);
         return;
       }
       const refId = 'IA-DECODE-' + Date.now().toString(36).toUpperCase();
-      document.getElementById('briefing-content').innerHTML = `
+      certDiv.innerHTML = `
         <h2 class="module-title">🎓 Attestation de réussite</h2>
         <p class="module-kicker">Module 1 — Démystifier l'Intelligence Artificielle</p>
         <div class="divider"></div>
@@ -3329,6 +3356,7 @@
           <li>Repérer les allégations marketing excessives sur l'IA</li>
           <li>Analyser un produit IA avec esprit critique</li>
         </ul></div>`;
+      goToLesson(10);
     }
   </script>
 
