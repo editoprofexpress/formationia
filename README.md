@@ -1,4 +1,4 @@
-# Formationia — Formation IA Responsable
+# Formationia — Fondamentaux et usages de l'intelligence artificielle
 
 **Plateforme éducative gratuite sur l'IA responsable** — 15 micro-modules interactifs ludifiés pour comprendre, utiliser et questionner l'intelligence artificielle de manière citoyenne.
 
