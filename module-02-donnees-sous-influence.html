@@ -1074,16 +1074,16 @@ function renderExp3(zone){
       <p style="margin-bottom:15px;line-height:1.6">Ajustez les 3 paramètres pour obtenir un modèle qui <strong>généralise bien</strong> : la précision de validation doit être élevée (>75%) ET l'écart avec la précision d'entraînement doit être faible (<15%).</p>
 
       <div class="slider-group">
-        <label>Epochs (passes sur les données) : <span id="val-epochs">5</span></label>
-        <input type="range" min="1" max="100" value="5" oninput="$('val-epochs').textContent=this.value;updateOverfitCurves()"/>
+        <label>Epochs (passes sur les données) : <span id="val-epochs">100</span></label>
+        <input type="range" min="1" max="100" value="100" oninput="$('val-epochs').textContent=this.value;updateOverfitCurves()"/>
       </div>
       <div class="slider-group">
-        <label>Complexité du modèle : <span id="val-complexity">3</span>/10</label>
-        <input type="range" min="1" max="10" value="3" oninput="$('val-complexity').textContent=this.value;updateOverfitCurves()"/>
+        <label>Complexité du modèle : <span id="val-complexity">10</span>/10</label>
+        <input type="range" min="1" max="10" value="10" oninput="$('val-complexity').textContent=this.value;updateOverfitCurves()"/>
       </div>
       <div class="slider-group">
-        <label>Taille du dataset : <span id="val-datasize">200</span></label>
-        <input type="range" min="50" max="2000" value="200" step="50" oninput="$('val-datasize').textContent=this.value;updateOverfitCurves()"/>
+        <label>Taille du dataset : <span id="val-datasize">50</span></label>
+        <input type="range" min="50" max="2000" value="50" step="50" oninput="$('val-datasize').textContent=this.value;updateOverfitCurves()"/>
       </div>
 
       <div style="margin:20px 0">
