@@ -978,10 +978,10 @@ const lessons = [
           <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Trouvez l'équilibre parfait pour éviter le surapprentissage</div>
         </div>
         <div class="exp-card" id="exp-card-4" onclick="startExperiment(4)">
-          <div class="exp-icon">⚖️</div>
+          <div class="exp-icon">🧹</div>
           <div class="exp-num">EXP. 04</div>
-          <div class="exp-name">Le Dilemme Éthique</div>
-          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Faites face à un choix moral sur l'utilisation des données</div>
+          <div class="exp-name">Le Nettoyeur de Données</div>
+          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">Repérez et corrigez les étiquettes erronées d'un dataset</div>
         </div>
       </div>
 
@@ -1249,68 +1249,133 @@ function updateOverfitCurves(){
     valAcc<75?`<div class="callout warn" style="margin-top:15px"><p>La précision de validation est trop basse (${Math.round(valAcc)}%). Le modèle est en <strong>sous-apprentissage</strong>. Essayez : plus d'epochs, modèle plus complexe, ou plus de données.</p></div>`:'');
 }
 
-/* ---- EXP 4 : DILEMME ÉTHIQUE ---- */
-let exp4Step=0;
+/* ---- EXP 4 : NETTOYEUR DE DONNÉES ---- */
+const cleanData=[
+  {id:1,emoji:'🐱',correctLabel:'Chat',currentLabel:'Chat',wrong:false},
+  {id:2,emoji:'🐶',correctLabel:'Chien',currentLabel:'Chat',wrong:true},
+  {id:3,emoji:'🐦',correctLabel:'Oiseau',currentLabel:'Oiseau',wrong:false},
+  {id:4,emoji:'🐱',correctLabel:'Chat',currentLabel:'Chat',wrong:false},
+  {id:5,emoji:'🐟',correctLabel:'Poisson',currentLabel:'Poisson',wrong:false},
+  {id:6,emoji:'🐶',correctLabel:'Chien',currentLabel:'Chien',wrong:false},
+  {id:7,emoji:'🐦',correctLabel:'Oiseau',currentLabel:'Poisson',wrong:true},
+  {id:8,emoji:'🐱',correctLabel:'Chat',currentLabel:'Chien',wrong:true},
+  {id:9,emoji:'🐟',correctLabel:'Poisson',currentLabel:'Poisson',wrong:false},
+  {id:10,emoji:'🐶',correctLabel:'Chien',currentLabel:'Chien',wrong:false},
+  {id:11,emoji:'🐦',correctLabel:'Oiseau',currentLabel:'Oiseau',wrong:false},
+  {id:12,emoji:'🐟',correctLabel:'Poisson',currentLabel:'Chat',wrong:true},
+];
+let exp4Flagged=new Set();
+let exp4Trained=false;
+
 function renderExp4(zone){
-  exp4Step=0;
+  exp4Flagged.clear();
+  exp4Trained=false;
   zone.innerHTML=`
     <div class="callout" style="border-color:rgba(0,212,255,.4)">
-      <h3 style="color:var(--neon-blue);margin-bottom:15px">⚖️ EXP. 04 — Le Dilemme Éthique</h3>
-      <div class="callout ok" style="margin-bottom:20px">
-        <div style="display:flex;align-items:center;gap:15px;margin-bottom:12px">
-          <img src="images/module2-supervisor.png" alt="Dr. Nakamura" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--neon-green);object-fit:cover;background:rgba(0,255,136,.1)"/>
-          <strong style="color:var(--neon-green)">Dr. Nakamura — Message urgent</strong>
-        </div>
-        <p style="line-height:1.7">"Un client majeur, la banque MegaFinance, nous demande de développer un modèle de scoring crédit. Ils nous fournissent leur dataset historique. En l'analysant, vous découvrez que le code postal est fortement corrélé à l'ethnie des demandeurs, et que le modèle utilise cette variable pour discriminer certains quartiers."</p>
+      <h3 style="color:var(--neon-blue);margin-bottom:15px">🧹 EXP. 04 — Le Nettoyeur de Données</h3>
+      <p style="margin-bottom:10px;line-height:1.6">Ce dataset contient des <strong>erreurs d'étiquetage</strong> : certaines images sont associées au mauvais label. Repérez les erreurs en cliquant sur les items mal étiquetés, puis comparez la précision du modèle <strong>avant</strong> et <strong>après</strong> nettoyage.</p>
+      <p style="margin-bottom:20px;line-height:1.6;color:var(--warn);font-size:0.9em">Il y a <strong>4 erreurs</strong> à trouver dans les 12 items ci-dessous.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:20px 0" id="exp4-pool">
+        ${cleanData.map(d=>`
+          <div class="data-item" data-id="${d.id}" onclick="toggleFlag(${d.id})" style="width:auto;height:auto;flex-direction:column;padding:12px;font-size:1em;gap:4px">
+            <span style="font-size:2em">${d.emoji}</span>
+            <span style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--neon-blue)">Label : ${d.currentLabel}</span>
+          </div>
+        `).join('')}
       </div>
 
-      <h4 style="color:var(--neon-pink);margin-bottom:15px">Que décidez-vous ?</h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px" id="exp4-choices">
-        <div class="exp-card" onclick="exp4Choose('accept')" style="border-color:rgba(255,0,128,.4)">
-          <div class="exp-icon">💰</div>
-          <div class="exp-name" style="color:var(--neon-pink)">Accepter tel quel</div>
-          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">"Le client veut ce modèle, et le contrat vaut 2M€. Ce n'est pas notre faute si les données reflètent la réalité."</div>
-        </div>
-        <div class="exp-card" onclick="exp4Choose('refuse')" style="border-color:rgba(0,255,136,.4)">
-          <div class="exp-icon">🛡️</div>
-          <div class="exp-name" style="color:var(--neon-green)">Proposer une alternative</div>
-          <div style="color:var(--muted);font-size:0.85em;margin-top:8px">"Signaler le biais au client et proposer un modèle corrigé qui exclut les variables proxy discriminatoires."</div>
+      <div style="margin:15px 0">
+        <div style="font-size:0.85em;color:var(--muted);margin-bottom:8px">
+          Erreurs signalées : <span id="exp4-count" style="color:var(--neon-pink);font-weight:700">0</span>/4
         </div>
       </div>
 
-      <div id="exp4-result" style="margin-top:20px"></div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px 0">
+        <button class="btn" onclick="trainDirty()">Entraîner AVANT nettoyage</button>
+        <button class="btn green" onclick="trainClean()" id="exp4-clean-btn" disabled>Entraîner APRÈS nettoyage</button>
+        <button class="btn pink" onclick="renderExp4($('exp-zone'))">Réinitialiser</button>
+      </div>
+
+      <div id="exp4-result"></div>
     </div>`;
 }
 
-function exp4Choose(choice){
-  const result=$('exp4-result');
-  if(choice==='accept'){
-    result.innerHTML=`
-      <div class="callout pink">
-        <h4 style="color:var(--neon-pink);margin-bottom:10px">Conséquences de votre choix</h4>
-        <p style="line-height:1.7;margin-bottom:12px">Six mois plus tard, une enquête journalistique révèle que le modèle de MegaFinance refuse systématiquement les prêts aux habitants de certains quartiers à majorité ethnique. Le scandale fait la une. SYNAPTIK est mis en cause pour avoir fourni un outil discriminatoire.</p>
-        <ul style="line-height:1.8;margin:12px 0 12px 20px">
-          <li>Amende de 5M€ de l'autorité de régulation</li>
-          <li>Perte de réputation majeure pour SYNAPTIK</li>
-          <li>Des milliers de personnes injustement privées de crédit</li>
-        </ul>
-        <p style="line-height:1.7;font-size:0.9em;font-style:italic">Le gain à court terme (2M€) a coûté bien plus cher que la perte. Et surtout, des vies réelles ont été impactées par cette décision.</p>
-        <button class="btn" onclick="renderExp4($('exp-zone'))" style="margin-top:15px">Recommencer</button>
-      </div>`;
-  } else {
-    result.innerHTML=`
-      <div class="callout ok">
-        <h4 style="color:var(--neon-green);margin-bottom:10px">Conséquences de votre choix</h4>
-        <p style="line-height:1.7;margin-bottom:12px">Vous présentez votre analyse de biais au client avec des recommandations concrètes : retirer le code postal, auditer les corrélations proxy, rééquilibrer le dataset. MegaFinance est impressionnée par votre rigueur éthique.</p>
-        <ul style="line-height:1.8;margin:12px 0 12px 20px">
-          <li>Le client accepte un contrat élargi (3M€) incluant l'audit de biais</li>
-          <li>SYNAPTIK devient référence en IA éthique</li>
-          <li>Le modèle corrigé est plus équitable ET plus performant</li>
-        </ul>
-        <p style="line-height:1.7;font-size:0.9em;font-style:italic">"Un modèle éthique n'est pas un luxe, c'est un avantage compétitif." — Dr. Nakamura</p>
-        <button class="btn green" onclick="completeExperiment(4)" style="margin-top:15px">Valider l'expérience ✓</button>
-      </div>`;
-  }
+function toggleFlag(id){
+  if(exp4Flagged.has(id)) exp4Flagged.delete(id); else exp4Flagged.add(id);
+  document.querySelectorAll('#exp4-pool .data-item').forEach(el=>{
+    const eid=parseInt(el.dataset.id);
+    el.classList.toggle('selected',exp4Flagged.has(eid));
+  });
+  $('exp4-count').textContent=exp4Flagged.size;
+  // Enable clean button only after dirty training
+  if(exp4Trained) $('exp4-clean-btn').disabled=false;
+}
+
+function trainDirty(){
+  exp4Trained=true;
+  // Dirty accuracy: 4 items are wrong out of 12 → ~67% base accuracy
+  const dirtyAcc=67;
+  $('exp4-result').innerHTML=`
+    <div class="callout warn" style="margin-top:15px">
+      <h4 style="color:var(--warn);margin-bottom:10px">Résultat AVANT nettoyage</h4>
+      <p style="margin-bottom:10px">Précision du modèle : <strong style="font-size:1.3em;color:var(--warn)">${dirtyAcc}%</strong></p>
+      <div class="accuracy-bar"><div class="accuracy-fill" style="width:${dirtyAcc}%;background:var(--warn)"><span class="accuracy-label">${dirtyAcc}%</span></div></div>
+      <p style="margin-top:12px;line-height:1.6;font-size:0.9em">Le modèle a appris des associations incorrectes à cause des erreurs d'étiquetage. Il confond certaines catégories. Signalez maintenant les items mal étiquetés et entraînez à nouveau !</p>
+    </div>`;
+  $('exp4-clean-btn').disabled=(exp4Flagged.size===0);
+  $('exp4-result').scrollIntoView({behavior:'smooth'});
+}
+
+function trainClean(){
+  if(!exp4Trained){toast("Entraînez d'abord le modèle AVANT nettoyage.");return;}
+
+  // Check which flagged items are actually wrong
+  const correctFlags=cleanData.filter(d=>d.wrong&&exp4Flagged.has(d.id)).length;
+  const falseFlags=exp4Flagged.size-correctFlags;
+  const missedErrors=4-correctFlags;
+  const cleanAcc=Math.min(96,67+correctFlags*7-falseFlags*4);
+  const perfect=correctFlags===4&&falseFlags===0;
+
+  // Reveal the correct answers
+  document.querySelectorAll('#exp4-pool .data-item').forEach(el=>{
+    const eid=parseInt(el.dataset.id);
+    const item=cleanData.find(d=>d.id===eid);
+    if(!item)return;
+    el.style.pointerEvents='none';
+    if(item.wrong&&exp4Flagged.has(eid)){
+      // Correctly flagged
+      el.style.borderColor='var(--neon-green)';el.style.background='rgba(0,255,136,.15)';
+    } else if(item.wrong&&!exp4Flagged.has(eid)){
+      // Missed error
+      el.style.borderColor='var(--danger)';el.style.background='rgba(255,77,77,.15)';
+    } else if(!item.wrong&&exp4Flagged.has(eid)){
+      // False flag
+      el.style.borderColor='var(--warn)';el.style.background='rgba(255,204,0,.12)';
+    }
+  });
+
+  const prevResult=$('exp4-result').innerHTML;
+  $('exp4-result').innerHTML=prevResult+`
+    <div class="callout ${perfect?'ok':'warn'}" style="margin-top:15px">
+      <h4 style="color:${perfect?'var(--neon-green)':'var(--warn)'};margin-bottom:10px">Résultat APRÈS nettoyage</h4>
+      <p style="margin-bottom:10px">Précision du modèle : <strong style="font-size:1.3em;color:${perfect?'var(--neon-green)':'var(--warn)'}">${cleanAcc}%</strong></p>
+      <div class="accuracy-bar"><div class="accuracy-fill" style="width:${cleanAcc}%;background:${perfect?'var(--neon-green)':'var(--warn)'}"><span class="accuracy-label">${cleanAcc}%</span></div></div>
+      <div style="margin-top:12px;font-size:0.9em;line-height:1.7">
+        <p>Erreurs correctement identifiées : <strong style="color:var(--neon-green)">${correctFlags}/4</strong></p>
+        ${falseFlags>0?`<p>Faux positifs (items corrects signalés à tort) : <strong style="color:var(--warn)">${falseFlags}</strong></p>`:''}
+        ${missedErrors>0?`<p>Erreurs manquées : <strong style="color:var(--danger)">${missedErrors}</strong> <span style="color:var(--danger)">(items encadrés en rouge)</span></p>`:''}
+      </div>
+      <p style="margin-top:12px;line-height:1.6;font-size:0.9em;font-style:italic">${perfect
+        ?'"Garbage In, Garbage Out" : en nettoyant les données, la précision passe de 67% à 96%. La qualité des données est plus importante que la quantité !'
+        :'Vous n\'avez pas identifié toutes les erreurs. Regardez les items encadrés en rouge — ce sont les erreurs que vous avez manquées. Réessayez !'
+      }</p>
+      ${perfect
+        ?'<button class="btn green" onclick="completeExperiment(4)" style="margin-top:15px">Valider l\'expérience ✓</button>'
+        :'<button class="btn" onclick="renderExp4($(\'exp-zone\'))" style="margin-top:15px">Réessayer</button>'
+      }
+    </div>`;
+  $('exp4-result').scrollIntoView({behavior:'smooth'});
 }
 
 /* =========================================================
