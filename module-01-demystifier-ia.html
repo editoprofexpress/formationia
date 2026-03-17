@@ -2503,6 +2503,11 @@
     function startMission() {
       document.getElementById('briefing-screen').classList.remove('active');
       document.getElementById('mission-screen').classList.add('active');
+      // Run boot sequence on first visit
+      if (typeof runBootSequence === 'function' && !window._missionBooted) {
+        window._missionBooted = true;
+        runBootSequence();
+      }
     }
   </script>
 
@@ -2756,14 +2761,12 @@
     function runBootSequence(onComplete) {
       const lines = [
         { text: 'DECODE SYSTEM v4.1 — INITIALISATION...', cls: '', delay: 0 },
-        { text: '> Chargement du protocole d\'enquête...', cls: 'dim', delay: 320 },
-        { text: '> Connexion sécurisée établie [TLS 1.3]', cls: 'dim', delay: 640 },
-        { text: '> Dossier ATLAS chargé — 6 pièces classifiées', cls: '', delay: 960 },
-        { text: '> Analyse biométrique : AGENT AUTORISÉ', cls: 'green', delay: 1280 },
-        { text: '> AVERTISSEMENT : Ce dossier est confidentiel', cls: 'warn', delay: 1600 },
-        { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', cls: 'dim', delay: 1900 },
-        { text: '  OPÉRATION ATLAS — ACCÈS ACCORDÉ', cls: 'green', delay: 2100 },
-        { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', cls: 'dim', delay: 2300 },
+        { text: '> Connexion sécurisée établie [TLS 1.3]', cls: 'dim', delay: 200 },
+        { text: '> Dossier ATLAS chargé — 6 pièces classifiées', cls: '', delay: 400 },
+        { text: '> Analyse biométrique : AGENT AUTORISÉ', cls: 'green', delay: 600 },
+        { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', cls: 'dim', delay: 800 },
+        { text: '  OPÉRATION ATLAS — ACCÈS ACCORDÉ', cls: 'green', delay: 950 },
+        { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', cls: 'dim', delay: 1050 },
       ];
       const container = document.getElementById('boot-lines');
       const cursor = document.getElementById('boot-cursor');
@@ -2780,8 +2783,8 @@
         if (cursor) cursor.style.display = 'none';
         const boot = document.getElementById('decode-boot');
         boot.classList.add('fade-out');
-        setTimeout(() => { boot.classList.add('hidden'); if (onComplete) onComplete(); }, 800);
-      }, 2700);
+        setTimeout(() => { boot.classList.add('hidden'); if (onComplete) onComplete(); }, 600);
+      }, 1300);
     }
 
     /* ==================== DONNÉES MISSION ==================== */
@@ -3077,18 +3080,8 @@
       renderQuizQuestion();
     }
 
-    /* Hook: run boot sequence when mission screen becomes active */
-    let missionBooted = false;
-    const _origGoToMission = window.goToMission;
-    // Intercept mission activation via MutationObserver
-    const missionObserver = new MutationObserver(() => {
-      const ms = document.getElementById('mission-screen');
-      if (ms && ms.classList.contains('active') && !missionBooted) {
-        missionBooted = true;
-        runBootSequence();
-      }
-    });
-    missionObserver.observe(document.getElementById('mission-screen'), { attributes: true, attributeFilter: ['class'] });
+    /* Boot state tracked globally */
+    window._missionBooted = false;
   </script>
 
   <!-- ==================== ÉCRAN QUIZ ==================== -->
