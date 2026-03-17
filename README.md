@@ -1,6 +1,6 @@
 # Formationia — Fondamentaux et usages de l'intelligence artificielle
 
-**Plateforme éducative gratuite sur l'IA responsable** — 15 micro-modules interactifs ludifiés pour comprendre, utiliser et questionner l'intelligence artificielle de manière citoyenne.
+**Plateforme éducative gratuite — Fondamentaux et usages de l'intelligence artificielle** — 15 micro-modules interactifs ludifiés pour comprendre, utiliser et questionner l'intelligence artificielle de manière citoyenne.
 
 > Proposée par [Prof Express](https://www.profexpress.com)
 
