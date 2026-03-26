@@ -2413,6 +2413,40 @@ function downloadCertificate() {
             Proposé par <strong>Prof Express</strong> · profexpress.com · Fondamentaux et usages de l'intelligence artificielle
         </div>
     </div>
+
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Attestation_Module14_${name.replace(/\s+/g,'_')}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+/* ==================== ATTESTATION SIDEBAR ==================== */
+let certUnlocked14 = false;
+function unlockCertificate(pct) {
+  certUnlocked14 = true;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(149,225,211,0.2)'; num.style.color = '#95e1d3'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() {
+  if (!certUnlocked14) return;
+  const bs = document.getElementById('briefing-screen');
+  if (bs) bs.classList.add('active');
+  // Navigate to quiz lesson which has the attestation
+  showLesson(7);
+}
+</script>
+
 <script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
@@ -2449,38 +2483,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-</body>
-</html>`;
-
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Attestation_Module14_${name.replace(/\s+/g,'_')}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-/* ==================== ATTESTATION SIDEBAR ==================== */
-let certUnlocked14 = false;
-function unlockCertificate(pct) {
-  certUnlocked14 = true;
-  const navItem = document.getElementById('certificate-nav-item');
-  if (navItem) {
-    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
-    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
-    const num = navItem.querySelector('.nav-number');
-    if (num) { num.style.background = 'rgba(149,225,211,0.2)'; num.style.color = '#95e1d3'; num.textContent = '✓'; }
-  }
-}
-function showCertificateInFolder() {
-  if (!certUnlocked14) return;
-  const bs = document.getElementById('briefing-screen');
-  if (bs) bs.classList.add('active');
-  // Navigate to quiz lesson which has the attestation
-  showLesson(7);
-}
-</script>
-
 </body>
 </html>

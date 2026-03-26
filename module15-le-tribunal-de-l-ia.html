@@ -3929,6 +3929,25 @@
             </a>
         </div>
     </div>
+
+</body>
+</html>`;
+
+            const blob = new Blob([certificateHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Attestation_Module15_${name.replace(/\s+/g, '_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // ==================== INIT ====================
+        showLesson(0);
+        initParticles();
+    </script>
 <script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
@@ -3965,23 +3984,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-</body>
-</html>`;
-
-            const blob = new Blob([certificateHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Attestation_Module15_${name.replace(/\s+/g, '_')}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // ==================== INIT ====================
-        showLesson(0);
-        initParticles();
-    </script>
 </body>
 </html>

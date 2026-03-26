@@ -3548,6 +3548,26 @@
       <div class="footer-value">${refId}</div>
     </div>
   </div>
+
+  <div class="provider">
+    Formation proposée par <a href="https://www.profexpress.com" target="_blank">Prof Express</a>
+  </div>
+</div>
+</body>
+</html>`;
+
+      const blob = new Blob([certificateHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Attestation_Module01_' + name.replace(/\\s+/g, '_') + '.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+
 <script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
@@ -3584,24 +3604,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-  <div class="provider">
-    Formation proposée par <a href="https://www.profexpress.com" target="_blank">Prof Express</a>
-  </div>
-</div>
-</body>
-</html>`;
-
-      const blob = new Blob([certificateHTML], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Attestation_Module01_' + name.replace(/\\s+/g, '_') + '.html';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  </script>
-
 </body>
 </html>

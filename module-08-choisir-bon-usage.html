@@ -2089,42 +2089,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
     </div>
   </div>
 </div>
-<script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
-(function(){
-  var bar=document.createElement('div');
-  bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
-  bar.innerHTML='<button class="mobile-hamburger" onclick="toggleMobileNav()" aria-label="Menu">&#9776;</button>'
-    +'<span class="mobile-nav-title">Navigation</span>'
-    +'<div class="mobile-nav-arrows">'
-    +'<button class="mobile-nav-arrow" id="mob-prev" onclick="prevLesson()">&#8592; Préc.</button>'
-    +'<button class="mobile-nav-arrow" id="mob-next" onclick="nextLesson()">Suiv. &#8594;</button>'
-    +'</div>';
-  var ov=document.createElement('div');
-  ov.id='briefing-nav-overlay';ov.className='briefing-nav-overlay';
-  ov.setAttribute('onclick','closeMobileNav()');
-  var body=document.querySelector('.briefing-body');
-  if(body){body.parentNode.insertBefore(bar,body);body.parentNode.insertBefore(ov,body);}
-})();
-function toggleMobileNav(){
-  var n=document.querySelector('.briefing-nav'),o=document.getElementById('briefing-nav-overlay');
-  if(!n)return;
-  n.classList.toggle('nav-open');o.classList.toggle('visible');
-  document.body.style.overflow=n.classList.contains('nav-open')?'hidden':'';
-}
-function closeMobileNav(){
-  var n=document.querySelector('.briefing-nav'),o=document.getElementById('briefing-nav-overlay');
-  if(n)n.classList.remove('nav-open');
-  if(o)o.classList.remove('visible');
-  document.body.style.overflow='';
-}
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
-document.addEventListener('click',function(e){
-  if(window.innerWidth>768)return;
-  if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))
-    closeMobileNav();
-});
-</script>
+
 </body>
 </html>`;
 
@@ -2164,5 +2129,41 @@ function unlockCertificate() {
 function showCertificateInFolder() { showCertificate(); }
 </script>
 
+<script>
+/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+(function(){
+  var bar=document.createElement('div');
+  bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
+  bar.innerHTML='<button class="mobile-hamburger" onclick="toggleMobileNav()" aria-label="Menu">&#9776;</button>'
+    +'<span class="mobile-nav-title">Navigation</span>'
+    +'<div class="mobile-nav-arrows">'
+    +'<button class="mobile-nav-arrow" id="mob-prev" onclick="prevLesson()">&#8592; Préc.</button>'
+    +'<button class="mobile-nav-arrow" id="mob-next" onclick="nextLesson()">Suiv. &#8594;</button>'
+    +'</div>';
+  var ov=document.createElement('div');
+  ov.id='briefing-nav-overlay';ov.className='briefing-nav-overlay';
+  ov.setAttribute('onclick','closeMobileNav()');
+  var body=document.querySelector('.briefing-body');
+  if(body){body.parentNode.insertBefore(bar,body);body.parentNode.insertBefore(ov,body);}
+})();
+function toggleMobileNav(){
+  var n=document.querySelector('.briefing-nav'),o=document.getElementById('briefing-nav-overlay');
+  if(!n)return;
+  n.classList.toggle('nav-open');o.classList.toggle('visible');
+  document.body.style.overflow=n.classList.contains('nav-open')?'hidden':'';
+}
+function closeMobileNav(){
+  var n=document.querySelector('.briefing-nav'),o=document.getElementById('briefing-nav-overlay');
+  if(n)n.classList.remove('nav-open');
+  if(o)o.classList.remove('visible');
+  document.body.style.overflow='';
+}
+/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+document.addEventListener('click',function(e){
+  if(window.innerWidth>768)return;
+  if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))
+    closeMobileNav();
+});
+</script>
 </body>
 </html>

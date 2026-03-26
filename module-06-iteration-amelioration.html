@@ -1719,7 +1719,21 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
 .sk{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px}
 .sk span{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);padding:5px 15px;border-radius:15px;font-size:.85em;color:#00d4ff}
 @media print{body{background:#fff}.cert{box-shadow:none;border-width:2px}}
-</style></head><body><div class="cert"><div class="hd"><div class="logo">🎯✨</div><div class="ttl">Attestation de Réussite</div><div class="sub">Formation IA Responsable</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 6 : Itération & Amélioration</div><p style="color:#b0b0b0;margin-top:10px">Prompt Engineering & Raffinement — Studio ITERATEK</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Prompt Engineering</span><span>Méthode RCTFC</span><span>Spécificité</span><span>Formats de sortie</span><span>Personas</span><span>Few-shot Learning</span><span>Itération</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div><script>
+</style></head><body><div class="cert"><div class="hd"><div class="logo">🎯✨</div><div class="ttl">Attestation de Réussite</div><div class="sub">Formation IA Responsable</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 6 : Itération & Amélioration</div><p style="color:#b0b0b0;margin-top:10px">Prompt Engineering & Raffinement — Studio ITERATEK</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Prompt Engineering</span><span>Méthode RCTFC</span><span>Spécificité</span><span>Formats de sortie</span><span>Personas</span><span>Few-shot Learning</span><span>Itération</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">IA Responsable</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div>
+</body></html>`;
+</style></head><body><div class="cert"><div class="hd"><div class="logo">🎯✨</div><div class="ttl">Attestation de Réussite</div><div class="sub">Fondamentaux et usages de l'intelligence artificielle</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 6 : Itération & Amélioration</div><p style="color:#b0b0b0;margin-top:10px">Prompt Engineering & Raffinement — Studio ITERATEK</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Prompt Engineering</span><span>Méthode RCTFC</span><span>Spécificité</span><span>Formats de sortie</span><span>Personas</span><span>Few-shot Learning</span><span>Itération</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">Fondamentaux et usages de l'intelligence artificielle</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div></body></html>`;
+
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`Attestation_Module06_${name.replace(/\s+/g,'_')}.html`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast("✅ Attestation téléchargée !",4000);
+}
+
+</script>
+<script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
   var bar=document.createElement('div');
@@ -1754,19 +1768,6 @@ document.addEventListener('click',function(e){
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))
     closeMobileNav();
 });
-</script>
-</body></html>`;
-</style></head><body><div class="cert"><div class="hd"><div class="logo">🎯✨</div><div class="ttl">Attestation de Réussite</div><div class="sub">Fondamentaux et usages de l'intelligence artificielle</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 6 : Itération & Amélioration</div><p style="color:#b0b0b0;margin-top:10px">Prompt Engineering & Raffinement — Studio ITERATEK</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Prompt Engineering</span><span>Méthode RCTFC</span><span>Spécificité</span><span>Formats de sortie</span><span>Personas</span><span>Few-shot Learning</span><span>Itération</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">Fondamentaux et usages de l'intelligence artificielle</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div></body></html>`;
-
-  const blob=new Blob([html],{type:'text/html'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=`Attestation_Module06_${name.replace(/\s+/g,'_')}.html`;
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  toast("✅ Attestation téléchargée !",4000);
-}
-
 </script>
 </body>
 </html>
