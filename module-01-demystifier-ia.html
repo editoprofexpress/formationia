@@ -9,6 +9,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700;800&display=swap');
 
     :root {
+      --neon-red:    #ff6b6b;
+      --neon-orange: #ff9f43;
       --neon-green: #00ff88;
       --neon-blue: #00d4ff;
       --neon-pink: #ff0080;
@@ -37,7 +39,7 @@
       position: fixed; inset: 0;
       background:
         url('images/module1-title-bg.png') center/cover no-repeat,
-        linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+        linear-gradient(135deg, #0a0e17 0%, #1a0a0a 50%, #0a0e17 100%);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       z-index: 1000;
       transition: opacity .6s ease, visibility .6s ease;
@@ -59,8 +61,8 @@
       content: '';
       position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255, 107, 107, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 107, 107, 0.04) 1px, transparent 1px);
       background-size: 60px 60px;
       z-index: -1;
     }
@@ -103,12 +105,12 @@
     .title-badge {
       display: inline-block;
       padding: 6px 18px;
-      background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.4);
+      background: rgba(255, 107, 107, 0.08);
+      border: 1px solid rgba(255, 107, 107, 0.4);
       border-radius: 30px;
       font-family: 'Space Mono', monospace;
       font-size: 0.8em;
-      color: var(--neon-green);
+      color: var(--neon-red);
       letter-spacing: 3px;
       text-transform: uppercase;
       margin-bottom: 18px;
@@ -116,8 +118,8 @@
     }
 
     @keyframes pulse-border {
-      0%, 100% { border-color: rgba(0, 255, 136, 0.4); box-shadow: 0 0 10px rgba(0, 255, 136, 0.1); }
-      50% { border-color: rgba(0, 255, 136, 0.8); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+      0%, 100% { border-color: rgba(255, 107, 107, 0.4); box-shadow: 0 0 10px rgba(255, 107, 107, 0.1); }
+      50% { border-color: rgba(255, 107, 107, 0.8); box-shadow: 0 0 20px rgba(255, 107, 107, 0.3); }
     }
 
     .main-title {
@@ -126,7 +128,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 5px;
-      background: linear-gradient(90deg, var(--neon-green), var(--neon-blue), var(--neon-pink));
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-orange), var(--neon-pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -153,7 +155,7 @@
     }
 
     .intro-text strong {
-      color: var(--neon-blue);
+      color: var(--neon-red);
     }
 
     .intro-text em {
@@ -167,8 +169,8 @@
       font-size: 1.1em;
       padding: 18px 55px;
       background: transparent;
-      border: 2px solid var(--neon-green);
-      color: var(--neon-green);
+      border: 2px solid var(--neon-red);
+      color: var(--neon-red);
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 3px;
@@ -181,15 +183,15 @@
       content: '';
       position: absolute; top: 0; left: -100%;
       width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent);
       transition: left .5s;
     }
 
     .start-btn:hover::before { left: 100%; }
 
     .start-btn:hover {
-      background: rgba(0, 255, 136, 0.08);
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.5), inset 0 0 30px rgba(0, 255, 136, 0.08);
+      background: rgba(255, 107, 107, 0.08);
+      box-shadow: 0 0 30px rgba(255, 107, 107, 0.5), inset 0 0 30px rgba(255, 107, 107, 0.08);
       transform: scale(1.05);
     }
 
@@ -208,7 +210,7 @@
     /* ==================== SECTION BRIEFING ==================== */
     #briefing-screen {
       position: fixed; inset: 0;
-      background: linear-gradient(135deg, #0a0e17 0%, #1a1a3a 50%, #0a0e17 100%);
+      background: linear-gradient(135deg, #0a0e17 0%, #1a0a0a 50%, #0a0e17 100%);
       z-index: 999;
       display: none;
       flex-direction: column;
@@ -219,7 +221,7 @@
 
     .briefing-header {
       background: rgba(10, 20, 40, 0.95);
-      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      border-bottom: 1px solid rgba(255, 107, 107, 0.3);
       padding: 15px 30px;
       display: flex;
       align-items: center;
@@ -229,7 +231,7 @@
     .briefing-title {
       font-family: 'Space Mono', monospace;
       font-size: 1.3em;
-      color: var(--neon-green);
+      color: var(--neon-red);
       display: flex;
       align-items: center;
       gap: 15px;
@@ -248,14 +250,14 @@
     .briefing-progress-bar {
       width: 200px;
       height: 6px;
-      background: rgba(0, 255, 136, 0.1);
+      background: rgba(255, 107, 107, 0.1);
       border-radius: 3px;
       overflow: hidden;
     }
 
     .briefing-progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-orange));
       transition: width 0.3s ease;
     }
 
@@ -269,7 +271,7 @@
     .briefing-nav {
       width: 280px;
       background: rgba(10, 20, 40, 0.9);
-      border-right: 1px solid rgba(0, 255, 136, 0.2);
+      border-right: 1px solid rgba(255, 107, 107, 0.2);
       padding: 20px 0;
       overflow-y: auto;
     }
@@ -310,17 +312,17 @@
     }
 
     .briefing-nav-item:hover {
-      background: rgba(0, 255, 136, 0.05);
+      background: rgba(255, 107, 107, 0.05);
       color: var(--text);
     }
 
     .briefing-nav-item.active {
-      border-left-color: var(--neon-green);
-      background: rgba(0, 255, 136, 0.1);
-      color: var(--neon-green);
+      border-left-color: var(--neon-red);
+      background: rgba(255, 107, 107, 0.1);
+      color: var(--neon-red);
     }
 
-    .briefing-nav-item.completed { color: var(--neon-blue); }
+    .briefing-nav-item.completed { color: var(--neon-orange); }
     .briefing-nav-item.completed::after {
       content: '✓';
       margin-left: auto;
@@ -331,7 +333,8 @@
     .nav-number {
       font-family: 'Space Mono', monospace;
       font-size: 0.8em;
-      background: rgba(0, 255, 136, 0.2);
+      background: rgba(255, 107, 107, 0.15);
+      color: var(--neon-red);
       padding: 2px 8px;
       border-radius: 3px;
     }
@@ -346,13 +349,13 @@
     }
 
     .briefing-content::-webkit-scrollbar { width: 8px; }
-    .briefing-content::-webkit-scrollbar-track { background: rgba(0, 255, 136, 0.05); }
-    .briefing-content::-webkit-scrollbar-thumb { background: rgba(0, 255, 136, 0.3); border-radius: 4px; }
+    .briefing-content::-webkit-scrollbar-track { background: rgba(255, 107, 107, 0.05); }
+    .briefing-content::-webkit-scrollbar-thumb { background: rgba(255, 107, 107, 0.3); border-radius: 4px; }
 
     /* Footer navigation */
     .briefing-footer {
       background: rgba(10, 20, 40, 0.95);
-      border-top: 1px solid rgba(0, 255, 136, 0.3);
+      border-top: 1px solid rgba(255, 107, 107, 0.3);
       padding: 20px 30px;
       display: flex;
       justify-content: space-between;
@@ -362,9 +365,9 @@
     .briefing-btn {
       font-family: 'Space Mono', monospace;
       padding: 12px 30px;
-      border: 2px solid var(--neon-green);
+      border: 2px solid var(--neon-red);
       background: transparent;
-      color: var(--neon-green);
+      color: var(--neon-red);
       cursor: pointer;
       font-size: 1em;
       transition: all 0.3s;
@@ -374,18 +377,18 @@
     }
 
     .briefing-btn:hover {
-      background: rgba(0, 255, 136, 0.1);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+      background: rgba(255, 107, 107, 0.1);
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
     }
 
     .briefing-btn.primary {
-      background: var(--neon-green);
+      background: var(--neon-red);
       color: var(--dark-bg);
     }
 
     .briefing-btn.primary:hover {
-      background: var(--neon-blue);
-      border-color: var(--neon-blue);
+      background: var(--neon-orange);
+      border-color: var(--neon-orange);
     }
 
     .briefing-btn:disabled {
@@ -405,26 +408,26 @@
     .module-title {
       font-family: 'Space Mono', monospace;
       font-size: 1.8em;
-      color: var(--neon-green);
+      color: var(--neon-red);
       margin-bottom: 30px;
       padding-bottom: 15px;
-      border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+      border-bottom: 1px solid rgba(255, 107, 107, 0.3);
     }
 
     .module-kicker { color: var(--muted); margin-bottom: 18px; line-height: 1.6; }
 
     .divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.5), transparent);
       margin: 22px 0;
     }
 
     .callout {
-      background: rgba(0, 255, 136, 0.08);
-      border: 1px solid rgba(0, 255, 136, 0.25);
+      background: rgba(255, 107, 107, 0.06);
+      border: 1px solid rgba(255, 107, 107, 0.25);
       padding: 16px;
       border-radius: 14px;
-      box-shadow: 0 0 22px rgba(0, 255, 136, 0.18);
+      box-shadow: 0 0 22px rgba(255, 107, 107, 0.12);
       margin: 14px 0;
       line-height: 1.65;
       color: #cfe9ff;
@@ -457,12 +460,12 @@
     .pill {
       display: inline-block;
       padding: 6px 10px;
-      border: 1px solid rgba(0, 255, 136, .5);
+      border: 1px solid rgba(255, 107, 107, .5);
       border-radius: 999px;
       font-family: 'Space Mono', monospace;
       font-size: .78em;
-      color: var(--neon-green);
-      background: rgba(0, 255, 136, .05);
+      color: var(--neon-red);
+      background: rgba(255, 107, 107, .05);
       margin-right: 8px;
       margin-bottom: 8px;
     }
@@ -472,7 +475,7 @@
 
     h3 {
       font-family: 'Space Mono', monospace;
-      color: var(--neon-blue);
+      color: var(--neon-red);
       margin: 20px 0 12px;
       font-size: 1.15em;
     }
@@ -481,8 +484,8 @@
     ul, ol { margin: 10px 0 10px 22px; line-height: 1.65; }
     li { margin-bottom: 6px; }
 
-    strong { color: var(--neon-green); }
-    em { color: var(--neon-blue); font-style: normal; }
+    strong { color: var(--neon-red); }
+    em { color: var(--neon-orange); font-style: normal; }
 
     /* ==================== MISSION INTERACTIVE ==================== */
     #lesson-8 { position: relative; }
