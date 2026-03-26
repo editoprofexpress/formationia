@@ -3256,6 +3256,21 @@
             <p style="color:#00d4ff;font-weight:600;">Prof Express</p>
         </div>
     </div>
+
+</body>
+</html>`;
+
+            const blob = new Blob([certificateHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Attestation_Module13_' + name.replace(/\\s+/g, '_') + '.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
 <script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
@@ -3292,19 +3307,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-</body>
-</html>`;
-
-            const blob = new Blob([certificateHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Attestation_Module13_' + name.replace(/\\s+/g, '_') + '.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-    </script>
 </body>
 </html>

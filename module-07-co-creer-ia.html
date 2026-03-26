@@ -2449,6 +2449,41 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
     </div>
   </div>
 </div>
+
+</body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Attestation_Module07_${name.replace(/\s+/g, '_')}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+/* ==================== ATTESTATION SIDEBAR ==================== */
+let certUnlocked07 = false;
+function unlockCertificate(score) {
+  certUnlocked07 = true;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(78,205,196,0.2)'; num.style.color = '#4ecdc4'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() {
+  if (!certUnlocked07) return;
+  const qs = document.getElementById('quiz-screen');
+  if (qs) { qs.style.display = 'flex'; }
+  const bs = document.getElementById('briefing-screen');
+  if (bs) { bs.classList.remove('active'); }
+  startCertification(finalScore);
+}
+</script>
+
 <script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
@@ -2485,39 +2520,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-</body>
-</html>`;
-
-    const blob = new Blob([html], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Attestation_Module07_${name.replace(/\s+/g, '_')}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-/* ==================== ATTESTATION SIDEBAR ==================== */
-let certUnlocked07 = false;
-function unlockCertificate(score) {
-  certUnlocked07 = true;
-  const navItem = document.getElementById('certificate-nav-item');
-  if (navItem) {
-    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
-    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
-    const num = navItem.querySelector('.nav-number');
-    if (num) { num.style.background = 'rgba(78,205,196,0.2)'; num.style.color = '#4ecdc4'; num.textContent = '✓'; }
-  }
-}
-function showCertificateInFolder() {
-  if (!certUnlocked07) return;
-  const qs = document.getElementById('quiz-screen');
-  if (qs) { qs.style.display = 'flex'; }
-  const bs = document.getElementById('briefing-screen');
-  if (bs) { bs.classList.remove('active'); }
-  startCertification(finalScore);
-}
-</script>
-
 </body>
 </html>

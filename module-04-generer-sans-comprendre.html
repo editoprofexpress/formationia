@@ -2342,6 +2342,37 @@
     <span class="badge">FONDATIONS IA</span>
   </div>
 </div>
+
+</body>
+</html>`;
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Attestation_Module04_${participantName.replace(/\s+/g, '_')}.html`;
+      a.click();
+    }
+  
+/* ==================== ATTESTATION SIDEBAR ==================== */
+let certFinalPct04 = 0;
+function unlockCertificate(pct) {
+  certFinalPct04 = pct || certFinalPct04;
+  const navItem = document.getElementById('certificate-nav-item');
+  if (navItem) {
+    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
+    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
+    const num = navItem.querySelector('.nav-number');
+    if (num) { num.style.background = 'rgba(255,107,107,0.2)'; num.style.color = '#ff6b6b'; num.textContent = '✓'; }
+  }
+}
+function showCertificateInFolder() {
+  // Show quiz/cert screen for attestation
+  const qs = document.getElementById('quiz-screen');
+  if (qs) { qs.style.display = 'flex'; }
+  const bs = document.getElementById('briefing-screen');
+  if (bs) { bs.classList.remove('active'); }
+}
+</script>
+
 <script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
@@ -2378,35 +2409,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-</body>
-</html>`;
-      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `Attestation_Module04_${participantName.replace(/\s+/g, '_')}.html`;
-      a.click();
-    }
-  
-/* ==================== ATTESTATION SIDEBAR ==================== */
-let certFinalPct04 = 0;
-function unlockCertificate(pct) {
-  certFinalPct04 = pct || certFinalPct04;
-  const navItem = document.getElementById('certificate-nav-item');
-  if (navItem) {
-    navItem.style.opacity = '1'; navItem.style.cursor = 'pointer'; navItem.style.background = '';
-    const icon = navItem.querySelector('.nav-icon'); if (icon) icon.textContent = '🎓';
-    const num = navItem.querySelector('.nav-number');
-    if (num) { num.style.background = 'rgba(255,107,107,0.2)'; num.style.color = '#ff6b6b'; num.textContent = '✓'; }
-  }
-}
-function showCertificateInFolder() {
-  // Show quiz/cert screen for attestation
-  const qs = document.getElementById('quiz-screen');
-  if (qs) { qs.style.display = 'flex'; }
-  const bs = document.getElementById('briefing-screen');
-  if (bs) { bs.classList.remove('active'); }
-}
-</script>
-
 </body>
 </html>

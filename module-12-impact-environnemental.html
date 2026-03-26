@@ -4469,7 +4469,24 @@ Tapez <span class="info">help</span> pour la liste des commandes.
                             </a>
                         </div>
                     </div>
-                <script>
+                
+</body>
+                </html>
+            `;
+
+            // Télécharger le fichier HTML
+            const blob = new Blob([certificateHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Attestation_Module12_${name.replace(/\s+/g, '_')}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+<script>
 /* ──── NAVIGATION MOBILE ──────────────────────────────── */
 (function(){
   var bar=document.createElement('div');
@@ -4505,21 +4522,5 @@ document.addEventListener('click',function(e){
     closeMobileNav();
 });
 </script>
-</body>
-                </html>
-            `;
-
-            // Télécharger le fichier HTML
-            const blob = new Blob([certificateHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Attestation_Module12_${name.replace(/\s+/g, '_')}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-    </script>
 </body>
 </html>
