@@ -2421,7 +2421,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
   <div class="hd">
     <div class="logo">🎨✨</div>
     <div class="ttl">Attestation de Réussite</div>
-    <div class="sub">Formation IA Responsable</div>
+    <div class="sub">Fondamentaux et usages de l'intelligence artificielle</div>
   </div>
   <div class="cnt">
     <p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p>
@@ -2492,7 +2492,7 @@ document.addEventListener('click',function(e){
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'attestation-module07-synapse-studio.html';
+    a.download = `Attestation_Module07_${name.replace(/\s+/g, '_')}.html`;
     a.click();
     URL.revokeObjectURL(url);
   }

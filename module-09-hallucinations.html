@@ -1707,11 +1707,12 @@ document.addEventListener('click',function(e){
 });
 </script>
 </body></html>`;
+</style></head><body><div class="cert"><div class="hd"><div class="logo">🔍📰</div><div class="ttl">Attestation de Réussite</div><div class="sub">Fondamentaux et usages de l'intelligence artificielle</div></div><div class="cnt"><p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p><div class="nm">${name}</div><p>a complété avec succès le</p><div class="mod"><div class="mod-t">Module 9 : L'Erreur qui Sonne Juste</div><p style="color:#b0b0b0;margin-top:10px">Hallucinations de l'IA — Rédaction VERITAS NEWS</p><div class="sc">Score : ${finalScore}%</div></div><p style="margin-bottom:15px">Compétences validées :</p><div class="sk"><span>Hallucinations IA</span><span>Fact-checking</span><span>Esprit Critique</span><span>Détection d'Erreurs</span><span>Vérification de Sources</span><span>Fondamentaux et usages de l'intelligence artificielle</span></div><div class="ft"><div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div><div class="fi"><div class="fl">Programme</div><div class="fv">Fondamentaux et usages de l'intelligence artificielle</div></div><div class="fi"><div class="fl">Organisme</div><div class="fv">Prof Express</div></div></div></div></div></body></html>`;
 
   const blob=new Blob([html],{type:'text/html'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url;a.download=`Attestation_Module9_Hallucinations_IA_${name.replace(/\s+/g,'_')}.html`;
+  a.href=url;a.download=`Attestation_Module09_${name.replace(/\s+/g,'_')}.html`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
   toast("✅ Attestation téléchargée !",4000);

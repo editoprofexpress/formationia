@@ -2506,7 +2506,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
 </style></head><body><div class="cert">
 <div class="hd"><div class="logo">⚖️</div>
 <div class="ttl">Attestation de Réussite</div>
-<div class="sub">Formation IA Responsable</div></div>
+<div class="sub">Fondamentaux et usages de l'intelligence artificielle</div></div>
 <div class="cnt">
 <p style="font-size:1.1em;margin:30px 0 15px">Cette attestation certifie que</p>
 <div class="nm">${name}</div>
@@ -2525,7 +2525,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
 <span>Discrimination Indirecte</span>
 <span>AI Act Européen</span>
 <span>Métriques d'Équité</span>
-<span>IA Responsable</span>
+<span>Fondamentaux et usages de l'intelligence artificielle</span>
 </div>
 <div class="ft">
 <div class="fi"><div class="fl">Date</div><div class="fv">${date}</div></div>
@@ -2574,7 +2574,7 @@ document.addEventListener('click',function(e){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Attestation_Module10_BiaisAlgorithmiques_${name.replace(/\s+/g,'_')}.html`;
+  a.download = `Attestation_Module10_${name.replace(/\s+/g,'_')}.html`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
