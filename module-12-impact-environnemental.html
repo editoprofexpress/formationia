@@ -9,6 +9,7 @@
 
         :root {
   --domain-color: #95e1d3;
+  --domain-color-border: rgba(149, 225, 211, 0.3);
             --neon-green: #00ff88;
             --neon-blue: #00d4ff;
             --neon-pink: #ff0080;
@@ -1837,10 +1838,10 @@
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #00ff88 !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(0, 255, 136, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>
@@ -2071,7 +2072,7 @@
         const briefingLessons = [
             // Cours 1: Introduction
             {
-                title: "🎬 Introduction : La Révolution de l'IA Générative",
+                title: "01 — 🎬 Introduction : La Révolution de l'IA Générative",
                 content: `
                     <div class="module-section">
                         <h3>📊 Contexte de la mission</h3>
@@ -2105,7 +2106,7 @@
             },
             // Cours 2: Data Centers
             {
-                title: "🏢 Les Centres de Données : Cœur Énergétique de l'IA",
+                title: "02 — 🏢 Les Centres de Données : Cœur Énergétique de l'IA",
                 content: `
                     <div class="module-section">
                         <h3>⚡ Fonctionnement d'un data center</h3>
@@ -2162,7 +2163,7 @@
             },
             // Cours 3: Empreinte Carbone
             {
-                title: "🌡️ L'Empreinte Carbone du Numérique",
+                title: "03 — 🌡️ L'Empreinte Carbone du Numérique",
                 content: `
                     <div class="module-section">
                         <h3>✈️ Comparaison avec le transport aérien</h3>
@@ -2215,7 +2216,7 @@
             },
             // Cours 4: Ressources en Eau
             {
-                title: "💧 L'Impact sur les Ressources en Eau",
+                title: "04 — 💧 L'Impact sur les Ressources en Eau",
                 content: `
                     <div class="module-section">
                         <h3>❄️ Le défi du refroidissement</h3>
@@ -2268,7 +2269,7 @@
             },
             // Cours 5: Ressources Naturelles
             {
-                title: "⛏️ L'Extraction des Ressources Naturelles",
+                title: "05 — ⛏️ L'Extraction des Ressources Naturelles",
                 content: `
                     <div class="module-section">
                         <h3>💎 Les composants des serveurs</h3>
@@ -2311,7 +2312,7 @@
             },
             // Cours 6: Déchets Électroniques
             {
-                title: "🗑️ Les Déchets Électroniques",
+                title: "06 — 🗑️ Les Déchets Électroniques",
                 content: `
                     <div class="module-section">
                         <h3>📉 Obsolescence rapide</h3>
@@ -2360,7 +2361,7 @@
             },
             // Cours 7: Fondamentaux et usages de l'intelligence artificielle
             {
-                title: "🌱 Pistes pour une IA Plus Responsable",
+                title: "07 — 🌱 Pistes pour une IA Plus Responsable",
                 content: `
                     <div class="module-section">
                         <h3>🎯 Actions individuelles</h3>
@@ -2414,7 +2415,7 @@
             },
             // Cours 8: Mission Briefing
             {
-                title: "🎯 Briefing de Mission : Infiltration NovaTech",
+                title: "08 — 🎯 Briefing de Mission : Infiltration NovaTech",
                 content: `
                     <div class="module-section">
                         <h3>📋 Récapitulatif de votre mission</h3>

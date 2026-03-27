@@ -777,16 +777,17 @@
     }
 
     /* Couleur thème du module */
-    :root { --domain-color: #ffe66d; }
+    :root { --domain-color: #ffe66d;
+  --domain-color-border: rgba(255, 230, 109, 0.3); }
 
     /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #ffe66d !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(255, 230, 109, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>
@@ -979,7 +980,7 @@ let visitedLessons = new Set([0]);
 const lessons = [
 
   /* ---- Section 0 : Qu'est-ce qu'un deepfake ? ---- */
-  `<div class="module-title">📡 Qu'est-ce qu'un deepfake ?</div>
+  `<div class="module-title">01 — 📡 Qu'est-ce qu'un deepfake ?</div>
   <p class="module-kicker">Un deepfake est un contenu médiatique — image, vidéo, audio ou texte — <strong>entièrement fabriqué ou manipulé par intelligence artificielle</strong> pour paraître authentique.</p>
   <div class="divider"></div>
 
@@ -1010,7 +1011,7 @@ const lessons = [
   </div>`,
 
   /* ---- Section 1 : Comment l'IA fabrique le faux ---- */
-  `<div class="module-title">🧠 Comment l'IA fabrique-t-elle les faux ?</div>
+  `<div class="module-title">02 — 🧠 Comment l'IA fabrique-t-elle les faux ?</div>
   <p class="module-kicker">Derrière chaque deepfake se cache une architecture d'IA sophistiquée. Comprendre le mécanisme aide à détecter les failles.</p>
   <div class="divider"></div>
 
@@ -1046,7 +1047,7 @@ const lessons = [
   </div>`,
 
   /* ---- Section 2 : Détection visuelle ---- */
-  `<div class="module-title">👁️ Détection visuelle — Les indices qui trahissent</div>
+  `<div class="module-title">03 — 👁️ Détection visuelle — Les indices qui trahissent</div>
   <p class="module-kicker">L'œil entraîné peut repérer de nombreux signes révélateurs dans une image ou vidéo deepfake. Voici votre kit de détection.</p>
   <div class="divider"></div>
 
@@ -1085,7 +1086,7 @@ const lessons = [
   </div>`,
 
   /* ---- Section 3 : Deepfakes audio ---- */
-  `<div class="module-title">🎤 Deepfakes Audio — La Voix Clonée</div>
+  `<div class="module-title">04 — 🎤 Deepfakes Audio — La Voix Clonée</div>
   <p class="module-kicker">Le clonage de voix est la forme de deepfake la plus difficile à détecter à l'oreille. Elle est aussi la plus utilisée pour les arnaques.</p>
   <div class="divider"></div>
 
@@ -1127,7 +1128,7 @@ const lessons = [
   </div>`,
 
   /* ---- Section 4 : Textes & désinformation ---- */
-  `<div class="module-title">📰 Textes Deepfakes &amp; Désinformation</div>
+  `<div class="module-title">05 — 📰 Textes Deepfakes &amp; Désinformation</div>
   <p class="module-kicker">Les LLM (grands modèles de langage) comme GPT-4 permettent de générer des textes indiscernables de ceux écrits par des humains. Cela crée de nouveaux vecteurs de désinformation à grande échelle.</p>
   <div class="divider"></div>
 
@@ -1166,7 +1167,7 @@ const lessons = [
   </div>`,
 
   /* ---- Section 5 : Impacts sur la société ---- */
-  `<div class="module-title">⚠️ Impacts sur la Société</div>
+  `<div class="module-title">06 — ⚠️ Impacts sur la Société</div>
   <p class="module-kicker">Les deepfakes ne sont pas qu'un problème technologique. Ils menacent la confiance, la démocratie, et les individus — avec des conséquences concrètes et mesurables.</p>
   <div class="divider"></div>
 
@@ -1200,7 +1201,7 @@ const lessons = [
   </div>`,
 
   /* ---- Section 6 : Se protéger & vérifier ---- */
-  `<div class="module-title">🛡️ Se Protéger &amp; Vérifier</div>
+  `<div class="module-title">07 — 🛡️ Se Protéger &amp; Vérifier</div>
   <p class="module-kicker">Face aux deepfakes, la combinaison de la vigilance humaine et des outils technologiques est votre meilleure défense. Voici votre boîte à outils.</p>
   <div class="divider"></div>
 

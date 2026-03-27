@@ -952,16 +952,17 @@
     }
 
     /* Couleur thème du module */
-    :root { --domain-color: #ffe66d; }
+    :root { --domain-color: #ffe66d;
+  --domain-color-border: rgba(255, 230, 109, 0.3); }
 
     /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #ffe66d !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(255, 230, 109, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>

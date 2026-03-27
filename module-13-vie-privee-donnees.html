@@ -9,6 +9,7 @@
 
         :root {
   --domain-color: #95e1d3;
+  --domain-color-border: rgba(149, 225, 211, 0.3);
             --neon-green: #00ff88;
             --neon-blue: #00d4ff;
             --neon-pink: #ff0080;
@@ -1374,10 +1375,10 @@
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #00ff88 !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(0, 255, 136, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>
@@ -1576,7 +1577,7 @@
         const briefingLessons = [
             // ==================== LEÇON 0 : INTRODUCTION ====================
             {
-                title: "🎬 Introduction — Bienvenue chez SHIELD DATA",
+                title: "01 — 🎬 Introduction — Bienvenue chez SHIELD DATA",
                 content: `
                     <h2 class="module-title">Bienvenue, Agent·e Morin</h2>
                     <p class="module-kicker">Vous venez de rejoindre SHIELD DATA, l'agence de protection des données numériques. Votre première mission est critique.</p>
@@ -1619,7 +1620,7 @@
 
             // ==================== LEÇON 1 : DONNÉES PERSONNELLES ====================
             {
-                title: "🔍 Qu'est-ce qu'une donnée personnelle ?",
+                title: "02 — 🔍 Qu'est-ce qu'une donnée personnelle ?",
                 content: `
                     <h2 class="module-title">🔍 Données personnelles : le nouvel or noir</h2>
                     <p class="module-kicker">Avant de mener l'enquête, vous devez comprendre ce que vous protégez exactement.</p>
@@ -1702,7 +1703,7 @@
 
             // ==================== LEÇON 2 : IA & COLLECTE ====================
             {
-                title: "🤖 IA & Collecte de données",
+                title: "03 — 🤖 IA & Collecte de données",
                 content: `
                     <h2 class="module-title">🤖 Comment l'IA collecte et exploite vos données</h2>
                     <p class="module-kicker">L'intelligence artificielle a démultiplié la capacité de collecte et d'analyse des données personnelles.</p>
@@ -1786,7 +1787,7 @@
 
             // ==================== LEÇON 3 : RGPD & DROITS ====================
             {
-                title: "🇪🇺 Le RGPD et vos droits",
+                title: "04 — 🇪🇺 Le RGPD et vos droits",
                 content: `
                     <h2 class="module-title">🇪🇺 Le RGPD : votre bouclier juridique</h2>
                     <p class="module-kicker">Le Règlement Général sur la Protection des Données est l'arme légale la plus puissante pour protéger la vie privée des citoyens européens.</p>
@@ -1856,7 +1857,7 @@
 
             // ==================== LEÇON 4 : COOKIES & TRACKERS ====================
             {
-                title: "🍪 Cookies, trackers et empreinte numérique",
+                title: "05 — 🍪 Cookies, trackers et empreinte numérique",
                 content: `
                     <h2 class="module-title">🍪 Cookies, trackers & empreinte numérique</h2>
                     <p class="module-kicker">Chaque clic, chaque page visitée laisse des traces. Comprendre ces mécanismes est essentiel pour se protéger.</p>
@@ -1939,7 +1940,7 @@
 
             // ==================== LEÇON 5 : SURVEILLANCE & IA ====================
             {
-                title: "👁️ Surveillance et IA",
+                title: "06 — 👁️ Surveillance et IA",
                 content: `
                     <h2 class="module-title">👁️ La surveillance à l'ère de l'IA</h2>
                     <p class="module-kicker">L'IA a transformé la surveillance en une industrie mondiale, capable de traquer des milliards de personnes simultanément.</p>
@@ -1995,7 +1996,7 @@
 
             // ==================== LEÇON 6 : SE PROTÉGER ====================
             {
-                title: "🛡️ Se protéger concrètement",
+                title: "07 — 🛡️ Se protéger concrètement",
                 content: `
                     <h2 class="module-title">🛡️ Se protéger : les bons réflexes</h2>
                     <p class="module-kicker">Vous avez compris les menaces. Voici les armes pour vous défendre au quotidien.</p>
@@ -2056,7 +2057,7 @@
 
             // ==================== LEÇON 7 : MISSION ====================
             {
-                title: "🎮 Briefing de mission",
+                title: "08 — 🎮 Briefing de mission",
                 content: `
                     <h2 class="module-title">🎮 Briefing de mission — Opération PANOPTIKON</h2>
                     <p class="module-kicker">Vous avez étudié les dossiers. Il est temps de passer à l'action, Agent·e Morin.</p>

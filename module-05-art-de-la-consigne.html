@@ -22,6 +22,7 @@
             --ok: #00ff88;
             /* Couleur du domaine Interaction Raisonnée */
             --domain-color: #4ecdc4;
+  --domain-color-border: rgba(78, 205, 196, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
@@ -1120,10 +1121,10 @@
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #4ecdc4 !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(78, 205, 196, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>

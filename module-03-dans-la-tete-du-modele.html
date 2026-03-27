@@ -855,16 +855,17 @@
     }
 
     /* Couleur thème du module */
-    :root { --domain-color: #ff6b6b; }
+    :root { --domain-color: #ff6b6b;
+  --domain-color-border: rgba(255, 107, 107, 0.3); }
 
     /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #ff6b6b !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(255, 107, 107, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>
@@ -1027,7 +1028,7 @@
 
     const lessons = [
       // ---- Section 0 : Qu'est-ce qu'un LLM ? ----
-      `<div class="lesson-title">🌐 Qu'est-ce qu'un modèle de langage ?</div>
+      `<div class="lesson-title">01 — 🌐 Qu'est-ce qu'un modèle de langage ?</div>
       <div class="lesson-kicker">Large Language Model (LLM) — Vue d'ensemble</div>
       <div class="divider"></div>
       <p style="line-height:1.8;margin-bottom:20px">
@@ -1113,7 +1114,7 @@
       </div>`,
 
       // ---- Section 1 : Tokenisation ----
-      `<div class="lesson-title">⚙️ La Tokenisation</div>
+      `<div class="lesson-title">02 — ⚙️ La Tokenisation</div>
       <div class="lesson-kicker">Comment l'IA "lit" vraiment le texte</div>
       <div class="divider"></div>
       <p style="line-height:1.8;margin-bottom:20px">
@@ -1198,7 +1199,7 @@
       </div>`,
 
       // ---- Section 2 : Embeddings ----
-      `<div class="lesson-title">🌌 Les Embeddings</div>
+      `<div class="lesson-title">03 — 🌌 Les Embeddings</div>
       <div class="lesson-kicker">Comment l'IA représente le sens dans l'espace</div>
       <div class="divider"></div>
       <p style="line-height:1.8;margin-bottom:20px">
@@ -1270,7 +1271,7 @@
       </div>`,
 
       // ---- Section 3 : Attention ----
-      `<div class="lesson-title">🔍 Le Mécanisme d'Attention</div>
+      `<div class="lesson-title">04 — 🔍 Le Mécanisme d'Attention</div>
       <div class="lesson-kicker">Comment l'IA contextualise chaque token</div>
       <div class="divider"></div>
       <p style="line-height:1.8;margin-bottom:20px">
@@ -1346,7 +1347,7 @@
       </div>`,
 
       // ---- Section 4 : Prédiction ----
-      `<div class="lesson-title">🎲 La Prédiction</div>
+      `<div class="lesson-title">05 — 🎲 La Prédiction</div>
       <div class="lesson-kicker">Comment l'IA génère — token par token</div>
       <div class="divider"></div>
       <p style="line-height:1.8;margin-bottom:20px">
@@ -1416,7 +1417,7 @@
       </div>`,
 
       // ---- Section 5 : Mission ----
-      `<div class="lesson-title">🚀 Mission NEURONAUTE</div>
+      `<div class="lesson-title">06 — 🚀 Mission NEURONAUTE</div>
       <div class="lesson-kicker">Tu es prêt à plonger dans l'IA</div>
       <div class="divider"></div>
       <div class="callout" style="text-align:center;padding:30px">

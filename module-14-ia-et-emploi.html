@@ -906,16 +906,17 @@
     }
 
     /* Couleur thème du module */
-    :root { --domain-color: #00e5cc; }
+    :root { --domain-color: #00e5cc;
+  --domain-color-border: rgba(0, 229, 204, 0.3); }
 
     /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #00e5cc !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(0, 229, 204, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>
@@ -1121,7 +1122,7 @@ const lessons = [
     {
         navId: 0,
         content: `
-        <h2 class="module-title">🎬 Bienvenue à l'Agence ARIA</h2>
+        <h2 class="module-title">01 — 🎬 Bienvenue à l'Agence ARIA</h2>
         <p class="module-kicker">Vous venez de décrocher le poste le plus demandé de 2031 : Navigateur·trice de Carrière à l'ARIA. Voici votre briefing d'intégration.</p>
 
         <div class="callout">
@@ -1179,7 +1180,7 @@ const lessons = [
     {
         navId: 1,
         content: `
-        <h2 class="module-title">💥 Le Choc de l'Automatisation</h2>
+        <h2 class="module-title">02 — 💥 Le Choc de l'Automatisation</h2>
         <p class="module-kicker">Les chiffres sont vertigineux. Pour bien aider vos clients, vous devez d'abord comprendre l'ampleur réelle de la transformation.</p>
 
         <h3>📊 Les grands chiffres</h3>
@@ -1250,7 +1251,7 @@ const lessons = [
     {
         navId: 2,
         content: `
-        <h2 class="module-title">⚠️ Les Métiers en Première Ligne</h2>
+        <h2 class="module-title">03 — ⚠️ Les Métiers en Première Ligne</h2>
         <p class="module-kicker">Tous les métiers ne sont pas égaux face à l'automatisation. Voici comment identifier le niveau de risque.</p>
 
         <h3>🔍 Les 3 facteurs de vulnérabilité</h3>
@@ -1349,7 +1350,7 @@ const lessons = [
     {
         navId: 3,
         content: `
-        <h2 class="module-title">🤝 L'IA Comme Collègue</h2>
+        <h2 class="module-title">04 — 🤝 L'IA Comme Collègue</h2>
         <p class="module-kicker">La réalité est plus nuancée que "l'IA supprime des emplois". Dans la majorité des cas, l'IA transforme et augmente le travail humain plutôt qu'elle ne l'élimine.</p>
 
         <h3>💡 Remplacement vs Augmentation</h3>
@@ -1411,7 +1412,7 @@ const lessons = [
     {
         navId: 4,
         content: `
-        <h2 class="module-title">🚀 Les Nouveaux Métiers qui Émergent</h2>
+        <h2 class="module-title">05 — 🚀 Les Nouveaux Métiers qui Émergent</h2>
         <p class="module-kicker">Chaque révolution technologique détruit des emplois mais en crée de nouveaux. L'IA ne déroge pas à la règle. Mais quels sont ces nouveaux métiers ?</p>
 
         <h3>🆕 Métiers nés directement de l'IA</h3>
@@ -1484,7 +1485,7 @@ const lessons = [
     {
         navId: 5,
         content: `
-        <h2 class="module-title">🧠 Les Atouts Humains Irremplaçables</h2>
+        <h2 class="module-title">06 — 🧠 Les Atouts Humains Irremplaçables</h2>
         <p class="module-kicker">Si l'IA excelle dans de nombreuses tâches, il existe des domaines où l'humain conserve un avantage décisif. Les comprendre, c'est connaître la carte maîtresse de vos clients.</p>
 
         <h3>🏆 Ce que l'IA ne peut pas (encore) faire</h3>
@@ -1556,7 +1557,7 @@ const lessons = [
     {
         navId: 6,
         content: `
-        <h2 class="module-title">⚖️ Enjeux Sociaux et Politiques</h2>
+        <h2 class="module-title">07 — ⚖️ Enjeux Sociaux et Politiques</h2>
         <p class="module-kicker">La transformation du travail par l'IA n'est pas qu'une affaire d'individus. Elle soulève des questions fondamentales pour toute la société.</p>
 
         <h3>🏛️ Qui profite de la transition ?</h3>
@@ -1626,7 +1627,7 @@ const lessons = [
     {
         navId: 7,
         content: `
-        <h2 class="module-title">🎯 Mission ARIA — Vos Clients vous Attendent</h2>
+        <h2 class="module-title">08 — 🎯 Mission ARIA — Vos Clients vous Attendent</h2>
         <p class="module-kicker">La formation est terminée. Place à la pratique. Cinq travailleurs ont besoin de votre expertise. À vous de jouer.</p>
 
         <div class="mission-box">

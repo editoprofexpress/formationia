@@ -22,6 +22,7 @@
       --warn: #ffcc00;
       --ok: #00ff88;
       --domain-color: #4ecdc4;
+  --domain-color-border: rgba(78, 205, 196, 0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
@@ -1016,10 +1017,10 @@
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
-      color: #4ecdc4 !important;
+      color: var(--domain-color) !important;
       padding-bottom: 15px !important;
       margin-bottom: 25px !important;
-      border-bottom: 1px solid rgba(78, 205, 196, 0.3) !important;
+      border-bottom: 1px solid var(--domain-color-border, rgba(255,255,255,0.15)) !important;
     }
     </style>
 </head>
@@ -1126,7 +1127,7 @@
 
       <!-- SECTION 1 : L'IA, partenaire créatif -->
       <div class="briefing-section" id="section-0">
-        <div class="module-title">🤝 L'IA, partenaire créatif — pas un remplaçant</div>
+        <div class="module-title">01 — 🤝 L'IA, partenaire créatif — pas un remplaçant</div>
         <p class="module-kicker">Comprendre le rapport entre créativité humaine et intelligence artificielle</p>
 
         <div class="domain-tags">
@@ -1187,7 +1188,7 @@
 
       <!-- SECTION 2 : Co-écrire avec l'IA -->
       <div class="briefing-section" id="section-1" style="display:none">
-        <div class="module-title">✍️ Co-écrire avec l'IA : texte, narration, style</div>
+        <div class="module-title">02 — ✍️ Co-écrire avec l'IA : texte, narration, style</div>
         <p class="module-kicker">Techniques pour produire des textes de qualité avec une IA rédactrice</p>
 
         <div class="divider"></div>
@@ -1240,7 +1241,7 @@
 
       <!-- SECTION 3 : Prompt visuel -->
       <div class="briefing-section" id="section-2" style="display:none">
-        <div class="module-title">🎨 Prompt visuel : l'art de décrire l'invisible</div>
+        <div class="module-title">03 — 🎨 Prompt visuel : l'art de décrire l'invisible</div>
         <p class="module-kicker">Maîtriser la création d'images avec des IA comme DALL-E, Midjourney ou Stable Diffusion</p>
 
         <div class="divider"></div>
@@ -1284,7 +1285,7 @@
 
       <!-- SECTION 4 : Musique générative -->
       <div class="briefing-section" id="section-3" style="display:none">
-        <div class="module-title">🎵 Musique et son génératif</div>
+        <div class="module-title">04 — 🎵 Musique et son génératif</div>
         <p class="module-kicker">Explorer les nouvelles frontières de la création sonore assistée par IA</p>
 
         <div class="divider"></div>
@@ -1337,7 +1338,7 @@
 
       <!-- SECTION 5 : Code assisté -->
       <div class="briefing-section" id="section-4" style="display:none">
-        <div class="module-title">💻 Code assisté : l'IA comme co-développeur</div>
+        <div class="module-title">05 — 💻 Code assisté : l'IA comme co-développeur</div>
         <p class="module-kicker">Comment l'IA révolutionne la manière d'écrire, corriger et documenter du code</p>
 
         <div class="divider"></div>
@@ -1392,7 +1393,7 @@
 
       <!-- SECTION 6 : Droits & éthique -->
       <div class="briefing-section" id="section-5" style="display:none">
-        <div class="module-title">⚖️ Droits d'auteur, éthique et paternité créative</div>
+        <div class="module-title">06 — ⚖️ Droits d'auteur, éthique et paternité créative</div>
         <p class="module-kicker">Les questions légales et morales de la création avec l'IA</p>
 
         <div class="divider"></div>
