@@ -28,7 +28,6 @@
       height: 100vh;
     }
 
-    /* ==================== ÉCRAN TITRE ==================== */
     #title-screen {
       position: fixed;
       inset: 0;
@@ -51,7 +50,6 @@
       z-index: -1;
     }
 
-    /* grille cyberpunk en fond */
     #title-screen::after {
       content: '';
       position: absolute;
@@ -71,7 +69,6 @@
 
     #title-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-    /* lien retour discret */
     .back-link-title {
       position: absolute;
       top: 20px;
@@ -136,8 +133,6 @@
 
     .intro-text strong { color: var(--neon-red); }
 
-
-    /* bouton démarrer */
     .start-btn {
       font-family: 'Space Mono', monospace;
       font-size: 1.1em;
@@ -168,7 +163,6 @@
       transform: scale(1.05);
     }
 
-    /* particules flottantes déco */
     .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1; }
     .particle {
       position: absolute;
@@ -186,7 +180,6 @@
       100% { opacity: 0; transform: translateY(-20px) scale(1.5); }
     }
 
-    /* scanline effet */
     .scanline {
       position: absolute;
       inset: 0;
@@ -201,7 +194,6 @@
       z-index: 1;
     }
 
-    /* ==================== BRIEFING ==================== */
     #briefing-screen {
       position: fixed;
       inset: 0;
@@ -328,7 +320,6 @@
     .nav-btn.next { background: rgba(255,107,107,0.15); border-color: var(--neon-red); }
     .nav-btn.next:hover { background: rgba(255,107,107,0.25); box-shadow: 0 0 15px rgba(255,107,107,0.3); }
 
-    /* Styles contenu briefing */
     .lesson-title {
       font-family: 'Space Mono', monospace;
       font-size: 1.6em;
@@ -365,7 +356,6 @@
     .highlight-orange { color: var(--neon-orange); font-weight: 600; }
     .highlight-green { color: var(--neon-green); font-weight: 600; }
 
-    /* Schéma pipeline */
     .pipeline {
       display: flex;
       align-items: center;
@@ -393,7 +383,6 @@
     .pipe-step .pipe-icon { font-size: 1.6em; display: block; margin-bottom: 6px; }
     .pipe-arrow { color: var(--muted); font-size: 1.4em; padding: 0 4px; flex-shrink: 0; align-self: center; }
 
-    /* Token examples */
     .token-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
     .token {
       font-family: 'Space Mono', monospace;
@@ -409,7 +398,6 @@
     .token.green { border-color: rgba(0,255,136,0.5); color: var(--neon-green); background: rgba(0,255,136,0.08); }
     .token-label { color: var(--muted); font-size: 0.85em; }
 
-    /* Vecteur exemple */
     .vector-box {
       font-family: 'Space Mono', monospace;
       font-size: 0.8em;
@@ -422,14 +410,12 @@
       overflow-x: auto;
     }
 
-    /* Barres de proba */
     .proba-bar-wrap { margin: 8px 0; display: flex; align-items: center; gap: 12px; }
     .proba-word { font-family: 'Space Mono', monospace; font-size: 0.85em; width: 100px; flex-shrink: 0; }
     .proba-bar { flex: 1; height: 22px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; position: relative; }
     .proba-fill { height: 100%; border-radius: 4px; transition: width .8s ease; }
     .proba-pct { font-size: 0.8em; color: var(--muted); width: 45px; text-align: right; flex-shrink: 0; }
 
-    /* Info-card */
     .info-card {
       display: flex;
       gap: 15px;
@@ -444,7 +430,6 @@
     .info-card-body h4 { color: var(--neon-red); margin-bottom: 6px; font-size: 1em; }
     .info-card-body p { color: #aabbcc; line-height: 1.65; font-size: 0.95em; }
 
-    /* Bouton lancer jeu */
     .launch-game-btn {
       display: inline-flex;
       align-items: center;
@@ -468,7 +453,6 @@
       transform: scale(1.03);
     }
 
-    /* ==================== ÉCRAN DE JEU ==================== */
     #game-screen {
       position: fixed;
       inset: 0;
@@ -480,7 +464,6 @@
     }
     #game-screen.active { display: flex; }
 
-    /* header jeu */
     .game-header {
       background: rgba(10,14,23,0.98);
       border-bottom: 1px solid rgba(255,107,107,0.3);
@@ -512,7 +495,6 @@
     .zone-dot.done { background: var(--neon-green); border-color: var(--neon-green); box-shadow: 0 0 8px rgba(0,255,136,0.5); }
     .zone-dot.active { background: var(--neon-red); border-color: var(--neon-red); box-shadow: 0 0 8px rgba(255,107,107,0.5); }
 
-    /* corps jeu */
     .game-body {
       flex: 1;
       overflow-y: auto;
@@ -524,7 +506,6 @@
     .game-body::-webkit-scrollbar { width: 6px; }
     .game-body::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3); border-radius: 3px; }
 
-    /* Zone header */
     .zone-header {
       text-align: center;
       margin-bottom: 30px;
@@ -549,7 +530,6 @@
     }
     .zone-desc { color: #ddeeff; font-size: 1em; line-height: 1.7; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
 
-    /* Challenges tokens */
     .challenge-card {
       background: rgba(10,20,40,0.8);
       border: 1px solid rgba(255,107,107,0.25);
@@ -633,7 +613,6 @@
     }
     .challenge-explain.show { display: block; }
 
-    /* Barre de score zone */
     .zone-score-bar {
       display: flex;
       align-items: center;
@@ -649,7 +628,6 @@
     .zone-score-fill { height: 100%; background: linear-gradient(90deg, var(--neon-red), var(--neon-orange)); border-radius: 4px; transition: width .5s ease; width: 0%; }
     .zone-score-num { font-family: 'Space Mono', monospace; font-size: 0.9em; color: var(--neon-red); }
 
-    /* Bouton valider / continuer zone */
     .zone-btn {
       display: block;
       width: 100%;
@@ -669,7 +647,6 @@
     .zone-btn:hover { background: linear-gradient(135deg, rgba(255,107,107,0.25), rgba(255,159,67,0.25)); box-shadow: 0 0 20px rgba(255,107,107,0.3); }
     .zone-btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
 
-    /* Zone complétée */
     .zone-complete-banner {
       text-align: center;
       background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.08));
@@ -681,7 +658,6 @@
     .zone-complete-banner h3 { color: var(--neon-green); font-family: 'Space Mono', monospace; margin-bottom: 10px; font-size: 1.2em; }
     .zone-complete-banner p { color: #aabbcc; line-height: 1.7; margin-bottom: 20px; }
 
-    /* Word cards Zone 2 */
     .word-card {
       font-family: 'Space Mono', monospace;
       font-size: 0.95em;
@@ -705,7 +681,6 @@
       75%      { transform: translateX(6px); }
     }
 
-    /* Toast notification */
     #toast {
       position: fixed;
       bottom: 30px;
@@ -723,8 +698,8 @@
       box-shadow: 0 0 20px rgba(0,255,136,0.2);
     }
     #toast.show { transform: translateX(-50%) translateY(0); }
-  
-    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+
+    
     .domain-badge-std {
       display: inline-flex;
       align-items: center;
@@ -804,8 +779,6 @@
       text-transform: uppercase;
     }
 
-
-    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
     .briefing-nav { border-right-color: rgba(255,107,107,0.2) !important; }
     .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,107,107,0.3) !important; border-radius: 2px; }
     .back-link-sidebar {
@@ -826,7 +799,6 @@
     .nav-number { background: rgba(255,107,107,0.2) !important; }
     .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
 
-    /* === STANDARDISATION FORMAT SIDEBAR === */
     .briefing-nav { width: 280px !important; }
     .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
     .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
@@ -837,7 +809,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -854,11 +826,9 @@
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
     }
 
-    /* Couleur thème du module */
     :root { --domain-color: #ff6b6b;
   --domain-color-border: rgba(255, 107, 107, 0.3); }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -871,7 +841,6 @@
 </head>
 <body>
 
-  <!-- ==================== ÉCRAN TITRE ==================== -->
   <div id="title-screen">
     <div class="scanline"></div>
     <a href="modules.html" class="back-link-title">
@@ -903,10 +872,8 @@
     </div>
   </div>
 
-  <!-- ==================== BRIEFING ==================== -->
   <div id="briefing-screen">
 
-    <!-- Header -->
     <div class="briefing-header">
       <div class="briefing-title">Module n°3 — Dans la tête d'un modèle</div>
       <div class="briefing-progress">
@@ -917,10 +884,8 @@
       </div>
     </div>
 
-    <!-- Body -->
     <div class="briefing-body">
 
-      <!-- Sidebar -->
       <nav class="briefing-nav">
         <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
@@ -952,7 +917,6 @@
           La Prédiction
         </div>
 
-        <!-- Séparation : sections spéciales -->
         <div style="border-top:1px solid rgba(255,107,107,0.2);margin:15px 0 10px;padding-top:10px">
           <div class="briefing-nav-item" onclick="showLesson(5)" id="nav-5">
             <span class="nav-icon">🚀</span>
@@ -973,17 +937,13 @@
         </div>
       </nav>
 
-      <!-- Contenu -->
       <div class="briefing-content" id="briefing-content">
-        <!-- injecté par JS -->
+
       </div>
     </div>
 
-    <!-- Footer -->
   </div>
 
-
-  <!-- ==================== GAME SCREEN ==================== -->
   <div id="game-screen">
     <div class="game-header">
       <a href="modules.html" style="color:#8899aa;text-decoration:none;font-family:'Space Mono',monospace;font-size:0.8em;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;transition:all .3s" onmouseover="this.style.color='#aabbcc'" onmouseout="this.style.color='#8899aa'">← Modules</a>
@@ -996,15 +956,14 @@
       </div>
     </div>
     <div class="game-body" id="game-body">
-      <!-- injecté par JS selon la zone active -->
+
     </div>
   </div>
 
-  <!-- Toast -->
   <div id="toast"></div>
 
   <script>
-    // ==================== PARTICULES DÉCO ====================
+
     function createParticles() {
       const container = document.getElementById('particles');
       for (let i = 0; i < 25; i++) {
@@ -1020,14 +979,13 @@
     }
     createParticles();
 
-    // ==================== NAVIGATION BRIEFING ====================
     let currentLesson = 0;
-    const totalLessons = 5;   // 5 sections de cours (0-4)
+    const totalLessons = 5;   
     const visitedLessons = new Set();
     let certificateUnlocked = false;
 
     const lessons = [
-      // ---- Section 0 : Qu'est-ce qu'un LLM ? ----
+
       `<div class="lesson-title">01 — 🌐 Qu'est-ce qu'un modèle de langage ?</div>
       <div class="lesson-kicker">Large Language Model (LLM) — Vue d'ensemble</div>
       <div class="divider"></div>
@@ -1113,7 +1071,6 @@
         C'est exactement ce qu'est un LLM.
       </div>`,
 
-      // ---- Section 1 : Tokenisation ----
       `<div class="lesson-title">02 — ⚙️ La Tokenisation</div>
       <div class="lesson-kicker">Comment l'IA "lit" vraiment le texte</div>
       <div class="divider"></div>
@@ -1198,7 +1155,6 @@
         </div>
       </div>`,
 
-      // ---- Section 2 : Embeddings ----
       `<div class="lesson-title">03 — 🌌 Les Embeddings</div>
       <div class="lesson-kicker">Comment l'IA représente le sens dans l'espace</div>
       <div class="divider"></div>
@@ -1270,7 +1226,6 @@
         <strong>l'analogie</strong> — le tout avec de simples calculs de distance dans un espace vectoriel.
       </div>`,
 
-      // ---- Section 3 : Attention ----
       `<div class="lesson-title">04 — 🔍 Le Mécanisme d'Attention</div>
       <div class="lesson-kicker">Comment l'IA contextualise chaque token</div>
       <div class="divider"></div>
@@ -1346,7 +1301,6 @@
         et de maintenir la cohérence sur de longs textes.
       </div>`,
 
-      // ---- Section 4 : Prédiction ----
       `<div class="lesson-title">05 — 🎲 La Prédiction</div>
       <div class="lesson-kicker">Comment l'IA génère — token par token</div>
       <div class="divider"></div>
@@ -1416,7 +1370,6 @@
         Elles capturent une quantité phénoménale de savoir humain — même si ce n'est pas de la "compréhension".
       </div>`,
 
-      // ---- Section 5 : Mission ----
       `<div class="lesson-title">06 — 🚀 Mission NEURONAUTE</div>
       <div class="lesson-kicker">Tu es prêt à plonger dans l'IA</div>
       <div class="divider"></div>
@@ -1470,12 +1423,11 @@
     ];
 
     function showMissionSection() {
-      // Affiche la section Mission (lesson[5]) dans le briefing
+
       currentLesson = 5;
       document.getElementById('briefing-content').innerHTML = lessons[5];
       document.getElementById('briefing-content').scrollTop = 0;
 
-      // Activer nav-5
       for (let i = 0; i < totalLessons; i++) {
         const el = document.getElementById('nav-' + i);
         if (el) el.classList.remove('active');
@@ -1544,7 +1496,6 @@
       if (currentLesson > 0) showLesson(currentLesson - 1);
     }
 
-    // ==================== NAVIGATION SCREENS ====================
     function startModule() {
       document.getElementById('title-screen').classList.add('hidden');
       document.getElementById('briefing-screen').classList.add('active');
@@ -1557,20 +1508,18 @@
       loadZone(1);
     }
 
-    // Retour au briefing depuis le jeu (toutes zones terminées) → quiz
     function returnToBriefingForQuiz() {
       document.getElementById('game-screen').classList.remove('active');
       document.getElementById('briefing-screen').classList.add('active');
-      // Débloquer l'item quiz dans la sidebar
+
       const qNav = document.getElementById('quiz-nav-item');
       if (qNav) { qNav.style.display = ''; }
       showQuizInBriefing();
     }
 
-    // ==================== QUIZ DANS LE BRIEFING ====================
     function showQuizInBriefing() {
       currentLesson = 'quiz';
-      // Désactiver tous les nav items
+
       document.querySelectorAll('.briefing-nav-item').forEach(el => el.classList.remove('active'));
       const qNav = document.getElementById('quiz-nav-item');
       if (qNav) qNav.classList.add('active');
@@ -1581,7 +1530,7 @@
       document.getElementById('btn-prev').onclick = () => showLesson(5);
       document.getElementById('btn-next').textContent = '✅ Valider';
       document.getElementById('btn-next').onclick = submitQuiz;
-      // Disable until all questions answered
+
       const btnNext = document.getElementById('btn-next');
       if (btnNext) { btnNext.disabled = true; btnNext.style.opacity = '0.5'; btnNext.style.cursor = 'not-allowed'; }
       document.getElementById('footer-hint').textContent = 'Score minimum : 70%';
@@ -1634,7 +1583,7 @@
         const j = parseInt(el.id.split('-').pop());
         if (j === oIdx) el.classList.add('selected');
       });
-      // Enable submit buttons when all questions answered
+
       if (Object.keys(quizAnswers).length === quizQuestions.length) {
         const btn = document.getElementById('btn-next');
         if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
@@ -1644,7 +1593,7 @@
     }
 
     function submitQuiz() {
-      // Calculate score first (no DOM changes yet)
+
       let score = 0;
       quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
       const pct = Math.round(score / quizQuestions.length * 100);
@@ -1652,7 +1601,7 @@
       const success = pct >= 70;
 
       if (success) {
-        // Show highlights + explanations only on success
+
         quizQuestions.forEach((q, i) => {
           const userAns = quizAnswers[i];
           document.querySelectorAll(`[id^="qq-opt-${i}-"]`).forEach(el => {
@@ -1665,7 +1614,7 @@
           document.getElementById(`qq-explain-${i}`).classList.add('show');
         });
       } else {
-        // Failure: lock options without revealing answers
+
         document.querySelectorAll(`[id^="qq-opt-"]`).forEach(el => {
           el.style.pointerEvents = 'none';
         });
@@ -1722,7 +1671,6 @@
     }
     function showCertificateInFolder() { showCertInBriefing(); }
 
-    // ==================== ATTESTATION DANS LE BRIEFING ====================
     function showCertInBriefing() {
       if (!certificateUnlocked) return;
       currentLesson = 'cert';
@@ -1790,7 +1738,6 @@
       document.getElementById('briefing-content').scrollTop = 0;
     }
 
-    // ==================== TOAST ====================
     function toast(msg, duration = 3000) {
       const el = document.getElementById('toast');
       el.textContent = msg;
@@ -1798,7 +1745,6 @@
       setTimeout(() => el.classList.remove('show'), duration);
     }
 
-    // ==================== ÉTAT DU JEU ====================
     const gameState = {
       currentZone: 0,
       zonesCompleted: [false, false, false],
@@ -1807,7 +1753,6 @@
       zone3Score: 0, zone3Total: 5,
     };
 
-    // ==================== NAVIGATION ZONES ====================
     function loadZone(n) {
       gameState.currentZone = n;
       const body = document.getElementById('game-body');
@@ -1831,7 +1776,6 @@
       }
     }
 
-    // ==================== ZONE 1 — LA FORGE DES TOKENS ====================
     const tokenChallenges = [
       {
         word: 'chat',
@@ -1974,18 +1918,16 @@
       loadZone(2);
     }
 
-    // ==================== ZONE 2 — LA GALAXIE SÉMANTIQUE ====================
-    // Partie A : Paires sémantiques (trouver les 4 paires parmi 8 mots)
+    
     const semanticPairs = [
       { words: ['chat', 'chien'],    label: 'Animaux domestiques',  color: '#ff6b6b' },
       { words: ['roi', 'reine'],     label: 'Royauté',              color: '#a855f7' },
       { words: ['voiture', 'train'], label: 'Transport terrestre',  color: '#00d4ff' },
       { words: ['médecin', 'infirmier'], label: 'Santé',             color: '#00ff88' }
     ];
-    // Mélange des 8 mots
+
     const allWords = semanticPairs.flatMap(p => p.words).sort(() => Math.random() - 0.5);
 
-    // Partie B : Analogies (3 questions)
     const analogies = [
       {
         stem:    'Roi : Reine :: Homme :',
@@ -2035,7 +1977,6 @@
           </div>
         </div>
 
-        <!-- Partie A : Paires -->
         <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(0,212,255,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px">
           <h3 style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE A · Paires Sémantiques</h3>
           <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">Clique sur deux mots pour les associer. Trouve les 4 paires de mots sémantiquement proches.</p>
@@ -2052,7 +1993,6 @@
           <div id="z2-pairs-result"></div>
         </div>
 
-        <!-- Partie B : Analogies -->
         <div id="z2-analogies-section" style="background:rgba(10,20,40,0.8);border:1px solid rgba(168,85,247,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px;opacity:0.4;pointer-events:none">
           <h3 style="color:#a855f7;font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE B · Analogies Vectorielles</h3>
           <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">
@@ -2068,7 +2008,7 @@
     }
 
     function selectWord(word) {
-      // Déjà apparié ?
+
       const pairIdx = z2State.foundPairs.findIndex(p => p.words.includes(word));
       if (pairIdx !== -1) return;
 
@@ -2082,7 +2022,7 @@
         card.classList.remove('selected-card');
         z2State.selected = null;
       } else {
-        // Tentative de paire
+
         z2State.tries++;
         const w1 = z2State.selected;
         const w2 = word;
@@ -2092,7 +2032,7 @@
         card1.classList.remove('selected-card');
 
         if (matchPair) {
-          // Succès
+
           z2State.foundPairs.push(matchPair);
           [w1, w2].forEach(w => {
             const c = document.getElementById('wc-' + w);
@@ -2113,7 +2053,7 @@
                 🎉 4/4 paires trouvées en ${z2State.tries} tentatives !<br>
                 <span style="font-size:0.85em;color:#8899aa">Ces mots proches ont des <em>vecteurs proches</em> dans l'espace des embeddings.</span>
               </div>`;
-            // Débloquer analogies
+
             const anSection = document.getElementById('z2-analogies-section');
             anSection.style.opacity = '1';
             anSection.style.pointerEvents = 'auto';
@@ -2121,7 +2061,7 @@
             renderAnalogies();
           }
         } else {
-          // Échec
+
           [w1, w2].forEach(w => {
             const c = document.getElementById('wc-' + w);
             c.classList.add('wrong-card');
@@ -2195,7 +2135,6 @@
       loadZone(3);
     }
 
-    // ==================== ZONE 3 — L'ORACLE PROBABILISTE ====================
     const predictionChallenges = [
       {
         prompt: 'La capitale de la France est',
@@ -2320,7 +2259,6 @@
 
       body.innerHTML = html;
 
-      // Animer le curseur
       const style = document.createElement('style');
       style.textContent = '@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }';
       document.head.appendChild(style);
@@ -2332,7 +2270,6 @@
       const isCorrect = ch.options[optionIdx].correct;
       z3Answers[challengeIdx] = isCorrect;
 
-      // Révéler toutes les probabilités avec animation
       ch.options.forEach((opt, j) => {
         setTimeout(() => {
           document.getElementById(`pred-bar-${challengeIdx}-${j}`).style.width = opt.pct + '%';
@@ -2355,7 +2292,6 @@
 
       document.getElementById(`pexplain-${challengeIdx}`).classList.add('show');
 
-      // Update score
       const answered = Object.keys(z3Answers).length;
       const correct = Object.values(z3Answers).filter(v => v).length;
       document.getElementById('z3-fill').style.width = (answered / predictionChallenges.length * 100) + '%';
@@ -2406,7 +2342,6 @@
       toast('🎉 Toutes les zones complétées !', 4000);
     }
 
-    // ==================== DONNÉES QUIZ ====================
     const quizQuestions = [
       {
         q: 'Qu\'est-ce qu\'un "token" dans un modèle de langage ?',
@@ -2548,7 +2483,7 @@
   </script>
 
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -2576,7 +2511,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))

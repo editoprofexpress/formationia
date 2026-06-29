@@ -32,7 +32,6 @@
       height:100vh;
     }
 
-    /* ==================== TITRE ==================== */
     #title-screen{
       position:fixed;inset:0;
       background:url('images/module2-title-bg.png') center/cover no-repeat,
@@ -76,7 +75,6 @@
       transform:scale(1.05);
     }
 
-    /* ==================== LIENS RETOUR ==================== */
     .back-link-title{
       position:absolute;top:20px;left:20px;
       display:flex;align-items:center;gap:8px;
@@ -100,7 +98,6 @@
     .back-link-sidebar .back-arrow{transition:transform .3s}
     .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
 
-    /* ==================== BRIEFING ==================== */
     #briefing-screen{
       position:fixed;inset:0;
       background:linear-gradient(135deg,#0a0e17 0%,#1a0a0a 50%,#0a0e17 100%);
@@ -163,7 +160,6 @@
     .briefing-btn.primary:hover{background:var(--neon-orange);border-color:var(--neon-orange)}
     .briefing-btn:disabled{opacity:0.5;cursor:not-allowed}
 
-    /* ==================== CONTENU COURS ==================== */
     .module-title{
       font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-red);
       margin-bottom:30px;padding-bottom:15px;border-bottom:1px solid rgba(255,107,107,0.3);
@@ -213,7 +209,6 @@
     }
     .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
-    /* ==================== EXPÉRIENCES LAB ==================== */
     .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
     .exp-card{
       background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
@@ -268,7 +263,6 @@
       font-family:'Space Mono',monospace;font-size:0.75em;color:white;text-shadow:0 0 5px rgba(0,0,0,.8);
     }
 
-    /* ==================== QUIZ ==================== */
     .q-card{
       border:1px solid rgba(0,212,255,.35);background:rgba(0,212,255,.03);
       border-radius:14px;padding:16px;margin-top:12px;
@@ -291,7 +285,6 @@
     }
     .explain.show{display:block}
 
-    /* ==================== MODAL ==================== */
     .modal{
       position:fixed;inset:0;display:none;
       background:rgba(0,5,15,0.88);backdrop-filter:blur(8px);
@@ -310,7 +303,6 @@
     .modal-card p{line-height:1.65;color:#cfe9ff}
     .modal-actions{margin-top:16px;display:flex;justify-content:flex-end}
 
-    /* ==================== TOAST ==================== */
     #toast{
       position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
       padding:12px 14px;border-radius:14px;
@@ -321,7 +313,6 @@
     #toast.show{display:block;animation:toastIn .18s ease}
     @keyframes toastIn{from{transform:translateX(-50%) translateY(6px);opacity:.2}to{transform:translateX(-50%) translateY(0);opacity:1}}
 
-    /* ==================== RESPONSIVE ==================== */
     @media(max-width:768px){
       .main-title{font-size:1.8em}
       .briefing-nav{display:none}
@@ -331,8 +322,8 @@
       .briefing-btn{width:100%;justify-content:center}
       .exp-grid{grid-template-columns:1fr}
     }
-  
-    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+
+    
     .domain-badge-std {
       display: inline-flex;
       align-items: center;
@@ -401,11 +392,8 @@
       text-transform: uppercase;
     }
 
-
-    /* ==================== COULEURS DOMAINE SIDEBAR (complément) ==================== */
     .briefing-nav-item.active .nav-number { background: rgba(255,107,107,0.4) !important; }
 
-    /* === STANDARDISATION FORMAT SIDEBAR === */
     .briefing-nav { width: 280px !important; }
     .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
     .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
@@ -416,7 +404,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -432,11 +420,9 @@
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
     }
 
-    /* Couleur thème du module */
     :root { --domain-color: #ff6b6b;
   --domain-color-border: rgba(255, 107, 107, 0.3); }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -449,7 +435,6 @@
 </head>
 <body>
 
-  <!-- ==================== TITLE SCREEN ==================== -->
   <section id="title-screen">
     <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
       <span>←</span><span>Tous les modules</span>
@@ -474,7 +459,6 @@
     </div>
   </section>
 
-  <!-- ==================== BRIEFING SCREEN ==================== -->
   <div id="briefing-screen">
     <div class="briefing-header">
       <div class="briefing-title">Module n°2 — Données sous influence</div>
@@ -530,7 +514,6 @@
 
   </div>
 
-  <!-- ==================== MODAL ==================== -->
   <div class="modal" id="modal">
     <div class="modal-card">
       <h3 id="modal-title">Titre</h3>
@@ -541,13 +524,10 @@
     </div>
   </div>
 
-  <!-- ==================== TOAST ==================== -->
   <div id="toast"></div>
 
 <script>
-/* =========================================================
-   UTILITAIRES
-========================================================= */
+
 const $ = (id) => document.getElementById(id);
 
 function toast(msg, ms=2200){
@@ -563,9 +543,6 @@ function openModal(title,body){
 }
 function closeModal(){$('modal').classList.remove('show')}
 
-/* =========================================================
-   ÉTAT GLOBAL
-========================================================= */
 const state={
   lessonSeen:new Set(),
   expDone:new Set(),
@@ -578,9 +555,6 @@ const totalLessons=8;
 let certificateUnlocked=false;
 let finalScore=0;
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
 function startModule(){
   $('title-screen').classList.add('hidden');
   $('briefing-screen').classList.add('active');
@@ -618,22 +592,19 @@ function showLesson(idx){
     ${lesson.html}
   `;
   content.scrollTop=0;
-  // Update nav
+
   document.querySelectorAll('.briefing-nav-item').forEach((item,i)=>{
     item.classList.remove('active');
     if(i===idx) item.classList.add('active');
     if(state.lessonSeen.has(i) && i!==idx) item.classList.add('completed');
   });
   updateBriefingProgress();
-  // Init interactives
+
   if(lesson.init) setTimeout(lesson.init,100);
 }
 
-/* =========================================================
-   CONTENU DES LEÇONS (placeholder - sera complété)
-========================================================= */
 const lessons = [
-  /* ---- LEÇON 1 ---- */
+
   {
     title:"01 — Qu'est-ce qu'apprendre pour une machine ?",
     kicker:"La différence fondamentale entre l'apprentissage humain et l'apprentissage machine.",
@@ -693,7 +664,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 2 ---- */
+
   {
     title:"02 — Les données d'entraînement : le carburant de l'IA",
     kicker:"Sans données, pas d'IA. Mais toutes les données ne se valent pas.",
@@ -730,7 +701,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 3 ---- */
+
   {
     title:"03 — Supervisé vs non supervisé",
     kicker:"Deux grandes familles d'apprentissage aux philosophies opposées.",
@@ -776,7 +747,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 4 ---- */
+
   {
     title:"04 — Poids, ajustement et optimisation",
     kicker:"Comment un réseau de neurones ajuste des milliards de paramètres pour apprendre.",
@@ -818,7 +789,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 5 ---- */
+
   {
     title:"05 — Quand les données mentent : biais et déséquilibres",
     kicker:"Les données reflètent le monde tel qu'il est — avec ses injustices.",
@@ -858,7 +829,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 6 ---- */
+
   {
     title:"06 — Surapprentissage : quand l'IA apprend trop bien",
     kicker:"Mémoriser n'est pas comprendre. Le piège de la performance trompeuse.",
@@ -893,7 +864,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 7 ---- */
+
   {
     title:"07 — Vers un apprentissage responsable",
     kicker:"Auditer, équilibrer, tester : les bonnes pratiques pour une IA de confiance.",
@@ -939,7 +910,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 8 (MISSION) ---- */
+
   {
     title:"🔬 Expériences SYNAPTIK — Mission",
     kicker:"Mettez en pratique vos connaissances dans 4 expériences de laboratoire.",
@@ -997,9 +968,6 @@ const lessons = [
   }
 ];
 
-/* =========================================================
-   EXPÉRIENCES
-========================================================= */
 function updateExpCards(){
   [1,2,3,4].forEach(i=>{
     const card=document.getElementById('exp-card-'+i);
@@ -1028,7 +996,6 @@ function completeExperiment(id){
   }
 }
 
-/* ---- EXP 1 : DATASET BUILDER ---- */
 const dataItems=[
   {id:1,type:'cat',emoji:'🐱'},{id:2,type:'cat',emoji:'🐱'},{id:3,type:'cat',emoji:'🐱'},{id:4,type:'cat',emoji:'🐱'},
   {id:5,type:'dog',emoji:'🐶'},{id:6,type:'dog',emoji:'🐶'},{id:7,type:'dog',emoji:'🐶'},{id:8,type:'dog',emoji:'🐶'},
@@ -1074,7 +1041,7 @@ function toggleDataItem(id){
   exp1Selected.forEach(sid=>{const d=dataItems.find(x=>x.id===sid);if(d)counts[d.type]++});
   $('exp1-count').textContent=exp1Selected.size;
   const vals=Object.values(counts).filter(v=>v>0);
-  // Balance = 0 si une seule catégorie, sinon ratio min/max * (catégories présentes / 4)
+
   const internalBal=vals.length>1?Math.min(...vals)/Math.max(...vals):0;
   const balance=(vals.length/4)*internalBal;
   $('exp1-balance').textContent=Math.round(balance*100)+'%';
@@ -1107,7 +1074,6 @@ function trainExp1(){
     </div>`;
 }
 
-/* ---- EXP 2 : BIAIS CACHÉ ---- */
 const cvData=[
   {nom:'Thomas D.',age:34,exp:'8 ans',diplome:'Master',genre:'M',resultat:'Accepté'},
   {nom:'Sophie M.',age:31,exp:'7 ans',diplome:'Master',genre:'F',resultat:'Refusé'},
@@ -1183,7 +1149,6 @@ function analyzeColumn(col){
   }
 }
 
-/* ---- EXP 3 : LABO OVERFITTING ---- */
 function renderExp3(zone){
   zone.innerHTML=`
     <div class="callout" style="border-color:rgba(0,212,255,.4)">
@@ -1225,11 +1190,10 @@ function updateOverfitCurves(){
   const complexity=parseInt(sliders[1].value);
   const datasize=parseInt(sliders[2].value);
 
-  // Training accuracy: increases with epochs and complexity
   const trainAcc=Math.min(99,40+Math.log(epochs+1)*12+complexity*4);
-  // Overfitting risk
+
   const overfitRisk=(epochs*complexity*0.8)/(datasize*0.05+10);
-  // Validation accuracy: peaks then drops with overfitting
+
   const valAcc=Math.max(25,Math.min(trainAcc-2,85+Math.min(datasize/500,8)-overfitRisk*3));
   const gap=Math.abs(trainAcc-valAcc);
   const isGood=valAcc>=75&&gap<15;
@@ -1253,7 +1217,6 @@ function updateOverfitCurves(){
     valAcc<75?`<div class="callout warn" style="margin-top:15px"><p>La précision de validation est trop basse (${Math.round(valAcc)}%). Le modèle est en <strong>sous-apprentissage</strong>. Essayez : plus d'epochs, modèle plus complexe, ou plus de données.</p></div>`:'');
 }
 
-/* ---- EXP 4 : NETTOYEUR DE DONNÉES ---- */
 const cleanData=[
   {id:1,emoji:'🐱',correctLabel:'Chat',currentLabel:'Chat',wrong:false},
   {id:2,emoji:'🐶',correctLabel:'Chien',currentLabel:'Chat',wrong:true},
@@ -1312,13 +1275,13 @@ function toggleFlag(id){
     el.classList.toggle('selected',exp4Flagged.has(eid));
   });
   $('exp4-count').textContent=exp4Flagged.size;
-  // Enable clean button only after dirty training
+
   if(exp4Trained) $('exp4-clean-btn').disabled=false;
 }
 
 function trainDirty(){
   exp4Trained=true;
-  // Dirty accuracy: 4 items are wrong out of 12 → ~67% base accuracy
+
   const dirtyAcc=67;
   $('exp4-result').innerHTML=`
     <div class="callout warn" style="margin-top:15px">
@@ -1334,27 +1297,25 @@ function trainDirty(){
 function trainClean(){
   if(!exp4Trained){toast("Entraînez d'abord le modèle AVANT nettoyage.");return;}
 
-  // Check which flagged items are actually wrong
   const correctFlags=cleanData.filter(d=>d.wrong&&exp4Flagged.has(d.id)).length;
   const falseFlags=exp4Flagged.size-correctFlags;
   const missedErrors=4-correctFlags;
   const cleanAcc=Math.min(96,67+correctFlags*7-falseFlags*4);
   const perfect=correctFlags===4&&falseFlags===0;
 
-  // Reveal the correct answers
   document.querySelectorAll('#exp4-pool .data-item').forEach(el=>{
     const eid=parseInt(el.dataset.id);
     const item=cleanData.find(d=>d.id===eid);
     if(!item)return;
     el.style.pointerEvents='none';
     if(item.wrong&&exp4Flagged.has(eid)){
-      // Correctly flagged
+
       el.style.borderColor='var(--neon-green)';el.style.background='rgba(0,255,136,.15)';
     } else if(item.wrong&&!exp4Flagged.has(eid)){
-      // Missed error
+
       el.style.borderColor='var(--danger)';el.style.background='rgba(255,77,77,.15)';
     } else if(!item.wrong&&exp4Flagged.has(eid)){
-      // False flag
+
       el.style.borderColor='var(--warn)';el.style.background='rgba(255,204,0,.12)';
     }
   });
@@ -1382,9 +1343,6 @@ function trainClean(){
   $('exp4-result').scrollIntoView({behavior:'smooth'});
 }
 
-/* =========================================================
-   QUIZ
-========================================================= */
 const quizQuestions=[
   {q:"Que signifie \"apprendre\" pour une machine ?",opts:["Comprendre le monde comme un humain","Ajuster des paramètres numériques pour minimiser une erreur","Mémoriser toutes les données d'entraînement","Devenir consciente de son environnement"],correct:1,explain:"L'apprentissage machine est un processus d'optimisation mathématique : ajuster des poids pour réduire l'écart entre prédictions et réponses attendues."},
   {q:"Quel principe résume l'importance de la qualité des données ?",opts:["More is better","Garbage In, Garbage Out","Data is the new oil","No data, no problem"],correct:1,explain:"Si les données d'entrée sont de mauvaise qualité (biaisées, incorrectes, non représentatives), le modèle produira des résultats de mauvaise qualité."},
@@ -1434,7 +1392,7 @@ function answerQuiz(qIdx,oIdx){
     el.classList.remove('selected');
     if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
   });
-  // Enable submit button when all questions answered
+
   if(Object.keys(quizAnswers).length===quizQuestions.length){
     const btn=$('quiz-submit-btn');
     if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
@@ -1451,7 +1409,7 @@ function submitQuiz(){
   $('quiz-submit-btn').style.display='none';
 
   if(pct>=70){
-    // Success: show highlights + explanations
+
     quizQuestions.forEach((q,i)=>{
       const userAns=quizAnswers[i];
       const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
@@ -1471,7 +1429,7 @@ function submitQuiz(){
     </div>`;
     unlockCertificate();
   } else {
-    // Failure: show only score + retry (no answer details)
+
     $('quiz-result').innerHTML=`
     <div class="callout warn" style="text-align:center;padding:30px">
       <h3 style="color:var(--warn);margin-bottom:15px">Score insuffisant</h3>
@@ -1487,9 +1445,6 @@ function retryQuiz(){
   showQuiz();
 }
 
-/* =========================================================
-   ATTESTATION
-========================================================= */
 function unlockCertificate(){
   certificateUnlocked=true;
   const navItem=$('certificate-nav-item');
@@ -1592,7 +1547,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
 
 </script>
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -1620,7 +1575,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))

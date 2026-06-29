@@ -29,7 +29,6 @@
             height: 100vh;
         }
 
-        /* ==================== SCANLINE (désactivé) ==================== */
         .scanline { display: none; }
 
         .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
@@ -45,7 +44,6 @@
             100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
         }
 
-        /* ==================== ÉCRAN TITRE ==================== */
         #title-screen {
             position: fixed; inset: 0;
             background: url('images/module14-title-bg.png') center/cover no-repeat,
@@ -160,7 +158,6 @@
         .stat-label { font-size: 0.75em; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
         .stat-divider { width: 1px; height: 40px; background: rgba(0,229,204,0.3); }
 
-        /* ==================== BRIEFING ==================== */
         #briefing-screen {
             position: fixed; inset: 0;
             background: linear-gradient(135deg, #0a0e17 0%, #0d1520 50%, #0a0e17 100%);
@@ -254,7 +251,6 @@
         .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
         .briefing-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* ==================== CONTENU LEÇONS ==================== */
         .module-title {
             font-family: 'Space Mono', monospace; font-size: 1.7em;
             color: var(--neon-teal); margin-bottom: 25px; padding-bottom: 15px;
@@ -323,7 +319,6 @@
         .stat-table td { padding: 10px 14px; border: 1px solid rgba(0,212,255,0.12); color: #cfe9ff; }
         .stat-table tr:nth-child(even) { background: rgba(0,212,255,0.04); }
 
-        /* Barre de risque colorée */
         .risk-bar { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
         .risk-track {
             flex: 1; height: 8px; background: rgba(255,255,255,0.08);
@@ -336,7 +331,6 @@
         .risk-label { font-size: 0.8em; color: var(--muted); min-width: 70px; }
         .risk-pct { font-family: 'Space Mono', monospace; font-size: 0.82em; color: var(--text); min-width: 38px; text-align: right; }
 
-        /* Cards de compétences */
         .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 18px 0; }
         .skill-card {
             padding: 16px; border-radius: 8px;
@@ -348,7 +342,6 @@
         .skill-card-title { font-family: 'Space Mono', monospace; font-size: 0.88em; color: var(--neon-teal); margin-bottom: 6px; }
         .skill-card-desc { font-size: 0.85em; color: var(--muted); line-height: 1.5; }
 
-        /* Timeline */
         .timeline { position: relative; padding-left: 30px; margin: 20px 0; }
         .timeline::before {
             content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
@@ -363,7 +356,6 @@
         .timeline-year { font-family: 'Space Mono', monospace; font-size: 0.8em; color: var(--neon-amber); margin-bottom: 4px; }
         .timeline-text { color: #cfe9ff; line-height: 1.6; font-size: 0.95em; }
 
-        /* Highlight box pour transition vers le jeu */
         .mission-box {
             background: linear-gradient(135deg, rgba(0,229,204,0.08), rgba(0,212,255,0.06));
             border: 1px solid rgba(0,229,204,0.35);
@@ -378,7 +370,6 @@
         .mission-box p { color: #cfe9ff; line-height: 1.8; }
         .mission-box strong { color: var(--neon-teal); }
 
-        /* Client preview cards */
         .clients-preview { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 20px 0; }
         .client-preview-card {
             text-align: center; padding: 14px 8px;
@@ -394,7 +385,6 @@
         .client-preview-name { font-family: 'Space Mono', monospace; font-size: 0.72em; color: var(--neon-teal); margin-bottom: 3px; }
         .client-preview-job { font-size: 0.75em; color: var(--muted); }
 
-        /* ==================== BUREAU ARIA - JEU ==================== */
         #game-container {
             position: fixed; inset: 0;
             background: linear-gradient(135deg, #07101a 0%, #0d1a28 50%, #07101a 100%);
@@ -403,7 +393,6 @@
         }
         #game-container.active { display: flex; }
 
-        /* Grille en fond du jeu */
         #game-container::before {
             content: ''; position: absolute; inset: 0;
             background-image:
@@ -412,7 +401,6 @@
             background-size: 40px 40px; pointer-events: none; z-index: 0;
         }
 
-        /* Topbar */
         .game-topbar {
             background: rgba(7,16,26,0.97);
             border-bottom: 1px solid rgba(0,229,204,0.25);
@@ -449,13 +437,11 @@
             text-shadow: 0 0 12px rgba(0,255,136,0.5);
         }
 
-        /* Zone principale du jeu */
         .game-main {
             flex: 1; display: flex; gap: 0;
             overflow: hidden; position: relative; z-index: 1;
         }
 
-        /* Panneau gauche : profil client */
         .client-panel {
             width: 320px; flex-shrink: 0;
             background: rgba(10,20,38,0.92);
@@ -514,7 +500,6 @@
             font-family: Georgia, serif; line-height: 1;
         }
 
-        /* Panneau droit : stratégies */
         .strategies-panel {
             flex: 1; display: flex; flex-direction: column;
             padding: 28px 32px; gap: 18px; overflow-y: auto;
@@ -594,7 +579,6 @@
         .strategy-result.bad    { background: rgba(255,0,128,0.1); color: #ffaad4; border-left: 3px solid var(--neon-pink); }
         .strategy-result.ok     { background: rgba(255,183,0,0.1); color: #ffd980; border-left: 3px solid var(--neon-amber); }
 
-        /* Feedback global après choix */
         .global-feedback {
             display: none; padding: 16px 20px; border-radius: 10px;
             font-size: 0.9em; line-height: 1.7;
@@ -605,7 +589,6 @@
         .global-feedback.show { display: block; }
         @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
 
-        /* Bouton suivant */
         .game-next-btn {
             display: none; font-family: 'Space Mono', monospace;
             padding: 14px 36px; background: var(--neon-teal); color: var(--dark-bg);
@@ -617,7 +600,6 @@
         .game-next-btn.show { display: block; }
         .game-next-btn:hover { background: var(--neon-green); box-shadow: 0 0 20px rgba(0,255,136,0.4); transform: scale(1.03); }
 
-        /* ==================== OVERLAY RÉSULTATS DU JEU ==================== */
         #results-overlay {
             position: fixed; inset: 0; z-index: 1100;
             background: rgba(7,16,26,0.97);
@@ -661,7 +643,6 @@
         }
         .results-btn.secondary:hover { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: none; }
 
-        /* ==================== QUIZ SCREEN ==================== */
         #quiz-screen {
             position: fixed; inset: 0; z-index: 1050;
             background: linear-gradient(135deg, #0a0e17 0%, #0d1520 50%, #0a0e17 100%);
@@ -735,7 +716,6 @@
         .quiz-feedback-bar.correct { background: rgba(0,255,136,0.08); border-left: 3px solid var(--neon-green); color: #aaffcc; }
         .quiz-feedback-bar.wrong   { background: rgba(255,0,128,0.08); border-left: 3px solid var(--neon-pink);  color: #ffaad4; }
 
-        /* Résultats quiz */
         .quiz-results-block {
             max-width: 600px; margin: 0 auto; text-align: center; padding: 20px 0;
         }
@@ -750,7 +730,6 @@
         .quiz-result-box.passed { background: rgba(0,255,136,0.08); border: 2px solid var(--neon-green); }
         .quiz-result-box.failed { background: rgba(255,0,128,0.08); border: 2px solid var(--neon-pink); }
 
-        /* Champ nom attestation */
         .cert-name-input {
             width: 100%; padding: 13px 16px;
             background: rgba(0,50,100,0.35); border: 2px solid rgba(0,229,204,0.35);
@@ -761,7 +740,6 @@
         .cert-name-input:focus { outline: none; border-color: var(--neon-teal); box-shadow: 0 0 12px rgba(0,229,204,0.2); }
         .cert-name-input::placeholder { color: #556677; }
 
-        /* Responsive */
         @media () {
             .client-panel { width: 250px; }
             .strategies-panel { padding: 18px; }
@@ -777,7 +755,6 @@
         }
 
     
-    /* ==================== HARMONISATION TITRE (standardized) ==================== */
     .domain-badge-std {
       display: inline-flex;
       align-items: center;
@@ -857,8 +834,6 @@
       text-transform: uppercase;
     }
 
-
-    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
     .briefing-nav { border-right-color: rgba(149,225,211,0.2) !important; }
     .briefing-nav::-webkit-scrollbar-thumb { background: rgba(149,225,211,0.3) !important; border-radius: 2px; }
     .back-link-sidebar {
@@ -879,7 +854,6 @@
     .nav-number { background: rgba(149,225,211,0.2) !important; }
     .briefing-nav-item.active .nav-number { background: rgba(149,225,211,0.4) !important; }
 
-    /* === STANDARDISATION FORMAT SIDEBAR === */
     .briefing-nav { width: 280px !important; }
     .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
     .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
@@ -889,7 +863,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -905,11 +879,9 @@
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
     }
 
-    /* Couleur thème du module */
     :root { --domain-color: #00e5cc;
   --domain-color-border: rgba(0, 229, 204, 0.3); }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -925,7 +897,6 @@
 <div class="scanline"></div>
 <div class="particles" id="particles"></div>
 
-<!-- ==================== ÉCRAN TITRE ==================== -->
 <div id="title-screen">
     <a href="modules.html" class="back-link-title">← Tous les modules</a>
 
@@ -951,7 +922,6 @@
     </div>
 </div>
 
-<!-- ==================== OVERLAY RÉSULTATS DU JEU ==================== -->
 <div id="results-overlay">
     <div class="results-card">
         <div class="results-icon" id="results-icon">⚙️</div>
@@ -975,7 +945,6 @@
     </div>
 </div>
 
-<!-- ==================== QUIZ SCREEN ==================== -->
 <div id="quiz-screen">
     <div class="quiz-header">
         <div class="quiz-header-title">⚙️ QUIZ DE CERTIFICATION — SHIFT</div>
@@ -989,7 +958,6 @@
     <div class="quiz-body" id="quiz-body"></div>
 </div>
 
-<!-- ==================== BUREAU ARIA - JEU ==================== -->
 <div id="game-container">
     <div class="game-topbar">
         <div class="game-topbar-left">
@@ -1004,7 +972,7 @@
         </div>
     </div>
     <div class="game-main">
-        <!-- Profil client -->
+
         <div class="client-panel">
             <div class="client-avatar-wrap">
                 <img id="client-avatar" class="client-avatar" src="" alt="">
@@ -1015,7 +983,7 @@
             <div class="client-risk" id="client-risk"></div>
             <div class="client-speech" id="client-speech"></div>
         </div>
-        <!-- Stratégies -->
+
         <div class="strategies-panel">
             <div class="strategies-title">Votre conseil</div>
             <div class="strategies-subtitle" id="strategies-subtitle">Choisissez la meilleure stratégie pour ce client :</div>
@@ -1026,7 +994,6 @@
     </div>
 </div>
 
-<!-- ==================== BRIEFING ==================== -->
 <div id="briefing-screen">
     <div class="briefing-header">
         <div class="briefing-title">Module n°14 — IA et emploi</div>
@@ -1039,7 +1006,7 @@
     </div>
 
     <div class="briefing-body">
-        <!-- NAV LATÉRALE -->
+
         <nav class="briefing-nav">
             <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
@@ -1068,7 +1035,7 @@
             <div class="briefing-nav-item" id="nav-7" onclick="showLesson(7)" style="margin-top:10px;border-top:1px solid rgba(0,229,204,0.15);">
                 <span class="nav-icon">🎯</span><span class="nav-number">▶</span>Mission ARIA
             </div>
-        
+
         <div class="briefing-nav-item" id="certificate-nav-item" onclick="showCertificateInFolder()" style="opacity:0.5;cursor:not-allowed;background:rgba(100,100,100,0.2)">
             <span class="nav-icon">🔒</span>
             <span class="nav-number" style="background:rgba(100,100,100,0.3);color:#888">--</span>
@@ -1076,7 +1043,6 @@
           </div>
       </nav>
 
-        <!-- CONTENU -->
         <div class="briefing-content" id="lesson-content"></div>
     </div>
 
@@ -1088,7 +1054,7 @@
 </div>
 
 <script>
-// ==================== PARTICULES ====================
+
 (function() {
     const c = document.getElementById('particles');
     for (let i = 0; i < 25; i++) {
@@ -1104,21 +1070,17 @@
     }
 })();
 
-// ==================== NAVIGATION PRINCIPALE ====================
 function showBriefing() {
     document.getElementById('title-screen').classList.add('hidden');
     document.getElementById('briefing-screen').classList.add('active');
     showLesson(0);
 }
 
-// ==================== ÉTAT ====================
 let currentLesson = 0;
-const TOTAL_LESSONS = 8; // 0-6 leçons + 7 mission
+const TOTAL_LESSONS = 8; 
 
-// ==================== LEÇONS ====================
 const lessons = [
 
-    // ── LEÇON 0 : INTRODUCTION ──
     {
         navId: 0,
         content: `
@@ -1176,7 +1138,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 1 : LE CHOC DE L'AUTOMATISATION ──
     {
         navId: 1,
         content: `
@@ -1247,7 +1208,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 2 : MÉTIERS À RISQUE ──
     {
         navId: 2,
         content: `
@@ -1346,7 +1306,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 3 : L'IA COMME COLLÈGUE ──
     {
         navId: 3,
         content: `
@@ -1408,7 +1367,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 4 : NOUVEAUX MÉTIERS ──
     {
         navId: 4,
         content: `
@@ -1481,7 +1439,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 5 : ATOUTS HUMAINS ──
     {
         navId: 5,
         content: `
@@ -1553,7 +1510,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 6 : ENJEUX SOCIAUX ──
     {
         navId: 6,
         content: `
@@ -1623,7 +1579,6 @@ const lessons = [
         `
     },
 
-    // ── LEÇON 7 : MISSION ARIA ──
     {
         navId: 7,
         content: `
@@ -1688,14 +1643,12 @@ const lessons = [
     }
 ];
 
-// ==================== AFFICHAGE D'UNE LEÇON ====================
 function showLesson(index) {
     currentLesson = index;
     const content = document.getElementById('lesson-content');
     content.innerHTML = `<div class="section-content">${lessons[index].content}</div>`;
     content.scrollTop = 0;
 
-    // Nav items
     document.querySelectorAll('.briefing-nav-item').forEach((item, i) => {
         item.classList.remove('active');
         if (i < index) item.classList.add('completed');
@@ -1707,12 +1660,10 @@ function showLesson(index) {
         activeNav.classList.remove('completed');
     }
 
-    // Progression
     const pct = Math.round(((index + 1) / TOTAL_LESSONS) * 100);
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('lesson-counter').textContent = (index + 1) + ' / ' + TOTAL_LESSONS;
 
-    // Boutons
     { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = index === 0; }
     const btnNext = document.getElementById('btn-next');
     if (index === TOTAL_LESSONS - 1) {
@@ -1734,7 +1685,6 @@ function prevLesson() {
     if (currentLesson > 0) showLesson(currentLesson - 1);
 }
 
-// ==================== DONNÉES DES CLIENTS ====================
 const clients = [
     {
         id: 1,
@@ -1913,7 +1863,6 @@ const clients = [
     }
 ];
 
-// ==================== ÉTAT DU JEU ====================
 const gameState = {
     currentClient: 0,
     score: 0,
@@ -1921,7 +1870,6 @@ const gameState = {
     answered: false
 };
 
-// ==================== DÉMARRER LE JEU ====================
 function startARIA() {
     document.getElementById('briefing-screen').classList.remove('active');
     document.getElementById('game-container').classList.add('active');
@@ -1944,18 +1892,15 @@ function buildDots() {
     });
 }
 
-// ==================== CHARGER UN CLIENT ====================
 function loadClient(index) {
     const c = clients[index];
     gameState.answered = false;
 
-    // Dots
     for (let i = 0; i < clients.length; i++) {
         const d = document.getElementById('dot-' + i);
         d.className = 'client-dot' + (i < index ? ' done' : i === index ? ' current' : '');
     }
 
-    // Profil
     const avatar = document.getElementById('client-avatar');
     avatar.src = c.avatar;
     avatar.className = 'client-avatar';
@@ -1965,7 +1910,6 @@ function loadClient(index) {
     document.getElementById('client-risk').innerHTML = c.risk;
     document.getElementById('client-speech').textContent = c.speech;
 
-    // Stratégies
     const container = document.getElementById('strategy-cards');
     container.innerHTML = '';
     c.strategies.forEach((s, i) => {
@@ -1983,7 +1927,6 @@ function loadClient(index) {
         container.appendChild(card);
     });
 
-    // Reset feedback
     const fb = document.getElementById('global-feedback');
     fb.className = 'global-feedback';
     fb.textContent = '';
@@ -1992,7 +1935,6 @@ function loadClient(index) {
     document.getElementById('strategies-subtitle').textContent = 'Choisissez la meilleure stratégie pour ce client :';
 }
 
-// ==================== CHOISIR UNE STRATÉGIE ====================
 function chooseStrategy(clientIndex, stratIndex) {
     if (gameState.answered) return;
     gameState.answered = true;
@@ -2000,13 +1942,11 @@ function chooseStrategy(clientIndex, stratIndex) {
     const c = clients[clientIndex];
     const chosen = c.strategies[stratIndex];
 
-    // Désactiver tous les clics
     document.querySelectorAll('.strategy-card').forEach(card => {
         card.onclick = null;
         card.classList.add('disabled');
     });
 
-    // Appliquer les résultats sur toutes les cartes
     c.strategies.forEach((s, i) => {
         const card = document.getElementById('strat-' + i);
         const resultEl = document.getElementById('result-' + i);
@@ -2015,7 +1955,7 @@ function chooseStrategy(clientIndex, stratIndex) {
         resultEl.className = 'strategy-result show ' + s.result;
 
         if (i === stratIndex) {
-            // Carte choisie
+
             if (s.result === 'good')  card.className = 'strategy-card selected-good';
             else if (s.result === 'bad') card.className = 'strategy-card selected-bad';
             else card.className = 'strategy-card selected-ok';
@@ -2026,7 +1966,6 @@ function chooseStrategy(clientIndex, stratIndex) {
         }
     });
 
-    // Feedback global
     gameState.score += chosen.points;
     document.getElementById('score-display').textContent = gameState.score;
 
@@ -2052,7 +1991,6 @@ function chooseStrategy(clientIndex, stratIndex) {
     fb.innerHTML = fbMsg;
     fb.classList.add('show');
 
-    // Bouton suivant
     const btn = document.getElementById('game-next-btn');
     btn.classList.add('show');
     const isLast = clientIndex === clients.length - 1;
@@ -2060,7 +1998,6 @@ function chooseStrategy(clientIndex, stratIndex) {
     btn.onclick = isLast ? goToQuiz : nextClient;
 }
 
-// ==================== CLIENT SUIVANT ====================
 function nextClient() {
     const next = gameState.currentClient + 1;
     if (next < clients.length) {
@@ -2094,7 +2031,6 @@ function restartGame() {
     loadClient(0);
 }
 
-// ==================== QUESTIONS DU QUIZ ====================
 const quizQuestions = [
     {
         question: "Selon le célèbre rapport d'Oxford (Frey & Osborne, 2013), quel pourcentage des emplois américains présentait un risque d'automatisation ?",
@@ -2198,11 +2134,9 @@ const quizQuestions = [
     }
 ];
 
-// ==================== ÉTAT QUIZ ====================
 let quizState = { answers: {} };
 let finalQuizScore = 0;
 
-// ==================== DÉMARRER LE QUIZ ====================
 function startQuiz() {
     document.getElementById('results-overlay').classList.remove('active');
     quizState = { answers: {} };
@@ -2310,7 +2244,6 @@ function retryQuiz() {
     startQuiz();
 }
 
-// ==================== ATTESTATION ====================
 function downloadCertificate() {
     const name = (document.getElementById('cert-name').value.trim()) || 'Participant·e';
     const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -2440,7 +2373,6 @@ function downloadCertificate() {
     URL.revokeObjectURL(url);
 }
 
-/* ==================== ATTESTATION SIDEBAR ==================== */
 let certUnlocked14 = false;
 function unlockCertificate(pct) {
   certUnlocked14 = true;
@@ -2456,13 +2388,13 @@ function showCertificateInFolder() {
   if (!certUnlocked14) return;
   const bs = document.getElementById('briefing-screen');
   if (bs) bs.classList.add('active');
-  // Navigate to quiz lesson which has the attestation
+
   showLesson(7);
 }
 </script>
 
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -2490,7 +2422,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))

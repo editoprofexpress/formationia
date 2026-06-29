@@ -19,7 +19,6 @@
             --text: #e0e8ff;
             --text-muted: #8899aa;
 
-            /* Domain colors */
             --color-fondations: #ff6b6b;
             --color-interaction: #4ecdc4;
             --color-critique: #ffe66d;
@@ -66,7 +65,6 @@
             background-size: 50px 50px;
         }
 
-        /* Header */
         header {
             padding: 20px 40px;
             display: flex;
@@ -128,7 +126,6 @@
             background: var(--neon-cyan);
         }
 
-        /* Page Header */
         .page-header {
             padding: 50px 40px 30px;
             text-align: center;
@@ -151,7 +148,6 @@
             font-size: 1.1em;
         }
 
-        /* Filter tabs */
         .filter-tabs {
             display: flex;
             justify-content: center;
@@ -182,7 +178,6 @@
             color: var(--neon-cyan);
         }
 
-        /* Domains sections */
         .domain-section {
             padding: 40px;
             max-width: 1200px;
@@ -214,7 +209,6 @@
             margin-top: 5px;
         }
 
-        /* Module cards */
         .modules-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -364,13 +358,11 @@
             background: rgba(0, 212, 255, 0.3);
         }
 
-        /* Domain color classes */
         .domain-fondations { --domain-color: var(--color-fondations); }
         .domain-interaction { --domain-color: var(--color-interaction); }
         .domain-critique { --domain-color: var(--color-critique); }
         .domain-citoyens { --domain-color: var(--color-citoyens); }
 
-        /* Footer */
         footer {
             padding: 30px 40px;
             text-align: center;
@@ -380,7 +372,6 @@
             margin-top: 40px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             header {
                 padding: 15px 20px;
@@ -440,7 +431,6 @@
             <button class="filter-tab" data-filter="citoyens">🌍 Enjeux citoyens</button>
         </div>
 
-        <!-- DOMAINE 1: Fondations IA -->
         <section class="domain-section domain-fondations" data-domain="fondations">
             <div class="domain-header">
                 <img src="images/domain-brain.png" alt="Fondations IA" class="domain-icon" style="width:50px;height:50px;object-fit:contain;">
@@ -508,7 +498,6 @@
             </div>
         </section>
 
-        <!-- DOMAINE 2: Interaction raisonnée -->
         <section class="domain-section domain-interaction" data-domain="interaction">
             <div class="domain-header">
                 <img src="images/domain-chat.png" alt="Interaction" class="domain-icon" style="width:50px;height:50px;object-fit:contain;">
@@ -576,7 +565,6 @@
             </div>
         </section>
 
-        <!-- DOMAINE 3: Limites et esprit critique -->
         <section class="domain-section domain-critique" data-domain="critique">
             <div class="domain-header">
                 <img src="images/domain-search.png" alt="Esprit critique" class="domain-icon" style="width:50px;height:50px;object-fit:contain;">
@@ -630,7 +618,6 @@
             </div>
         </section>
 
-        <!-- DOMAINE 4: Enjeux citoyens -->
         <section class="domain-section domain-citoyens" data-domain="citoyens">
             <div class="domain-header">
                 <img src="images/domain-earth.png" alt="Enjeux citoyens" class="domain-icon" style="width:50px;height:50px;object-fit:contain;">
@@ -712,7 +699,7 @@
     </footer>
 
     <script>
-        // Filter functionality
+
         const filterTabs = document.querySelectorAll('.filter-tab');
         const domainSections = document.querySelectorAll('.domain-section');
 
@@ -720,11 +707,9 @@
             tab.addEventListener('click', () => {
                 const filter = tab.dataset.filter;
 
-                // Update active tab
                 filterTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
 
-                // Show/hide sections
                 domainSections.forEach(section => {
                     if (filter === 'all' || section.dataset.domain === filter) {
                         section.style.display = 'block';

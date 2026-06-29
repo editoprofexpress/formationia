@@ -34,7 +34,6 @@
             height: 100vh;
         }
 
-        /* ==================== ÉCRAN TITRE ==================== */
         #title-screen {
             position: fixed;
             inset: 0;
@@ -136,7 +135,6 @@
             color: #aabbcc;
         }
 
-        /* ==================== LIENS RETOUR MODULES ==================== */
         .back-link-sidebar {
             display: flex;
             align-items: center;
@@ -218,7 +216,6 @@
             color: #aabbcc;
         }
 
-        /* ==================== SECTION BRIEFING/COURS ==================== */
         #briefing-screen {
             position: fixed;
             inset: 0;
@@ -506,7 +503,6 @@
             cursor: not-allowed;
         }
 
-        /* ==================== GAME CONTAINER ==================== */
         #game-container {
             display: none;
             position: fixed;
@@ -521,7 +517,6 @@
             display: block;
         }
 
-        /* Top bar */
         .top-bar {
             position: absolute;
             top: 0;
@@ -620,7 +615,6 @@
             background: rgba(255, 0, 128, 0.2);
         }
 
-        /* Game stage */
         .game-stage {
             position: absolute;
             top: 60px;
@@ -645,7 +639,6 @@
             overflow-y: auto;
         }
 
-        /* ==================== COMPOSANTS PARTAGÉS ==================== */
         .panel {
             background: var(--panel-bg);
             border: 1px solid rgba(0, 212, 255, 0.28);
@@ -729,7 +722,6 @@
 
         .stage-title h2 { margin: 0; font-size: 1.25rem; letter-spacing: .3px; }
 
-        /* Cases */
         .case-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -764,7 +756,6 @@
             color: var(--neon-green);
         }
 
-        /* Evidence */
         .evidence-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -787,7 +778,6 @@
         .evidence .k { font-family: 'Space Mono', monospace; color: var(--neon-blue); }
         .evidence .v { color: #9fb6c8; margin-top: 6px; line-height: 1.45; }
 
-        /* Dossier */
         .dossier { display: flex; flex-direction: column; gap: 10px; }
         .dossier .item {
             border: 1px solid rgba(0, 212, 255, 0.18);
@@ -798,7 +788,6 @@
         .dossier .item strong { color: var(--neon-blue); }
         .dossier .item small { display: block; color: #9fb6c8; margin-top: 4px; line-height: 1.35; }
 
-        /* Puzzle drag & drop */
         .puzzle {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -842,7 +831,6 @@
         .drop.good { border-color: rgba(0, 255, 136, 0.45); box-shadow: 0 0 22px rgba(0, 255, 136, 0.35); }
         .drop.bad { border-color: rgba(255, 0, 128, 0.45); box-shadow: 0 0 22px rgba(255, 0, 128, 0.35); }
 
-        /* Verdict & choices */
         .choices {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -863,7 +851,6 @@
         .choice label { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0; color: #9fb6c8; }
         .choice input { margin-top: 3px; }
 
-        /* Quiz */
         .quiz { display: grid; gap: 14px; }
         .q {
             border: 1px solid rgba(0, 212, 255, 0.18);
@@ -885,7 +872,6 @@
             resize: vertical;
         }
 
-        /* Toast */
         .toast {
             position: fixed;
             left: 50%;
@@ -912,7 +898,6 @@
             to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
-        /* ==================== TIMER WARNING ==================== */
         #game-container.time-warning {
             animation: borderPulse 1.5s ease-in-out infinite;
         }
@@ -931,7 +916,6 @@
             50% { box-shadow: inset 0 0 60px rgba(255, 0, 128, 0.4); }
         }
 
-        /* ==================== CELEBRATION ==================== */
         .confetti {
             position: fixed;
             width: 10px;
@@ -947,14 +931,12 @@
             100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
         }
 
-        /* ==================== QUIZ FEEDBACK ==================== */
         .q.correct { border-color: rgba(0, 255, 136, 0.5); background: rgba(0, 255, 136, 0.08); }
         .q.incorrect { border-color: rgba(255, 0, 128, 0.5); background: rgba(255, 0, 128, 0.08); }
         .q .answer-feedback { margin-top: 8px; font-size: 0.85em; font-family: 'Space Mono', monospace; }
         .q .answer-feedback.ok { color: var(--neon-green); }
         .q .answer-feedback.ko { color: var(--neon-pink); }
 
-        /* ==================== TOUCH PUZZLE ==================== */
         .drag.selected {
             border-color: var(--neon-green);
             background: rgba(0, 255, 136, 0.2);
@@ -974,7 +956,6 @@
             50% { box-shadow: 0 0 18px rgba(0, 255, 136, 0.3); }
         }
 
-        /* ==================== JUDGE AVATAR ==================== */
         .judge-avatar {
             display: flex;
             align-items: center;
@@ -1009,7 +990,6 @@
             font-size: 0.8em;
         }
 
-        /* ==================== VERDICT BREAKDOWN ==================== */
         .verdict-table {
             width: 100%;
             border-collapse: collapse;
@@ -1032,7 +1012,6 @@
         .verdict-table td.match { color: var(--neon-green); }
         .verdict-table td.miss { color: var(--neon-pink); }
 
-        /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
             .main-title { font-size: 1.8em; }
             .briefing-nav { display: none; }
@@ -1050,9 +1029,6 @@
             .hud-items { font-size: 0.8em; }
         }
 
-        /* ==================== IMMERSIVE ENHANCEMENTS ==================== */
-
-        /* Particle System */
         #particles-bg {
             position: fixed;
             inset: 0;
@@ -1079,7 +1055,6 @@
             100% { opacity: 0; transform: translateY(-10vh) translateX(var(--drift, 30px)); }
         }
 
-        /* Evidence Inspection Modal */
         .evidence-modal-overlay {
             position: fixed;
             inset: 0;
@@ -1269,7 +1244,6 @@
             50% { transform: scale(1.15); text-shadow: 0 0 20px rgba(0, 255, 136, 0.5); }
         }
 
-        /* Phase Transition Overlay */
         .phase-transition-overlay {
             position: fixed;
             inset: 0;
@@ -1341,7 +1315,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Case Intro Scene */
         .case-intro-overlay {
             position: fixed;
             inset: 0;
@@ -1493,7 +1466,6 @@
             transform: scale(1.05);
         }
 
-        /* Typewriter Effect */
         .dialogue-box {
             position: relative;
             padding: 18px 22px;
@@ -1543,7 +1515,6 @@
             50% { opacity: 0; }
         }
 
-        /* Floating Score Popup */
         .score-float {
             position: fixed;
             z-index: 5000;
@@ -1563,7 +1534,6 @@
             100% { opacity: 0; transform: translateY(-90px) scale(0.7); }
         }
 
-        /* Gavel Animation */
         .gavel-overlay {
             position: fixed;
             inset: 0;
@@ -1606,7 +1576,6 @@
             animation: fadeInUp 0.5s ease-out 0.5s both;
         }
 
-        /* Screen Shake */
         @keyframes screenShake {
             0%, 100% { transform: translate(0); }
             10% { transform: translate(-3px, -2px); }
@@ -1622,7 +1591,6 @@
 
         .shake { animation: screenShake 0.4s ease-in-out; }
 
-        /* Enhanced evidence cards with hologram */
         .evidence {
             position: relative;
             overflow: hidden;
@@ -1673,7 +1641,6 @@
             z-index: 1;
         }
 
-        /* Case card icons */
         .case-card-icon {
             font-size: 2.2em;
             margin-bottom: 8px;
@@ -1681,7 +1648,6 @@
             filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.3));
         }
 
-        /* Case card scene image */
         .case-scene-img {
             width: 100%;
             height: 80px;
@@ -1730,7 +1696,6 @@
             content: none;
         }
 
-        /* Ambient glow on game container */
         #game-container.active::before {
             content: '';
             position: fixed;
@@ -1744,12 +1709,10 @@
             z-index: 0;
         }
 
-        /* Better credibility meter animation */
         .meter > div {
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Verdict dramatic reveal */
         .verdict-reveal {
             opacity: 0;
             transform: translateY(12px);
@@ -1761,7 +1724,6 @@
             transform: translateY(0);
         }
 
-        /* Immersive evidence icon */
         .evidence-icon-large {
             font-size: 2.5em;
             text-align: center;
@@ -1769,7 +1731,6 @@
             filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.4));
         }
 
-        /* Case status bar in side panel */
         .case-status-bar {
             display: flex;
             gap: 6px;
@@ -1799,8 +1760,8 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+
     
-    /* ==================== HARMONISATION TITRE (standardized) ==================== */
     .domain-badge-std {
       display: inline-flex;
       align-items: center;
@@ -1852,8 +1813,6 @@
       text-transform: uppercase;
     }
 
-
-    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
     .briefing-nav { border-right-color: rgba(149,225,211,0.2) !important; }
     .briefing-nav::-webkit-scrollbar-thumb { background: rgba(149,225,211,0.3) !important; border-radius: 2px; }
     .back-link-sidebar {
@@ -1876,7 +1835,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -1892,7 +1851,6 @@
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
     }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -1904,7 +1862,7 @@
     </style>
 </head>
 <body>
-    <!-- ÉCRAN TITRE -->
+
     <div id="title-screen">
         <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
             <span>←</span>
@@ -1934,7 +1892,6 @@
     </div>
     </div>
 
-    <!-- SECTION BRIEFING / COURS -->
     <div id="briefing-screen">
         <div class="briefing-header">
             <div class="briefing-title">Module n°15 — Responsabilité humaine</div>
@@ -1948,7 +1905,7 @@
 
         <div class="briefing-body">
             <nav class="briefing-nav">
-                <!-- Lien retour vers modules -->
+
                 <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
         </a>
@@ -2005,13 +1962,12 @@
             </nav>
 
             <div class="briefing-content" id="briefing-content">
-                <!-- Contenu des fichiers chargé dynamiquement -->
+
             </div>
         </div>
 
     </div>
 
-    <!-- CONTAINER JEU -->
     <div id="game-container">
         <div class="top-bar">
             <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier">
@@ -2055,13 +2011,10 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
-    <!-- PARTICLE BACKGROUND -->
     <div id="particles-bg"></div>
 
-    <!-- EVIDENCE MODAL -->
     <div class="evidence-modal-overlay" id="evidenceModalOverlay">
         <div class="evidence-modal" id="evidenceModal">
             <div class="evidence-modal-header">
@@ -2073,7 +2026,6 @@
         </div>
     </div>
 
-    <!-- PHASE TRANSITION OVERLAY -->
     <div class="phase-transition-overlay" id="phaseTransition">
         <div class="phase-icon" id="phaseIcon"></div>
         <div class="phase-line"></div>
@@ -2081,20 +2033,18 @@
         <div class="phase-subtitle" id="phaseSubtitle"></div>
     </div>
 
-    <!-- CASE INTRO OVERLAY -->
     <div class="case-intro-overlay" id="caseIntroOverlay">
         <div class="case-intro-bg" id="caseIntroBg"></div>
         <div class="case-intro-content" id="caseIntroContent"></div>
     </div>
 
-    <!-- GAVEL ANIMATION -->
     <div class="gavel-overlay" id="gavelOverlay">
         <div class="gavel-icon">🔨</div>
         <div class="gavel-text">Verdict enregistré</div>
     </div>
 
     <script>
-        // ==================== STATE ====================
+
         const state = {
             lessonIndex: 0,
             readLessons: new Set(),
@@ -2117,7 +2067,6 @@
             finalScorePct: 0
         };
 
-        // ==================== LESSON CONTENT ====================
         const briefingLessons = [
             {
                 title: "01 — 🧠 Introduction : Quand l'IA prend des décisions",
@@ -2404,7 +2353,6 @@
             }
         ];
 
-        // ==================== CASES DATA ====================
         const cases = {
             NEXUS: {
                 code: "NEXUS",
@@ -2465,7 +2413,6 @@
             }
         };
 
-        // ==================== CASE INTRO DATA ====================
         const caseIntroData = {
             NEXUS: {
                 icon: '💼',
@@ -2499,7 +2446,6 @@
             }
         };
 
-        // ==================== UTILITIES ====================
         function $(id) { return document.getElementById(id); }
         function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
         function toast(msg) {
@@ -2510,7 +2456,6 @@
             t._timer = setTimeout(() => t.classList.remove('show'), 2200);
         }
 
-        // ==================== PARTICLE SYSTEM ====================
         function initParticles() {
             const container = $('particles-bg');
             if (!container) return;
@@ -2531,7 +2476,6 @@
             }
         }
 
-        // ==================== FLOATING SCORE POPUP ====================
         function floatScore(amount, ev) {
             const el = document.createElement('div');
             el.className = 'score-float ' + (amount >= 0 ? 'positive' : 'negative');
@@ -2548,7 +2492,6 @@
             setTimeout(() => el.remove(), 2000);
         }
 
-        // ==================== EVIDENCE MODAL ====================
         function showEvidenceModal(evidence, isNew) {
             $('evidenceModalTitle').innerHTML = `📄 ${evidence.k}`;
             $('evidenceModalBody').innerHTML = `
@@ -2574,12 +2517,10 @@
             $('evidenceModalOverlay').classList.remove('active');
         }
 
-        // Close modal on background click
         document.addEventListener('click', (e) => {
             if (e.target.id === 'evidenceModalOverlay') closeEvidenceModal();
         });
 
-        // ==================== PHASE TRANSITION ====================
         function showPhaseTransition(icon, title, subtitle) {
             return new Promise(resolve => {
                 $('phaseIcon').textContent = icon;
@@ -2593,7 +2534,6 @@
             });
         }
 
-        // ==================== CASE INTRO CINEMATIC ====================
         function showCaseIntro(code) {
             return new Promise(resolve => {
                 const c = cases[code];
@@ -2604,7 +2544,6 @@
 
                 bg.className = 'case-intro-bg ' + intro.bgClass;
 
-                // Scene-specific SVG diagrams
                 const sceneSVGs = {
                     NEXUS: `<svg viewBox="0 0 400 120" style="width:100%;max-width:500px;margin-bottom:20px;opacity:0.45" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="20" width="80" height="90" rx="4" fill="none" stroke="#6040c0" stroke-width="1"/><rect x="15" y="25" width="70" height="50" rx="2" fill="#1a0a40" stroke="#8060e0" stroke-width="0.5"/><text x="50" y="55" text-anchor="middle" fill="#8060e0" font-size="8" font-family="monospace">CV SCAN</text><line x1="20" y1="80" x2="80" y2="80" stroke="#6040c0" stroke-width="0.5"/><line x1="20" y1="86" x2="65" y2="86" stroke="#6040c0" stroke-width="0.5"/><line x1="20" y1="92" x2="75" y2="92" stroke="#6040c0" stroke-width="0.5"/><rect x="120" y="10" width="160" height="100" rx="6" fill="none" stroke="#00d4ff" stroke-width="1"/><text x="200" y="35" text-anchor="middle" fill="#00d4ff" font-size="10" font-family="monospace">NEXUS AI ENGINE</text><rect x="135" y="45" width="130" height="8" rx="2" fill="#0a1530"/><rect x="135" y="45" width="95" height="8" rx="2" fill="#6040c0" opacity="0.6"/><rect x="135" y="58" width="130" height="8" rx="2" fill="#0a1530"/><rect x="135" y="58" width="40" height="8" rx="2" fill="#ff0080" opacity="0.6"/><rect x="135" y="71" width="130" height="8" rx="2" fill="#0a1530"/><rect x="135" y="71" width="110" height="8" rx="2" fill="#6040c0" opacity="0.6"/><text x="200" y="95" text-anchor="middle" fill="#ff0080" font-size="7" font-family="monospace">⚠ BIAS DETECTED</text><rect x="310" y="20" width="80" height="90" rx="4" fill="none" stroke="#00ff88" stroke-width="1"/><text x="350" y="45" text-anchor="middle" fill="#00ff88" font-size="7" font-family="monospace">ACCEPTED</text><circle cx="350" cy="65" r="12" fill="none" stroke="#00ff88" stroke-width="1"/><text x="350" y="68" text-anchor="middle" fill="#00ff88" font-size="8">✓</text><text x="350" y="95" text-anchor="middle" fill="#ff0080" font-size="7" font-family="monospace">REJECTED</text><line x1="90" y1="60" x2="120" y2="60" stroke="#6040c0" stroke-width="1" stroke-dasharray="4"/><line x1="280" y1="60" x2="310" y2="60" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4"/></svg>`,
                     MEDICA: `<svg viewBox="0 0 400 120" style="width:100%;max-width:500px;margin-bottom:20px;opacity:0.45" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="15" width="100" height="95" rx="6" fill="none" stroke="#00b896" stroke-width="1"/><text x="60" y="35" text-anchor="middle" fill="#00b896" font-size="8" font-family="monospace">PATIENT DATA</text><line x1="20" y1="42" x2="100" y2="42" stroke="#00b896" stroke-width="0.5" opacity="0.5"/><polyline points="20,70 35,55 50,75 65,50 80,65 95,45" fill="none" stroke="#00b896" stroke-width="1.5"/><text x="60" y="95" text-anchor="middle" fill="#00b896" font-size="7" font-family="monospace">ECG / VITALS</text><rect x="140" y="10" width="120" height="100" rx="8" fill="none" stroke="#00d4ff" stroke-width="1.5"/><text x="200" y="32" text-anchor="middle" fill="#00d4ff" font-size="9" font-family="monospace">MEDICA AI</text><line x1="155" y1="40" x2="245" y2="40" stroke="#00d4ff" stroke-width="0.5"/><text x="200" y="58" text-anchor="middle" fill="#fff" font-size="8" font-family="monospace">DIAGNOSTIC:</text><rect x="155" y="64" width="90" height="12" rx="3" fill="#ff0080" opacity="0.3" stroke="#ff0080" stroke-width="0.5"/><text x="200" y="73" text-anchor="middle" fill="#ff0080" font-size="7" font-family="monospace">CONFIANCE: 97%</text><text x="200" y="95" text-anchor="middle" fill="#ff8c00" font-size="7" font-family="monospace">⚠ INTERFACE TROMPEUSE</text><rect x="290" y="25" width="100" height="80" rx="6" fill="none" stroke="#ff6060" stroke-width="1"/><text x="340" y="52" text-anchor="middle" fill="#ff6060" font-size="20">⏱</text><text x="340" y="75" text-anchor="middle" fill="#ff6060" font-size="14" font-family="monospace">12s</text><text x="340" y="95" text-anchor="middle" fill="#ff6060" font-size="6" font-family="monospace">TEMPS DE VALIDATION</text><line x1="110" y1="60" x2="140" y2="60" stroke="#00b896" stroke-width="1" stroke-dasharray="4"/><line x1="260" y1="60" x2="290" y2="60" stroke="#00d4ff" stroke-width="1" stroke-dasharray="4"/></svg>`,
@@ -2637,13 +2576,11 @@
             });
         }
 
-        // ==================== GAVEL ANIMATION ====================
         function showGavelAnimation() {
             return new Promise(resolve => {
                 const overlay = $('gavelOverlay');
                 overlay.classList.add('active');
 
-                // Screen shake
                 document.body.classList.add('shake');
                 setTimeout(() => document.body.classList.remove('shake'), 500);
 
@@ -2654,7 +2591,6 @@
             });
         }
 
-        // ==================== TYPEWRITER EFFECT ====================
         function typewriterDialogue(container, speaker, text, avatarSrc) {
             return new Promise(resolve => {
                 const box = document.createElement('div');
@@ -2689,7 +2625,6 @@
             });
         }
 
-        // ==================== BRIEFING NAVIGATION ====================
         let currentLesson = 0;
         const completedLessons = new Set();
 
@@ -2752,7 +2687,6 @@
             if (currentLesson < briefingLessons.length - 1) showLesson(currentLesson + 1);
         }
 
-        // ==================== CERTIFICATE IN FOLDER ====================
         function showCertificateInFolder() {
             if (!state.certificateUnlocked) {
                 $('briefing-content').innerHTML = `
@@ -2831,7 +2765,6 @@
             }
         }
 
-        // ==================== GAME FLOW ====================
         async function startGame() {
             $('briefing-screen').classList.remove('active');
             $('game-container').classList.add('active');
@@ -2842,7 +2775,6 @@
             state.game.casePoints = 0;
             state.game.evidenceFound = new Set();
 
-            // Dramatic entry
             await showPhaseTransition('⚖️', 'Le Tribunal', 'La séance est ouverte');
 
             updateHUD();
@@ -2855,7 +2787,6 @@
             $('briefing-screen').classList.add('active');
             showLesson(currentLesson);
 
-            // Update footer button to allow return to game
             const nextBtn = $('next-btn');
             if (nextBtn) if (nextBtn) nextBtn.style.visibility = 'visible';
             if (nextBtn) nextBtn.textContent = '⚖️ Retour au tribunal';
@@ -2892,7 +2823,6 @@
             updateHUD();
         }
 
-        // ==================== TIMER ====================
         function startTimer() {
             stopTimer();
             state.game.secondsLeft = state.game.maxSeconds;
@@ -2902,7 +2832,7 @@
                 if (state.game.secondsLeft === 120) toast("⏳ Greffier : Plus que 2 minutes.");
                 if (state.game.secondsLeft === 60) toast("⚠️ Greffier : 1 minute. Accélérez.");
                 if (state.game.secondsLeft === 30) toast("🚨 Greffier : 30 secondes !");
-                // Visual warning effects
+
                 const gc = $('game-container');
                 if (state.game.secondsLeft <= 30) {
                     gc.classList.remove('time-warning');
@@ -2938,7 +2868,6 @@
             $('timeLeft').textContent = `${mm}:${ss}`;
         }
 
-        // ==================== CASE SELECTION ====================
         function renderCaseSelection() {
             stopTimer();
             const main = $('stageMain');
@@ -2978,7 +2907,6 @@
             state.game.casePoints = 0;
             updateHUD();
 
-            // Typewriter for case selection
             const caseDialogue = $('caseSelectionDialogue');
             if (caseDialogue) {
                 const remaining = 3 - state.game.casesDone.size;
@@ -3062,11 +2990,9 @@
             `;
         }
 
-        // ==================== EVIDENCE PHASE ====================
         async function selectCase(code) {
             if (state.game.casesDone.has(code)) return;
 
-            // Show cinematic case intro
             await showCaseIntro(code);
 
             state.game.caseId = code;
@@ -3074,7 +3000,6 @@
             state.game.evidenceFound = new Set();
             state.game.casePoints = 0;
 
-            // Phase transition
             await showPhaseTransition('🔍', 'Examen des preuves', `Dossier ${code} — Accès aux archives autorisé`);
 
             startTimer();
@@ -3116,7 +3041,6 @@
                 </div>
             `;
 
-            // Typewriter dialogue for clerk
             const dialogueArea = $('clerkDialogueArea');
             typewriterDialogue(dialogueArea, 'Greffier', c.clerkIntro, 'images/clerk-avatar.png');
 
@@ -3140,7 +3064,7 @@
                 state.game.casePoints += e.points;
                 floatScore(e.points, ev);
                 renderDossierSide();
-                // Update the card to show collected state
+
                 renderEvidencePhase();
             }
 
@@ -3149,7 +3073,6 @@
             updateToPuzzleBtn();
         }
 
-        // ==================== PUZZLE PHASE ====================
         async function goToPuzzle() {
             state.game.casePhase = 2;
             await showPhaseTransition('🧩', 'Chaîne de responsabilité', 'Reconstituez les manquements de chaque acteur');
@@ -3203,7 +3126,6 @@
 
             wireDragDrop(c.puzzleCorrect);
 
-            // Typewriter instruction
             const puzzleDialogue = $('puzzleDialogueArea');
             if (puzzleDialogue) {
                 typewriterDialogue(puzzleDialogue, 'Greffier', 'Reconstituez la chaîne de responsabilité en associant chaque manquement à l\'acteur concerné.', 'images/clerk-avatar.png');
@@ -3219,7 +3141,7 @@
             const drags = document.querySelectorAll('.drag');
             const drops = document.querySelectorAll('.drop');
             const assigned = new Map();
-            let selectedDrag = null; // For tap-to-place on mobile
+            let selectedDrag = null; 
 
             function placePiece(key, actor, drop) {
                 if ([...assigned.values()].includes(key) && assigned.get(actor) !== key) {
@@ -3249,13 +3171,11 @@
                 }
                 updateHUD();
 
-                // Clear selection
                 drags.forEach(d => d.classList.remove('selected'));
                 drops.forEach(d => d.classList.remove('awaiting'));
                 selectedDrag = null;
             }
 
-            // Desktop drag-drop
             drags.forEach(d => {
                 d.addEventListener('dragstart', (ev) => {
                     ev.dataTransfer.setData('text/plain', d.dataset.key);
@@ -3273,20 +3193,19 @@
                 });
             });
 
-            // Mobile/touch: tap to select, tap to place
             drags.forEach(d => {
                 d.addEventListener('click', () => {
                     if (selectedDrag === d.dataset.key) {
-                        // Deselect
+
                         d.classList.remove('selected');
                         drops.forEach(dr => dr.classList.remove('awaiting'));
                         selectedDrag = null;
                     } else {
-                        // Select this drag
+
                         drags.forEach(x => x.classList.remove('selected'));
                         d.classList.add('selected');
                         selectedDrag = d.dataset.key;
-                        // Highlight available drop zones
+
                         drops.forEach(dr => {
                             if (dr.dataset.actor) dr.classList.add('awaiting');
                         });
@@ -3303,7 +3222,6 @@
             });
         }
 
-        // ==================== VERDICT PHASE ====================
         async function goToVerdict() {
             state.game.casePhase = 3;
             await showPhaseTransition('⚖️', 'Verdict', 'Le tribunal attend votre décision');
@@ -3351,7 +3269,6 @@
                 <button class="btn primary" onclick="submitVerdict()"><span>🔨</span> Prononcer le verdict</button>
             `;
 
-            // Typewriter for judge instruction
             const dialogueArea = $('verdictIntroDialogue');
             typewriterDialogue(dialogueArea, 'Juge ARIA-7', 'Les preuves ont été examinées. Sélectionnez les responsables et les sanctions que vous jugez adaptées à cette affaire.', 'images/ai_judge_avatar.png');
 
@@ -3408,14 +3325,12 @@
 
             stopTimer();
 
-            // Gavel animation
             await showGavelAnimation();
 
             if (pts > 0) {
                 floatScore(pts);
             }
 
-            // Build detailed breakdown
             const respRows = ["Concepteur", "Déployeur", "Décideur"].map(r => {
                 const expected = correctResp.has(r);
                 const chosen = chosenSet.has(r);
@@ -3472,11 +3387,9 @@
                 </div>
             `;
 
-            // Typewriter for verdict rationale, then reveal details
             const dialogueArea = $('verdictDialogueArea');
             await typewriterDialogue(dialogueArea, 'Juge ARIA-7', c.verdict.rationale, 'images/ai_judge_avatar.png');
 
-            // Dramatic reveal of details
             setTimeout(() => {
                 $('verdictDetails').classList.add('visible');
             }, 300);
@@ -3516,7 +3429,6 @@
             startGame();
         }
 
-        // ==================== FINAL QUIZ ====================
         async function renderFinalQuiz() {
             state.game.casePhase = 4;
             stopTimer();
@@ -3547,7 +3459,6 @@
                 </div>
             `;
 
-            // Enable submit when all questions have at least one answer
             function checkQuiz15Complete() {
                 const radioGroups = ['q1','q2','q3','q4','q6','q7','q9'];
                 const checkGroups = ['q5','q10'];
@@ -3697,7 +3608,7 @@
             if (passed) {
                 const msg = `✅ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-green)">${finalPct}%</strong><br><span class="mono">Attestation débloquée.</span>`;
                 document.getElementById("quizResult").innerHTML = msg;
-                // Success: highlight correct/incorrect answers
+
                 highlightQuizAnswers(key);
                 unlockCertificate(finalPct);
                 toast("🎓 Attestation débloquée !");
@@ -3709,7 +3620,7 @@
                     </div>
                 `;
             } else {
-                // Failure: show only score + retry (no highlights)
+
                 const msg = `❌ Score quiz : <strong>${pct}%</strong> + bonus tribunal : <strong>${tribunalBonus}</strong> → <strong style="color:var(--neon-pink)">${finalPct}%</strong><br>Objectif : <strong>70%</strong>. Révisez et réessayez.`;
                 document.getElementById("quizResult").innerHTML = msg + `<div style="margin-top:14px;"><button class="btn" onclick="renderFinalQuiz()">↺ Réessayer le quiz</button></div>`;
                 state.quiz.done = false;
@@ -3720,7 +3631,6 @@
             updateHUD();
         }
 
-        // ==================== QUIZ FEEDBACK ====================
         function highlightQuizAnswers(key) {
             const questions = document.querySelectorAll('.q');
             const names = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10'];
@@ -3729,7 +3639,7 @@
                 const name = names[i];
                 if (!name) return;
                 const k = key[name];
-                if (!k) { q.classList.add('correct'); return; } // q8 open - skip
+                if (!k) { q.classList.add('correct'); return; } 
 
                 let isCorrect = false;
                 if (Array.isArray(k)) {
@@ -3742,7 +3652,6 @@
 
                 q.classList.add(isCorrect ? 'correct' : 'incorrect');
 
-                // Show correct answer for incorrect ones
                 if (!isCorrect && !Array.isArray(k)) {
                     const correctLabel = q.querySelector(`input[value="${k}"]`)?.parentElement;
                     if (correctLabel) {
@@ -3762,7 +3671,6 @@
             });
         }
 
-        // ==================== CELEBRATION ====================
         function launchCelebration() {
             const colors = ['#00ff88', '#00d4ff', '#ff0080', '#a855f7', '#ffe66d', '#ff6b6b'];
             for (let i = 0; i < 60; i++) {
@@ -3780,7 +3688,6 @@
             }
         }
 
-        // ==================== CERTIFICATE ====================
         function downloadCertificateFromFolder() {
             const name = (document.getElementById('certificate-name-folder')?.value || "").trim() || "Participant";
             const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -3955,12 +3862,11 @@
             URL.revokeObjectURL(url);
         }
 
-        // ==================== INIT ====================
         showLesson(0);
         initParticles();
     </script>
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -3988,7 +3894,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))

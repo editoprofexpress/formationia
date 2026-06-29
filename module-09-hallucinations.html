@@ -31,7 +31,6 @@
       height:100vh;
     }
 
-    /* ==================== TITRE ==================== */
     #title-screen{
       position:fixed;inset:0;
       background:url('images/module9-title-bg.png') center/cover no-repeat,
@@ -75,7 +74,6 @@
       transform:scale(1.05);
     }
 
-    /* ==================== LIENS RETOUR ==================== */
     .back-link-title{
       position:absolute;top:20px;left:20px;
       display:flex;align-items:center;gap:8px;
@@ -99,7 +97,6 @@
     .back-link-sidebar .back-arrow{transition:transform .3s}
     .back-link-sidebar:hover .back-arrow{transform:translateX(-3px)}
 
-    /* ==================== BRIEFING ==================== */
     #briefing-screen{
       position:fixed;inset:0;
       background:linear-gradient(135deg,#0a0e17 0%,#1a1a3a 50%,#0a0e17 100%);
@@ -162,7 +159,6 @@
     .briefing-btn.primary:hover{background:var(--neon-blue);border-color:var(--neon-blue)}
     .briefing-btn:disabled{opacity:0.5;cursor:not-allowed}
 
-    /* ==================== CONTENU COURS ==================== */
     .module-title{
       font-family:'Space Mono',monospace;font-size:1.8em;color:var(--neon-yellow);
       margin-bottom:30px;padding-bottom:15px;border-bottom:1px solid rgba(255,230,109,0.3);
@@ -187,7 +183,6 @@
     .callout.purple{background:rgba(168,85,247,0.10);border-color:rgba(168,85,247,0.35);box-shadow:0 0 18px rgba(168,85,247,0.18)}
     .callout.blue{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.30);box-shadow:0 0 18px rgba(0,212,255,0.16)}
 
-    /* ==================== BOUTONS JEU ==================== */
     .btn{
       font-family:'Space Mono',monospace;
       border:1px solid rgba(0,212,255,.38);
@@ -216,7 +211,6 @@
     }
     .btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
-    /* ==================== ARTICLES / ENQUÊTE ==================== */
     .article-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}
     .article-card{
       background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.3);
@@ -229,7 +223,6 @@
     .article-card .article-num{font-family:'Space Mono',monospace;color:var(--neon-blue);font-weight:700;font-size:0.9em;margin-bottom:8px}
     .article-card .article-name{font-weight:600;font-size:1em}
 
-    /* Zone d'analyse d'article */
     .analysis-zone{
       background:rgba(10,20,40,0.6);border:1px solid rgba(255,230,109,0.2);
       border-radius:16px;padding:25px;margin-top:20px;
@@ -257,7 +250,6 @@
       background:rgba(255,77,77,0.15);border-bottom-color:var(--danger);
     }
 
-    /* Panneau de vérification latéral */
     .source-panel{
       background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.25);
       border-radius:12px;padding:15px;margin-top:15px;
@@ -273,7 +265,6 @@
       border-left:3px solid var(--neon-blue);
     }
 
-    /* Barre de score détection */
     .detection-bar{
       display:flex;align-items:center;gap:15px;
       padding:12px 15px;background:rgba(0,0,0,0.3);
@@ -292,7 +283,6 @@
       border-radius:5px;transition:width .5s;
     }
 
-    /* Timer */
     .game-timer{
       display:flex;align-items:center;gap:10px;
       padding:8px 15px;background:rgba(0,0,0,0.3);
@@ -306,7 +296,6 @@
     .game-timer.critical .timer-value{color:var(--neon-pink);animation:blink-fast 0.5s infinite}
     @keyframes blink-fast{0%,100%{opacity:1}50%{opacity:0.3}}
 
-    /* ==================== QUIZ ==================== */
     .q-card{
       border:1px solid rgba(0,212,255,.35);background:rgba(0,212,255,.03);
       border-radius:14px;padding:16px;margin-top:12px;
@@ -329,7 +318,6 @@
     }
     .explain.show{display:block}
 
-    /* ==================== MODAL ==================== */
     .modal{
       position:fixed;inset:0;display:none;
       background:rgba(0,5,15,0.88);backdrop-filter:blur(8px);
@@ -348,7 +336,6 @@
     .modal-card p{line-height:1.65;color:#cfe9ff}
     .modal-actions{margin-top:16px;display:flex;justify-content:flex-end}
 
-    /* ==================== TOAST ==================== */
     #toast{
       position:fixed;left:50%;bottom:20px;transform:translateX(-50%);
       padding:12px 14px;border-radius:14px;
@@ -359,7 +346,6 @@
     #toast.show{display:block;animation:toastIn .18s ease}
     @keyframes toastIn{from{transform:translateX(-50%) translateY(6px);opacity:.2}to{transform:translateX(-50%) translateY(0);opacity:1}}
 
-    /* ==================== ACCURACY BAR ==================== */
     .accuracy-bar{
       height:24px;border-radius:12px;overflow:hidden;
       background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);
@@ -371,7 +357,6 @@
       font-family:'Space Mono',monospace;font-size:0.75em;color:white;text-shadow:0 0 5px rgba(0,0,0,.8);
     }
 
-    /* ==================== RESPONSIVE ==================== */
     @media(max-width:768px){
       .main-title{font-size:1.8em;letter-spacing:2px}
       .briefing-nav{display:none}
@@ -383,8 +368,8 @@
       .intro-text{font-size:0.9em}
       .briefing-header{padding:12px 15px;flex-wrap:wrap;gap:10px}
     }
-  
-    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+
+    
     .domain-badge-std {
       display: inline-flex;
       align-items: center;
@@ -464,8 +449,6 @@
       text-transform: uppercase;
     }
 
-
-    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
     .briefing-nav { border-right-color: rgba(255,230,109,0.2) !important; }
     .briefing-nav::-webkit-scrollbar-thumb { background: rgba(255,230,109,0.3) !important; border-radius: 2px; }
     .back-link-sidebar {
@@ -486,7 +469,6 @@
     .nav-number { background: rgba(255,230,109,0.2) !important; }
     .briefing-nav-item.active .nav-number { background: rgba(255,230,109,0.4) !important; }
 
-    /* === STANDARDISATION FORMAT SIDEBAR === */
     .briefing-nav { width: 280px !important; }
     .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
     .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
@@ -497,7 +479,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -513,11 +495,9 @@
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
     }
 
-    /* Couleur thème du module */
     :root { --domain-color: #ffe66d;
   --domain-color-border: rgba(255, 230, 109, 0.3); }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -530,7 +510,6 @@
 </head>
 <body>
 
-  <!-- ==================== TITLE SCREEN ==================== -->
   <section id="title-screen">
     <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
       <span>←</span><span>Tous les modules</span>
@@ -556,7 +535,6 @@
     </div>
   </section>
 
-  <!-- ==================== BRIEFING SCREEN ==================== -->
   <div id="briefing-screen">
     <div class="briefing-header">
       <div class="briefing-title">Module n°9 — Hallucinations de l'IA</div>
@@ -612,7 +590,6 @@
 
   </div>
 
-  <!-- ==================== MODAL ==================== -->
   <div class="modal" id="modal">
     <div class="modal-card">
       <h3 id="modal-title">Titre</h3>
@@ -623,13 +600,10 @@
     </div>
   </div>
 
-  <!-- ==================== TOAST ==================== -->
   <div id="toast"></div>
 
 <script>
-/* =========================================================
-   UTILITAIRES
-========================================================= */
+
 const $ = (id) => document.getElementById(id);
 
 function toast(msg, ms=2200){
@@ -645,9 +619,6 @@ function openModal(title,body){
 }
 function closeModal(){$('modal').classList.remove('show')}
 
-/* =========================================================
-   ÉTAT GLOBAL
-========================================================= */
 const state={
   lessonSeen:new Set(),
   articlesDone:new Set(),
@@ -658,15 +629,12 @@ const state={
 };
 
 let currentLesson=0;
-const totalLessons=9; // 7 lessons + 1 game + 1 attestation (certificate accessed separately)
+const totalLessons=9; 
 let certificateUnlocked=false;
 let finalScore=0;
 let gameTimerInterval=null;
-let gameSecondsLeft=720; // 12 minutes
+let gameSecondsLeft=720; 
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
 function startModule(){
   $('title-screen').classList.add('hidden');
   $('briefing-screen').classList.add('active');
@@ -693,7 +661,7 @@ function updateBriefingProgress(){
 }
 
 function showLesson(idx){
-  if(idx===8){showCertificateInFolder();return;} // certificate
+  if(idx===8){showCertificateInFolder();return;} 
   currentLesson=idx;
   state.lessonSeen.add(idx);
   const content=$('briefing-content');
@@ -705,22 +673,19 @@ function showLesson(idx){
     ${lesson.html}
   `;
   content.scrollTop=0;
-  // Update nav
+
   document.querySelectorAll('.briefing-nav-item').forEach((item,i)=>{
     item.classList.remove('active');
     if(i===idx) item.classList.add('active');
     if(state.lessonSeen.has(i) && i!==idx) item.classList.add('completed');
   });
   updateBriefingProgress();
-  // Init interactives
+
   if(lesson.init) setTimeout(lesson.init,100);
 }
 
-/* =========================================================
-   CONTENU DES LEÇONS — sera complété dans les phases suivantes
-========================================================= */
 const lessons = [
-  /* ---- LEÇON 1 ---- */
+
   {
     title:"01 — Qu'est-ce qu'une hallucination IA ?",
     kicker:"Quand l'intelligence artificielle invente des faits avec une assurance déconcertante.",
@@ -771,7 +736,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 2 ---- */
+
   {
     title:"02 — Pourquoi l'IA hallucine",
     kicker:"Comprendre les mécanismes techniques derrière les erreurs de l'IA.",
@@ -820,7 +785,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 3 ---- */
+
   {
     title:"03 — Les types d'hallucinations",
     kicker:"Factuelles, logiques, temporelles, sources inventées... un bestiaire des erreurs.",
@@ -883,7 +848,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 4 ---- */
+
   {
     title:"04 — Exemples célèbres",
     kicker:"Des tribunaux aux moteurs de recherche : quand les hallucinations font les gros titres.",
@@ -924,7 +889,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 5 ---- */
+
   {
     title:"05 — Le piège de la confiance",
     kicker:"Pourquoi nous croyons si facilement ce que l'IA nous dit.",
@@ -977,7 +942,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 6 ---- */
+
   {
     title:"06 — Comment vérifier",
     kicker:"Techniques de fact-checking pour ne plus se faire piéger.",
@@ -1027,7 +992,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 7 ---- */
+
   {
     title:"07 — Bonnes pratiques face aux hallucinations",
     kicker:"Utiliser l'IA avec lucidité : les réflexes à adopter.",
@@ -1080,7 +1045,7 @@ const lessons = [
       </div>
     `
   },
-  /* ---- LEÇON 8 (MISSION) ---- */
+
   {
     title:"📰 Enquête VERITAS NEWS — Mission",
     kicker:"Analysez 5 articles générés par l'IA SYNTHEX et traquez les hallucinations.",
@@ -1166,16 +1131,8 @@ const lessons = [
   }
 ];
 
-/* =========================================================
-   ARTICLES — Données et mécaniques de jeu
-========================================================= */
-/*
-  Chaque article contient des phrases (sentences).
-  Certaines sont des hallucinations (hallucination:true) avec un type et une explication.
-  Le joueur doit cliquer sur les phrases hallucinées.
-*/
 const articles = [
-  /* ---- ARTICLE 1 : Histoire de l'informatique ---- */
+
   {
     id:1,
     title:"Les grandes étapes de l'informatique moderne",
@@ -1199,7 +1156,7 @@ const articles = [
       {text:"Selon une étude de l'IEEE publiée en 2020, le nombre de transistors dans un processeur moderne dépasse désormais les 50 milliards, conformément à la loi de Moore formulée par Gordon Moore en 1965.", hallucination:true, type:"Factuelle", explain:"En 2020, les processeurs les plus avancés contenaient environ 50 milliards de transistors (Apple M1 Ultra en 2022 : 114 milliards), mais ce chiffre est présenté de manière trompeuse comme une norme. La loi de Moore est correctement datée de 1965."},
     ]
   },
-  /* ---- ARTICLE 2 : Océans et climat ---- */
+
   {
     id:2,
     title:"L'océan, régulateur méconnu du climat mondial",
@@ -1223,7 +1180,7 @@ const articles = [
       {text:"Le Programme des Nations Unies pour l'Environnement a déclaré en 2022 que 85% des zones humides côtières mondiales avaient disparu au cours des 300 dernières années, un chiffre qui a été unanimement confirmé par la communauté scientifique internationale.", hallucination:true, type:"Faux consensus + chiffre douteux", explain:"Le chiffre souvent cité est d'environ 35% des zones humides côtières perdues depuis 1970 (rapport Ramsar). Le chiffre de 85% sur 300 ans est exagéré, et la formulation 'unanimement confirmé' est un signal de faux consensus."},
     ]
   },
-  /* ---- ARTICLE 3 : Droit du numérique ---- */
+
   {
     id:3,
     title:"Le cadre juridique européen du numérique",
@@ -1247,7 +1204,7 @@ const articles = [
       {text:"Le DMA (Digital Markets Act) cible spécifiquement les grandes plateformes qualifiées de 'contrôleurs d'accès' ou gatekeepers, comme Google, Apple, Meta, Amazon et Microsoft.", hallucination:false},
     ]
   },
-  /* ---- ARTICLE 4 : Géographie ---- */
+
   {
     id:4,
     title:"Tour du monde des capitales méconnues",
@@ -1271,7 +1228,7 @@ const articles = [
       {text:"Enfin, la Turquie a pour capitale Istanbul, la plus grande ville du pays avec ses 15 millions d'habitants, qui chevauche deux continents entre Europe et Asie.", hallucination:true, type:"Factuelle", explain:"La capitale de la Turquie est Ankara, pas Istanbul. Istanbul est bien la plus grande ville du pays et chevauche deux continents, ce qui rend l'hallucination particulièrement trompeuse car les détails sur Istanbul sont vrais."},
     ]
   },
-  /* ---- ARTICLE 5 : L'IA dans la société ---- */
+
   {
     id:5,
     title:"L'intelligence artificielle transforme notre quotidien",
@@ -1297,7 +1254,6 @@ const articles = [
   }
 ];
 
-/* État par article */
 const articleState = {};
 
 function updateArticleCards(){
@@ -1310,7 +1266,7 @@ function updateArticleCards(){
 function startArticle(id){
   const article = articles.find(a=>a.id===id);
   if(!article) return;
-  // Init state for this article
+
   if(!articleState[id]) articleState[id]={flagged:new Set(), submitted:false};
   const as = articleState[id];
 
@@ -1364,7 +1320,6 @@ function toggleSentence(articleId, sentIdx){
     as.flagged.add(sentIdx);
   }
 
-  // Update visual
   const sentEls = document.querySelectorAll(`#article-text-${articleId} .sentence`);
   sentEls.forEach(el=>{
     const idx=parseInt(el.dataset.idx);
@@ -1394,17 +1349,17 @@ function submitArticle(articleId){
     el.style.pointerEvents='none';
 
     if(sent.hallucination && wasFlagged){
-      // Correct detection
+
       el.classList.remove('flagged');
       el.classList.add('flagged-correct');
       correct++;
     } else if(sent.hallucination && !wasFlagged){
-      // Missed hallucination
+
       el.classList.add('flagged-wrong');
       el.style.borderBottomStyle='dashed';
       missed++;
     } else if(!sent.hallucination && wasFlagged){
-      // False positive
+
       el.classList.remove('flagged');
       el.classList.add('flagged-wrong');
       falsePos++;
@@ -1414,11 +1369,9 @@ function submitArticle(articleId){
   state.totalHalluFound += correct;
   state.totalFalsePositives += falsePos;
 
-  // Count total hallucinations in this article
   const totalHallu = article.sentences.filter(s=>s.hallucination).length;
   const pts = correct*2 - falsePos;
 
-  // Build result with explanations
   let explanations = '';
   article.sentences.forEach((s,i)=>{
     if(s.hallucination){
@@ -1435,7 +1388,6 @@ function submitArticle(articleId){
     }
   });
 
-  // False positives
   article.sentences.forEach((s,i)=>{
     if(!s.hallucination && as.flagged.has(i)){
       explanations += `
@@ -1475,7 +1427,6 @@ function submitArticle(articleId){
     ${explanations}
   `;
 
-  // Mark article as done
   state.articlesDone.add(articleId);
   updateArticleCards();
 
@@ -1488,9 +1439,6 @@ function submitArticle(articleId){
   resultEl.scrollIntoView({behavior:'smooth'});
 }
 
-/* =========================================================
-   QUIZ
-========================================================= */
 const quizQuestions=[
   {q:"Qu'est-ce qu'une hallucination IA ?",opts:["Un bug technique qui fait planter le programme","Une réponse inventée mais présentée avec assurance comme un fait","Un virus informatique qui corrompt les données","Une fonctionnalité volontaire pour tester les utilisateurs"],correct:1,explain:"Une hallucination IA est une réponse générée qui contient des informations inventées, inexactes ou sans fondement, mais formulées avec assurance comme si elles étaient vérifiées."},
   {q:"Pourquoi les LLM hallucinent-ils ?",opts:["Parce qu'ils sont mal programmés","Parce qu'ils prédisent des mots probables, pas des faits vérifiés","Parce qu'ils manquent de puissance de calcul","Parce qu'ils sont connectés à des sources peu fiables"],correct:1,explain:"Les LLM fonctionnent par prédiction probabiliste de tokens. Ils génèrent des suites de mots statistiquement vraisemblables, sans vérifier si le contenu est factuellement correct."},
@@ -1540,7 +1488,7 @@ function answerQuiz(qIdx,oIdx){
     el.classList.remove('selected');
     if(parseInt(el.dataset.o)===oIdx) el.classList.add('selected');
   });
-  // Enable submit button when all questions answered
+
   if(Object.keys(quizAnswers).length===quizQuestions.length){
     const btn=$('quiz-submit-btn');
     if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
@@ -1557,7 +1505,7 @@ function submitQuiz(){
   $('quiz-submit-btn').style.display='none';
 
   if(pct>=70){
-    // Success: show highlights + explanations
+
     quizQuestions.forEach((q,i)=>{
       const userAns=quizAnswers[i];
       const opts=document.querySelectorAll(`.opt[data-q="${i}"]`);
@@ -1577,7 +1525,7 @@ function submitQuiz(){
     </div>`;
     unlockCertificate();
   } else {
-    // Failure: show only score + retry (no answer details)
+
     $('quiz-result').innerHTML=`
     <div class="callout warn" style="text-align:center;padding:30px">
       <h3 style="color:var(--warn);margin-bottom:15px">Score insuffisant</h3>
@@ -1593,9 +1541,6 @@ function retryQuiz(){
   showQuiz();
 }
 
-/* =========================================================
-   ATTESTATION
-========================================================= */
 function showCertificateInFolder(){
   if(!certificateUnlocked){
     $('briefing-content').innerHTML=`
@@ -1614,7 +1559,7 @@ function showCertificateInFolder(){
       </div>`;
     return;
   }
-  // Version débloquée — sera complétée en Phase 5
+
   $('briefing-content').innerHTML=`
     <div class="module-title" style="color:var(--neon-green)">🎓 Attestation de réussite</div>
     <div class="module-kicker">Module 9 — L'Erreur qui Sonne Juste</div>
@@ -1698,7 +1643,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
 
 </script>
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -1726,7 +1671,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))

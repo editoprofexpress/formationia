@@ -34,7 +34,6 @@
       min-height: 100vh;
     }
 
-    /* ==================== ÉCRAN TITRE ==================== */
     #title-screen {
       position: fixed; inset: 0;
       background:
@@ -56,7 +55,6 @@
       opacity: 0; visibility: hidden; pointer-events: none;
     }
 
-    /* Grille cyberpunk */
     #title-screen::after {
       content: '';
       position: absolute; inset: 0;
@@ -207,7 +205,6 @@
       margin-bottom: 8px;
     }
 
-    /* ==================== SECTION BRIEFING ==================== */
     #briefing-screen {
       position: fixed; inset: 0;
       background: linear-gradient(135deg, #0a0e17 0%, #1a0a0a 50%, #0a0e17 100%);
@@ -267,7 +264,6 @@
       overflow: hidden;
     }
 
-    /* Sidebar navigation */
     .briefing-nav {
       width: 280px;
       background: rgba(10, 20, 40, 0.9);
@@ -339,7 +335,6 @@
       border-radius: 3px;
     }
 
-    /* Zone contenu */
     .briefing-content {
       flex: 1;
       overflow-y: auto;
@@ -350,7 +345,6 @@
     .briefing-content::-webkit-scrollbar-track { background: rgba(255, 107, 107, 0.05); }
     .briefing-content::-webkit-scrollbar-thumb { background: rgba(255, 107, 107, 0.3); border-radius: 4px; }
 
-    /* Footer navigation */
     .briefing-footer {
       background: rgba(10, 20, 40, 0.95);
       border-top: 1px solid rgba(255, 107, 107, 0.3);
@@ -394,7 +388,6 @@
       cursor: not-allowed;
     }
 
-    /* ==================== CONTENU LEÇONS ==================== */
     .lesson { display: none; }
     .lesson.active { display: block; animation: fadeIn 0.3s ease; }
 
@@ -485,7 +478,6 @@
     strong { color: var(--neon-red); }
     em { color: var(--neon-orange); font-style: normal; }
 
-    /* ==================== MISSION INTERACTIVE ==================== */
     #lesson-8 { position: relative; }
 
     .mission-header {
@@ -539,7 +531,6 @@
     .mission-phase { display: none; max-width: 950px; margin: 0 auto; }
     .mission-phase.active { display: block; animation: fadeIn 0.4s ease; }
 
-    /* Grille preuves */
     .evidence-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -588,7 +579,6 @@
 
     .evidence-counter strong { color: var(--neon-green); }
 
-    /* Modal preuve */
     .modal-overlay {
       position: fixed; inset: 0;
       display: none;
@@ -648,7 +638,6 @@
       box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
     }
 
-    /* Questions d'analyse */
     .analysis-question {
       background: rgba(0, 212, 255, 0.04);
       border: 1px solid rgba(0, 212, 255, 0.25);
@@ -724,7 +713,6 @@
       border-left: 4px solid var(--danger);
     }
 
-    /* Phase résultat */
     .mission-result {
       text-align: center;
       padding: 40px 20px;
@@ -763,8 +751,6 @@
       border-color: var(--neon-blue);
       box-shadow: 0 0 25px rgba(0, 212, 255, 0.4);
     }
-
-    /* ==================== QUIZ ==================== */
 
     .quiz-header {
       background: rgba(10, 20, 40, 0.95);
@@ -902,7 +888,6 @@
       box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
     }
 
-    /* Résultat quiz */
     .quiz-result {
       text-align: center;
       padding: 40px 20px;
@@ -939,7 +924,6 @@
       transition: width 1s ease;
     }
 
-    /* ==================== TOAST ==================== */
     #toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
       background: rgba(0,30,60,0.95); border: 1px solid rgba(0,255,136,0.5);
@@ -978,7 +962,6 @@
 
     .attestation-back-link:hover { color: var(--neon-blue); }
 
-    /* ==================== RESPONSIVE ==================== */
     @media (max-width: 768px) {
       .main-title { font-size: 1.9em; letter-spacing: 2px; }
       .subtitle { font-size: 1em; }
@@ -994,7 +977,6 @@
       .evidence-grid { grid-template-columns: 1fr 1fr; }
     }
 
-    /* === STANDARDISATION FORMAT MODULE-01 (Fondations IA - #ff6b6b) === */
     #title-screen .main-title {
       font-size: clamp(1.4rem, 3.2vw, 2.6rem) !important;
       margin: 8px 0 4px !important;
@@ -1032,7 +1014,7 @@
       border-color: rgba(255,107,107,0.4) !important;
       color: #ff6b6b !important;
     }
-    /* === STANDARDISATION FORMAT SIDEBAR === */
+
     .briefing-nav { width: 280px !important; }
     .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
     .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
@@ -1078,9 +1060,6 @@
       text-transform: uppercase;
     }
 
-    /* ==================== MISSION CINÉMATIQUE — MODULE 01 ==================== */
-
-    /* Boot sequence overlay */
     .decode-boot {
       position: absolute; inset: 0;
       min-height: 260px;
@@ -1122,7 +1101,6 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Scan line animation */
     @keyframes scan {
       0% { transform: translateY(-100%); }
       100% { transform: translateY(200vh); }
@@ -1137,7 +1115,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -1151,7 +1129,7 @@
       .briefing-nav.nav-open{display:flex!important;flex-direction:column;position:fixed;top:0;left:0;width:min(290px,85vw);height:100vh;z-index:999;overflow-y:auto;box-shadow:4px 0 24px rgba(0,0,0,0.7)}
       .briefing-nav-overlay.visible{display:block}
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
-    /* Mission header cinématique */
+
     .mission-header-cinema {
       background: linear-gradient(180deg, rgba(0,5,20,0.98) 0%, rgba(5,15,35,0.95) 100%);
       border-bottom: 1px solid rgba(0,212,255,0.25);
@@ -1227,7 +1205,6 @@
     .clearance-level { color: rgba(255,200,0,0.5); font-size: 0.55em; letter-spacing: 2px; }
     .clearance-text { color: #ffcc00; font-size: 0.75em; font-weight: 700; letter-spacing: 1px; }
 
-    /* Timeline de phases */
     .mission-timeline {
       display: flex; align-items: center; justify-content: center;
       padding: 14px 30px;
@@ -1278,7 +1255,6 @@
     }
     .timeline-connector.done { background: rgba(0,255,136,0.4); }
 
-    /* Phase 1 — Evidence */
     .phase-intro { margin-bottom: 28px; }
     .intel-badge {
       display: inline-block;
@@ -1296,7 +1272,6 @@
     }
     .phase-desc { color: #8899aa; line-height: 1.7; max-width: 700px; }
 
-    /* Dossier progress bar */
     .dossier-progress-container {
       display: flex; align-items: center; gap: 16px;
       margin: 0 0 28px;
@@ -1325,7 +1300,6 @@
       color: var(--neon-green); white-space: nowrap;
     }
 
-    /* Evidence cards — cinématiques */
     .evidence-grid-cinema {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1393,7 +1367,6 @@
     }
     .ec-name { font-size: 0.9em; font-weight: 600; color: #cfe9ff; line-height: 1.3; }
 
-    /* Modal cinématique */
     .modal-cinema {
       max-width: 720px; width: 100%;
       background: linear-gradient(145deg, rgba(5,10,25,0.99), rgba(0,5,20,0.99));
@@ -1469,14 +1442,12 @@
       box-shadow: 0 0 20px rgba(0,255,136,0.25);
     }
 
-    /* Phase action button area */
     .phase-action { text-align: center; margin-top: 10px; }
     .action-hint {
       font-size: 0.85em; color: var(--muted); margin-top: 10px;
       transition: color 0.3s;
     }
 
-    /* Phase 2 — Analysis questions as intel reports */
     .intel-question {
       background: linear-gradient(145deg, rgba(0,8,22,0.9), rgba(0,5,18,0.95));
       border: 1px solid rgba(0,212,255,0.2);
@@ -1555,7 +1526,6 @@
     .iq-explanation.correct-expl { border-left-color: var(--neon-green); background: rgba(0,255,136,0.06); color: #a0ffcc; }
     .iq-explanation.wrong-expl { border-left-color: #ff4d4d; background: rgba(255,77,77,0.06); color: #ffaaaa; }
 
-    /* Phase 3 — Résultat spectaculaire */
     .verdict-screen {
       text-align: center; padding: 20px 0;
       animation: fadeIn 0.6s ease forwards;
@@ -1628,7 +1598,6 @@
       box-shadow: 0 8px 40px rgba(0,212,255,0.5);
     }
 
-    /* Responsive */
     @media (max-width: 600px) {
       .mission-header-cinema { padding: 0 14px; }
       .decode-logo-sub { display: none; }
@@ -1639,11 +1608,9 @@
       .evidence-grid-cinema { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     }
 
-    /* Couleur thème du module */
     :root { --domain-color: #ff6b6b;
   --domain-color-border: rgba(255, 107, 107, 0.3); }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -1655,7 +1622,7 @@
     </style>
 </head>
 <body>
-  <!-- ==================== TITLE SCREEN ==================== -->
+
   <section id="title-screen">
     <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
       <span>←</span>
@@ -1680,7 +1647,7 @@
       </a>
     </div>
   </section>
-  <!-- ==================== ÉCRAN BRIEFING ==================== -->
+
   <div id="briefing-screen">
     <div class="briefing-header">
       <div class="briefing-title">Module n°1 — Démystifier l'IA</div>
@@ -1740,7 +1707,6 @@
           Mission : Opération ATLAS
         </div>
 
-        <!-- Séparateur -->
         <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent); margin: 15px 20px;"></div>
 
         <div class="briefing-nav-item" onclick="startMission()" id="nav-mission">
@@ -1758,7 +1724,6 @@
 
       <div class="briefing-content" id="briefing-content">
 
-        <!-- ===== LEÇON 1 ===== -->
         <div class="lesson active" id="lesson-0">
           <h2 class="module-title">01 — L'IA partout, mais c'est quoi ?</h2>
 
@@ -1842,7 +1807,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 2 ===== -->
         <div class="lesson" id="lesson-1">
           <h2 class="module-title">02 — Aux origines : de Turing à Dartmouth</h2>
 
@@ -1911,7 +1875,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 3 ===== -->
         <div class="lesson" id="lesson-2">
           <h2 class="module-title">03 — L'IA symbolique : le cerveau logique</h2>
 
@@ -1979,7 +1942,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 4 ===== -->
         <div class="lesson" id="lesson-3">
           <h2 class="module-title">04 — L'IA connexionniste : le cerveau qui apprend</h2>
 
@@ -2060,7 +2022,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 5 ===== -->
         <div class="lesson" id="lesson-4">
           <h2 class="module-title">05 — La hiérarchie des concepts</h2>
 
@@ -2139,7 +2100,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 6 ===== -->
         <div class="lesson" id="lesson-5">
           <h2 class="module-title">06 — 75 ans d'IA : les dates qui ont tout changé</h2>
 
@@ -2151,7 +2111,7 @@
           <div class="divider"></div>
 
           <div style="position: relative; padding-left: 40px; margin: 20px 0;">
-            <!-- Ligne verticale -->
+
             <div style="position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--neon-green), var(--neon-blue), var(--neon-purple), var(--neon-pink));"></div>
 
             <div style="margin-bottom: 25px; position: relative;">
@@ -2233,7 +2193,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 7 ===== -->
         <div class="lesson" id="lesson-6">
           <h2 class="module-title">07 — Ce que l'IA fait… et ne fait PAS</h2>
 
@@ -2300,7 +2259,6 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 8 ===== -->
         <div class="lesson" id="lesson-7">
           <h2 class="module-title">08 — Mission DECODE : Opération ATLAS</h2>
 
@@ -2366,10 +2324,8 @@
           </div>
         </div>
 
-        <!-- ===== LEÇON 8 : ENQUÊTE ===== -->
         <div class="lesson" id="lesson-8">
 
-    <!-- BOOT SEQUENCE -->
     <div class="decode-boot hidden" id="decode-boot">
       <div class="boot-scan"></div>
       <div class="boot-terminal">
@@ -2378,7 +2334,6 @@
       </div>
     </div>
 
-    <!-- HEADER CINÉMATIQUE -->
     <div class="mission-header-cinema">
       <div class="mh-left">
         <div class="decode-logo-wrap">
@@ -2407,7 +2362,6 @@
       </div>
     </div>
 
-    <!-- TIMELINE DES PHASES -->
     <div class="mission-timeline">
       <div class="timeline-step active" id="step-0">
         <div class="step-num">1</div>
@@ -2427,7 +2381,6 @@
 
     <div class="mission-body">
 
-      <!-- PHASE 1 : COLLECTE DES PREUVES -->
       <div class="mission-phase active" id="mission-phase-0">
         <div class="phase-intro">
           <div class="intel-badge">BRIEFING OPÉRATIONNEL</div>
@@ -2490,7 +2443,6 @@
         </div>
       </div>
 
-      <!-- PHASE 2 : ANALYSE -->
       <div class="mission-phase" id="mission-phase-1">
         <div class="phase-intro">
           <div class="intel-badge">RAPPORT D'ANALYSE — CONFIDENTIEL</div>
@@ -2498,7 +2450,6 @@
           <p class="phase-desc">Sur la base des 6 pièces collectées, formulez vos conclusions d'analyste. Chaque réponse est verrouillée après validation.</p>
         </div>
 
-        <!-- Question 1 -->
         <div class="intel-question" id="aq-0">
           <div class="iq-header">
             <div class="iq-num">QUESTION 01/03</div>
@@ -2525,7 +2476,6 @@
           </div>
         </div>
 
-        <!-- Question 2 -->
         <div class="intel-question" id="aq-1">
           <div class="iq-header">
             <div class="iq-num">QUESTION 02/03</div>
@@ -2552,7 +2502,6 @@
           </div>
         </div>
 
-        <!-- Question 3 -->
         <div class="intel-question" id="aq-2">
           <div class="iq-header">
             <div class="iq-num">QUESTION 03/03</div>
@@ -2587,16 +2536,14 @@
         </div>
       </div>
 
-      <!-- PHASE 3 : VERDICT -->
       <div class="mission-phase" id="mission-phase-2">
         <div id="mission-result"></div>
       </div>
 
-    </div><!-- fin mission-body -->
+    </div>
 
         </div>
 
-        <!-- ===== LEÇON 9 : QUIZ ===== -->
         <div class="lesson" id="lesson-9">
           <h2 class="module-title">📝 Quiz de certification — Module 1</h2>
           <p class="module-kicker">Répondez aux 8 questions pour obtenir votre attestation. Score minimum : 70%.</p>
@@ -2613,13 +2560,12 @@
           <div id="quiz-result-area" style="margin-top:20px"></div>
         </div>
 
-        <!-- ===== LEÇON 10 : ATTESTATION ===== -->
         <div class="lesson" id="lesson-10">
           <div id="certificate-content"></div>
         </div>
 
-      </div><!-- fin briefing-content -->
-    </div><!-- fin briefing-body -->
+      </div>
+    </div>
 
     <div class="briefing-footer">
       <button class="briefing-btn" id="btn-prev" onclick="prevLesson()" disabled>
@@ -2632,7 +2578,7 @@
   </div>
 
   <script>
-    /* ==================== NAVIGATION BRIEFING ==================== */
+
     const TOTAL_LESSONS = 8;
     let currentLesson = 0;
     let visitedLessons = new Set([0]);
@@ -2645,17 +2591,14 @@
     function goToLesson(index) {
       if (index < 0) return;
 
-      // Masquer la leçon actuelle
       const current = document.getElementById('lesson-' + currentLesson);
       if (current) current.classList.remove('active');
 
-      // Afficher la nouvelle
       currentLesson = index;
       visitedLessons.add(index);
       const next = document.getElementById('lesson-' + index);
       if (next) next.classList.add('active');
 
-      // Scroll en haut
       document.getElementById('briefing-content').scrollTop = 0;
 
       updateNav();
@@ -2674,7 +2617,7 @@
     }
 
     function updateNav() {
-      // Barre de progression
+
       if (currentLesson < TOTAL_LESSONS) {
         const pct = ((currentLesson + 1) / TOTAL_LESSONS * 100).toFixed(1);
         document.getElementById('progress-fill').style.width = pct + '%';
@@ -2687,7 +2630,6 @@
         document.getElementById('progress-text').textContent = currentLesson === 9 ? 'Quiz' : 'Attestation';
       }
 
-      // Boutons prev/next
       document.getElementById('btn-prev').disabled = (currentLesson === 0);
       const btnNext = document.getElementById('btn-next');
       btnNext.style.display = '';
@@ -2701,7 +2643,6 @@
         btnNext.onclick = nextLesson;
       }
 
-      // Items sidebar — nav indices 0-8 map to lessons 0-8; index 9 maps to lesson 10 (attestation; lesson 9 quiz has no nav item)
       const items = document.querySelectorAll('.briefing-nav-item');
       items.forEach((item, i) => {
         const lessonForItem = i <= 8 ? i : i + 1;
@@ -2725,8 +2666,6 @@
     }
   </script>
 
-
-  <!-- MODAL PREUVE CINÉMATIQUE -->
   <div class="modal-overlay" id="evidence-modal">
     <div class="modal-cinema">
       <div class="modal-scan"></div>
@@ -2743,7 +2682,7 @@
   </div>
 
   <script>
-    /* ==================== BOOT SEQUENCE ==================== */
+
     function runBootSequence(onComplete) {
       const lines = [
         { text: 'DECODE SYSTEM v4.1 — INITIALISATION...', cls: '', delay: 0 },
@@ -2773,7 +2712,6 @@
       }, 1300);
     }
 
-    /* ==================== DONNÉES MISSION ==================== */
     const evidenceData = [
       {
         title: '📰 Pièce N°1 — Communiqué de presse NovaMind',
@@ -2966,7 +2904,6 @@
       document.querySelectorAll('.mission-phase').forEach(p => p.classList.remove('active'));
       document.getElementById('mission-phase-' + phase).classList.add('active');
 
-      // Update timeline
       [0,1,2].forEach(i => {
         const step = document.getElementById('step-' + i);
         step.classList.remove('active', 'done');
@@ -2998,14 +2935,12 @@
         else if (i === optionIndex && !isCorrect) opt.classList.add('wrong');
       });
 
-      // Update question status badge
       const statusEl = document.getElementById('iq-status-' + qIndex);
       if (statusEl) {
         statusEl.textContent = isCorrect ? 'VALIDÉ ✓' : 'INCORRECT ✗';
         statusEl.className = 'iq-status ' + (isCorrect ? 'correct' : 'wrong');
       }
 
-      // Update question border
       document.getElementById('aq-' + qIndex).classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
 
       const expl = document.getElementById('aq-expl-' + qIndex);
@@ -3065,13 +3000,11 @@
       renderAllQuizQuestions();
     }
 
-    /* Boot state tracked globally */
     window._missionBooted = false;
   </script>
 
-
   <script>
-    /* ==================== QUIZ DE CERTIFICATION ==================== */
+
     const quizQuestions = [
       {
         q: 'Quelle est la principale différence entre l\'IA actuelle et l\'intelligence humaine ?',
@@ -3583,7 +3516,7 @@
   </script>
 
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -3611,7 +3544,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))

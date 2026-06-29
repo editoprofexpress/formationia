@@ -46,7 +46,6 @@
       z-index: 0;
     }
 
-    /* ==================== ÉCRAN TITRE ==================== */
     #title-screen {
       position: fixed;
       inset: 0;
@@ -219,7 +218,6 @@
     .scan-line { display: none; }
     @keyframes scan { 0%{top:0} 100%{top:100%} }
 
-    /* ==================== BRIEFING ==================== */
     #briefing-screen {
       position: fixed;
       inset: 0;
@@ -333,7 +331,6 @@
     .briefing-btn.primary:hover { background: var(--neon-blue); border-color: var(--neon-blue); }
     .briefing-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ==================== CONTENU COURS ==================== */
     .module-title {
       font-family: 'Space Mono', monospace;
       font-size: 1.8em;
@@ -374,7 +371,6 @@
     strong { color: var(--text); }
     em { color: var(--muted); }
 
-    /* Protocole cards */
     .protocol-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0; }
     .protocol-card {
       border-radius: 12px;
@@ -470,7 +466,6 @@
       line-height: 1.7;
     }
 
-    /* ==================== QUIZ ==================== */
     #quiz-screen {
       position: fixed;
       inset: 0;
@@ -556,7 +551,6 @@
     }
     .btn-unlock:hover { background: var(--neon-green); transform: scale(1.04); }
 
-    /* ==================== CERT SCREEN ==================== */
     #cert-screen {
       position: fixed;
       inset: 0;
@@ -568,7 +562,6 @@
     }
     #cert-screen.active { display: flex; }
 
-    /* ==================== TRIAGE CENTER ==================== */
     #triage-screen {
       position: fixed;
       inset: 0;
@@ -626,7 +619,6 @@
     .triage-bar { width: 160px; height: 6px; background: rgba(78,205,196,0.1); border-radius: 3px; overflow: hidden; }
     .triage-bar-fill { height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green)); transition: width 0.4s; }
 
-    /* Corps */
     .triage-body {
       flex: 1;
       display: flex;
@@ -768,7 +760,6 @@
     }
     .p-btn:disabled { cursor: not-allowed; opacity: 0.6; transform: none !important; }
 
-    /* Feedback */
     .case-feedback {
       display: none;
       margin-top: 6px;
@@ -816,7 +807,6 @@
     }
     .btn-next-case:hover { background: var(--neon-blue); transform: scale(1.02); }
 
-    /* Fin de triage */
     .triage-end {
       max-width: 700px;
       width: 100%;
@@ -854,8 +844,7 @@
       transform: scale(1.04);
     }
 
-  
-    /* ==================== HARMONISATION TITRE (standardized) ==================== */
+    
     .domain-badge-std {
       display: inline-flex;
       align-items: center;
@@ -935,8 +924,6 @@
       text-transform: uppercase;
     }
 
-
-    /* ==================== COULEURS DOMAINE SIDEBAR ==================== */
     .briefing-nav { border-right-color: rgba(78,205,196,0.2) !important; }
     .briefing-nav::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3) !important; border-radius: 2px; }
     .back-link-sidebar {
@@ -957,7 +944,6 @@
     .nav-number { background: rgba(78,205,196,0.2) !important; }
     .briefing-nav-item.active .nav-number { background: rgba(78,205,196,0.4) !important; }
 
-    /* === STANDARDISATION FORMAT SIDEBAR === */
     .briefing-nav { width: 280px !important; }
     .briefing-nav-item { padding: 15px 20px !important; font-size: 0.9em !important; }
     .nav-icon { font-size: 1.2em !important; width: 28px !important; text-align: center !important; flex-shrink: 0 !important; }
@@ -967,7 +953,7 @@
 
     .briefing-progress{display:none!important}
     .briefing-footer{display:none!important}
-    /* ──── NAVIGATION MOBILE ──────────────────────── */
+
     .mobile-nav-bar{display:none;align-items:center;gap:10px;padding:10px 16px;background:rgba(5,10,25,0.97);border-bottom:1px solid rgba(0,229,204,0.2);position:sticky;top:0;z-index:50;flex-shrink:0}
     .mobile-hamburger{background:transparent;border:1px solid var(--domain-color,#00e5cc);color:var(--domain-color,#00e5cc);font-size:1.2em;width:36px;height:36px;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .mobile-nav-title{flex:1;font-size:0.78em;color:#8899aa;font-family:'Space Mono',monospace;letter-spacing:1px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px}
@@ -984,7 +970,6 @@
       .briefing-content{max-width:100%!important;margin:0!important;padding:16px 16px 60px!important}
     }
 
-    /* Titres de leçons — harmonisation */
     .module-title, .lesson-title, .section-title {
       font-size: 1.8em !important;
       font-weight: 700 !important;
@@ -997,7 +982,6 @@
 </head>
 <body>
 
-  <!-- ==================== ÉCRAN TITRE ==================== -->
   <div id="title-screen">
     <div class="scan-line"></div>
     <a href="modules.html" class="back-link-title">← Tous les modules</a>
@@ -1007,7 +991,6 @@
     <div class="title-logo">🧭</div>
     <h1 class="main-title">Choisir le bon usage</h1>
     <p class="mission-label">NEXUS DÉCISION</p>
-
 
   <p class="intro-text">Agent, bienvenue au <strong>Centre de Protocole IA</strong>. Des dizaines de demandes arrivent chaque jour dans notre terminal : des organisations, des professionnels, des équipes qui veulent utiliser l'IA pour leurs missions.</p>
   <p class="intro-text">Votre rôle : évaluer chaque cas et appliquer le bon protocole. L'IA n'est pas toujours la meilleure réponse. Certaines situations réclament de la prudence. D'autres exigent une expertise humaine irremplaçable.</p>
@@ -1023,7 +1006,6 @@
     </div>
   </div>
 
-  <!-- ==================== BRIEFING ==================== -->
   <div id="briefing-screen">
     <div class="briefing-header">
       <div class="briefing-title">Module n°8 — Choisir le bon usage</div>
@@ -1036,7 +1018,7 @@
     </div>
 
     <div class="briefing-body">
-      <!-- Navigation latérale -->
+
       <nav class="briefing-nav">
         <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
@@ -1072,7 +1054,7 @@
           <span class="nav-number">06</span>
           Garder son agentivité
         </div>
-      
+
         <div style="border-top:1px solid rgba(78,205,196,0.2);margin-top:15px;padding-top:15px">
           <div class="briefing-nav-item" id="game-nav-item" onclick="startTriage()">
             <span class="nav-icon">🚦</span>
@@ -1087,13 +1069,11 @@
         </div>
       </nav>
 
-      <!-- Contenu -->
       <div class="briefing-content" id="briefing-content"></div>
     </div>
 
   </div>
 
-  <!-- ==================== TRIAGE CENTER ==================== -->
   <div id="triage-screen">
     <div class="triage-header">
       <div class="triage-header-title">Centre de Triage — Nexus Protocol</div>
@@ -1109,16 +1089,14 @@
     </div>
 
     <div class="triage-body" id="triage-body">
-      <!-- Le cas courant est injecté ici -->
+
     </div>
   </div>
 
   <script>
-  /* =========================================================
-     DONNÉES DES LEÇONS
-  ========================================================= */
+
   const lessons = [
-    /* 0 — L'IA : un outil, pas tout */
+
     {
       title: "01 — L'IA : un outil puissant, pas une solution universelle",
       kicker: "Comprendre les forces et les limites de l'IA pour l'utiliser de façon éclairée.",
@@ -1182,7 +1160,6 @@
       `
     },
 
-    /* 1 — Les 3 protocoles */
     {
       title: "02 — Les 3 niveaux de protocole",
       kicker: "Apprendre à classer chaque usage selon son niveau de risque et de confiance.",
@@ -1233,7 +1210,6 @@
       `
     },
 
-    /* 2 — Critères de décision */
     {
       title: "03 — Les critères de décision",
       kicker: "Comment évaluer rapidement n'importe quel cas pour lui attribuer le bon protocole.",
@@ -1318,7 +1294,6 @@
       `
     },
 
-    /* 3 — Domaines sensibles */
     {
       title: "04 — Domaines sensibles : à traiter avec précaution",
       kicker: "Certains secteurs exigent une vigilance renforcée, quelle que soit la tâche.",
@@ -1383,7 +1358,6 @@
       `
     },
 
-    /* 4 — Pièges de la délégation */
     {
       title: "05 — Les pièges de la délégation excessive",
       kicker: "Quand trop faire confiance à l'IA devient un problème.",
@@ -1427,7 +1401,6 @@
       `
     },
 
-    /* 5 — Garder son agentivité */
     {
       title: "06 — Garder son agentivité : rester acteur, pas spectateur",
       kicker: "L'IA amplifie vos capacités — à condition que vous restiez aux commandes.",
@@ -1479,9 +1452,6 @@
     }
   ];
 
-  /* =========================================================
-     NAVIGATION BRIEFING
-  ========================================================= */
   let currentLesson = 0;
   const maxLessons = lessons.length;
 
@@ -1497,14 +1467,12 @@
     `;
     document.getElementById('briefing-content').scrollTop = 0;
 
-    // Bouton lancement jeu sur dernière leçon
     if (idx === maxLessons - 1) {
       document.getElementById('briefing-content').innerHTML += `<div style="text-align:center;margin-top:35px;padding-bottom:20px">
         <button onclick="startTriage()" style="font-family:inherit;padding:16px 50px;background:rgba(78,205,196,0.15);border:2px solid #4ecdc4;color:#4ecdc4;cursor:pointer;font-size:1.1em;letter-spacing:2px;text-transform:uppercase;border-radius:6px;transition:all .3s" onmouseover="this.style.background='rgba(78,205,196,0.3)'" onmouseout="this.style.background='rgba(78,205,196,0.15)'">▶ Accéder au Centre de Triage</button>
       </div>`;
     }
 
-    // Nav items
     document.querySelectorAll('.briefing-nav-item').forEach((el, i) => {
       el.classList.remove('active');
       if (i < idx) el.classList.add('completed');
@@ -1512,13 +1480,11 @@
     const navEl = document.getElementById('nav-' + idx);
     if (navEl) { navEl.classList.add('active'); navEl.classList.remove('completed'); }
 
-    // Progress
     const pct = Math.round(((idx + 1) / maxLessons) * 100);
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-label').textContent = `Dossier ${idx + 1}/${maxLessons}`;
     document.getElementById('lesson-counter').textContent = `${idx + 1} / ${maxLessons}`;
 
-    // Buttons
     { const _bp = document.getElementById('btn-prev'); if (_bp) _bp.disabled = (idx === 0); }
     const btnNext = document.getElementById('btn-next');
     if (idx === maxLessons - 1) {
@@ -1539,9 +1505,6 @@
     showLesson(0);
   }
 
-  /* =========================================================
-     TRIAGE : DONNÉES DES 10 CAS
-  ========================================================= */
   const triageCases = [
     {
       sector: "🎨 Créativité & Éducation",
@@ -1655,9 +1618,6 @@
     }
   ];
 
-  /* =========================================================
-     TRIAGE : ÉTAT ET LOGIQUE
-  ========================================================= */
   let triageState = {
     currentCase: 0,
     scores: { correct: 0, wrong: 0 },
@@ -1719,7 +1679,6 @@
     if (isCorrect) triageState.scores.correct++;
     else triageState.scores.wrong++;
 
-    // Colorer les boutons
     ['green', 'amber', 'red'].forEach(p => {
       const btn = document.getElementById('pbtn-' + p);
       btn.disabled = true;
@@ -1728,7 +1687,6 @@
       if (p === c.correct && !isCorrect) btn.classList.add('show-correct');
     });
 
-    // Afficher feedback
     const fb = document.getElementById('case-feedback');
     fb.className = 'case-feedback ' + (isCorrect ? 'correct' : 'wrong');
     fb.innerHTML = `
@@ -1782,9 +1740,6 @@
     document.getElementById('triage-bar-fill').style.width = '10%';
   }
 
-  /* =========================================================
-     QUIZ : DONNÉES DES 10 QUESTIONS
-  ========================================================= */
   const quizQuestions = [
     {
       q: "Quel protocole s'applique à la rédaction d'un brouillon de post pour les réseaux sociaux ?",
@@ -1853,9 +1808,6 @@
     }
   ];
 
-  /* =========================================================
-     QUIZ : ÉTAT ET LOGIQUE
-  ========================================================= */
   let quizAnswers = {};
   let finalScore = 0;
   let certUnlocked = false;
@@ -1888,7 +1840,7 @@
       el.classList.remove('selected');
       if (parseInt(el.dataset.o) === oIdx) el.classList.add('selected');
     });
-    // Enable submit when all questions answered
+
     if (Object.keys(quizAnswers).length === quizQuestions.length) {
       const btn = document.getElementById('quiz-submit');
       if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
@@ -1905,7 +1857,7 @@
     document.getElementById('quiz-submit').style.display = 'none';
 
     if (passed) {
-      // Success: show highlights + explanations
+
       quizQuestions.forEach((q, i) => {
         const ans = quizAnswers[i];
         document.querySelectorAll(`.q-opt[data-q="${i}"]`).forEach(el => {
@@ -1917,7 +1869,7 @@
         document.getElementById('qexplain-' + i).classList.add('show');
       });
     } else {
-      // Failure: lock options only (no highlights, no explanations)
+
       document.querySelectorAll('.q-opt').forEach(el => { el.style.pointerEvents = 'none'; });
     }
 
@@ -1960,7 +1912,6 @@
   }
   </script>
 
-  <!-- ==================== QUIZ ==================== -->
   <div id="quiz-screen">
     <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
       <div class="briefing-title" style="color:var(--neon-cyan)">Module n°8 — Choisir le bon usage</div>
@@ -1978,7 +1929,6 @@
     </div>
   </div>
 
-  <!-- ==================== ATTESTATION ==================== -->
   <div id="cert-screen">
     <div class="briefing-header" style="border-bottom-color:rgba(78,205,196,0.3)">
       <div class="briefing-title" style="color:var(--neon-cyan)">Module n°8 — Choisir le bon usage</div>
@@ -2030,9 +1980,7 @@
   </div>
 
   <script>
-  /* =========================================================
-     ATTESTATION — DOWNLOAD
-  ========================================================= */
+
   function downloadCert() {
     const name = (document.getElementById('cert-name')?.value || '').trim() || 'Participant';
     const date = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
@@ -2116,7 +2064,6 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
     URL.revokeObjectURL(url);
   }
 
-  // Initialise l'affichage de l'écran de certification
   const _origShowCert = showCertificate;
   window.showCertificate = function() {
     _origShowCert();
@@ -2126,8 +2073,7 @@ body{font-family:'Open Sans',sans-serif;background:linear-gradient(135deg,#0a162
     if (el) el.textContent = finalScore + '%';
     if (refEl) refEl.textContent = 'Référence : ' + refNum;
   };
-  
-/* ==================== ATTESTATION SIDEBAR ==================== */
+
 function unlockCertificate() {
   certUnlocked = true;
   const navItem = document.getElementById('certificate-nav-item');
@@ -2142,7 +2088,7 @@ function showCertificateInFolder() { showCertificate(); }
 </script>
 
 <script>
-/* ──── NAVIGATION MOBILE ──────────────────────────────── */
+
 (function(){
   var bar=document.createElement('div');
   bar.id='mobile-nav-bar';bar.className='mobile-nav-bar';
@@ -2170,7 +2116,7 @@ function closeMobileNav(){
   if(o)o.classList.remove('visible');
   document.body.style.overflow='';
 }
-/* Fermeture auto du tiroir au clic sur un item nav (mobile) */
+
 document.addEventListener('click',function(e){
   if(window.innerWidth>768)return;
   if(e.target.closest('.briefing-nav-item')&&document.querySelector('.briefing-nav.nav-open'))
