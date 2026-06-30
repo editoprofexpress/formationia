@@ -1845,9 +1845,9 @@
     </style>
 </head>
 <body>
-    <!-- ÉCRAN TITRE -->
+    
     <div id="title-screen">
-        <!-- Lien retour discret -->
+        
         <a href="modules.html" class="back-link-title" title="Retour à la liste des modules">
             <span>←</span>
             <span>Tous les modules</span>
@@ -1877,7 +1877,7 @@
     </div>
     </div>
 
-    <!-- SECTION BRIEFING / COURS -->
+    
     <div id="briefing-screen">
         <div class="briefing-header">
             <div class="briefing-title">Module n°12 — IA et environnement</div>
@@ -1891,7 +1891,7 @@
 
         <div class="briefing-body">
             <nav class="briefing-nav">
-                <!-- Lien retour vers modules -->
+                
                 <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
         </a>
@@ -1948,26 +1948,26 @@
             </nav>
 
             <div class="briefing-content" id="briefing-content">
-                <!-- Contenu des modules chargé dynamiquement -->
+                
             </div>
         </div>
 
     </div>
 
-    <!-- CONTAINER PRINCIPAL -->
+    
     <div id="game-container">
-        <!-- Vue de la salle -->
+        
         <div id="room-view">
             <div class="room-background" id="room-bg"></div>
             <div id="room-objects"></div>
         </div>
 
-        <!-- UI OVERLAY -->
+        
         <div id="ui-overlay">
-            <!-- Barre supérieure -->
+            
             <div class="top-bar">
                 <div style="display: flex; align-items: center;">
-                    <!-- Bouton retour dossier -->
+                    
                     <button onclick="returnToDossier()" class="back-btn-game" title="Retour au dossier" style="cursor:pointer;border:none;">
                         <span>←</span>
                         <span>Retour au dossier</span>
@@ -1988,28 +1988,28 @@
                 </div>
             </div>
 
-            <!-- Tracker de preuves -->
+            
             <div class="evidence-tracker">
                 <div class="tracker-title">📋 PREUVES À COLLECTER</div>
                 <div class="evidence-list" id="evidence-list">
-                    <!-- Dynamique -->
+                    
                 </div>
             </div>
 
-            <!-- Mini-map -->
+            
             <div class="mini-map">
                 <div class="mini-map-grid" id="mini-map">
-                    <!-- Dynamique -->
+                    
                 </div>
             </div>
 
-            <!-- Bouton Téléphone -->
+            
             <div class="phone-button" onclick="openPhone()">
                 📱
                 <span class="phone-indicator" id="phone-indicator" style="display:none;">0</span>
             </div>
 
-            <!-- Inventaire -->
+            
             <div class="inventory-bar">
                 <div class="inventory-slot" id="inv-0"></div>
                 <div class="inventory-slot" id="inv-1"></div>
@@ -2018,11 +2018,11 @@
                 <div class="inventory-slot" id="inv-4"></div>
             </div>
 
-            <!-- Flèches de navigation -->
+            
             <div id="nav-arrows"></div>
         </div>
 
-        <!-- Dialogue -->
+        
         <div class="dialogue-box" id="dialogue-box">
             <div class="dialogue-speaker" id="dialogue-speaker"></div>
             <div class="dialogue-text" id="dialogue-text"></div>
@@ -2030,7 +2030,7 @@
         </div>
     </div>
 
-    <!-- MODAL POUR PUZZLES -->
+    
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content" id="modal-content">
             <button class="modal-close" onclick="closeModal()">✕</button>

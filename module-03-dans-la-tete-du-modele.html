@@ -870,7 +870,7 @@
 </head>
 <body>
 
-  <!-- ==================== ÉCRAN TITRE ==================== -->
+  
   <div id="title-screen">
     <div class="scanline"></div>
     <a href="modules.html" class="back-link-title">
@@ -902,10 +902,10 @@
     </div>
   </div>
 
-  <!-- ==================== BRIEFING ==================== -->
+  
   <div id="briefing-screen">
 
-    <!-- Header -->
+    
     <div class="briefing-header">
       <div class="briefing-title">Module n°3 — Dans la tête d'un modèle</div>
       <div class="briefing-progress">
@@ -916,10 +916,10 @@
       </div>
     </div>
 
-    <!-- Body -->
+    
     <div class="briefing-body">
 
-      <!-- Sidebar -->
+      
       <nav class="briefing-nav">
         <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
@@ -951,7 +951,7 @@
           La Prédiction
         </div>
 
-        <!-- Séparation : sections spéciales -->
+        
         <div style="border-top:1px solid rgba(255,107,107,0.2);margin:15px 0 10px;padding-top:10px">
           <div class="briefing-nav-item" onclick="showLesson(5)" id="nav-5">
             <span class="nav-icon">🚀</span>
@@ -972,17 +972,17 @@
         </div>
       </nav>
 
-      <!-- Contenu -->
+      
       <div class="briefing-content" id="briefing-content">
-        <!-- injecté par JS -->
+        
       </div>
     </div>
 
-    <!-- Footer -->
+    
   </div>
 
 
-  <!-- ==================== GAME SCREEN ==================== -->
+  
   <div id="game-screen">
     <div class="game-header">
       <a href="modules.html" style="color:#8899aa;text-decoration:none;font-family:'Space Mono',monospace;font-size:0.8em;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;transition:all .3s" onmouseover="this.style.color='#aabbcc'" onmouseout="this.style.color='#8899aa'">← Modules</a>
@@ -995,11 +995,11 @@
       </div>
     </div>
     <div class="game-body" id="game-body">
-      <!-- injecté par JS selon la zone active -->
+      
     </div>
   </div>
 
-  <!-- Toast -->
+  
   <div id="toast"></div>
 
   <script>
@@ -2034,7 +2034,7 @@
           </div>
         </div>
 
-        <!-- Partie A : Paires -->
+        
         <div style="background:rgba(10,20,40,0.8);border:1px solid rgba(0,212,255,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px">
           <h3 style="color:var(--neon-blue);font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE A · Paires Sémantiques</h3>
           <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">Clique sur deux mots pour les associer. Trouve les 4 paires de mots sémantiquement proches.</p>
@@ -2051,7 +2051,7 @@
           <div id="z2-pairs-result"></div>
         </div>
 
-        <!-- Partie B : Analogies -->
+        
         <div id="z2-analogies-section" style="background:rgba(10,20,40,0.8);border:1px solid rgba(168,85,247,0.25);border-radius:14px;padding:25px 30px;margin-bottom:22px;opacity:0.4;pointer-events:none">
           <h3 style="color:#a855f7;font-family:'Space Mono',monospace;font-size:1em;margin-bottom:6px">PARTIE B · Analogies Vectorielles</h3>
           <p style="color:#8899aa;font-size:0.9em;margin-bottom:20px">
