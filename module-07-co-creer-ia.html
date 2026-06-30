@@ -1027,7 +1027,7 @@
 
 <div class="scan-line"></div>
 
-<!-- ==================== ÉCRAN TITRE ==================== -->
+
 <div id="title-screen">
   <div class="particles" id="particles"></div>
 
@@ -1058,7 +1058,7 @@
     </div>
 </div>
 
-<!-- ==================== BRIEFING ==================== -->
+
 <div id="briefing-screen">
   <div class="briefing-header">
     <div class="briefing-title">Module n°7 — Co-créer avec l'IA</div>
@@ -1071,7 +1071,7 @@
   </div>
 
   <div class="briefing-body">
-    <!-- Navigation latérale -->
+    
     <nav class="briefing-nav">
       <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
@@ -1121,10 +1121,10 @@
         </div>
       </nav>
 
-    <!-- Contenu des sections -->
+    
     <div class="briefing-content" id="briefing-content">
 
-      <!-- SECTION 1 : L'IA, partenaire créatif -->
+      
       <div class="briefing-section" id="section-0">
         <div class="module-title">🤝 L'IA, partenaire créatif — pas un remplaçant</div>
         <p class="module-kicker">Comprendre le rapport entre créativité humaine et intelligence artificielle</p>
@@ -1185,7 +1185,7 @@
         </div>
       </div>
 
-      <!-- SECTION 2 : Co-écrire avec l'IA -->
+      
       <div class="briefing-section" id="section-1" style="display:none">
         <div class="module-title">✍️ Co-écrire avec l'IA : texte, narration, style</div>
         <p class="module-kicker">Techniques pour produire des textes de qualité avec une IA rédactrice</p>
@@ -1238,7 +1238,7 @@
         </div>
       </div>
 
-      <!-- SECTION 3 : Prompt visuel -->
+      
       <div class="briefing-section" id="section-2" style="display:none">
         <div class="module-title">🎨 Prompt visuel : l'art de décrire l'invisible</div>
         <p class="module-kicker">Maîtriser la création d'images avec des IA comme DALL-E, Midjourney ou Stable Diffusion</p>
@@ -1282,7 +1282,7 @@
         </div>
       </div>
 
-      <!-- SECTION 4 : Musique générative -->
+      
       <div class="briefing-section" id="section-3" style="display:none">
         <div class="module-title">🎵 Musique et son génératif</div>
         <p class="module-kicker">Explorer les nouvelles frontières de la création sonore assistée par IA</p>
@@ -1335,7 +1335,7 @@
         </div>
       </div>
 
-      <!-- SECTION 5 : Code assisté -->
+      
       <div class="briefing-section" id="section-4" style="display:none">
         <div class="module-title">💻 Code assisté : l'IA comme co-développeur</div>
         <p class="module-kicker">Comment l'IA révolutionne la manière d'écrire, corriger et documenter du code</p>
@@ -1390,7 +1390,7 @@
         </div>
       </div>
 
-      <!-- SECTION 6 : Droits & éthique -->
+      
       <div class="briefing-section" id="section-5" style="display:none">
         <div class="module-title">⚖️ Droits d'auteur, éthique et paternité créative</div>
         <p class="module-kicker">Les questions légales et morales de la création avec l'IA</p>
@@ -1466,12 +1466,12 @@
         </div>
       </div>
 
-    </div><!-- fin briefing-content -->
-  </div><!-- fin briefing-body -->
+    </div>
+  </div>
 
 </div>
 
-<!-- ==================== ATELIERS ==================== -->
+
 <div id="atelier-screen">
   <div class="atelier-header">
     <div class="atelier-header-title">🎨 SYNAPSE STUDIO — Ateliers</div>
@@ -1482,7 +1482,7 @@
     <a href="modules.html" style="color:#8899aa;text-decoration:none;font-family:'Space Mono',monospace;font-size:0.8em;padding:8px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;">← Modules</a>
   </div>
 
-  <!-- Sélecteur d'ateliers -->
+  
   <div id="atelier-selector">
     <h2 class="selector-title">Choisis ton atelier</h2>
     <p class="selector-subtitle">4 IA t'attendent pour co-créer ensemble. Complète-les tous pour accéder au quiz.</p>
@@ -1522,16 +1522,16 @@
 
     </div>
 
-    <!-- Bouton quiz quand tout fini -->
+    
     <button class="ws-btn primary" id="btn-go-quiz" style="display:none;margin-top:30px;font-size:1em;padding:16px 40px;" onclick="startQuiz()">
       🏆 TOUS LES ATELIERS TERMINÉS — LANCER LE QUIZ
     </button>
   </div>
 
-  <!-- Zone de travail d'un atelier -->
+  
   <div id="atelier-workspace">
 
-    <!-- Header de l'IA -->
+    
     <div class="ia-header">
       <div class="ia-avatar" id="ia-avatar">✍️</div>
       <div class="ia-info">
@@ -1541,12 +1541,12 @@
     </div>
 
     <div class="workspace-body">
-      <!-- Contenu de l'atelier -->
+      
       <div class="workspace-left" id="workspace-left">
-        <!-- Injecté dynamiquement -->
+        
       </div>
 
-      <!-- Chat IA -->
+      
       <div class="workspace-right">
         <div class="ia-chat" id="ia-chat"></div>
       </div>
@@ -1559,7 +1559,7 @@
     </div>
   </div>
 
-  <!-- Écran complétion ateliers -->
+  
   <div id="atelier-complete">
     <div class="complete-icon">🎉</div>
     <h2 class="complete-title">MISSION ACCOMPLIE !</h2>
@@ -1572,7 +1572,7 @@
 
 </div>
 
-<!-- ==================== QUIZ ==================== -->
+
 <div id="quiz-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#0d1a2a 50%,#0a0e17 100%);z-index:997;display:none;flex-direction:column;overflow:hidden;">
 
   <div style="background:rgba(10,20,40,0.95);border-bottom:1px solid rgba(78,205,196,0.3);padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
@@ -1593,7 +1593,7 @@
   </div>
 </div>
 
-<!-- ==================== ATTESTATION ==================== -->
+
 <div id="cert-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#0d1a2a 50%,#0a0e17 100%);z-index:996;display:none;flex-direction:column;overflow:hidden;">
   <div style="background:rgba(10,20,40,0.95);border-bottom:1px solid rgba(78,205,196,0.3);padding:15px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
     <div style="font-family:'Space Mono',monospace;font-size:1.2em;color:var(--neon-cyan);display:flex;align-items:center;gap:12px;">

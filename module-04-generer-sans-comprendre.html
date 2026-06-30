@@ -1037,38 +1037,38 @@
 </head>
 <body>
 
-  <!-- ==================== ÉCRAN TITRE ==================== -->
+  
   <div id="title-screen">
     <div class="scanline"></div>
 
-    <!-- Particules décoratives -->
+    
     <div class="particles" id="particles"></div>
 
-    <!-- Retour aux modules -->
+    
     <a href="modules.html" class="back-link-title">← Tous les modules</a>
 
     <div class="domain-badge-std" style="background:#ff6b6b22;border:1px solid #ff6b6b88;color:#ff6b6b;">Fondations IA - Module n°04</div>
 
-    <!-- Badge -->
+    
 
-    <!-- Logo flottant -->
+    
     <div class="title-logo">🧠</div>
 
-    <!-- Titre principal -->
+    
     <h1 class="main-title">Générer sans comprendre</h1>
     <p class="mission-label">SYNTHÈSE</p>
 
-    <!-- Texte d'intro narratif -->
+    
     <p class="intro-text">
       Nous sommes en 2034. Tu viens d'être téléporté dans la <strong>matrice de génération</strong> de SYNTHÈSE, une IA de dernière génération. Tu vas vivre, de l'intérieur, comment le texte est produit — <strong>token après token</strong> — sans aucune compréhension du sens. Ton défi : démonter l'illusion, comprendre le mécanisme, et ne plus jamais voir les IA de la même façon.
     </p>
 
 
-    <!-- Bouton -->
+    
     <div class="activity-badge-std">🎮 Simulation</div>
     <button class="start-btn" onclick="startModule()">▶ Entrer dans la matrice</button>
 
-    <!-- Infos -->
+    
     <div class="profexpress-std">
       <p>Une formation proposée par</p>
       <a href="https://www.profexpress.com" target="_blank" rel="noopener">
@@ -1077,10 +1077,10 @@
     </div>
   </div>
 
-  <!-- ==================== BRIEFING ==================== -->
+  
   <div id="briefing-screen">
 
-    <!-- Header -->
+    
     <div class="briefing-header">
       <div class="briefing-title">Module n°4 — Générer sans comprendre</div>
       <div class="briefing-progress">
@@ -1091,10 +1091,10 @@
       </div>
     </div>
 
-    <!-- Body -->
+    
     <div class="briefing-body">
 
-      <!-- Sidebar nav -->
+      
       <nav class="briefing-nav">
         <a href="modules.html" class="back-link-sidebar" title="Retour à la liste des modules">
           <span class="back-arrow">←</span><span>Tous les modules</span>
@@ -1132,35 +1132,35 @@
         </div>
       </nav>
 
-      <!-- Content -->
+      
       <div class="briefing-content" id="lesson-content"></div>
 
-    </div><!-- /briefing-body -->
+    </div>
 
-    <!-- Footer -->
+    
 
-  </div><!-- /briefing-screen -->
+  </div>
 
-  <!-- ==================== ÉCRAN JEU ==================== -->
+  
   <div id="game-screen">
 
-    <!-- Game header -->
+    
     <div class="game-header">
       <div class="game-title">🎮 SIMULATION SYNTHÈSE</div>
       <div class="game-score-display">Score : <span class="score-val" id="score-display">0</span></div>
     </div>
 
-    <!-- Level tabs -->
+    
     <div class="level-tabs">
       <div class="level-tab active" id="tab-0" onclick="switchLevel(0)">Niveau 1 — Sois le modèle</div>
       <div class="level-tab locked" id="tab-1">Niveau 2 — Température</div>
       <div class="level-tab locked" id="tab-2">Niveau 3 — Turing inversé</div>
     </div>
 
-    <!-- Game body -->
+    
     <div class="game-body">
 
-      <!-- ====== NIVEAU 1 ====== -->
+      
       <div class="level-panel active" id="level-0">
         <div class="level-intro">
           <h2>🎯 Niveau 1 : Sois le modèle</h2>
@@ -1172,9 +1172,9 @@
         <button class="level-next-btn" id="lvl1-next" onclick="unlockLevel(1)" disabled>
           Passer au Niveau 2 — Jouer avec la Température →
         </button>
-      </div><!-- /level-0 -->
+      </div>
 
-      <!-- ====== NIVEAU 2 ====== -->
+      
       <div class="level-panel" id="level-1">
         <div class="level-intro">
           <h2>🌡️ Niveau 2 : Joue avec la température</h2>
@@ -1215,9 +1215,9 @@
             </button>
           </div>
         </div>
-      </div><!-- /level-1 -->
+      </div>
 
-      <!-- ====== NIVEAU 3 ====== -->
+      
       <div class="level-panel" id="level-2">
         <div class="level-intro">
           <h2>🔍 Niveau 3 : Le Turing inversé</h2>
@@ -1234,12 +1234,12 @@
         <button class="level-next-btn" id="lvl3-next" onclick="startQuiz()" disabled>
           Passer au Quiz final →
         </button>
-      </div><!-- /level-2 -->
+      </div>
 
-    </div><!-- /game-body -->
-  </div><!-- /game-screen -->
+    </div>
+  </div>
 
-  <!-- ==================== QUIZ SCREEN ==================== -->
+  
   <div id="quiz-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#1a0505 50%,#0a0e17 100%);z-index:997;display:none;flex-direction:column;overflow:hidden;">
 
     <div style="background:rgba(10,20,40,0.97);border-bottom:1px solid rgba(255,107,107,0.3);padding:15px 30px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
@@ -1250,7 +1250,7 @@
     <div style="flex:1;overflow-y:auto;padding:30px 60px;max-width:860px;width:100%;margin:0 auto;" id="quiz-content"></div>
   </div>
 
-  <!-- ==================== CERT SCREEN ==================== -->
+  
   <div id="cert-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0a0e17 0%,#0d1a0d 50%,#0a0e17 100%);z-index:996;display:none;flex-direction:column;overflow:hidden;align-items:center;justify-content:center;">
     <div style="overflow-y:auto;padding:30px;width:100%;max-width:740px;" id="cert-content"></div>
   </div>
@@ -2218,34 +2218,34 @@
           overflow: hidden;
           box-shadow: 0 0 60px rgba(255,107,107,0.15), inset 0 0 60px rgba(0,0,0,0.3);
         ">
-          <!-- Grille fond -->
+          
           <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,107,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,107,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none"></div>
 
-          <!-- Coins décoratifs -->
+          
           <div style="position:absolute;top:16px;left:16px;width:30px;height:30px;border-left:2px solid rgba(255,107,107,0.5);border-top:2px solid rgba(255,107,107,0.5)"></div>
           <div style="position:absolute;top:16px;right:16px;width:30px;height:30px;border-right:2px solid rgba(255,107,107,0.5);border-top:2px solid rgba(255,107,107,0.5)"></div>
           <div style="position:absolute;bottom:16px;left:16px;width:30px;height:30px;border-left:2px solid rgba(255,107,107,0.5);border-bottom:2px solid rgba(255,107,107,0.5)"></div>
           <div style="position:absolute;bottom:16px;right:16px;width:30px;height:30px;border-right:2px solid rgba(255,107,107,0.5);border-bottom:2px solid rgba(255,107,107,0.5)"></div>
 
-          <!-- Logo -->
+          
           <img src="images/logo-profexpress.png" alt="Prof Express" style="height:38px;object-fit:contain;margin-bottom:20px;opacity:0.9">
 
-          <!-- Badge -->
+          
           <div style="font-family:'Space Mono',monospace;font-size:0.7em;color:rgba(255,107,107,0.7);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px">Fondamentaux et usages de l'intelligence artificielle — Module 04</div>
 
-          <!-- Titre -->
+          
           <div style="font-family:'Space Mono',monospace;font-size:1.8em;font-weight:700;text-transform:uppercase;letter-spacing:4px;
                background:linear-gradient(90deg,var(--neon-red),var(--neon-orange),var(--neon-pink));
                -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
                margin-bottom:6px">ATTESTATION DE RÉUSSITE</div>
 
-          <!-- Sous-titre module -->
+          
           <div style="font-family:'Space Mono',monospace;font-size:0.9em;color:var(--neon-orange);letter-spacing:2px;margin-bottom:24px">SYNTHÈSE — Générer sans comprendre</div>
 
-          <!-- Séparateur -->
+          
           <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.5),transparent);margin:0 0 22px"></div>
 
-          <!-- Texte attestation -->
+          
           <p style="color:#8899aa;font-size:0.85em;margin-bottom:10px;font-family:'Exo 2',sans-serif">Nous attestons que</p>
           <div style="font-family:'Space Mono',monospace;font-size:1.5em;color:var(--neon-green);
                text-shadow:0 0 20px rgba(0,255,136,0.5);margin-bottom:10px;letter-spacing:2px">
@@ -2256,10 +2256,10 @@
             <strong style="color:var(--neon-orange);font-size:1.3em">${finalQuizScore}%</strong>
           </p>
 
-          <!-- Séparateur -->
+          
           <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent);margin:0 0 20px"></div>
 
-          <!-- Compétences -->
+          
           <div style="text-align:left;max-width:480px;margin:0 auto 24px">
             <div style="font-family:'Space Mono',monospace;font-size:0.75em;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">Compétences validées :</div>
             ${skills.map(s => `
@@ -2270,16 +2270,16 @@
             `).join('')}
           </div>
 
-          <!-- Séparateur -->
+          
           <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,107,107,0.3),transparent);margin:0 0 18px"></div>
 
-          <!-- Date et domaine -->
+          
           <div style="display:flex;justify-content:space-between;align-items:center;max-width:480px;margin:0 auto 25px;font-size:0.82em">
             <span style="color:var(--muted);font-family:'Space Mono',monospace">${dateStr}</span>
             <span style="background:rgba(255,107,107,0.15);border:1px solid rgba(255,107,107,0.4);color:var(--neon-red);padding:3px 12px;border-radius:10px;font-family:'Space Mono',monospace;font-size:0.8em">FONDATIONS IA</span>
           </div>
 
-          <!-- Bouton télécharger -->
+          
           <button onclick="downloadCert()"
             style="font-family:'Space Mono',monospace;font-size:0.9em;padding:13px 35px;
                    background:linear-gradient(135deg,rgba(255,107,107,0.2),rgba(255,159,67,0.2));
